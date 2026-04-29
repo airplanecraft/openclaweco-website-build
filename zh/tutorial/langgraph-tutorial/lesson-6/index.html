@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai</title><meta name="description" content="第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-6/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-6/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-6/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-6/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta property="og:description" content="第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-6/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta name="twitter:description" content="第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/langgraph-tutorial/lesson-6/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/langgraph-tutorial/lesson-6/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-01/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-02/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-03/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-04/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-05/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-06/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-07/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-08/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-09/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 11 期 | 并行执行 (Parallel Execution)：分治机制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 13 期 | Human in the Loop (HITL)：审批节点的建立 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 15 期 | 手动修图：通过 update_state 人工修正 Agent 幻觉 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 16 期 | 多智能体架构探秘：Flat vs Hierarchical </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 17 期 | 主管模式 (Supervisor Agent)：打造统筹中心 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 18 期 | Sub-graphs：将底层 Graph 浓缩为一个普通节点 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>21.</span> 第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>22.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-21/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>23.</span> 第 21 期 | Async 执行：把阻塞留给昨日 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-22/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>24.</span> 第 22 期 | 观测体系：LangSmith 探针无缝挂载 Graph </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-23/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>25.</span> 第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-24/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>26.</span> 第 24 期 | 防超时策略：Timeout与大模型降维重试 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>27.</span> 第 25 期 | 长程记忆：在 Graph 中保存长期偏好 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-26/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>28.</span> 第 26 期 | 前端融合：LangGraph 的前后端分离架构规划 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-27/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>29.</span> 第 27 期 | 生产级利器：LangGraph Cloud 初体验 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-28/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>30.</span> 第 28 期 | 复杂数据的提取 (Structured Outputs) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-29/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>31.</span> 第 29 期 | 测试图：我们该怎么自动化验收智能体的表现？ </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>32.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-30/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>33.</span> 第 30 期 | 终局项目路演：完备的 AI 创作发行机构 (Capstone) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>34.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>35.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-6/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>36.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>37.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>38.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>39.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/langgraph-tutorial/" data-astro-cid-ilhxcym7>LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构","item":"https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/"},{"@type":"ListItem","position":4,"name":"第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><h2>🎯 本期学习目标</h2>
+<p>各位架构师们，欢迎回到《LangGraph 多智能体专家课》！这一期，我们要放大招了。在 LangGraph 的世界里，智能体（Agent）的强大，绝不仅仅在于它们能“思考”，更在于它们能“行动”——也就是调用外部工具。之前我们可能还在手搓工具执行节点，但今天，我将带你见识 LangGraph 原生提供的“黑科技”：<code>ToolNode</code>。学完本期，你将：</p>
+<ol>
+<li><strong>理解 <code>ToolNode</code> 的核心价值：</strong> 为什么它比你自己写一个工具执行节点更优雅、更健壮、更符合 LangGraph 的设计哲学。</li>
+<li><strong>掌握 <code>ToolNode</code> 的使用姿势：</strong> 轻松将 <code>langchain_core.tools.Tool</code> 封装成 LangGraph 中的一等公民。</li>
+<li><strong>为 Agency 注入外部搜索能力：</strong> 以我们的 <code>Researcher</code> 智能体为例，无缝接入搜索引擎，让它不再是“井底之蛙”。</li>
+<li><strong>洞察智能体与工具的协作模式：</strong> 学习如何设计智能体，使其能灵活判断何时需要调用工具，以及如何解析工具返回的结果。</li>
+</ol>
+<h2>📖 原理解析</h2>
+<p>在 AI Content Agency 的宏大叙事中，我们的 <code>Researcher</code> 智能体肩负着“求真务实”的重任。它需要深入互联网的汪洋大海，为 <code>Writer</code> 提供最准确、最前沿的资料。想象一下，如果 <code>Researcher</code> 每次需要搜索都得自己去调用 <code>requests</code>、解析 HTML，那它还怎么有精力去“思考”呢？这不仅效率低下，还极易出错。</p>
+<p>这就是 <code>ToolNode</code> 诞生的意义！</p>
+<h3>什么是 <code>ToolNode</code>？</h3>
+<p>简单来说，<code>ToolNode</code> 是 LangGraph 提供的一种特殊节点类型，它的核心职责是：<strong>接收智能体（或任何上游节点）发出的工具调用请求，执行对应的工具，然后将工具的执行结果返回到图的状态中。</strong></p>
+<p>它就像一个专业的“工具执行官”，你告诉它要用什么工具、参数是什么，它就负责帮你搞定一切，然后把结果汇报给你。智能体只需要发出“指令”，而无需关心“执行细节”。</p>
+<h3>为什么选择 <code>ToolNode</code>？</h3>
+<ol>
+<li><strong>解耦与简化：</strong> 将工具的执行逻辑从智能体的决策逻辑中分离。智能体只负责“决策”和“指令”，<code>ToolNode</code> 负责“执行”。这让你的图结构更清晰，每个节点的职责更单一。</li>
+<li><strong>标准化接口：</strong> <code>ToolNode</code> 能够理解并处理 <code>langchain_core.tools.ToolInvocation</code> 对象。这意味着只要你的 LLM 能够以这种标准格式输出工具调用指令（这在 LangChain/LangGraph 中是标配），<code>ToolNode</code> 就能开箱即用。</li>
+<li><strong>状态管理自动化：</strong> <code>ToolNode</code> 会自动将工具的执行结果封装成 <code>ToolMessage</code>，并添加到图的 <code>messages</code> 状态中。这意味着你的智能体可以轻松地从 <code>messages</code> 历史中获取工具的输出，继续进行决策。</li>
+<li><strong>鲁棒性：</strong> 官方提供的 <code>ToolNode</code> 经过精心设计和测试，通常比我们自己手搓的工具执行逻辑更健壮，能更好地处理各种边缘情况。</li>
+</ol>
+<h3><code>ToolNode</code> 的工作流</h3>
+<p>我们来看一个 <code>Researcher</code> 智能体如何与 <code>ToolNode</code> 协作的典型流程，通过 Mermaid 图来直观感受一下：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[Start: User Query] --&gt; B(Planner Agent);
+    B --&gt; C{Planner Decision: Need Research?};
+    C -- Yes --&gt; D(Researcher Agent);
+    D -- Researcher Output: ToolInvocation --&gt; E(ToolNode: Search Tool);
+    E -- Tool Result: ToolMessage --&gt; D;
+    D -- Researcher Output: Final Answer / Need More Tools --&gt; F{Researcher Decision: Research Done?};
+    F -- No --&gt; D;
+    F -- Yes --&gt; G(Writer Agent);
+    G --&gt; H[End: Content Draft];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px;
+    style H fill:#f9f,stroke:#333,stroke-width:2px;
+    style E fill:#ccf,stroke:#333,stroke-width:2px;
+    style D fill:#bbf,stroke:#333,stroke-width:2px;
+    style B fill:#bbf,stroke:#333,stroke-width:2px;</pre></div><p><strong>图解说明：</strong></p>
+<ol>
+<li><strong><code>Planner Agent</code> (B):</strong> 接收用户请求，决定是否需要 <code>Researcher</code> 介入。</li>
+<li><strong><code>Researcher Agent</code> (D):</strong><ul>
+<li><strong>思考阶段：</strong> 接收当前状态（包括历史消息），根据其内部逻辑判断是否需要调用外部工具（如搜索）。</li>
+<li><strong>输出工具调用：</strong> 如果需要，它会生成一个 <code>ToolInvocation</code> 对象，指示需要调用的工具名称和参数。</li>
+</ul>
+</li>
+<li><strong><code>ToolNode: Search Tool</code> (E):</strong><ul>
+<li><strong>接收指令：</strong> 捕获到 <code>Researcher Agent</code> 输出的 <code>ToolInvocation</code>。</li>
+<li><strong>执行工具：</strong> 根据 <code>ToolInvocation</code> 中的信息，调用预先绑定的搜索工具（例如 <code>DuckDuckGoSearch</code>）。</li>
+<li><strong>返回结果：</strong> 将搜索结果封装成 <code>ToolMessage</code>，并将其添加到图的全局状态中。</li>
+</ul>
+</li>
+<li><strong><code>Researcher Agent</code> (D - 回环):</strong> 再次被激活，这一次，它的输入状态中包含了 <code>ToolMessage</code>（也就是搜索结果）。<code>Researcher</code> 可以读取这些结果，进行分析、提炼，然后决定是继续搜索、调用其他工具，还是已经得到了足够的资料，可以输出最终的调研报告。</li>
+</ol>
+<p>看到了吗？<code>ToolNode</code> 完美地嵌入了智能体的工作流中，让工具调用变得像呼吸一样自然。它就像是你的 AI Content Agency 的“行政助理”，专门负责处理各种工具调用，让你的核心“专家”们（<code>Planner</code>, <code>Researcher</code> 等）可以专注于自己的专业领域。</p>
+<h3>核心概念：<code>ToolInvocation</code> 与 <code>ToolMessage</code></h3>
+<p>理解 <code>ToolNode</code>，就必须理解 LangChain/LangGraph 中的两个核心消息类型：</p>
+<ul>
+<li><strong><code>ToolInvocation</code> (工具调用请求):</strong> 这是 <code>Agent</code> 决定使用工具时发出的“意图”。它通常包含 <code>tool</code> (工具名称) 和 <code>tool_input</code> (工具参数)。例如：<code>ToolInvocation(tool="duckduckgo_search", tool_input={"query": "LangGraph ToolNode tutorial"})</code>。</li>
+<li><strong><code>ToolMessage</code> (工具执行结果):</strong> 这是 <code>ToolNode</code> 执行完工具后，将结果封装成的消息。它包含 <code>content</code> (工具的输出结果) 和 <code>tool_call_id</code> (可选，用于关联到哪个 <code>ToolInvocation</code>)。例如：<code>ToolMessage(content="LangGraph ToolNode is a powerful feature...", tool_call_id="call_abc123")</code>。</li>
+</ul>
+<p><code>ToolNode</code> 的神奇之处在于，它能够识别 <code>ToolInvocation</code>，执行工具，然后生成 <code>ToolMessage</code>。这个 <code>ToolMessage</code> 会被添加到 LangGraph <code>State</code> 中的 <code>messages</code> 列表中，供后续的智能体读取。</p>
+<h2>💻 实战代码演练 (Agency项目中的具体应用)</h2>
+<p>好了，理论说得再多，不如撸起袖子干一场！现在，我们将把 <code>ToolNode</code> 真正融入到我们的 AI Content Agency 项目中，为 <code>Researcher</code> 智能体添加强大的搜索能力。</p>
+<h3>准备工作：定义工具与状态</h3>
+<p>首先，我们需要一个真实的搜索工具。这里我们使用 <code>DuckDuckGoSearchRun</code>，它是一个简单易用的搜索工具。</p>
+<pre><code class="language-python"># agency_core/state.py (假设我们有一个通用的状态文件)
+from typing import List, TypedDict, Annotated, Sequence
+from langchain_core.messages import BaseMessage, FunctionMessage, ToolMessage, AIMessage
+
+# 定义我们的Agency的全局状态
+class AgentState(TypedDict):
+    """
+    代表我们的AI内容创作机构的当前状态。
+    它包含所有的对话消息以及其他可能需要共享的信息。
+    """
+    messages: Annotated[Sequence[BaseMessage], lambda x: x + []] # 聊天消息历史，使用Annotated实现append行为
+    # 可以在这里添加更多全局状态，例如：
+    # research_results: str = "" # 研究结果
+    # content_draft: str = "" # 内容草稿
+    # current_task: str = "" # 当前任务描述
+</code></pre>
+<p>接下来，定义我们的搜索工具。</p>
+<pre><code class="language-python"># agency_core/tools.py
+from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_core.tools import Tool
+from langchain_core.pydantic_v1 import BaseModel, Field
+
+# 1. 定义搜索工具的输入Pydantic模型，这有助于LLM理解参数
+class SearchInput(BaseModel):
+    query: str = Field(description="需要搜索的查询关键词或短语")
+
+# 2. 实例化DuckDuckGo搜索工具
+# DuckDuckGoSearchRun默认不需要API key，非常适合演示
+duckduckgo_search_tool = DuckDuckGoSearchRun()
+
+# 3. 将其封装成LangChain的Tool对象，并指定输入schema
+search_tool = Tool(
+    name="duckduckgo_search",
+    description="一个用于互联网搜索的工具。当需要获取实时信息、事实核查或查找特定主题的资料时非常有用。",
+    func=duckduckgo_search_tool.run,
+    args_schema=SearchInput, # 绑定输入Pydantic模型
+    # return_direct=False # 默认是False，表示工具执行结果不会直接返回给用户，而是进入AgentState
+)
+
+# 我们可以把所有工具放在一个列表中
+all_tools = [search_tool]
+</code></pre>
+<h3>构建 <code>Researcher</code> 智能体和 <code>ToolNode</code></h3>
+<p>现在，我们将构建 <code>Researcher</code> 智能体，并把它与 <code>ToolNode</code> 结合起来。</p>
+<pre><code class="language-python"># agency_core/researcher_agent.py
+import operator
+from typing import List, Annotated, Sequence, TypedDict
+from langchain_core.messages import BaseMessage, AIMessage, HumanMessage, ToolMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_openai import ChatOpenAI
+from langgraph.graph import StateGraph, END
+from langgraph.prebuilt import ToolNode
+
+# 导入我们之前定义的状态和工具
+from agency_core.state import AgentState
+from agency_core.tools import all_tools, search_tool # 确保导入了search_tool
+
+# 假设你已经设置了OPENAI_API_KEY环境变量
+# 或者直接在这里设置：
+# os.environ["OPENAI_API_KEY"] = "YOUR_API_KEY"
+
+# 1. 定义 Researcher 智能体
+class ResearcherAgent:
+    def __init__(self, llm: ChatOpenAI, tools: list):
+        self.llm = llm
+        self.tools = tools
+        self.prompt = ChatPromptTemplate.from_messages(
+            [
+                ("system", "你是一个专业的市场研究员。你的任务是根据用户的请求，利用提供的工具进行准确和深入的互联网搜索。请仔细阅读搜索结果，总结关键信息。如果需要进一步搜索，请继续使用工具。当你认为已经收集到足够的信息来回答请求时，请提供一个清晰、简洁的总结。"),
+                MessagesPlaceholder(variable_name="messages"),
+                MessagesPlaceholder(variable_name="agent_scratchpad"), # 用于工具调用
+            ]
+        )
+        # 绑定工具到LLM，让LLM知道有哪些工具可用
+        self.runnable = self.prompt | self.llm.bind_tools(tools)
+
+    def __call__(self, state: AgentState) -&gt; dict:
+        print(f"\n--- Researcher Agent 正在思考 ---")
+        messages = state["messages"]
+        # 为了让LLM能够看到并决定调用工具，我们需要将过去所有的消息传递给它
+        # 包括用户消息、AI消息、以及工具消息
+        # agent_scratchpad 用于存储工具调用前的中间思想和动作
+        
+        # 过滤掉非AIMessage和HumanMessage，确保LLM只关注核心对话和工具结果
+        # 但这里我们直接传递所有消息给LLM，因为它需要历史上下文来判断是否需要工具
+        
+        # 确保LLM能够看到最新的ToolMessage，从而继续处理搜索结果
+        response = self.runnable.invoke({"messages": messages, "agent_scratchpad": []})
+        
+        # LangGraph会自动处理AIMessage中的tool_calls，并将其转换为ToolInvocation
+        # 如果LLM决定调用工具，response中会包含tool_calls
+        # 如果LLM决定给出最终答案，response就是普通的AIMessage
+        
+        print(f"Researcher Agent 输出: {response}")
+        return {"messages": [response]}
+
+# 2. 定义 Researcher 的决策逻辑：何时停止研究，何时继续或调用工具
+def researcher_should_continue(state: AgentState) -&gt; str:
+    messages = state["messages"]
+    last_message = messages[-1]
+
+    # 如果最后一条消息是AIMessage并且包含tool_calls，说明智能体想调用工具
+    if isinstance(last_message, AIMessage) and last_message.tool_calls:
+        print("--- Researcher 决定调用工具 ---")
+        return "call_tool"
+    # 如果是AIMessage但没有tool_calls，说明智能体认为已经完成任务，或者给出了最终答案
+    elif isinstance(last_message, AIMessage):
+        print("--- Researcher 认为研究完成，准备输出结果 ---")
+        return "end_research"
+    # 其他情况（例如，意外消息类型），可以根据需要处理
+    print("--- Researcher 状态异常或待定，默认结束 ---")
+    return "end_research" # 安全起见，如果不是明确的tool_calls，就认为结束
+
+# 3. 构建 LangGraph
+def create_research_graph(llm: ChatOpenAI) -&gt; StateGraph:
+    workflow = StateGraph(AgentState)
+
+    # 实例化 Researcher 智能体
+    researcher_agent_instance = ResearcherAgent(llm, all_tools)
+
+    # 添加 Researcher 节点
+    workflow.add_node("researcher", researcher_agent_instance)
+
+    # 添加 ToolNode，传入我们所有可用的工具
+    # ToolNode 会自动处理工具调用和结果的封装
+    tool_node = ToolNode(all_tools)
+    workflow.add_node("call_tool", tool_node)
+
+    # 设置入口点
+    workflow.set_entry_point("researcher")
+
+    # 定义边
+    # 从 researcher 节点出去，根据 researcher_should_continue 的判断结果进行路由
+    workflow.add_conditional_edges(
+        "researcher",
+        researcher_should_continue,
+        {
+            "call_tool": "call_tool", # 如果需要调用工具，则路由到 call_tool 节点
+            "end_research": END      # 如果研究完成，则结束图的执行
+        }
+    )
+
+    # 从 call_tool 节点出去，无论工具执行结果如何，都返回给 researcher 节点，让其处理工具输出
+    workflow.add_edge("call_tool", "researcher")
+
+    # 编译图
+    app = workflow.compile()
+    return app
+
+# 4. 运行演示
+if __name__ == "__main__":
+    import os
+    from dotenv import load_dotenv
+
+    load_dotenv() # 加载 .env 文件中的环境变量
+
+    # 确保你的 OPENAI_API_KEY 环境变量已设置
+    if not os.getenv("OPENAI_API_KEY"):
+        raise ValueError("OPENAI_API_KEY 环境变量未设置。请在 .env 文件中设置或直接在代码中提供。")
+
+    # 实例化 LLM
+    llm = ChatOpenAI(model="gpt-4o", temperature=0) # 使用 gpt-4o 确保工具调用能力
+
+    # 创建并编译研究图
+    research_graph = create_research_graph(llm)
+
+    print("--- 启动 AI Content Agency 的 Researcher 模块 ---")
+    # 模拟一个用户请求
+    initial_message = HumanMessage(content="请帮我研究一下 2024 年最热门的 AI 编程框架有哪些？重点关注多智能体框架。")
+
+    # 运行图
+    # stream 方法可以让我们看到每一步的输出
+    for s in research_graph.stream({"messages": [initial_message]}):
+        if "__end__" not in s:
+            print(s)
+            print("---")
+    
+    # 打印最终结果
+    final_state = research_graph.invoke({"messages": [initial_message]})
+    print("\n--- 最终研究结果 ---")
+    # 找到最后一个 AIMessage 作为最终答案
+    final_answer = next((msg.content for msg in reversed(final_state["messages"]) if isinstance(msg, AIMessage) and not msg.tool_calls), "未找到最终答案。")
+    print(final_answer)
+
+    # 另一个示例：一个不需要搜索就能回答的问题 (虽然我们的Researcher被设计为爱搜索)
+    print("\n--- 另一个示例：简单问题 ---")
+    initial_message_simple = HumanMessage(content="你好，请问你是谁？")
+    for s in research_graph.stream({"messages": [initial_message_simple]}):
+        if "__end__" not in s:
+            print(s)
+            print("---")
+    final_state_simple = research_graph.invoke({"messages": [initial_message_simple]})
+    final_answer_simple = next((msg.content for msg in reversed(final_state_simple["messages"]) if isinstance(msg, AIMessage) and not msg.tool_calls), "未找到最终答案。")
+    print(final_answer_simple)
+</code></pre>
+<p><strong>代码解析：</strong></p>
+<ol>
+<li><strong><code>AgentState</code>:</strong> 我们的核心状态，主要通过 <code>messages</code> 列表来跟踪对话历史和工具执行结果。<code>Annotated</code> 的用法确保了 <code>messages</code> 每次更新都是追加（append）操作，而不是覆盖。</li>
+<li><strong><code>search_tool</code>:</strong> 我们将 <code>DuckDuckGoSearchRun</code> 封装成 LangChain 的 <code>Tool</code> 对象。关键是 <code>args_schema</code>，它使用 Pydantic 模型 <code>SearchInput</code> 定义了工具的输入格式，这对于 LLM 理解如何调用工具至关重要。</li>
+<li><strong><code>ResearcherAgent</code>:</strong><ul>
+<li>它接收 <code>llm</code> 和 <code>tools</code>。</li>
+<li><code>prompt</code> 明确了其作为研究员的角色。</li>
+<li><code>self.llm.bind_tools(tools)</code> 是关键！它告诉 LLM，当它需要工具时，这些是它可以调用的工具。LLM 会自动学习如何根据上下文生成 <code>tool_calls</code>。</li>
+<li><code>__call__</code> 方法接收 <code>AgentState</code>，调用 LLM，并将 LLM 的响应（可能是 <code>AIMessage</code>，包含或不包含 <code>tool_calls</code>）更新到状态中。</li>
+</ul>
+</li>
+<li><strong><code>researcher_should_continue</code>:</strong> 这是一个条件路由函数。它检查 <code>AgentState</code> 中最后一条消息。<ul>
+<li>如果 <code>AIMessage</code> 包含 <code>tool_calls</code>，说明 <code>Researcher</code> 决定使用工具，我们将路由到 <code>call_tool</code> 节点。</li>
+<li>如果 <code>AIMessage</code> 不包含 <code>tool_calls</code>，说明 <code>Researcher</code> 已经给出了答案或总结，图的执行可以 <code>END</code>。</li>
+</ul>
+</li>
+<li><strong><code>create_research_graph</code>:</strong><ul>
+<li>我们实例化 <code>ResearcherAgent</code>。</li>
+<li><code>workflow.add_node("researcher", researcher_agent_instance)</code>：添加 <code>Researcher</code> 节点。</li>
+<li><code>tool_node = ToolNode(all_tools)</code>：<strong>这是本期的核心！</strong> 我们直接实例化 <code>ToolNode</code>，并将 <code>all_tools</code> 列表传递给它。<code>ToolNode</code> 会自动处理这些工具的执行。</li>
+<li><code>workflow.add_node("call_tool", tool_node)</code>：将 <code>ToolNode</code> 添加为图中的一个节点，命名为 <code>call_tool</code>。</li>
+<li><strong>条件边 <code>add_conditional_edges</code>:</strong> 从 <code>researcher</code> 节点出发，根据 <code>researcher_should_continue</code> 的判断结果，决定是去 <code>call_tool</code> 还是 <code>END</code>。</li>
+<li><strong>普通边 <code>add_edge</code>:</strong> 从 <code>call_tool</code> 节点执行完毕后，无论结果如何，都将结果（作为 <code>ToolMessage</code> 自动添加到状态中）返回给 <code>researcher</code> 节点。这样，<code>researcher</code> 就可以读取工具结果，并进行下一轮思考。</li>
+</ul>
+</li>
+</ol>
+<p>通过这个设计，我们的 <code>Researcher</code> 智能体现在拥有了强大的互联网搜索能力，而且整个过程是高度自动化和模块化的。这正是 LangGraph <code>ToolNode</code> 的魅力所在！</p>
+<h2>坑与避坑指南</h2>
+<p><code>ToolNode</code> 虽然强大，但使用不当也可能踩坑。作为你的高级导师，我来给你点拨一二：</p>
+<ol>
+<li><strong>LLM 工具调用幻觉 (Hallucination)：</strong><ul>
+<li><strong>坑点：</strong> LLM 可能会“想象”出不存在的工具名称，或者生成错误的工具参数格式，导致 <code>ToolNode</code> 无法识别或执行失败。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>明确的 <code>args_schema</code>：</strong> 务必为你的 <code>Tool</code> 提供清晰、准确的 <code>args_schema</code>（Pydantic 模型）。这是 LLM 理解工具如何使用的“说明书”。</li>
+<li><strong>高质量的 <code>description</code>：</strong> 工具的 <code>description</code> 要写得详细、准确、无歧义，告诉 LLM 这个工具是做什么的，以及何时应该使用。</li>
+<li><strong>合适的 LLM 模型：</strong> 优先选择支持函数调用（Function Calling）能力强且稳定的模型，如 OpenAI 的 <code>gpt-4o</code>, <code>gpt-4-turbo</code>, <code>gpt-3.5-turbo</code> 等。这些模型在处理工具调用方面表现更佳。</li>
+<li><strong>Prompt Engineering：</strong> 在你的 Agent Prompt 中，可以适当地引导 LLM 在需要工具时明确指出，并强调参数的准确性。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>状态管理混乱：</strong><ul>
+<li><strong>坑点：</strong> <code>ToolNode</code> 会自动将 <code>ToolMessage</code> 添加到 <code>messages</code> 状态中。如果你的 Agent 没有正确地处理这些 <code>ToolMessage</code>，或者将其与普通的 <code>AIMessage</code> 混淆，可能导致逻辑错误。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>清晰的 Agent 逻辑：</strong> 你的 Agent 应该能够区分 <code>AIMessage</code> (来自其他 Agent 或其自身的决策) 和 <code>ToolMessage</code> (工具执行结果)。在 <code>__call__</code> 方法中，LLM 在接收到 <code>ToolMessage</code> 后，其后续的 <code>AIMessage</code> 应该基于对工具结果的分析。</li>
+<li><strong>使用 <code>MessagesPlaceholder("agent_scratchpad")</code>：</strong> 在 Agent 的 Prompt 中使用 <code>MessagesPlaceholder("agent_scratchpad")</code> 可以帮助 LLM 更好地管理工具调用前后的中间思考过程。通常，<code>ToolMessage</code> 会被放置在这里，或者直接在 <code>messages</code> 中，LLM 会自动处理。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>无限循环与死锁：</strong><ul>
+<li><strong>坑点：</strong> 如果你的条件路由函数 <code>should_continue</code> 设计不当，例如 Agent 总是决定调用工具，或者总是返回给自身而没有明确的退出条件，就可能导致无限循环。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>明确的终止条件：</strong> 确保你的 <code>should_continue</code> 函数有明确的终止条件（例如 <code>END</code>），并且 Agent 能够在某个阶段判断任务已完成。</li>
+<li><strong>任务完成判断：</strong> Agent 的 Prompt 应该引导它在收集到足够信息后，直接给出答案，而不是继续调用工具。例如：“当你认为已经收集到足够的信息来回答请求时，请提供一个清晰、简洁的总结，不要再调用工具。”</li>
+<li><strong>迭代次数限制：</strong> 在实际生产环境中，可以为图的执行设置最大迭代次数，防止无限循环导致资源耗尽。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>工具执行错误与超时：</strong><ul>
+<li><strong>坑点：</strong> 外部工具（如搜索引擎 API）可能会失败、返回空结果或超时。<code>ToolNode</code> 默认情况下会捕获这些错误，并将其作为 <code>ToolMessage</code> 的内容返回。但如果 Agent 没有预期到这些失败情况，可能会导致后续逻辑崩溃。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>Agent 的错误处理：</strong> 设计你的 Agent，使其能够识别并处理 <code>ToolMessage</code> 中表示错误或空结果的内容。例如，如果搜索结果为空，Agent 应该能够尝试更换关键词再次搜索，或者告知用户无法找到相关信息。</li>
+<li><strong>工具层面的重试与超时：</strong> 在 <code>Tool</code> 的 <code>func</code> 实现中，可以加入重试逻辑和超时机制，增强工具本身的鲁棒性。</li>
+<li><strong>LangGraph 的错误处理：</strong> LangGraph 提供了 <code>interrupt_before</code> 和 <code>interrupt_after</code> 等机制，可以在关键节点前后暂停或介入，以便进行调试或错误处理。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>记住，<code>ToolNode</code> 是一个强大的执行器，但它背后的 <code>Agent</code> 才是真正的“大脑”。确保 <code>Agent</code> 的逻辑足够健壮和智能，才能充分发挥 <code>ToolNode</code> 的威力。</p>
+<h2>📝 本期小结</h2>
+<p>恭喜你，各位未来的 AI 架构师们！本期我们深入探索了 LangGraph 的“原生大招”—— <code>ToolNode</code>。我们不仅理解了它如何优雅地将外部工具集成到多智能体工作流中，更重要的是，我们亲手为我们的 AI Content Agency 的 <code>Researcher</code> 智能体插上了“互联网的翅膀”，让它能够通过 <code>DuckDuckGoSearch</code> 进行实时的信息检索。</p>
+<p>我们学会了：</p>
+<ul>
+<li><code>ToolNode</code> 如何作为智能体与外部工具之间的桥梁，标准化工具执行流程。</li>
+<li><code>ToolInvocation</code> 和 <code>ToolMessage</code> 在这个协作模式中的关键作用。</li>
+<li>如何将一个 <code>langchain_core.tools.Tool</code> 与 <code>ToolNode</code> 结合，并构建一个能够自主决策是否使用工具的 <code>Researcher</code> 智能体。</li>
+<li>以及，那些在实践中可能遇到的“坑”和“避坑指南”，让你少走弯路。</li>
+</ul>
+<p>现在，你的 <code>Researcher</code> 不再是一个只能“闭门造车”的理论家，而是一个能够“求真务实”、深入一线获取最新信息的实干家。这对于提升我们 AI Content Agency 的内容质量和时效性至关重要！</p>
+<p>在接下来的课程中，我们将继续升级我们的 Agency，引入更多高级功能和更复杂的智能体协作模式。敬请期待！下期再见！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-5/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 05 期 | 初见成效：把「调查-写作」闭环跑起来</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-7/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot;</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

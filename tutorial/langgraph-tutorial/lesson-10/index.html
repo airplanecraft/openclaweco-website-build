@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai</title><meta name="description" content="第 10 期 | 精细流式输出：看着 Graph 怎么把活干完"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-10/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-10/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-10/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-10/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta property="og:description" content="第 10 期 | 精细流式输出：看着 Graph 怎么把活干完"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-10/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta name="twitter:description" content="第 10 期 | 精细流式输出：看着 Graph 怎么把活干完"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/langgraph-tutorial/lesson-10/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/langgraph-tutorial/lesson-10/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-01/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-02/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-03/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-05/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-06/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-07/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-08/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-10/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 11 期 | 并行执行 (Parallel Execution)：分治机制 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 13 期 | Human in the Loop (HITL)：审批节点的建立 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 15 期 | 手动修图：通过 update_state 人工修正 Agent 幻觉 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-16/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 16 期 | 多智能体架构探秘：Flat vs Hierarchical </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 17 期 | 主管模式 (Supervisor Agent)：打造统筹中心 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 18 期 | Sub-graphs：将底层 Graph 浓缩为一个普通节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-19/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-20/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-21/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 21 期 | Async 执行：把阻塞留给昨日 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-22/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 22 期 | 观测体系：LangSmith 探针无缝挂载 Graph </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-23/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-24/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 24 期 | 防超时策略：Timeout与大模型降维重试 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-25/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 25 期 | 长程记忆：在 Graph 中保存长期偏好 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-26/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 26 期 | 前端融合：LangGraph 的前后端分离架构规划 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-27/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 27 期 | 生产级利器：LangGraph Cloud 初体验 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-28/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 28 期 | 复杂数据的提取 (Structured Outputs) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-29/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>31.</span> 第 29 期 | 测试图：我们该怎么自动化验收智能体的表现？ </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>32.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-30/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>33.</span> 第 30 期 | 终局项目路演：完备的 AI 创作发行机构 (Capstone) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>34.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>35.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>36.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>37.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>38.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>39.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/langgraph-tutorial/" data-astro-cid-ilhxcym7>LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 10 期 | 精细流式输出：看着 Graph 怎么把活干完</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构","item":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/"},{"@type":"ListItem","position":4,"name":"第 10 期 | 精细流式输出：看着 Graph 怎么把活干完"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 10 期 | 精细流式输出：看着 Graph 怎么把活干完</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><p><em>逐节点输出结果 ( stream_mode="updates" ) 让你实时观察到"主编打回"的每一次内部动态。</em></p>
+<p>欢迎回到我们的《LangGraph 多智能体专家课》。我是你们的导师。</p>
+<p>在前面的课程中，我们已经为「AI 万能内容创作机构 (AI Content Agency)」搭建了相当不错的班底：Planner 负责拆解任务，Researcher 负责搜集资料，Writer 负责奋笔疾书，Editor 负责严把质量关。</p>
+<p>但是，最近有同学在群里跟我抱怨：“老师，我的多智能体系统跑起来太像一个<strong>黑盒</strong>了！特别是当 Editor（主编）对 Writer（写手）的文章不满意，打回去重写时，整个 Graph 可能会在后台循环跑上好几分钟。这期间前端页面毫无反应，老板盯着屏幕问我‘是不是死机了’，我只能尴尬地擦汗。”</p>
+<p>这是一个非常经典的高级工程问题：<strong>可观测性与用户体验 (UX)</strong>。</p>
+<p>在传统的单次 LLM 调用中，我们可以用 Token 级别的流式输出（打字机效果）来缓解用户的焦虑。但在多智能体工作流（Graph）中，真正的“大动作”发生在<strong>节点流转</strong>之间。今天，我们就要撕开这个黑盒，利用 LangGraph 强大的 <code>stream_mode="updates"</code> 功能，让 Graph 的每一步执行都暴露在阳光下！</p>
+<hr>
+<h2>🎯 本期学习目标</h2>
+<p>上完这节课，你将不再是一个只能干等程序运行结束的“小白”，而是能精准掌控 Graph 运行节奏的架构师。具体收益如下：</p>
+<ol>
+<li><strong>破除黑盒焦虑</strong>：深刻理解多智能体执行过程中“状态切片”的概念。</li>
+<li><strong>掌握核心 API</strong>：彻底搞懂 <code>stream_mode="updates"</code> 与 <code>values</code> 的底层差异。</li>
+<li><strong>实战 Agency 工作流</strong>：在 Writer 和 Editor 的相爱相杀（循环打回）中，精准捕获每一次节点状态更新，为你的前端提供实时反馈的数据源。</li>
+<li><strong>提升架构品味</strong>：学会如何优雅地解析 LangGraph 的生成器 (Generator) 输出。</li>
+</ol>
+<hr>
+<h2>📖 原理解析</h2>
+<p>在讲代码之前，我们先来聊聊“道”。</p>
+<p>在 LangGraph 中，当我们调用 <code>graph.invoke()</code> 时，系统会憋着一口气，直到整个图走到 <code>END</code> 节点，才把最终的 <code>State</code> 吐给你。这就像你去餐厅点了一道“佛跳墙”，你在大厅等了两个小时，最后服务员端上来一锅成品。</p>
+<p>但如果你调用的是 <code>graph.stream()</code>，你就像是坐在了开放式厨房的吧台前。</p>
+<p>LangGraph 提供了几种不同的 <code>stream_mode</code>，最核心的有两个：</p>
+<ul>
+<li><code>stream_mode="values"</code>：每次状态更新时，把<strong>完整的当前状态</strong>全量推给你。（相当于每做完一步，把整个厨房的现状拍张全景照片发给你）。</li>
+<li><code>stream_mode="updates"</code>：每次节点执行完毕，只把<strong>该节点对状态做出的增量修改</strong>推给你。（相当于厨师大喊：“切菜岗完成，增加了一盘切好的葱花！”）。</li>
+</ul>
+<p>在多智能体协同中，<strong><code>updates</code> 模式是我们最常用的利器</strong>。因为它能让我们清晰地知道：“刚刚是谁干了活？干了什么活？”</p>
+<p>让我们用一张 Mermaid 图来看看，在我们的 AI Content Agency 中，当引入了 <code>stream_mode="updates"</code> 后，数据流是怎么走的：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">sequenceDiagram
+    participant User as 用户 (Client)
+    participant Graph as LangGraph 引擎
+    participant Writer as 节点: Writer (写手)
+    participant Editor as 节点: Editor (主编)
+
+    User-&gt;&gt;Graph: 发起任务 stream(..., stream_mode="updates")
+    
+    Graph-&gt;&gt;Writer: 1. 执行写作
+    Writer--&gt;&gt;Graph: 返回增量: {draft: "初稿v1", revision_count: 1}
+    Graph--&gt;&gt;User: ⚡ yield {"Writer": {draft: "初稿v1", revision_count: 1}}
+    
+    Graph-&gt;&gt;Editor: 2. 检查初稿
+    Editor--&gt;&gt;Graph: 返回增量: {feedback: "缺乏深度", status: "REJECTED"}
+    Graph--&gt;&gt;User: ⚡ yield {"Editor": {feedback: "缺乏深度", status: "REJECTED"}}
+    
+    Note over Graph, Editor: 条件边判断：被打回，流转回 Writer
+    
+    Graph-&gt;&gt;Writer: 3. 根据反馈重写
+    Writer--&gt;&gt;Graph: 返回增量: {draft: "二稿v2", revision_count: 2}
+    Graph--&gt;&gt;User: ⚡ yield {"Writer": {draft: "二稿v2", revision_count: 2}}
+    
+    Graph-&gt;&gt;Editor: 4. 再次检查
+    Editor--&gt;&gt;Graph: 返回增量: {status: "APPROVED"}
+    Graph--&gt;&gt;User: ⚡ yield {"Editor": {status: "APPROVED"}}
+    
+    Note over Graph, Editor: 条件边判断：通过，流转至 END
+    
+    Graph--&gt;&gt;User: 结束 Stream</pre></div><p>看明白了吗？每一次 ⚡ <code>yield</code>，就是 LangGraph 向外部吐出的一次心跳。外部的业务代码只要监听这些心跳，就可以在前端画出漂亮的进度条或者实时日志：“主编正在审稿...”、“主编打回了文章，写手正在进行第 2 次修改...”。</p>
+<hr>
+<h2>💻 实战代码演练</h2>
+<p>废话不多说，Show me the code。
+我们将用 Python 构建这段“写手与主编”的循环工作流，并用 <code>stream_mode="updates"</code> 将其捕获。</p>
+<p>为了让大家直接能跑通，这里的 LLM 调用我用了模拟函数（Mock），重点展示<strong>流式输出的架构</strong>。</p>
+<h3>1. 定义状态与节点逻辑</h3>
+<pre><code class="language-python">import time
+from typing import TypedDict, Annotated
+from langgraph.graph import StateGraph, END
+import operator
+
+# ==========================================
+# 1. 定义我们 Agency 的全局状态 (State)
+# ==========================================
+class AgencyState(TypedDict):
+    topic: str
+    draft: str
+    feedback: str
+    revision_count: Annotated[int, operator.add] # 使用 reducer，每次更新累加
+    status: str # "PENDING", "REJECTED", "APPROVED"
+
+# ==========================================
+# 2. 定义节点 (Nodes)
+# ==========================================
+def writer_node(state: AgencyState):
+    """写手节点：负责根据主题或反馈写文章"""
+    topic = state.get("topic")
+    feedback = state.get("feedback", "")
+    current_count = state.get("revision_count", 0)
+    
+    # 模拟 LLM 思考与写作的耗时
+    time.sleep(1.5) 
+    
+    if current_count == 0:
+        new_draft = f"【初稿】关于 {topic} 的文章。内容比较浅显。"
+    else:
+        new_draft = f"【第{current_count + 1}稿】关于 {topic} 的文章。已根据反馈『{feedback}』进行了深度优化。"
+        
+    # 返回增量更新 (Updates)
+    return {
+        "draft": new_draft,
+        "revision_count": 1 # 因为用了 operator.add，这里返回 1 就会在原基础上 +1
+    }
+
+def editor_node(state: AgencyState):
+    """主编节点：负责审核文章"""
+    draft = state.get("draft")
+    current_count = state.get("revision_count", 0)
+    
+    # 模拟主编审稿耗时
+    time.sleep(1)
+    
+    # 业务逻辑：前两次强制打回，第三次才给过 (模拟严苛的主编)
+    if current_count &lt; 3:
+        return {
+            "feedback": f"第 {current_count} 稿深度不够，给我回去重写！",
+            "status": "REJECTED"
+        }
+    else:
+        return {
+            "feedback": "这次写得不错，可以发布了。",
+            "status": "APPROVED"
+        }
+
+# ==========================================
+# 3. 定义条件边 (Conditional Edge)
+# ==========================================
+def check_approval(state: AgencyState):
+    """判断主编是否通过"""
+    if state.get("status") == "APPROVED":
+        return "approved"
+    return "rejected"
+</code></pre>
+<h3>2. 组装 Graph 并开启流式观测</h3>
+<p>接下来是见证奇迹的时刻。我们将图拼装起来，并使用 <code>stream</code> 方法。</p>
+<pre><code class="language-python"># ==========================================
+# 4. 组装 Graph
+# ==========================================
+workflow = StateGraph(AgencyState)
+
+workflow.add_node("Writer", writer_node)
+workflow.add_node("Editor", editor_node)
+
+workflow.set_entry_point("Writer")
+
+workflow.add_edge("Writer", "Editor")
+
+# 如果打回，回到 Writer；如果通过，走向 END
+workflow.add_conditional_edges(
+    "Editor",
+    check_approval,
+    {
+        "rejected": "Writer",
+        "approved": END
+    }
+)
+
+app = workflow.compile()
+
+# ==========================================
+# 5. 见证奇迹：使用 stream_mode="updates"
+# ==========================================
+def run_agency_with_stream():
+    print("🚀 [Agency 系统启动] 接收到客户需求...")
+    initial_state = {
+        "topic": "LangGraph 流式输出原理解析",
+        "revision_count": 0
+    }
+    
+    # 核心在这里！调用 app.stream 并指定模式
+    # app.stream 返回的是一个 Python 生成器 (Generator)
+    stream_generator = app.stream(initial_state, stream_mode="updates")
+    
+    step = 1
+    for event in stream_generator:
+        # event 的结构是一个字典：{ "节点名称": { 状态增量 } }
+        print(f"\n--- ⏳ 步骤 {step} ---")
+        
+        # 遍历 event 拿到节点名和输出
+        for node_name, node_update in event.items():
+            print(f"👀 观测到节点执行完毕: 【{node_name}】")
+            
+            # 根据不同的节点，我们可以做不同的前端 UI 渲染
+            if node_name == "Writer":
+                print(f"✍️ 写手提交了新稿件: {node_update.get('draft')}")
+                print(f"🔄 当前修改次数: {node_update.get('revision_count')} (这是增量累加后的结果)")
+                
+            elif node_name == "Editor":
+                status = node_update.get('status')
+                if status == "REJECTED":
+                    print(f"😡 主编大发雷霆，打回了稿件！反馈意见: {node_update.get('feedback')}")
+                else:
+                    print(f"🎉 主编非常满意，审核通过！反馈意见: {node_update.get('feedback')}")
+                    
+        step += 1
+        time.sleep(0.5) # 稍微停顿一下，方便肉眼观察输出效果
+
+    print("\n✅ [Agency 系统完毕] 最终文章已交付客户！")
+
+if __name__ == "__main__":
+    run_agency_with_stream()
+</code></pre>
+<h3>3. 运行效果展示（终端输出模拟）</h3>
+<p>当你运行上面的代码时，你不再需要死等 5 秒钟才看到最终结果。你会看到终端<strong>每隔一两秒</strong>就会蹦出一条日志，生动地展示内部的“宫斗”戏码：</p>
+<pre><code class="language-text">🚀 [Agency 系统启动] 接收到客户需求...
+
+--- ⏳ 步骤 1 ---
+👀 观测到节点执行完毕: 【Writer】
+✍️ 写手提交了新稿件: 【初稿】关于 LangGraph 流式输出原理解析 的文章。内容比较浅显。
+🔄 当前修改次数: 1 (这是增量累加后的结果)
+
+--- ⏳ 步骤 2 ---
+👀 观测到节点执行完毕: 【Editor】
+😡 主编大发雷霆，打回了稿件！反馈意见: 第 1 稿深度不够，给我回去重写！
+
+--- ⏳ 步骤 3 ---
+👀 观测到节点执行完毕: 【Writer】
+✍️ 写手提交了新稿件: 【第2稿】关于 LangGraph 流式输出原理解析 的文章。已根据反馈『第 1 稿深度不够，给我回去重写！』进行了深度优化。
+🔄 当前修改次数: 2 (这是增量累加后的结果)
+
+--- ⏳ 步骤 4 ---
+👀 观测到节点执行完毕: 【Editor】
+😡 主编大发雷霆，打回了稿件！反馈意见: 第 2 稿深度不够，给我回去重写！
+
+--- ⏳ 步骤 5 ---
+👀 观测到节点执行完毕: 【Writer】
+✍️ 写手提交了新稿件: 【第3稿】关于 LangGraph 流式输出原理解析 的文章。已根据反馈『第 2 稿深度不够，给我回去重写！』进行了深度优化。
+🔄 当前修改次数: 3 (这是增量累加后的结果)
+
+--- ⏳ 步骤 6 ---
+👀 观测到节点执行完毕: 【Editor】
+🎉 主编非常满意，审核通过！反馈意见: 这次写得不错，可以发布了。
+
+✅ [Agency 系统完毕] 最终文章已交付客户！
+</code></pre>
+<p>试想一下，如果你通过 WebSocket 把这些数据推送到前端，你的用户体验会有多棒？用户可以像看进度条一样，看着 AI 团队一步步为他打磨作品，这种“参与感”和“透明度”是单体 LLM 无法提供的。</p>
+<hr>
+<h2>坑与避坑指南</h2>
+<p>作为拥有 10 年架构经验的老兵，我必须在这个环节敲打敲打你们。流式输出虽然爽，但坑也不少：</p>
+<h3>💣 坑一：混淆 <code>updates</code> 和 <code>values</code> 导致前端数据错乱</h3>
+<p><strong>现象</strong>：前端拿到的状态有时候缺字段，有时候又是全的。
+<strong>解法</strong>：记住，<code>updates</code> 只返回<strong>当前节点 return 的字典</strong>。如果你在 <code>writer_node</code> 里只 <code>return {"draft": "xxx"}</code>，那么在 <code>updates</code> 模式下，你拿到的 event 里就没有 <code>topic</code> 和 <code>status</code>。如果你需要每次都拿到全量状态来渲染页面，请使用 <code>stream_mode="values"</code>；如果你只是想做事件触发（比如弹出一个 Toast 提示“主编已审核”），用 <code>updates</code> 更轻量。</p>
+<h3>💣 坑二：把“节点级流式”和“Token级流式”搞混</h3>
+<p><strong>现象</strong>：老板说想要 ChatGPT 那种一个字一个字蹦出来的效果，你却只做到了一个节点一个节点蹦出来的效果。
+<strong>解法</strong>：这是完全两个维度的东西！</p>
+<ul>
+<li><strong>节点级流式</strong>（本节课讲的）：关注的是 Agent 工作流走到哪一步了。</li>
+<li><strong>Token级流式</strong>：关注的是某个具体大模型生成文本的过程。
+在高级架构中，我们通常会<strong>结合两者</strong>。即：在图流转时使用 <code>stream_mode="updates"</code> 报告进度，同时在 <code>writer_node</code> 内部调用 LLM 时，开启 LLM 的异步 Token Streaming 推送给前端。这部分我们在后续的《高阶通讯篇》会专门拉一节课讲。</li>
+</ul>
+<h3>💣 坑三：Reducer 累加器的重复触发</h3>
+<p><strong>现象</strong>：<code>revision_count</code> 莫名其妙变成了 4、8、16。
+<strong>解法</strong>：在使用 <code>Annotated[int, operator.add]</code> 时，你要清楚每一次节点返回数字，都会在原基础上相加。如果你在 <code>editor_node</code> 里不小心也 <code>return {"revision_count": 1}</code>，那就会导致双重累加。<strong>严格划分每个节点对 State 中特定字段的写权限</strong>，是多智能体架构设计的核心原则。</p>
+<hr>
+<h2>📝 本期小结</h2>
+<p>今天，我们为 Agency 项目接入了“上帝视角”。</p>
+<p>通过 LangGraph 的 <code>stream_mode="updates"</code>，我们将一个原本耗时极长、容易让人失去耐心的黑盒系统，改造成了一个步骤清晰、状态透明的白盒系统。这不仅是代码层面的优化，更是<strong>产品体验上的降维打击</strong>。</p>
+<p>在实际的商业落地中，能够把“主编打回重写”这种内部博弈暴露给用户，不仅不会让用户觉得系统笨，反而会让用户觉得你的 AI “很努力”、“很专业”。这，就是技术反哺产品的最佳体现。</p>
+<p>下节课，我们将进入一个更刺激的话题：<strong>Human-in-the-loop (人类在环)</strong>。
+如果主编 AI 拿捏不准，怎么让真实的人类老板介入审批？Graph 是如何做到“暂停执行，等待人类输入”的？</p>
+<p>敬请期待第 11 期。同学们，下课！记得把今天的代码在本地跑一遍，体会一下生成器吐出数据的快感！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 09 期 | 跳出局部：处理工具节点中的异常态</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-1/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

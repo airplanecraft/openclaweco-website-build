@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 3 期：环境部署 — Docker Compose 本地部署与安全配置 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai</title><meta name="description" content="从零开始用 Docker Compose 一键部署 n8n，深度配置加密密钥、数据持久化、SMTP 邮件与环境变量安全隔离。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/03-docker-deploy/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/03-docker-deploy/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/03-docker-deploy/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/03-docker-deploy/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 3 期：环境部署 — Docker Compose 本地部署与安全配置 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta property="og:description" content="从零开始用 Docker Compose 一键部署 n8n，深度配置加密密钥、数据持久化、SMTP 邮件与环境变量安全隔离。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/n8n-tutorial/03-docker-deploy/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 3 期：环境部署 — Docker Compose 本地部署与安全配置 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta name="twitter:description" content="从零开始用 Docker Compose 一键部署 n8n，深度配置加密密钥、数据持久化、SMTP 邮件与环境变量安全隔离。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/n8n-tutorial/03-docker-deploy/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/n8n-tutorial/03-docker-deploy/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 n8n 全攻略：从自动化流到多智能体编排 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/01-introduction/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 1 期：为什么是 n8n？2026 自动化与 AI Agent 新纪元 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/02-basic-concepts/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 2 期：基础概念剖析 — 节点、触发器与线缆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/03-docker-deploy/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 3 期：环境部署 — Docker Compose 本地部署与安全配置 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/04-data-heartbeat/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 4 期：数据的心跳 — 深度搞懂 JSON Items 与隐式循环 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/05-webhook-telegram/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 5 期：首个实战流 — Webhook 触发与 Telegram 机器人双向交互 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/06-branching-loops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 6 期：分支与循环控制 — If、Switch 与 Loop 节点大解剖 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/07-data-tables/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 7 期：告别外挂数据库 — 内置 Data Tables 的 CRUD 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/08-http-request/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 8 期：与世界通信 — HTTP Request 节点的认证、轮询与并发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/09-code-node/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 9 期：代码是最终兵器 — Code 节点编写 JS/Python </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/10-utility-nodes/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期：内置工具锦囊 — Merge、Set、Edit Image 节点大串烧 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/11-llm-credentials/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期：唤醒模型 — 配置大模型凭证与基础 LLM 节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/12-chat-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/13-memory/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期：赋予长期记忆 — Window Buffer Memory 与对话状态持久化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/14-agent-tools/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期：赋予数字之手 — 给 Agent 接入 Tools 工具集 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/15-prompt-engineering/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期：意图识别密码 — System Prompt 与 Tool Description 高级调优 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/16-rag-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期：知识即力量 — RAG 架构原理与 Embedding 基础 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/17-indexing-pipeline/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/18-rag-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期：知识变武器 — Vector Store Tool 与 RAG Agent 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/19-advanced-rag/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期：检索精进 — Hybrid Search、Re-Ranking 与多角度检索 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/20-rag-ops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期：知识库运维 — 增量更新、过期清理与检索质量监控 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/21-mcp-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 21 期：无限工具箱 — MCP 协议原理与 n8n 集成架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/22-mcp-client/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 22 期：即插即用 — MCP Client Tool 实战连接 GitHub 与文件系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/23-mcp-server/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 23 期：角色反转 — 把 n8n 工作流暴露为 MCP Server </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/24-mcp-orchestration/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 24 期：MCP 服务编排 — 多 Server 管理、路由与健康检查 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/25-mcp-workspace/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 25 期：MCP 综合实战 — 构建 AI 驱动的全能工作台 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/26-error-handling/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 26 期：永不崩溃 — 错误处理、重试与告警体系 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/27-sub-workflows/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 27 期：模块化构建 — Sub-Workflow 子工作流与 Workflow Tool </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/28-version-control/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 28 期：Git 协作 — 工作流版本控制与多环境部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/29-multi-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 29 期：群体智慧 — 多 Agent 协作与 Supervisor 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/30-grand-finale/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 30 期：大结局 — 企业级 AI Agent 平台全架构参考 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/n8n-tutorial/" data-astro-cid-ilhxcym7>n8n 全攻略：从自动化流到多智能体编排</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 3 期：环境部署 — Docker Compose 本地部署与安全配置</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"n8n 全攻略：从自动化流到多智能体编排","item":"https://www.agentupdate.ai/tutorial/n8n-tutorial/"},{"@type":"ListItem","position":4,"name":"第 3 期：环境部署 — Docker Compose 本地部署与安全配置"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 3 期：环境部署 — Docker Compose 本地部署与安全配置</h1> <div class="meta" data-astro-cid-vma7orrt> <span data-astro-cid-vma7orrt>⏱ Est. reading time: 16 min</span> <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>部署架构总览</h2>
+<p>在开始动手之前，先理解我们要搭建的系统全貌：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    subgraph "Docker Host (你的服务器/笔记本)"
+        subgraph "Docker Compose 集群"
+            N8N[🤖 n8n 容器<br>端口 5678]
+            PG[🐘 PostgreSQL 容器<br>端口 5432]
+            
+            N8N --&gt;|"存储工作流/凭证/执行日志"| PG
+        end
+        
+        VOL_N8N[📁 n8n_data 卷<br>/home/node/.n8n]
+        VOL_PG[📁 postgres_data 卷<br>/var/lib/postgresql/data]
+        
+        N8N -.-&gt;|"持久化文件/社区节点"| VOL_N8N
+        PG -.-&gt;|"持久化数据库"| VOL_PG
+    end
+    
+    USER[👤 用户浏览器] --&gt;|"https://localhost:5678"| N8N
+    WEBHOOK[🌐 外部 Webhook] --&gt;|"POST /webhook/xxx"| N8N
+    
+    style N8N fill:#ff6d5b,stroke:#e55a4e,color:#fff
+    style PG fill:#336791,stroke:#2d5a7b,color:#fff</pre></div><hr>
+<h2>第一步：创建项目目录</h2>
+<pre><code class="language-bash"># 创建一个专门的 n8n 工作目录
+# Create a dedicated n8n working directory
+mkdir -p ~/n8n-docker &amp;&amp; cd ~/n8n-docker
+
+# 创建环境变量文件（重要：绝不要把密钥写在 docker-compose.yml 中！）
+# Create environment file (IMPORTANT: NEVER put secrets in docker-compose.yml!)
+touch .env
+</code></pre>
+<h2>第二步：编写 .env 环境变量文件</h2>
+<pre><code class="language-bash"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# n8n Docker 环境变量配置文件 (.env)
+# 所有敏感配置都集中在此文件中，docker-compose.yml 通过 ${VAR} 引用
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── 核心加密 ──────────────────────────────────────────
+# 这是 n8n 用于加密所有 API 凭证的主密钥（AES-256）
+# 一旦设定后不可更改！否则所有已保存的凭证将无法解密
+# 建议使用 openssl 生成: openssl rand -hex 32
+N8N_ENCRYPTION_KEY=a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2
+
+# ── 数据库配置 ────────────────────────────────────────
+# 生产环境强烈建议使用 PostgreSQL 而非默认的 SQLite
+# PostgreSQL 支持并发写入和大量执行记录
+POSTGRES_USER=n8n                    # 数据库用户名
+POSTGRES_PASSWORD=your_strong_pw_here  # 数据库密码（请替换！）
+POSTGRES_DB=n8n_production           # 数据库名称
+
+# 告诉 n8n 使用 PostgreSQL
+DB_TYPE=postgresdb
+DB_POSTGRESDB_HOST=postgres          # Docker Compose 内部网络的服务名
+DB_POSTGRESDB_PORT=5432
+DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+DB_POSTGRESDB_USER=${POSTGRES_USER}
+DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+
+# ── 访问控制 ────────────────────────────────────────
+# 设置 n8n 后台的登录用户名和密码
+N8N_BASIC_AUTH_ACTIVE=true           # 启用基础身份验证
+N8N_BASIC_AUTH_USER=admin            # 管理员用户名
+N8N_BASIC_AUTH_PASSWORD=change_me!   # 管理员密码（请替换！）
+
+# ── 网络配置 ────────────────────────────────────────
+# Webhook 的公开访问地址（用于 Telegram Bot / Stripe Webhook 等场景）
+WEBHOOK_URL=https://n8n.yourdomain.com/
+# n8n 编辑器的协议
+N8N_PROTOCOL=http
+N8N_PORT=5678
+
+# ── 时区 ─────────────────────────────────────────────
+# 确保 Schedule Trigger 按你的本地时间执行
+GENERIC_TIMEZONE=Asia/Shanghai
+TZ=Asia/Shanghai
+
+# ── 执行安全 ────────────────────────────────────────
+# 启用 Task Runner（n8n 2.0 新增），在隔离沙箱中运行 Code 节点
+# 防止恶意代码访问宿主文件系统
+N8N_RUNNERS_ENABLED=true
+</code></pre>
+<h2>第三步：编写 docker-compose.yml</h2>
+<pre><code class="language-yaml"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# n8n Docker Compose 配置文件
+# 版本: 适配 Docker Compose V2 (无需 version 字段)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+services:
+  # ── n8n 主服务 ─────────────────────────────────────
+  n8n:
+    image: n8nio/n8n:latest          # 官方镜像，始终拉取最新稳定版
+    container_name: n8n
+    restart: unless-stopped          # 崩溃后自动重启，手动停止则不重启
+    ports:
+      - "5678:5678"                  # 映射端口：宿主机 5678 → 容器 5678
+    environment:
+      # 从 .env 文件中读取所有环境变量
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}     # 凭证加密密钥
+      - DB_TYPE=${DB_TYPE}                            # 数据库类型
+      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}      # PostgreSQL 地址
+      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}
+      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - TZ=${TZ}
+      - N8N_RUNNERS_ENABLED=${N8N_RUNNERS_ENABLED}    # Code 节点沙箱隔离
+    volumes:
+      - n8n_data:/home/node/.n8n     # 持久化: 社区节点、文件上传等
+    depends_on:
+      postgres:
+        condition: service_healthy   # 等待 PostgreSQL 健康检查通过后再启动
+    networks:
+      - n8n_network
+
+  # ── PostgreSQL 数据库 ──────────────────────────────
+  postgres:
+    image: postgres:16-alpine        # Alpine 精简版，体积更小
+    container_name: n8n_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # 持久化: 数据库文件
+    healthcheck:
+      # 每 5 秒检查一次数据库是否就绪
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - n8n_network
+
+# ── 持久化卷 ──────────────────────────────────────────
+volumes:
+  n8n_data:        # n8n 工作数据
+  postgres_data:   # PostgreSQL 数据
+
+# ── 内部网络 ──────────────────────────────────────────
+networks:
+  n8n_network:
+    driver: bridge   # 容器间通过服务名互相访问 (如: postgres:5432)
+</code></pre>
+<h2>第四步：启动与验证</h2>
+<pre><code class="language-bash"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 启动 n8n 集群 (后台运行)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+docker compose up -d
+# 输出: [+] Running 2/2
+#        ✔ Container n8n_postgres Started
+#        ✔ Container n8n            Started
+
+# 查看容器运行状态
+docker compose ps
+# 预期输出:
+# NAME             IMAGE                 STATUS               PORTS
+# n8n              n8nio/n8n:latest      Up 30 seconds        0.0.0.0:5678-&gt;5678/tcp
+# n8n_postgres     postgres:16-alpine    Up 31 seconds (healthy)
+
+# 查看 n8n 启动日志（确认无报错）
+docker compose logs n8n --tail 20
+# 关键看这行: "n8n ready on 0.0.0.0, port 5678"
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 验证服务是否正常响应
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+curl -s http://localhost:5678/healthz
+# 预期输出: {"status":"ok"}
+</code></pre>
+<h2>部署启动流程的时序图</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">sequenceDiagram
+    participant Dev as 👤 开发者
+    participant DC as 🐳 Docker Compose
+    participant PG as 🐘 PostgreSQL
+    participant N8N as 🤖 n8n
+
+    Dev-&gt;&gt;DC: docker compose up -d
+    DC-&gt;&gt;PG: 启动 PostgreSQL 容器
+    
+    loop 健康检查 (每 5 秒)
+        DC-&gt;&gt;PG: pg_isready?
+        PG--&gt;&gt;DC: Not ready...
+    end
+    PG--&gt;&gt;DC: ✅ Ready!
+    
+    DC-&gt;&gt;N8N: 启动 n8n 容器
+    N8N-&gt;&gt;PG: 连接数据库
+    N8N-&gt;&gt;N8N: 运行数据库迁移
+    N8N-&gt;&gt;N8N: 加载加密密钥
+    N8N--&gt;&gt;Dev: 🟢 n8n ready on port 5678
+    
+    Dev-&gt;&gt;N8N: 打开浏览器 → localhost:5678
+    N8N--&gt;&gt;Dev: 显示登录/注册界面</pre></div><h2>常见问题排查</h2>
+<table>
+<thead>
+<tr>
+<th align="left">问题现象</th>
+<th align="left">可能原因</th>
+<th align="left">解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">容器反复重启</td>
+<td align="left"><code>N8N_ENCRYPTION_KEY</code> 未设置</td>
+<td align="left">检查 <code>.env</code> 文件是否被正确加载</td>
+</tr>
+<tr>
+<td align="left">无法登录</td>
+<td align="left">密码含特殊字符被 shell 转义</td>
+<td align="left">在 <code>.env</code> 中用引号包裹密码值</td>
+</tr>
+<tr>
+<td align="left">Webhook URL 不生效</td>
+<td align="left"><code>WEBHOOK_URL</code> 配置错误</td>
+<td align="left">确保包含协议前缀 <code>https://</code></td>
+</tr>
+<tr>
+<td align="left">数据库连接失败</td>
+<td align="left">PostgreSQL 尚未就绪</td>
+<td align="left"><code>depends_on</code> + <code>healthcheck</code> 已处理</td>
+</tr>
+<tr>
+<td align="left">中文时间不对</td>
+<td align="left">时区未配置</td>
+<td align="left">确认 <code>TZ=Asia/Shanghai</code> 已设置</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>升级与备份</h2>
+<pre><code class="language-bash"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 安全升级 n8n 到最新版本
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 第一步：备份数据库（养成好习惯！）
+docker exec n8n_postgres pg_dump -U n8n n8n_production &gt; backup_$(date +%Y%m%d).sql
+
+# 第二步：拉取最新镜像
+docker compose pull
+
+# 第三步：无感重启（数据卷不会丢失）
+docker compose up -d
+
+# 第四步：验证版本
+docker exec n8n n8n --version
+# 输出: 1.x.x (最新版本号)
+</code></pre>
+<h2>下一步</h2>
+<p>环境已经就绪！在 Ep 04 中，我们将深入 n8n 最核心也是最容易被误解的概念——<strong>JSON Data Items 的隐式循环机制</strong>，理解为什么你几乎永远不需要手写 for 循环。</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/02-basic-concepts/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 2 期：基础概念剖析 — 节点、触发器与线缆</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/04-data-heartbeat/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 4 期：数据的心跳 — 深度搞懂 JSON Items 与隐式循环</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai</title><meta name="description" content="第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-03/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-03/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-03/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-03/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta property="og:description" content="第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-03/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta name="twitter:description" content="第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/langgraph-tutorial/lesson-03/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/langgraph-tutorial/lesson-03/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-01/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-02/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-03/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-05/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-06/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-07/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-08/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 11 期 | 并行执行 (Parallel Execution)：分治机制 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 13 期 | Human in the Loop (HITL)：审批节点的建立 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 15 期 | 手动修图：通过 update_state 人工修正 Agent 幻觉 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-16/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 16 期 | 多智能体架构探秘：Flat vs Hierarchical </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 17 期 | 主管模式 (Supervisor Agent)：打造统筹中心 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 18 期 | Sub-graphs：将底层 Graph 浓缩为一个普通节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-19/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-20/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-21/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 21 期 | Async 执行：把阻塞留给昨日 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-22/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 22 期 | 观测体系：LangSmith 探针无缝挂载 Graph </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-23/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-24/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 24 期 | 防超时策略：Timeout与大模型降维重试 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-25/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 25 期 | 长程记忆：在 Graph 中保存长期偏好 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-26/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 26 期 | 前端融合：LangGraph 的前后端分离架构规划 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-27/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 27 期 | 生产级利器：LangGraph Cloud 初体验 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-28/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 28 期 | 复杂数据的提取 (Structured Outputs) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-29/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>31.</span> 第 29 期 | 测试图：我们该怎么自动化验收智能体的表现？ </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>32.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-30/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>33.</span> 第 30 期 | 终局项目路演：完备的 AI 创作发行机构 (Capstone) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>34.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>35.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>36.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>37.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>38.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>39.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/langgraph-tutorial/" data-astro-cid-ilhxcym7>LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构","item":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/"},{"@type":"ListItem","position":4,"name":"第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>🎯 本期学习目标</h2>
+<p>同学们好，我是你们的老朋友，那位在 AI 架构圈子里摸爬滚打十年、头发掉了不少但热情只增不减的老张。上期我们初识了 LangGraph 的世界观，知道了它如何用图结构来编排复杂的 AI 工作流。但光有图的骨架还不行，骨架里得有血有肉，有能干活的工人。这一期，咱们就来深入理解 LangGraph 的核心执行单元——<strong>业务节点 (Nodes)</strong>。</p>
+<p>学完这一期，你将：</p>
+<ol>
+<li><strong>透彻理解 LangGraph 中 <code>Node</code> 的本质</strong>：它不仅仅是一个函数，更是我们 AI 机构里的“部门”或“专家”，负责执行具体的业务逻辑。</li>
+<li><strong>掌握如何编写基本的 <code>Worker Nodes</code></strong>：学会封装大模型推理逻辑，让我们的 <code>Planner</code> (规划师) Agent 能真正动起来，开始思考。</li>
+<li><strong>精通节点内的数据修改与状态管理</strong>：理解 <code>Node</code> 如何与 <code>Graph</code> 的全局 <code>State</code> 交互，确保信息在不同 Agent 之间顺畅流转。</li>
+<li><strong>构建 Agency 项目的第一个核心节点</strong>：为我们的“AI 万能内容创作机构”搭建 <code>Planner</code> 节点，迈出构建复杂多智能体工作流的第一步。</li>
+</ol>
+<h2>📖 原理解析</h2>
+<p>同学们，想象一下，我们的“AI 万能内容创作机构”就像一家高科技公司。公司里有各种各样的部门：企划部、研发部、内容创作部、编辑部等等。每个部门都有其独特的职能，接收任务，处理信息，然后将结果传递给下一个部门。</p>
+<p>在 LangGraph 的世界里，这些“部门”或者“专家”就是我们的 <strong><code>Nodes</code> (业务节点)</strong>。</p>
+<p>一个 <code>Node</code>，最核心的理解，它就是一个<strong>可调用的函数 (Callable)</strong>。这个函数接收当前的 <code>Graph State</code>（你可以理解为整个公司共享的“项目进展报告”或“任务看板”），执行自己的业务逻辑（比如调用大模型进行思考、查询数据库、调用外部工具），然后返回一个<strong>对 <code>State</code> 的更新</strong>。</p>
+<p><strong>核心思想：<code>Node</code> 接收 <code>State</code>，处理，返回 <code>State</code> 的“差值” (delta)。</strong></p>
+<p>为什么是“差值”？这是 LangGraph 乃至很多函数式编程范式的一个精妙之处：<strong>状态的不可变性 (Immutability)</strong>。每个节点都不是直接修改全局 <code>State</code>，而是生成一个新的 <code>State</code> 片段，然后 LangGraph 框架会负责将这些片段合并到全局 <code>State</code> 中。这大大简化了并发和调试的复杂度，你永远知道每个节点“做了什么改变”，而不是“把什么改了”。</p>
+<h3>我们的 AI Content Agency 中的 <code>Node</code></h3>
+<p>在我们的“AI 万能内容创作机构”中，第一个要登场的重量级角色就是 <code>Planner</code> (规划师)。它的职责是接收客户的原始需求，然后将其分解成可执行的、具体的创作任务。</p>
+<ul>
+<li><strong>输入</strong>：初始的客户需求 (<code>topic</code>)。</li>
+<li><strong>处理</strong>：<code>Planner</code> 节点将调用一个大型语言模型 (LLM)，让它根据 <code>topic</code> 构思内容大纲、确定目标受众、提炼核心观点，并规划后续的创作步骤。</li>
+<li><strong>输出</strong>：更新 <code>State</code>，添加 <code>plan_outline</code>（内容大纲）、<code>target_audience</code>（目标受众）、<code>research_tasks</code>（研究任务列表）等信息。</li>
+</ul>
+<p>这个过程，完美地体现了一个 <code>Node</code> 的生命周期。</p>
+<h3>Mermaid 图解：Planner 节点的引入</h3>
+<p>让我们通过一个 Mermaid 图来直观地看看 <code>Planner</code> 节点在我们的 Graph 中是如何运作的。它将是我们的第一个核心节点，为整个内容创作流程奠定基础。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[用户输入: 初始创作需求] --&gt; B{初始化 Graph State};
+    B --&gt; C(Planner Node: 规划师);
+    
+    subgraph Planner Node 内部逻辑
+        C --&gt; C1[接收当前 State];
+        C1 --&gt; C2[调用 LLM 进行内容规划];
+        C2 --&gt; C3[生成内容大纲、研究任务等];
+        C3 --&gt; C4[返回 State 更新];
+    end
+    
+    C --&gt; D{Graph State 更新};
+    D --&gt; E[准备进入下一阶段: 例如 Research Node];
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px;
+    style B fill:#bbf,stroke:#333,stroke-width:2px;
+    style C fill:#ccf,stroke:#333,stroke-width:2px;
+    style C1 fill:#fcf,stroke:#333,stroke-width:1px;
+    style C2 fill:#fcf,stroke:#333,stroke-width:1px;
+    style C3 fill:#fcf,stroke:#333,stroke-width:1px;
+    style C4 fill:#fcf,stroke:#333,stroke-width:1px;
+    style D fill:#bbf,stroke:#333,stroke-width:2px;
+    style E fill:#afa,stroke:#333,stroke-width:2px;</pre></div><p><strong>图解说明：</strong></p>
+<ul>
+<li><strong>用户输入</strong>：一切的起点，客户给我们的原始需求。</li>
+<li><strong>初始化 Graph State</strong>：LangGraph 会根据我们定义的 <code>State</code> 结构，创建一个初始状态。</li>
+<li><strong>Planner Node (规划师)</strong>：这是我们本期要重点实现的节点。它接收当前的 <code>State</code>。</li>
+<li><strong>Planner Node 内部逻辑</strong>：<ul>
+<li><strong>接收当前 State</strong>：获取当前工作流的所有上下文信息。</li>
+<li><strong>调用 LLM 进行内容规划</strong>：这是核心业务逻辑，我们在这里会与大模型进行交互，让它发挥“规划师”的作用。</li>
+<li><strong>生成内容大纲、研究任务等</strong>：LLM 的输出会被结构化，成为我们后续 Agent 的输入。</li>
+<li><strong>返回 State 更新</strong>：节点将生成一个字典，包含需要添加到 <code>State</code> 中的新信息。</li>
+</ul>
+</li>
+<li><strong>Graph State 更新</strong>：LangGraph 框架负责将 <code>Planner Node</code> 返回的更新合并到全局 <code>State</code> 中。</li>
+<li><strong>准备进入下一阶段</strong>：更新后的 <code>State</code> 将作为输入，传递给图中的下一个节点（例如，未来的 <code>Researcher Node</code>）。</li>
+</ul>
+<p>理解了这个流程，你就能抓住 LangGraph 的精髓了：<strong>每个节点都是一个纯粹的函数，接收状态，返回状态的更新，而整个系统通过这些状态的流转和聚合，实现了复杂的工作流。</strong></p>
+<h2>💻 实战代码演练</h2>
+<p>好了，理论说得再多，不如撸起袖子干一场。现在，我们就来为我们的“AI 万能内容创作机构”编写第一个核心的业务节点：<code>Planner Node</code>。</p>
+<p>首先，我们需要定义我们的 <code>Graph State</code>。这个 <code>State</code> 将是所有 Agent 共享的信息中心。为了方便，我们使用 <code>TypedDict</code> 来定义它，它就像一个明确了字段和类型的数据结构。</p>
+<pre><code class="language-python"># agency_state.py
+from typing import TypedDict, List, Dict, Optional
+
+class AgencyState(TypedDict):
+    """
+    AI 内容创作机构的共享状态。
+    这个 TypedDict 定义了在整个 LangGraph 工作流中，所有 Agent 共享和操作的数据结构。
+    """
+    topic: str  # 初始内容创作主题
+    plan_outline: Optional[str]  # Planner 生成的内容大纲
+    target_audience: Optional[str] # Planner 确定的目标受众
+    research_tasks: Optional[List[str]] # Planner 规划的研究任务列表
+    research_results: Optional[Dict[str, str]] # Researcher 收集的研究结果
+    draft_content: Optional[str] # Writer 撰写的内容初稿
+    editor_feedback: Optional[str] # Editor 提供的修改意见
+    final_content: Optional[str] # 最终定稿的内容
+
+    # 还可以添加其他字段，例如：
+    # current_agent_name: str # 当前正在执行的 Agent 名称，用于调试或日志
+    # error_message: Optional[str] # 错误信息，用于错误处理
+</code></pre>
+<p>接下来，我们来编写 <code>Planner Node</code> 的代码。它将是一个 Python 函数，接收 <code>AgencyState</code>，然后返回一个字典，代表对 <code>AgencyState</code> 的更新。</p>
+<p>我们将使用 <code>ChatOpenAI</code> 来模拟 LLM 的能力。如果你没有 OpenAI API Key，也可以用其他兼容 LangChain 的 LLM，或者直接返回硬编码的模拟数据。</p>
+<pre><code class="language-python"># nodes.py
+import os
+from typing import Dict, Any, List
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+
+# 从 .env 文件加载环境变量，例如 OPENAI_API_KEY
+load_dotenv()
+
+# 导入我们定义的 AgencyState
+from agency_state import AgencyState
+
+# 初始化大模型
+# 这里使用 GPT-4o，你也可以根据需要选择其他模型
+llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
+
+# --- 1. Planner Node (规划师节点) ---
+def planner_node(state: AgencyState) -&gt; Dict[str, Any]:
+    """
+    规划师节点：根据初始主题，生成内容大纲、目标受众和研究任务。
+    这个节点封装了 LLM 的推理逻辑，用于将高层次的需求转化为具体的执行计划。
+    
+    Args:
+        state (AgencyState): 当前的全局状态。
+                              预期 state 中包含 'topic' 字段。
+
+    Returns:
+        Dict[str, Any]: 包含对 state 更新的字典。
+                        将添加 'plan_outline', 'target_audience', 'research_tasks'。
+    """
+    print("\n--- 执行 Planner Node ---")
+    topic = state.get("topic")
+    if not topic:
+        raise ValueError("AgencyState 中缺少 'topic' 字段，Planner 无法工作。")
+
+    # 1. 定义 LLM 的 Prompt Template
+    # 我们希望 LLM 不仅给出大纲，还要思考受众和后续研究点
+    planner_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", "你是一位经验丰富的内容策略师和规划师。你的任务是根据给定的主题，制定一个详细的内容创作计划。"),
+            ("human", """
+            请为以下主题生成一个详细的内容创作计划。计划应包含：
+            1.  **内容大纲 (Plan Outline)**：结构清晰，至少包含 3-5 个主要章节和每个章节的要点。
+            2.  **目标受众 (Target Audience)**：详细描述这篇内容的理想读者是谁，他们的兴趣、痛点和知识水平。
+            3.  **研究任务 (Research Tasks)**：列出至少 3-5 项具体的研究任务，以确保内容的深度和准确性。这些任务应是后续研究员 Agent 需要完成的。
+            
+            主题: {topic}
+            
+            请以 JSON 格式返回结果，例如：
+            ```json
+            {{
+                "plan_outline": "...",
+                "target_audience": "...",
+                "research_tasks": ["...", "...", "..."]
+            }}
+            ```
+            """)
+        ]
+    )
+
+    # 2. 构建 LLM Chain
+    # 使用 .with_structured_output(dict) 确保 LLM 输出为结构化的字典
+    # 注意：with_structured_output 依赖于模型的能力，如果模型不支持，可能需要自定义解析器
+    # 对于 GPT-4o 这样的模型，它通常能很好地遵循 JSON 格式指令
+    planner_chain = planner_prompt | llm.with_structured_output(
+        schema={
+            "type": "object",
+            "properties": {
+                "plan_outline": {"type": "string", "description": "详细的内容大纲"},
+                "target_audience": {"type": "string", "description": "目标受众描述"},
+                "research_tasks": {"type": "array", "items": {"type": "string"}, "description": "需要进行的研究任务列表"},
+            },
+            "required": ["plan_outline", "target_audience", "research_tasks"],
+        }
+    )
+
+    # 3. 执行 LLM 推理
+    try:
+        planning_output = planner_chain.invoke({"topic": topic})
+        print("Planner 成功生成计划。")
+        # 直接返回 LLM 的输出作为 state 的更新
+        # with_structured_output 已经返回了字典，可以直接用
+        return planning_output
+    except Exception as e:
+        print(f"Planner Node 执行失败: {e}")
+        # 如果 LLM 调用失败，我们可以选择抛出异常，或者返回一个包含错误信息的更新
+        # 这里我们选择返回一个错误信息，让 Graph 可以处理
+        return {"error_message": f"Planner failed: {str(e)}"}
+
+# --- 模拟运行 Planner Node ---
+if __name__ == "__main__":
+    print("--- 模拟运行 Planner Node ---")
+    
+    # 1. 模拟初始状态
+    initial_state: AgencyState = {
+        "topic": "探索 LangGraph 在构建多智能体应用中的核心优势与实践案例",
+        "plan_outline": None,
+        "target_audience": None,
+        "research_tasks": None,
+        "research_results": None,
+        "draft_content": None,
+        "editor_feedback": None,
+        "final_content": None,
+    }
+    
+    print(f"初始状态: {initial_state['topic']}")
+    
+    # 2. 调用 Planner Node
+    updated_fields = planner_node(initial_state)
+    
+    # 3. 将更新合并到状态中 (LangGraph 框架会做这一步)
+    # 这里我们手动模拟合并
+    final_state = initial_state.copy()
+    for key, value in updated_fields.items():
+        # 如果是列表或字典，需要更复杂的合并逻辑，这里简化为直接覆盖
+        final_state[key] = value
+
+    print("\n--- Planner Node 执行后的状态更新 ---")
+    print(f"内容大纲: \n{final_state.get('plan_outline')}")
+    print(f"目标受众: {final_state.get('target_audience')}")
+    print(f"研究任务: {final_state.get('research_tasks')}")
+    print(f"完整最终状态: {final_state}")
+
+    # 尝试另一个主题
+    print("\n--- 再次模拟运行 Planner Node (新主题) ---")
+    initial_state_2: AgencyState = {
+        "topic": "人工智能伦理与监管：挑战与机遇",
+        "plan_outline": None,
+        "target_audience": None,
+        "research_tasks": None,
+        "research_results": None,
+        "draft_content": None,
+        "editor_feedback": None,
+        "final_content": None,
+    }
+    updated_fields_2 = planner_node(initial_state_2)
+    final_state_2 = initial_state_2.copy()
+    for key, value in updated_fields_2.items():
+        final_state_2[key] = value
+
+    print("\n--- Planner Node 执行后的状态更新 (新主题) ---")
+    print(f"内容大纲: \n{final_state_2.get('plan_outline')}")
+    print(f"目标受众: {final_state_2.get('target_audience')}")
+    print(f"研究任务: {final_state_2.get('research_tasks')}")
+</code></pre>
+<h3>代码解析：</h3>
+<ol>
+<li><strong><code>AgencyState</code> 定义</strong>：我们首先定义了 <code>AgencyState</code> 这个 <code>TypedDict</code>。这是整个机构的“共享内存”，所有 Agent 都通过它来读写信息。清晰定义状态结构是构建稳健多智能体系统的基石。</li>
+<li><strong><code>planner_node</code> 函数</strong>：<ul>
+<li><strong>输入</strong>：它接收一个 <code>state: AgencyState</code> 参数。这是 LangGraph 传入的当前全局状态。</li>
+<li><strong>业务逻辑封装</strong>：<ul>
+<li>我们从 <code>state</code> 中提取 <code>topic</code>。</li>
+<li>构建了一个 <code>ChatPromptTemplate</code>，这是与 LLM 交互的核心。我们精心设计了 Prompt，要求 LLM 扮演“内容策略师”，并以结构化的 JSON 格式返回结果，包含大纲、受众和研究任务。</li>
+<li>使用 <code>llm.with_structured_output</code> 是一个非常强大的技巧，它指导 LLM 直接输出符合我们定义的 JSON Schema 的数据，大大简化了后续的解析工作。这就像给 LLM 戴上了一副“结构化输出”的眼镜，让它看得更清楚，吐字更清晰。</li>
+<li>调用 <code>planner_chain.invoke()</code> 执行 LLM 推理。</li>
+</ul>
+</li>
+<li><strong>输出</strong>：函数返回一个字典。这个字典的键值对将用于更新 <code>AgencyState</code>。注意，我们只返回了需要<strong>新增或修改</strong>的字段，而不是整个 <code>AgencyState</code>。LangGraph 会自动将这些更新合并到当前的全局状态中。</li>
+<li><strong>错误处理</strong>：加入了 <code>try-except</code> 块，以应对 LLM 调用可能出现的错误，提供更好的健壮性。</li>
+</ul>
+</li>
+<li><strong>模拟运行 (<code>if __name__ == "__main__":</code>)</strong>：<ul>
+<li>这部分代码展示了如何在没有完整 LangGraph 框架的情况下，单独测试我们的 <code>planner_node</code>。</li>
+<li>我们创建了一个 <code>initial_state</code>，然后调用 <code>planner_node</code>。</li>
+<li>最后，手动模拟了 LangGraph 将节点返回的更新合并到 <code>initial_state</code> 的过程，打印出最终状态，以验证节点的功能。</li>
+</ul>
+</li>
+</ol>
+<p>通过这个 <code>Planner Node</code>，我们已经成功地将一个复杂的“内容规划”任务，封装成了一个可执行、可复用、可测试的 LangGraph 节点。它接收输入，利用大模型的能力进行复杂推理，然后以结构化的方式输出结果，更新了我们机构的共享项目状态。这正是 <code>Node</code> 作为 <code>Graph</code> 真正执行者的体现！</p>
+<h2>坑与避坑指南</h2>
+<p>作为一名资深 AI 架构师，我见过太多的坑。现在，我把一些最常见的、最容易踩的“雷”分享给你，让你少走弯路。</p>
+<ol>
+<li><p><strong>状态管理混乱：Node 返回值的误区</strong></p>
+<ul>
+<li><strong>坑</strong>：新手常犯的错误是，在 <code>Node</code> 中直接返回一个完整的 <code>AgencyState</code> 对象，或者返回与 <code>AgencyState</code> 结构不符的字典。</li>
+<li><strong>后果</strong>：这会导致状态更新不正确，轻则数据丢失，重则整个 <code>Graph</code> 逻辑崩溃。LangGraph 期望你返回的是一个<strong>字典</strong>，其中的键值对是需要<strong>添加到或覆盖</strong>当前 <code>State</code> 中相应字段的。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong>只返回 <code>delta</code> (差值)</strong>：你的 <code>Node</code> 函数应该只返回一个字典，包含你希望更新或添加的 <code>State</code> 字段。例如，<code>planner_node</code> 只返回 <code>{"plan_outline": "...", "target_audience": "...", "research_tasks": [...]}</code>。</li>
+<li><strong>类型匹配</strong>：确保返回字典中字段的类型与 <code>AgencyState</code> 中定义的类型一致。<code>TypedDict</code> 或 Pydantic Model 的严格类型定义能帮你规避很多问题。</li>
+<li><strong>理解合并逻辑</strong>：LangGraph 默认的 <code>StateGraph</code> 会对字典进行浅层合并。这意味着如果你返回 <code>{"research_results": {"new_key": "value"}}</code>，它会直接替换掉旧的 <code>research_results</code> 整个字典，而不是合并内部的键。如果需要深层合并，你需要自定义 <code>StateGraph</code> 的 <code>reducer</code> 方法。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>LLM 推理逻辑与业务逻辑耦合过紧</strong></p>
+<ul>
+<li><strong>坑</strong>：把所有的 LLM 调用、Prompt 工程、输出解析、数据处理等逻辑都塞到一个巨大的 <code>Node</code> 函数里。</li>
+<li><strong>后果</strong>：代码难以阅读、难以维护、难以测试。一旦 Prompt 需要调整，或者 LLM 模型需要切换，整个 <code>Node</code> 都可能需要重写。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong>单一职责原则 (SRP)</strong>：一个 <code>Node</code> 应该只负责一个核心的业务功能。例如，<code>Planner Node</code> 只负责规划，不负责研究或写作。</li>
+<li><strong>模块化封装</strong>：将 LLM 相关的逻辑（Prompt 定义、Chain 构建、解析器）封装成独立的函数或类。就像我们代码中 <code>planner_prompt | llm.with_structured_output(...)</code> 这样，链式调用让逻辑更清晰。</li>
+<li><strong>Prompt 外部化</strong>：考虑将复杂的 Prompt 存储在外部文件或配置中，方便管理和迭代。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>缺乏健壮性：错误处理不到位</strong></p>
+<ul>
+<li><strong>坑</strong>：不处理 LLM 调用失败、API 超时、数据解析错误等异常情况。</li>
+<li><strong>后果</strong>：生产环境下一旦出现网络问题或 LLM 返回非预期格式，整个工作流就会中断，用户体验极差。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong><code>try-except</code> 是你的朋友</strong>：像我们 <code>planner_node</code> 中那样，总是用 <code>try-except</code> 包裹 LLM 调用和其他可能失败的操作。</li>
+<li><strong>优雅降级或错误状态</strong>：当发生错误时，不要直接让程序崩溃。可以返回一个特殊的 <code>State</code> 更新（例如 <code>{"error_message": "..."}</code>），让后续的 <code>Node</code> 或者 <code>Graph</code> 的 <code>conditional_edge</code> 来判断并处理这些错误，例如跳转到错误处理流程，或者重试。</li>
+<li><strong>日志记录</strong>：详细的日志能帮助你快速定位问题。在每个 <code>Node</code> 的开始和结束，以及关键步骤都打印日志。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>环境配置与依赖管理</strong></p>
+<ul>
+<li><strong>坑</strong>：硬编码 API 密钥，或者没有正确加载环境变量。</li>
+<li><strong>后果</strong>：代码安全性差，部署困难，不同环境下的行为不一致。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong>使用环境变量</strong>：所有敏感信息（如 API 密钥）都应该通过环境变量管理。我们使用了 <code>python-dotenv</code> 来加载 <code>.env</code> 文件，这是一个很好的实践。</li>
+<li><strong><code>requirements.txt</code></strong>：始终维护一个清晰的 <code>requirements.txt</code> 文件，确保所有依赖都能被正确安装。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>记住，构建多智能体系统就像搭建一座高楼，每个 <code>Node</code> 都是一个砖块。只有每个砖块都坚固、每个连接都牢靠，这栋大楼才能屹立不倒。</p>
+<h2>📝 本期小结</h2>
+<p>各位未来的 AI 架构师们，恭喜你们！这一期，我们不仅深入理解了 LangGraph <code>Node</code> 的核心概念——作为 Graph 的真正执行者，它如何接收状态、执行业务逻辑并返回状态更新——更重要的是，我们亲手为我们的“AI 万能内容创作机构”打造了第一个至关重要的部门：<code>Planner Node</code>。</p>
+<p>我们学习了如何：</p>
+<ul>
+<li><strong>定义清晰的共享状态 <code>AgencyState</code></strong>，它是我们所有 Agent 协作的基础。</li>
+<li><strong>编写一个功能完备的 <code>Node</code> 函数</strong>，封装了 LLM 的推理逻辑，通过精心设计的 Prompt 让它扮演“内容策略师”的角色。</li>
+<li><strong>利用 <code>llm.with_structured_output</code> 确保 LLM 输出的结构化和可靠性</strong>。</li>
+<li><strong>理解 <code>Node</code> 返回状态更新的机制</strong>，而非直接修改全局状态。</li>
+</ul>
+<p>通过 <code>Planner Node</code> 的实战，你已经迈出了构建复杂多智能体工作流的第一步。它将用户的高层次需求，转化为具体、可执行的创作计划，为后续的 <code>Researcher</code>、<code>Writer</code> 等 Agent 铺平了道路。</p>
+<p>当然，我们还探讨了在构建 <code>Node</code> 时常见的“坑”以及如何优雅地避开它们，这些都是你未来在大型项目中能够独当一面的宝贵经验。</p>
+<p>下一期，我们将继续深入，把我们这个 <code>Planner Node</code> 真正地接入到 LangGraph 的 <code>StateGraph</code> 中，并开始定义图的<strong>边 (Edges)</strong>，让我们的 <code>Planner</code> 能够将它生成的工作计划，无缝地传递给下一个智能体。敬请期待！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-02/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State)</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 04 期 | 寻路连线 (Edges) 与终止符 (END)</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

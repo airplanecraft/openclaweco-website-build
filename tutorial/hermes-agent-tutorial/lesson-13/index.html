@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 13 期 | 知识库构建：RAG 与长期文档管理 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="将 Hermes Agent 与向量数据库、本地文档索引整合，构建个人或团队的 AI 驱动知识管理系统。深入 Retrieval-Augmented Generation 的实战应用。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-13/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-13/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-13/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-13/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 13 期 | 知识库构建：RAG 与长期文档管理 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="将 Hermes Agent 与向量数据库、本地文档索引整合，构建个人或团队的 AI 驱动知识管理系统。深入 Retrieval-Augmented Generation 的实战应用。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-13/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 13 期 | 知识库构建：RAG 与长期文档管理 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="将 Hermes Agent 与向量数据库、本地文档索引整合，构建个人或团队的 AI 驱动知识管理系统。深入 Retrieval-Augmented Generation 的实战应用。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-13/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-13/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 13 期 | 知识库构建：RAG 与长期文档管理</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 13 期 | 知识库构建：RAG 与长期文档管理"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 13 期 | 知识库构建：RAG 与长期文档管理</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>🎯 学习目标</h2>
+<ul>
+<li>深入理解 RAG (Retrieval-Augmented Generation，检索增强生成) 的核心原理，及其在克服大型语言模型 (LLM) 知识局限性方面的关键作用。</li>
+<li>掌握如何在 Hermes Agent 中配置和使用“上下文文件 (Context Files)”，实现简单直接的知识注入。</li>
+<li>学会利用 Hermes Agent 的内置功能，与本地向量数据库 ChromaDB 集成，构建、管理和查询可扩展的长期知识库。</li>
+<li>通过实际操作，提升 Hermes Agent 处理特定领域知识、减少“幻觉”并提供更准确、更专业的回答的能力。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>13.1 RAG (Retrieval-Augmented Generation) 概述</h3>
+<p>大型语言模型 (LLM) 在生成文本方面表现出色，但它们并非没有局限。它们的主要挑战包括：</p>
+<ol>
+<li><strong>知识截止日期 (Knowledge Cutoff)</strong>：LLM 的知识仅限于其训练数据的时间点，无法获取最新的信息。</li>
+<li><strong>事实性错误与“幻觉” (Hallucinations)</strong>：LLM 有时会生成听起来合理但实际上是虚构的信息。</li>
+<li><strong>领域特定知识缺乏 (Lack of Domain-Specific Knowledge)</strong>：对于特定行业、公司内部或个人专业领域的知识，LLM 往往一无所知。</li>
+<li><strong>可解释性差 (Poor Explainability)</strong>：LLM 生成的答案通常无法追溯到具体的来源，难以验证其真实性。</li>
+</ol>
+<p>为了解决这些问题，RAG (Retrieval-Augmented Generation) 应运而生。RAG 的核心思想是，在 LLM 生成回复之前，首先从一个外部的、可信赖的知识库中检索相关信息，然后将这些检索到的信息作为额外的上下文（context）提供给 LLM，从而增强其生成能力。</p>
+<p>RAG 的基本工作流程可以概括为以下几个步骤：</p>
+<ol>
+<li><strong>用户查询 (User Query)</strong>：用户向 Agent 提出问题或指令。</li>
+<li><strong>检索 (Retrieval)</strong>：Agent 分析用户查询，并使用该查询从外部知识库中检索最相关的文档片段（chunks）。这个知识库可以是结构化的数据库、非结构化的文档集合，甚至是向量数据库。</li>
+<li><strong>增强 (Augmentation)</strong>：将检索到的文档片段与原始用户查询结合起来，形成一个包含背景知识的增强型 Prompt。</li>
+<li><strong>生成 (Generation)</strong>：将增强型 Prompt 发送给 LLM，LLM 基于这些丰富的上下文信息生成最终的响应。</li>
+</ol>
+<p>通过 RAG，Hermes Agent 可以：</p>
+<ul>
+<li><strong>获取最新信息</strong>：只要知识库是实时更新的，Agent 就能访问到最新的数据。</li>
+<li><strong>提高事实准确性</strong>：通过提供可靠的来源信息，减少 LLM 的“幻觉”。</li>
+<li><strong>处理领域特定问题</strong>：将企业内部文档、专业手册等纳入知识库，使 Agent 成为领域专家。</li>
+<li><strong>增强可解释性</strong>：Agent 可以在回答中引用其检索到的源文档，提高透明度。</li>
+</ul>
+<p>Hermes Agent 作为一款自进化的 AI 代理，其设计天然支持与外部知识源的集成，以实现强大的 RAG 能力。这不仅包括简单的文件上下文注入，更涵盖了与向量数据库的深度整合，为构建智能化的知识管理系统奠定了基础。</p>
+<p>以下是 RAG 流程的一个简化的 Mermaid 流程图：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[用户查询] --&gt; B{Agent 接收查询};
+    B --&gt; C{查询分析};
+    C --&gt; D[检索相关文档片段];
+    D --&gt; E{外部知识库<br>(本地文件 / 向量数据库)};
+    E --&gt; F[检索结果];
+    F --&gt; G{构建增强型 Prompt};
+    G --&gt; H[发送至 LLM];
+    H --&gt; I[LLM 生成响应];
+    I --&gt; J[Agent 返回最终答案];</pre></div><h3>13.2 Hermes Agent 的内置 RAG 机制：Context Files 与 Knowledge Base</h3>
+<p>Hermes Agent 提供了两种主要的内置机制来实现 RAG：<code>context_files</code> 和 <code>knowledge_base</code>。它们分别适用于不同的场景和需求。</p>
+<h4>13.2.1 上下文文件 (Context Files)：直接注入 Prompt</h4>
+<p><code>context_files</code> 是一种轻量级的 RAG 方式，适用于需要将少量、关键信息直接注入到每次 LLM 调用 Prompt 中的场景。当您将文件路径添加到 <code>context_files</code> 配置中时，Hermes Agent 会在每次与 LLM 交互时，将这些文件的内容读取并附加到用户的 Prompt 之前或之后，作为额外的上下文信息。</p>
+<p><strong>工作原理：</strong></p>
+<ol>
+<li><strong>文件加载</strong>：Hermes Agent 启动或配置更新时，会加载 <code>context_files</code> 中指定的所有文件。</li>
+<li><strong>内容嵌入</strong>：每次生成请求时，Agent 会将这些文件的全部内容（或其部分内容，取决于文件大小和 LLM 的上下文窗口限制）直接拼接到用户输入的 Prompt 中。</li>
+<li><strong>LLM 处理</strong>：LLM 接收到一个包含用户查询和额外文件内容的完整 Prompt，并基于这些信息生成回复。</li>
+</ol>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>提供固定的、通用的背景信息，例如公司章程、产品概述、个人简历等。</li>
+<li>在特定对话中，需要 LLM 始终记住的少量关键数据。</li>
+<li>对实时性要求不高，且文件内容变化不频繁的场景。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>配置简单，无需额外工具或数据库。</li>
+<li>对于小型文件，效果直接、可靠。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>受限于 LLM 的上下文窗口大小。如果文件过大，可能无法完全加载，或者导致 Token 成本过高。</li>
+<li>不适用于大规模文档集合，因为每次都需要加载所有内容，效率低下。</li>
+<li>不支持高级的语义搜索和检索，只能进行简单的文本拼接。</li>
+</ul>
+<p><strong>配置示例：</strong></p>
+<p>假设您有一个名为 <code>project_overview.md</code> 的 Markdown 文件，其中包含了您正在进行的项目的重要信息。</p>
+<pre><code class="language-markdown">&lt;!-- project_overview.md --&gt;
+# 项目名称：Hermes Agent 教程系列
+
+## 项目目标
+*   为 Hermes Agent 用户提供全面、深入的学习资源。
+*   涵盖从基础安装到高级应用的所有核心功能。
+*   通过实战演示，帮助用户快速上手并高效利用 Hermes Agent。
+
+## 关键里程碑
+*   第一阶段：基础功能与核心概念 (已完成)
+*   第二阶段：高级特性与生态集成 (进行中)
+*   第三阶段：生产部署与未来展望 (规划中)
+
+## 团队成员
+*   技术内容作者：[您的名字/团队]
+*   审核与校对：[审核团队]
+</code></pre>
+<p>您可以通过 <code>hermes config set</code> 命令将其配置为上下文文件：</p>
+<pre><code class="language-bash">hermes config set context_files project_overview.md
+</code></pre>
+<p>或者直接编辑 <code>config.yaml</code> 文件：</p>
+<pre><code class="language-yaml"># ~/.config/hermes-agent/config.yaml (部分内容)
+# ...
+context_files:
+  - project_overview.md
+# ...
+</code></pre>
+<p>配置完成后，Hermes Agent 在每次与 LLM 交互时都会将 <code>project_overview.md</code> 的内容包含在 Prompt 中。</p>
+<h4>13.2.2 知识库 (Knowledge Base) 与向量数据库：可扩展的 RAG</h4>
+<p>对于大规模、多格式、需要高效检索的文档集合，Hermes Agent 提供了与向量数据库集成的 <code>knowledge_base</code> 功能。目前，Hermes Agent 内置支持 ChromaDB，这是一个轻量级的、易于部署的开源向量数据库。</p>
+<p><strong>工作原理：</strong></p>
+<ol>
+<li><strong>文档摄入 (Document Ingestion)</strong>：用户通过 <code>hermes docs add</code> 命令将文档添加到知识库。Hermes Agent 会：<ul>
+<li>读取文档内容。</li>
+<li>将文档分块 (chunking) 为更小的、可管理的片段。</li>
+<li>使用嵌入模型 (embedding model) 将每个文本块转换为高维向量（embeddings）。</li>
+<li>将这些向量及其原始文本、元数据存储到配置的向量数据库（如 ChromaDB）中。</li>
+</ul>
+</li>
+<li><strong>检索 (Retrieval)</strong>：当用户向 Agent 提问时，Agent 会将用户查询也转换为一个向量。然后，它会在向量数据库中进行相似性搜索，找到与查询向量最相似的文档块的向量。</li>
+<li><strong>增强与生成 (Augmentation &amp; Generation)</strong>：检索到的最相关的文档块被提取出来，作为上下文信息提供给 LLM，LLM 基于这些信息生成最终回复。</li>
+</ol>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>管理大量的公司内部文档、技术手册、研究报告、会议纪要等。</li>
+<li>需要支持复杂、语义化查询的场景。</li>
+<li>需要 Agent 能够访问最新且不断更新的知识。</li>
+<li>对准确性和可追溯性有较高要求的应用。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li><strong>可扩展性</strong>：能够处理海量文档，不受 LLM 上下文窗口限制。</li>
+<li><strong>高效检索</strong>：向量搜索能够快速找到语义上最相关的文档片段。</li>
+<li><strong>支持多种文档格式</strong>：通常可以处理 PDF、Markdown、TXT、DOCX 等多种格式。</li>
+<li><strong>减少幻觉</strong>：通过提供明确的证据来源，大幅降低 LLM 产生幻觉的风险。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>需要额外的向量数据库组件（尽管 ChromaDB 易于部署）。</li>
+<li>文档摄入过程需要计算资源和时间（用于分块和嵌入）。</li>
+<li>对嵌入模型和分块策略的选择有一定要求。</li>
+</ul>
+<p><strong>配置示例：</strong></p>
+<p>首先，您需要安装 ChromaDB 客户端库：</p>
+<pre><code class="language-bash">pip install chromadb
+</code></pre>
+<p>然后，配置 Hermes Agent 使用 ChromaDB 作为知识库提供者，并指定知识库的存储路径：</p>
+<pre><code class="language-bash">hermes config set knowledge_base_provider chromadb
+hermes config set knowledge_base_path ./my_hermes_kb
+</code></pre>
+<p>这里 <code>./my_hermes_kb</code> 是一个本地目录，ChromaDB 会在此目录中存储其数据。</p>
+<p><strong>管理知识库文档：</strong></p>
+<ul>
+<li><strong>添加文档</strong>：<pre><code class="language-bash">hermes docs add my_document.pdf
+hermes docs add ./my_project_docs/
+</code></pre>
+您可以添加单个文件，也可以添加整个目录。Hermes Agent 会自动处理文档的加载、分块和嵌入。</li>
+<li><strong>列出已添加文档</strong>：<pre><code class="language-bash">hermes docs list
+</code></pre>
+这会显示知识库中已索引的所有文档及其元数据。</li>
+<li><strong>移除文档</strong>：<pre><code class="language-bash">hermes docs remove my_document.pdf
+</code></pre>
+移除指定文档及其所有相关的向量嵌入。</li>
+</ul>
+<p><strong>Agent 如何使用知识库：</strong></p>
+<p>当 <code>knowledge_base_provider</code> 被配置并有文档被添加后，Hermes Agent 在接收到用户查询时，会智能地判断是否需要从知识库中检索信息。如果判断需要，它会自动执行检索步骤，并将检索到的相关文档片段作为上下文提供给 LLM，从而回答用户问题。您无需在 Prompt 中明确指示 Agent 去“查询知识库”，它会根据其内部逻辑和您的配置自动完成。</p>
+<p>通过结合 <code>context_files</code> 的直接性与 <code>knowledge_base</code> 的可扩展性，Hermes Agent 为您构建了一个强大而灵活的知识管理系统，能够有效应对各种信息检索和生成挑战。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>本节我们将通过两个实际场景，演示如何在 Hermes Agent 中利用 <code>context_files</code> 和 <code>knowledge_base</code> 来构建和管理知识。</p>
+<h3>场景一：使用上下文文件 (Context Files) 增强 Agent 对特定信息的感知</h3>
+<p>在这个场景中，我们将创建一个关于 Hermes Agent 教程系列计划的 Markdown 文件，并将其配置为 <code>context_files</code>，然后验证 Agent 是否能利用这些信息回答问题。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>创建上下文文件</strong>
+在您的 Hermes Agent 工作目录（或任何您方便的位置）下，创建一个名为 <code>tutorial_plan.md</code> 的文件，并填充以下内容：</p>
+<pre><code class="language-markdown"># Hermes Agent 教程系列计划
+
+## 第一阶段：基础入门 (已完成)
+*   第 01 期 | 认识 Hermes Agent：架构总览与极速安装
+*   第 02 期 | 模型切换与 Provider 配置实战
+*   第 03 期 | Skills 系统深度剖析：让 Agent 自我进化
+*   第 04 期 | Memory 与用户画像：跨会话的持久记忆
+*   第 05 期 | 消息网关：通过 Telegram/Discord 随时对话
+
+## 第二阶段：高级特性与生态集成 (进行中)
+*   第 06 期 | MCP 工具生态：连接外部世界的桥梁
+*   第 07 期 | Cron 调度与自动化任务编排
+*   第 08 期 | Context Files 与工作区感知
+*   第 09 期 | 多轮对话与复杂任务分解
+*   第 10 期 | Hermes Agent 的安全模型与权限控制
+*   第 11 期 | 自定义 Persona：打造专属领域 Agent
+*   第 12 期 | Agent 协作：多 Agent 通信与任务委派
+*   第 13 期 | 知识库构建：RAG 与长期文档管理 (本期内容)
+
+## 第三阶段：生产部署与未来展望 (规划中)
+*   第 18 期 | 生产环境部署：$5 VPS 到 GPU 集群
+*   第 19 期 | 社区生态与 Skill Marketplace 贡献指南
+*   第 20 期 | 未来展望：从个人助手到自治组织
+</code></pre>
+</li>
+<li><p><strong>配置 Hermes Agent 使用上下文文件</strong>
+使用 <code>hermes config set</code> 命令将 <code>tutorial_plan.md</code> 添加到 <code>context_files</code> 列表中。如果之前没有配置过，它会创建一个新的列表。如果已经有其他文件，它会追加。</p>
+<pre><code class="language-bash">hermes config set context_files tutorial_plan.md
+</code></pre>
+<p>（如果您想添加多个文件，可以使用逗号分隔，例如 <code>hermes config set context_files file1.md,file2.txt</code>）</p>
+</li>
+<li><p><strong>与 Agent 交互并验证</strong>
+启动 Hermes Agent 并提问关于教程系列计划的问题。</p>
+<pre><code class="language-bash">hermes
+</code></pre>
+<p><strong>用户输入:</strong></p>
+<pre><code>告诉我 Hermes Agent 教程系列的第二阶段包含哪些课程？
+</code></pre>
+<p><strong>预期输出 (示例):</strong></p>
+<pre><code>Agent: Hermes Agent 教程系列的第二阶段（高级特性与生态集成）包含以下课程：
+
+*   第 06 期 | MCP 工具生态：连接外部世界的桥梁
+*   第 07 期 | Cron 调度与自动化任务编排
+*   第 08 期 | Context Files 与工作区感知
+*   第 09 期 | 多轮对话与复杂任务分解
+*   第 10 期 | Hermes Agent 的安全模型与权限控制
+*   第 11 期 | 自定义 Persona：打造专属领域 Agent
+*   第 12 期 | Agent 协作：多 Agent 通信与任务委派
+*   第 13 期 | 知识库构建：RAG 与长期文档管理
+
+本期我们正在学习的就是第 13 期课程！
+</code></pre>
+<p><strong>分析:</strong> Agent 能够准确地从 <code>tutorial_plan.md</code> 文件中提取信息并进行回答，这表明 <code>context_files</code> 已成功生效。</p>
+</li>
+</ol>
+<h3>场景二：构建与查询 ChromaDB 知识库</h3>
+<p>本场景将演示如何配置 Hermes Agent 使用 ChromaDB 作为知识库，并添加多个文档进行索引，最后通过 Agent 进行查询。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>安装 ChromaDB 客户端库</strong>
+确保您的 Python 环境中安装了 <code>chromadb</code>。</p>
+<pre><code class="language-bash">pip install chromadb
+</code></pre>
+</li>
+<li><p><strong>配置 Hermes Agent 使用 ChromaDB 知识库</strong>
+我们将指定 <code>chromadb</code> 作为知识库提供者，并设置一个本地目录来存储 ChromaDB 的数据。</p>
+<pre><code class="language-bash">hermes config set knowledge_base_provider chromadb
+hermes config set knowledge_base_path ./hermes_knowledge_base
+</code></pre>
+<p>这会在当前目录下创建一个名为 <code>hermes_knowledge_base</code> 的文件夹，用于存储 ChromaDB 的数据。</p>
+</li>
+<li><p><strong>创建示例文档</strong>
+创建几个不同主题的文档，模拟一个小型知识库。</p>
+<ul>
+<li>创建 <code>doc_hermes_features.md</code>:<pre><code class="language-markdown"># Hermes Agent 核心特性
+
+Hermes Agent 是 NousResearch 出品的自进化 AI 代理，具备以下核心特性：
+*   **内置学习循环**：从经验中创建和优化 Skill。
+*   **跨会话记忆**：通过 Memory 系统实现持久化记忆和用户画像。
+*   **多模型支持**：通过 OpenRouter 支持 200+ LLM 模型。
+*   **消息网关**：支持 Telegram/Discord，实现随时随地对话。
+*   **MCP 集成**：通过 MCP (Multi-Agent Communication Protocol) 连接外部工具和系统。
+*   **Cron 调度**：支持定时任务和自动化。
+</code></pre>
+</li>
+<li>创建 <code>doc_rag_intro.txt</code>:<pre><code>RAG (Retrieval-Augmented Generation) 是一种结合了信息检索和文本生成的技术。它的主要目的是通过从外部知识库中检索相关信息来增强大型语言模型 (LLM) 的生成能力，从而解决 LLM 的知识截止日期、幻觉和领域特定知识缺乏等问题。RAG 的核心流程包括查询、检索、增强和生成。
+</code></pre>
+</li>
+<li>创建 <code>doc_project_setup.md</code>:<pre><code class="language-markdown"># 项目启动指南
+
+## 1. 环境准备
+*   安装 Python 3.9+
+*   克隆项目仓库：`git clone https://github.com/your-org/your-project.git`
+*   安装依赖：`pip install -r requirements.txt`
+
+## 2. 配置数据库
+*   创建 `.env` 文件
+*   设置 `DATABASE_URL=postgresql://user:password@host:port/dbname`
+
+## 3. 运行应用
+*   启动后端服务：`python app.py`
+*   启动前端：`npm start`
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><strong>将文档添加到 Hermes Agent 知识库</strong>
+使用 <code>hermes docs add</code> 命令将这些文档添加到 ChromaDB 知识库中。</p>
+<pre><code class="language-bash">hermes docs add doc_hermes_features.md
+hermes docs add doc_rag_intro.txt
+hermes docs add doc_project_setup.md
+</code></pre>
+<p>您会看到类似“Processing document...”和“Document added successfully.”的输出。</p>
+</li>
+<li><p><strong>查看已索引文档 (可选)</strong>
+您可以列出当前知识库中已索引的文档。</p>
+<pre><code class="language-bash">hermes docs list
+</code></pre>
+<p><strong>预期输出 (示例):</strong></p>
+<pre><code>Indexed Documents:
+- ID: 0123...4567, Path: doc_hermes_features.md, Chunks: 2
+- ID: 89ab...cdef, Path: doc_rag_intro.txt, Chunks: 1
+- ID: fedc...ba98, Path: doc_project_setup.md, Chunks: 3
+</code></pre>
+<p>这表明文档已被成功分块并索引。</p>
+</li>
+<li><p><strong>与 Agent 交互并查询知识库</strong>
+启动 Hermes Agent 并提问跨文档或特定领域的问题。</p>
+<pre><code class="language-bash">hermes
+</code></pre>
+<p><strong>用户输入:</strong></p>
+<pre><code>什么是 RAG？Hermes Agent 有哪些核心特性？
+</code></pre>
+<p><strong>预期输出 (示例):</strong></p>
+<pre><code>Agent: RAG (Retrieval-Augmented Generation) 是一种结合了信息检索和文本生成的技术，旨在通过从外部知识库中检索相关信息来增强大型语言模型 (LLM) 的生成能力，从而解决 LLM 的知识截止日期、幻觉和领域特定知识缺乏等问题。其核心流程包括查询、检索、增强和生成。
+
+Hermes Agent 作为一款自进化 AI 代理，拥有以下核心特性：
+*   内置学习循环：从经验中创建和优化 Skill。
+*   跨会话记忆：通过 Memory 系统实现持久化记忆和用户画像。
+*   多模型支持：通过 OpenRouter 支持 200+ LLM 模型。
+*   消息网关：支持 Telegram/Discord，实现随时随地对话。
+*   MCP 集成：通过 MCP 连接外部工具和系统。
+*   Cron 调度：支持定时任务和自动化。
+</code></pre>
+<p><strong>分析:</strong> Agent 成功地从 <code>doc_rag_intro.txt</code> 和 <code>doc_hermes_features.md</code> 两个文档中检索了相关信息，并进行了整合回答。这展示了 Hermes Agent 结合 ChromaDB 实现 RAG 的强大能力。</p>
+<p><strong>用户输入:</strong></p>
+<pre><code>我该如何配置项目数据库？
+</code></pre>
+<p><strong>预期输出 (示例):</strong></p>
+<pre><code>Agent: 根据项目启动指南，配置数据库的步骤如下：
+1.  创建 `.env` 文件。
+2.  在 `.env` 文件中设置 `DATABASE_URL=postgresql://user:password@host:port/dbname`。
+</code></pre>
+<p><strong>分析:</strong> Agent 准确地从 <code>doc_project_setup.md</code> 中检索到了配置数据库的具体步骤。</p>
+</li>
+</ol>
+<p>通过这两个实战演示，您应该已经掌握了 Hermes Agent 两种主要的知识库构建方法，并能根据实际需求选择合适的策略来增强您的 AI 代理。</p>
+<hr>
+<h2>🔧 涉及的命令与工具</h2>
+<table>
+<thead>
+<tr>
+<th align="left">命令/工具</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>hermes config set</code></td>
+<td align="left">用于设置 Hermes Agent 的各项配置参数，包括 <code>context_files</code>、<code>knowledge_base_provider</code> 和 <code>knowledge_base_path</code>。</td>
+<td align="left"><code>hermes config set context_files my_doc.md</code><br><code>hermes config set knowledge_base_provider chromadb</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes docs add</code></td>
+<td align="left">将本地文件或目录添加到 Hermes Agent 的知识库中，进行分块、嵌入和索引。</td>
+<td align="left"><code>hermes docs add project_notes.txt</code><br><code>hermes docs add ./manuals/</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes docs list</code></td>
+<td align="left">列出当前知识库中已索引的所有文档。</td>
+<td align="left"><code>hermes docs list</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes docs remove</code></td>
+<td align="left">从知识库中移除指定的文档及其所有相关的嵌入。</td>
+<td align="left"><code>hermes docs remove old_policy.pdf</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes</code></td>
+<td align="left">启动 Hermes Agent 的 CLI 交互界面，与 Agent 进行对话。Agent 会根据配置自动利用知识库进行 RAG。</td>
+<td align="left"><code>hermes</code></td>
+</tr>
+<tr>
+<td align="left"><code>pip install chromadb</code></td>
+<td align="left">Python 包管理器命令，用于安装 ChromaDB 客户端库，这是 Hermes Agent 知识库功能所依赖的向量数据库。</td>
+<td align="left"><code>pip install chromadb</code></td>
+</tr>
+<tr>
+<td align="left"><code>Markdown / TXT / PDF</code></td>
+<td align="left">各种文档格式，Hermes Agent 的 <code>knowledge_base</code> 支持多种文档格式的摄入和索引。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>.env</code> 文件</td>
+<td align="left">环境变量文件，虽然不是 Hermes Agent 的直接命令，但在配置数据库或其他外部服务时常用，这里作为 <code>doc_project_setup.md</code> 中的一个示例。</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ul>
+<li><strong>RAG 核心价值</strong>：RAG (Retrieval-Augmented Generation) 是解决 LLM 知识截止日期、幻觉和领域特定知识缺乏的关键技术，通过外部知识检索来增强 LLM 的生成能力。</li>
+<li><strong>Context Files</strong>：Hermes Agent 提供了 <code>context_files</code> 配置，允许将少量关键文档内容直接注入到 LLM 的 Prompt 中，适用于固定且不频繁更新的背景信息。</li>
+<li><strong>Knowledge Base (ChromaDB)</strong>：对于大规模、多格式、需要高效检索的文档，Hermes Agent 集成了 ChromaDB 作为向量数据库，实现可扩展的长期知识库管理。</li>
+<li><strong>知识库管理</strong>：通过 <code>hermes docs add</code> 命令可以方便地将文件或目录摄入到 ChromaDB 知识库中，<code>hermes docs list</code> 和 <code>hermes docs remove</code> 则用于管理已索引的文档。</li>
+<li><strong>智能检索与生成</strong>：配置并填充知识库后，Hermes Agent 会在对话中智能地判断并自动利用这些知识源进行检索，并将相关信息提供给 LLM，从而生成更准确、更专业的回答。</li>
+</ul>
+<hr>
+<h2>🔗 参考资料</h2>
+<ul>
+<li><strong>Hermes Agent 官方文档 - Knowledge Base (ChromaDB)</strong>: <a href="https://hermes-agent.nousresearch.com/docs/configuration/knowledge_base">https://hermes-agent.nousresearch.com/docs/configuration/knowledge_base</a></li>
+<li><strong>Hermes Agent 官方文档 - Configuration</strong>: <a href="https://hermes-agent.nousresearch.com/docs/configuration/">https://hermes-agent.nousresearch.com/docs/configuration/</a></li>
+<li><strong>ChromaDB 官方网站</strong>: <a href="https://www.trychroma.com/">https://www.trychroma.com/</a></li>
+</ul>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 12 期 | Agent 协作：多 Agent 通信与任务委派</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 14 期 | 代码生成与项目脚手架实战</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

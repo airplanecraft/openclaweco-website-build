@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="第 05 期 | 消息网关：通过 Telegram/Discord 随时对话"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-5/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-5/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-5/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-5/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="第 05 期 | 消息网关：通过 Telegram/Discord 随时对话"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-5/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="第 05 期 | 消息网关：通过 Telegram/Discord 随时对话"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/hermes-agent-tutorial/lesson-5/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/hermes-agent-tutorial/lesson-5/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 05 期 | 消息网关：通过 Telegram/Discord 随时对话</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 05 期 | 消息网关：通过 Telegram/Discord 随时对话"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 05 期 | 消息网关：通过 Telegram/Discord 随时对话</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><p><strong>副标题：</strong> 配置 <code>hermes gateway</code>，将 AI Agent 部署到云服务器，通过 Telegram Bot、Discord Bot、Slack、WhatsApp 等渠道随时随地与你的 Agent 对话。</p>
+<hr>
+<h2>🎯 学习目标</h2>
+<p>完成本期课程后，你将能够：</p>
+<ul>
+<li>理解 Hermes Agent 消息网关的核心概念及其在远程交互中的重要性。</li>
+<li>掌握在云服务器上部署 Hermes Agent 的基本考量和方法。</li>
+<li>学会创建并配置 Telegram Bot，使其作为 Hermes Agent 的消息网关。</li>
+<li>学会创建并配置 Discord Bot，使其作为 Hermes Agent 的消息网关。</li>
+<li>通过实际操作，实现与部署在远程服务器上的 Hermes Agent 进行跨平台、持续对话。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<p>在前面的课程中，我们主要在本地终端与 Hermes Agent 交互。然而，AI Agent 的真正价值在于其能够持续运行，并在我们需要的任何时间、任何地点提供服务。这就引出了“消息网关”（Message Gateway）的概念。消息网关是 Hermes Agent 与外部消息平台（如 Telegram、Discord）之间的桥梁，它允许 Agent 在后台运行，并通过这些平台接收指令、发送响应，从而实现远程、异步的交互。</p>
+<h3>5.1 消息网关：Agent 的“触角”</h3>
+<p>想象一下，你的 Hermes Agent 是一位勤奋的助手。它不可能总是坐在你的电脑旁等待你输入命令。通过消息网关，它可以在云端服务器上不间断地工作，并通过你常用的聊天应用（如 Telegram 或 Discord）与你保持联系。</p>
+<p><strong>核心优势：</strong></p>
+<ul>
+<li><strong>随时随地访问：</strong> 无论你身在何处，只要有网络，就能通过手机或电脑上的聊天应用与 Agent 交互。</li>
+<li><strong>持续运行：</strong> Agent 可以部署在云服务器上，即使你关闭本地电脑，它也能持续学习、记忆和执行任务。</li>
+<li><strong>多用户/多场景：</strong> 可以配置 Agent 在特定群组或频道中提供服务，实现团队协作或特定应用场景。</li>
+<li><strong>跨会话记忆：</strong> 结合 Hermes Agent 的内置记忆能力，无论你通过哪个设备、何时与 Agent 对话，它都能记住之前的上下文和学习到的技能。</li>
+</ul>
+<h3>5.2 架构概览：云端部署与网关连接</h3>
+<p>为了实现远程交互，我们需要将 Hermes Agent 部署到一台云服务器上。这台服务器将承载 Agent 的运行环境、数据存储以及消息网关服务。</p>
+<p>下图展示了其基本架构：</p>
+<pre><code>+-------------------+       +-------------------+       +-------------------+
+|                   |       |                   |       |                   |
+|   用户设备 (手机/PC)   | &lt;-----&gt; |   消息平台 (Telegram/Discord)   | &lt;-----&gt; |   Hermes Agent (云服务器)   |
+|                   |       |                   |       |                   |
+|   - Telegram App  |       |   - Telegram Bot API    |       |   - Hermes Agent Core   |
+|   - Discord App   |       |   - Discord Bot API     |       |   - Hermes Gateway      |
+|                   |       |                   |       |   - Skill Store         |
+|                   |       |                   |       |   - Memory DB           |
++-------------------+       +-------------------+       +-------------------+
+        ^                                                       |
+        |                                                       |
+        +-------------------------------------------------------+
+                (用户通过消息平台与Agent交互，Agent在云端持续运行)
+</code></pre>
+<p><strong>工作流程：</strong></p>
+<ol>
+<li>用户在聊天应用中发送消息给 Bot。</li>
+<li>消息平台（例如 Telegram API 或 Discord API）接收到消息。</li>
+<li>Hermes Gateway 模块通过长连接或 Webhook 机制从消息平台获取消息。</li>
+<li>Hermes Agent Core 处理消息，执行任务，利用其技能和记忆。</li>
+<li>Agent 生成响应，通过 Hermes Gateway 发送回消息平台。</li>
+<li>消息平台将响应发送回用户的聊天应用。</li>
+</ol>
+<h3>5.3 部署到云服务器：环境准备</h3>
+<p>在开始配置网关之前，你需要在云服务器上安装并运行 Hermes Agent。这里我们假设你已经有一台 Linux 云服务器（例如 Ubuntu 22.04 LTS）。</p>
+<p><strong>步骤概述：</strong></p>
+<ol>
+<li><p><strong>连接到服务器：</strong> 使用 SSH 客户端连接到你的云服务器。</p>
+<pre><code class="language-bash">ssh username@your_server_ip
+</code></pre>
+</li>
+<li><p><strong>安装依赖：</strong> 确保服务器上安装了 <code>curl</code> 和 <code>git</code> 等基本工具。</p>
+<pre><code class="language-bash">sudo apt update
+sudo apt install -y curl git
+</code></pre>
+</li>
+<li><p><strong>安装 Hermes Agent：</strong> 执行官方提供的一键安装脚本。</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+</code></pre>
+<p>安装过程可能需要一些时间，它会安装 Python 环境、依赖项并将 <code>hermes</code> 命令添加到你的 PATH 中。</p>
+</li>
+<li><p><strong>初始化 Hermes Agent：</strong> 首次运行需要进行配置，主要是设置 LLM。</p>
+<pre><code class="language-bash">hermes setup
+</code></pre>
+<p>按照提示选择你偏好的 LLM 提供商（推荐 OpenRouter 以便灵活选择模型），并输入 API Key。</p>
+<p><strong>重要提示：</strong> 为了让 Agent 持续运行，你可能需要使用 <code>nohup</code>、<code>screen</code> 或 <code>tmux</code> 等工具在后台启动 Hermes Agent，或者将其配置为 Systemd 服务。</p>
+<p>例如，使用 <code>nohup</code> 在后台启动并输出日志：</p>
+<pre><code class="language-bash">nohup hermes agent &gt; hermes_agent.log 2&gt;&amp;1 &amp;
+</code></pre>
+<p>这会将 Agent 启动在后台，并将所有输出重定向到 <code>hermes_agent.log</code> 文件。你可以在需要时通过 <code>tail -f hermes_agent.log</code> 查看日志。</p>
+</li>
+</ol>
+<h3>5.4 配置 Telegram 消息网关</h3>
+<p>Telegram 是一个流行的消息应用，它提供了强大的 Bot API，非常适合集成 AI Agent。</p>
+<h4>5.4.1 创建 Telegram Bot</h4>
+<ol>
+<li><strong>打开 BotFather：</strong> 在 Telegram 中搜索并打开 <code>@BotFather</code>。这是 Telegram 官方用来创建和管理 Bot 的工具。</li>
+<li><strong>创建新 Bot：</strong> 向 <code>@BotFather</code> 发送 <code>/newbot</code> 命令。</li>
+<li><strong>命名 Bot：</strong> 按照提示为你的 Bot 输入一个显示名称（例如：“My Hermes Assistant”）。</li>
+<li><strong>选择用户名：</strong> 为你的 Bot 选择一个唯一的用户名，必须以 <code>bot</code> 结尾（例如：“myhermes_assistant_bot”）。</li>
+<li><strong>获取 Token：</strong> 成功创建后，<code>@BotFather</code> 会给你一个 <strong>HTTP API Token</strong>。这个 Token 是你 Bot 的身份凭证，非常重要，请妥善保管，不要泄露。它看起来像 <code>123456789:ABCDE-FGHIJ-KLMNO-PQRST-UVWXYZ</code>。</li>
+</ol>
+<h4>5.4.2 启动 Hermes Telegram 网关</h4>
+<p>在你的云服务器上，使用 <code>hermes gateway telegram</code> 命令启动网关。</p>
+<pre><code class="language-bash"># 在云服务器上执行
+hermes gateway telegram --token &lt;YOUR_TELEGRAM_BOT_TOKEN&gt;
+</code></pre>
+<p>请将 <code>&lt;YOUR_TELEGRAM_BOT_TOKEN&gt;</code> 替换为你从 <code>@BotFather</code> 获取的实际 Token。</p>
+<p><strong>后台运行 Telegram 网关：</strong></p>
+<p>同样，为了让网关持续运行，你可能需要将其放在后台。</p>
+<pre><code class="language-bash">nohup hermes gateway telegram --token &lt;YOUR_TELEGRAM_BOT_TOKEN&gt; &gt; hermes_telegram_gateway.log 2&gt;&amp;1 &amp;
+</code></pre>
+<p>现在，你的 Telegram Bot 已经连接到 Hermes Agent。你可以在 Telegram 中找到你的 Bot 并开始对话。</p>
+<h3>5.5 配置 Discord 消息网关</h3>
+<p>Discord 也是一个非常流行的社区和聊天平台，同样支持 Bot 集成。</p>
+<h4>5.5.1 创建 Discord Bot</h4>
+<ol>
+<li><strong>访问 Discord 开发者门户：</strong> 打开浏览器，访问 <a href="https://discord.com/developers/applications">Discord Developer Portal</a>。</li>
+<li><strong>创建新应用：</strong> 点击右上角的 "New Application" 按钮。<ul>
+<li>输入应用名称（例如：“Hermes Discord Agent”），然后点击 "Create"。</li>
+</ul>
+</li>
+<li><strong>创建 Bot：</strong> 在左侧导航栏中，选择 "Bot"。<ul>
+<li>点击 "Add Bot"，然后确认 "Yes, Do it!"。</li>
+<li>你的 Bot 就会被创建。</li>
+<li><strong>重要：</strong> 在 "Token" 部分，点击 "Reset Token" 获取你的 Bot Token。这个 Token 也是敏感信息，请妥善保管。</li>
+<li><strong>启用 Intents：</strong> 在 "Privileged Gateway Intents" 部分，务必勾选并保存 <code>MESSAGE CONTENT INTENT</code>。这是 Bot 读取消息内容所必需的。为了更全面的功能，你可能还需要启用 <code>PRESENCE INTENT</code> 和 <code>SERVER MEMBERS INTENT</code>。</li>
+</ul>
+</li>
+<li><strong>获取 Client ID：</strong> 回到左侧导航栏，选择 "General Information"。复制 "APPLICATION ID"，这就是你的 Bot 的 <code>CLIENT_ID</code>。</li>
+</ol>
+<h4>5.5.2 邀请 Discord Bot 到服务器</h4>
+<ol>
+<li><strong>生成邀请链接：</strong> 在左侧导航栏中，选择 "OAuth2" -&gt; "URL Generator"。<ul>
+<li>在 "SCOPES" 下，勾选 <code>bot</code>。</li>
+<li>在 "BOT PERMISSIONS" 下，至少勾选 <code>Send Messages</code>、<code>Read Message History</code>。为了让 Agent 能够响应各种命令，建议勾选 <code>Administrator</code>（仅限测试环境，生产环境请根据最小权限原则配置）。</li>
+<li>复制生成的 URL。</li>
+</ul>
+</li>
+<li><strong>邀请 Bot：</strong> 在浏览器中打开复制的 URL。<ul>
+<li>选择你想要将 Bot 添加到的 Discord 服务器。</li>
+<li>授权 Bot 加入。</li>
+</ul>
+</li>
+</ol>
+<h4>5.5.3 启动 Hermes Discord 网关</h4>
+<p>在你的云服务器上，使用 <code>hermes gateway discord</code> 命令启动网关。</p>
+<pre><code class="language-bash"># 在云服务器上执行
+hermes gateway discord --token &lt;YOUR_DISCORD_BOT_TOKEN&gt; --client-id &lt;YOUR_DISCORD_CLIENT_ID&gt;
+</code></pre>
+<p>请将 <code>&lt;YOUR_DISCORD_BOT_TOKEN&gt;</code> 和 <code>&lt;YOUR_DISCORD_CLIENT_ID&gt;</code> 替换为你从 Discord 开发者门户获取的实际值。</p>
+<p><strong>后台运行 Discord 网关：</strong></p>
+<pre><code class="language-bash">nohup hermes gateway discord --token &lt;YOUR_DISCORD_BOT_TOKEN&gt; --client-id &lt;YOUR_DISCORD_CLIENT_ID&gt; &gt; hermes_discord_gateway.log 2&gt;&amp;1 &amp;
+</code></pre>
+<p>现在，你的 Discord Bot 已经连接到 Hermes Agent。你可以在 Discord 服务器中找到你的 Bot，并在它所在的频道或私聊中与它对话。</p>
+<h3>5.6 其他消息平台（简介）</h3>
+<p>Hermes Agent 的设计考虑了扩展性，理论上可以支持更多消息平台。虽然官方文档和命令行主要聚焦于 Telegram 和 Discord，但其架构允许通过插件或社区贡献来支持其他平台。</p>
+<ul>
+<li><strong>Slack：</strong> 通常通过 Slack App 和 Webhook/Socket Mode API 集成。</li>
+<li><strong>WhatsApp：</strong> 通常需要通过第三方商业服务（如 Twilio、MessageBird）提供的 WhatsApp Business API 进行集成，因为 WhatsApp 官方不直接提供公开的 Bot API。</li>
+</ul>
+<p>对于这些平台，如果 Hermes 官方未来直接支持，其配置流程会与 Telegram/Discord 类似，主要涉及创建应用、获取 API 凭证，然后使用相应的 <code>hermes gateway &lt;platform&gt;</code> 命令。</p>
+<h3>5.7 最佳实践与注意事项</h3>
+<ul>
+<li><strong>安全性：</strong> 你的 Bot Token 是非常敏感的凭证。务必妥善保管，不要将其硬编码到公开的代码库中，也不要分享给不可信的第三方。在云服务器上，确保只有授权用户可以访问存储这些 Token 的文件或环境变量。</li>
+<li><strong>持久化运行：</strong> 使用 <code>nohup</code>、<code>screen</code> 或 <code>tmux</code> 是在服务器上后台运行程序的常见方法。更健壮的生产部署会使用 <code>systemd</code> 服务来管理 Agent 和网关进程，确保它们在服务器重启后自动启动，并在崩溃时自动恢复。</li>
+<li><strong>资源管理：</strong> 监控你的云服务器资源（CPU、内存、网络）。Hermes Agent 及其依赖的 LLM 调用可能会消耗一定的资源。</li>
+<li><strong>防火墙：</strong> 确保你的云服务器防火墙允许出站连接到 Telegram/Discord API 服务器，以及允许入站 SSH 连接（如果你需要远程管理）。</li>
+<li><strong>日志监控：</strong> 定期检查 <code>hermes_agent.log</code> 和 <code>hermes_gateway.log</code> 文件，以便及时发现和解决问题。</li>
+</ul>
+<hr>
+<h2>💻 实战演示</h2>
+<p>我们将通过一个实际的场景来演示如何在云服务器上部署 Hermes Agent，并分别配置 Telegram 和 Discord 网关。</p>
+<p><strong>场景设定：</strong>
+你已拥有一台 Ubuntu 22.04 LTS 云服务器，并已通过 SSH 连接。你希望将 Hermes Agent 部署到这台服务器，并通过 Telegram Bot 和 Discord Bot 随时随地与它交互。</p>
+<h3>实战演示 1：云服务器上的 Hermes Agent 初始化与后台运行</h3>
+<p>首先，确保你的云服务器已经安装了 Hermes Agent 并进行了基本配置。</p>
+<pre><code class="language-bash"># 1. 登录到你的云服务器 (假设你已经登录)
+# ssh your_username@your_server_ip
+
+# 2. 检查 Hermes Agent 是否已安装
+# 如果未安装，请执行安装命令：
+# curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+
+# 3. 首次运行 Hermes Agent 进行配置 (如果之前未配置)
+# 这一步会引导你设置 LLM 提供商和 API Key。
+# 这里我们假设你已经配置了 OpenRouter 并提供了 API Key。
+hermes setup
+</code></pre>
+<p><strong>预期输出示例 (部分)：</strong></p>
+<pre><code>Welcome to Hermes Agent setup!
+This will guide you through the initial configuration.
+
+Do you want to enable telemetry data collection? (y/N): N
+Please select your preferred LLM provider:
+1. OpenRouter
+2. OpenAI
+3. Anthropic
+4. Google
+5. Together AI
+6. Perplexity AI
+Enter your choice (1-6): 1
+
+Please enter your OpenRouter API Key: sk-or-... # 这里输入你的 OpenRouter API Key
+
+Configuration saved successfully!
+</code></pre>
+<p>接下来，我们将 Hermes Agent 核心进程放在后台运行，以便网关能够连接。</p>
+<pre><code class="language-bash"># 4. 在后台启动 Hermes Agent 核心进程
+# 使用 nohup 确保即使 SSH 会话断开，Agent 也能持续运行
+nohup hermes agent &gt; hermes_agent.log 2&gt;&amp;1 &amp;
+
+# 5. 验证 Agent 是否在后台运行
+# 查看进程列表，你应该能看到一个 Python 进程包含 'hermes agent'
+ps aux | grep "hermes agent"
+
+# 查看日志，确保 Agent 启动正常
+tail -f hermes_agent.log
+</code></pre>
+<p><strong>预期输出示例 (ps aux)：</strong></p>
+<pre><code>your_username  12345  0.5  1.0 123456 78900 pts/0    Sl   10:00   0:05 python -m hermes.agent
+</code></pre>
+<p><strong>预期输出示例 (tail -f hermes_agent.log)：</strong></p>
+<pre><code>...
+INFO:     Started server process [12345]
+INFO:     Waiting for changes to reload. Press CTRL+C to exit.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+</code></pre>
+<p>这表明 Hermes Agent 核心已在后台成功启动。</p>
+<h3>实战演示 2：配置并启动 Telegram 消息网关</h3>
+<p>我们将使用一个假设的 Telegram Bot Token 来演示。</p>
+<p><strong>前置步骤：</strong> 确保你已通过 <code>@BotFather</code> 创建了一个 Telegram Bot 并获取了其 Token。假设 Token 为 <code>1234567890:AAH_random_token_string_example</code>。</p>
+<pre><code class="language-bash"># 1. 设置 Telegram Bot Token 环境变量 (推荐方式，避免直接在命令行中暴露敏感信息)
+export TELEGRAM_BOT_TOKEN="1234567890:AAH_random_token_string_example"
+
+# 2. 启动 Hermes Telegram 网关，并在后台运行
+nohup hermes gateway telegram --token "$TELEGRAM_BOT_TOKEN" &gt; hermes_telegram_gateway.log 2&gt;&amp;1 &amp;
+
+# 3. 验证 Telegram 网关是否在后台运行
+ps aux | grep "hermes gateway telegram"
+
+# 4. 查看 Telegram 网关的日志
+tail -f hermes_telegram_gateway.log
+</code></pre>
+<p><strong>预期输出示例 (ps aux)：</strong></p>
+<pre><code>your_username  12346  0.3  0.8 100000 60000 pts/0    Sl   10:01   0:03 python -m hermes.gateway telegram ...
+</code></pre>
+<p><strong>预期输出示例 (tail -f hermes_telegram_gateway.log)：</strong></p>
+<pre><code>...
+INFO:     Starting Telegram gateway...
+INFO:     Bot started successfully!
+INFO:     Listening for messages...
+</code></pre>
+<p><strong>交互测试：</strong></p>
+<ol>
+<li>在你的 Telegram 应用中，找到你创建的 Bot。</li>
+<li>向 Bot 发送消息，例如：“你好，你是谁？”</li>
+<li>Hermes Agent 应该会通过 Telegram 回复你。</li>
+</ol>
+<p><strong>Telegram 交互示例：</strong></p>
+<p><strong>用户:</strong> 你好，你是谁？
+<strong>Hermes Agent:</strong> 我是 Hermes Agent，一个由 NousResearch 开发的自进化 AI 助手。我能够学习新技能、记住上下文，并帮助你完成各种任务。有什么我可以帮你的吗？</p>
+<p><strong>用户:</strong> 请告诉我一个关于 Python 的趣闻。
+<strong>Hermes Agent:</strong> 当然！你知道 Python 的名字并不是来源于蛇，而是来自英国喜剧团体 Monty Python 吗？吉多·范罗苏姆（Guido van Rossum）在设计这门语言时，正好在读他们的剧本，觉得这个名字既独特又有趣！</p>
+<h3>实战演示 3：配置并启动 Discord 消息网关</h3>
+<p>我们将使用假设的 Discord Bot Token 和 Client ID 来演示。</p>
+<p><strong>前置步骤：</strong> 确保你已通过 Discord 开发者门户创建了一个 Discord Bot，获取了其 Token 和 Client ID，并已将其邀请到你的 Discord 服务器。假设 Token 为 <code>MTEyMjMzNDQ1NTY2Nz...</code>，Client ID 为 <code>112233445566778899</code>。</p>
+<pre><code class="language-bash"># 1. 设置 Discord Bot Token 和 Client ID 环境变量
+export DISCORD_BOT_TOKEN="MTEyMjMzNDQ1NTY2Nz..."
+export DISCORD_CLIENT_ID="112233445566778899"
+
+# 2. 启动 Hermes Discord 网关，并在后台运行
+nohup hermes gateway discord --token "$DISCORD_BOT_TOKEN" --client-id "$DISCORD_CLIENT_ID" &gt; hermes_discord_gateway.log 2&gt;&amp;1 &amp;
+
+# 3. 验证 Discord 网关是否在后台运行
+ps aux | grep "hermes gateway discord"
+
+# 4. 查看 Discord 网关的日志
+tail -f hermes_discord_gateway.log
+</code></pre>
+<p><strong>预期输出示例 (ps aux)：</strong></p>
+<pre><code>your_username  12347  0.4  0.9 110000 70000 pts/0    Sl   10:02   0:04 python -m hermes.gateway discord ...
+</code></pre>
+<p><strong>预期输出示例 (tail -f hermes_discord_gateway.log)：</strong></p>
+<pre><code>...
+INFO:     Starting Discord gateway...
+INFO:     Discord bot is ready! Logged in as Hermes Discord Agent#1234
+INFO:     Listening for messages...
+</code></pre>
+<p><strong>交互测试：</strong></p>
+<ol>
+<li>在你的 Discord 应用中，进入你邀请 Bot 所在的服务器和频道。</li>
+<li>在频道中 @ 你的 Bot 并发送消息，例如：“@Hermes Discord Agent 帮我总结一下今天的课程。”</li>
+<li>Hermes Agent 应该会通过 Discord 回复你。</li>
+</ol>
+<p><strong>Discord 交互示例：</strong></p>
+<p><strong>用户 (在频道中):</strong> <code>@Hermes Discord Agent 帮我总结一下今天的课程。</code>
+<strong>Hermes Agent:</strong> 好的，今天的课程主要围绕 Hermes Agent 的消息网关展开，包括：</p>
+<ol>
+<li><strong>核心概念：</strong> 理解网关的重要性，实现远程、持续交互。</li>
+<li><strong>架构概览：</strong> Agent 部署在云服务器，通过网关连接消息平台。</li>
+<li><strong>Telegram 网关：</strong> 创建 Bot，获取 Token，启动 <code>hermes gateway telegram</code>。</li>
+<li><strong>Discord 网关：</strong> 创建 Bot，获取 Token 和 Client ID，邀请 Bot，启动 <code>hermes gateway discord</code>。</li>
+<li><strong>实战演示：</strong> 在云服务器上后台运行 Agent 核心和各个网关，并通过实际对话验证功能。</li>
+</ol>
+<p>有什么不清楚的地方吗？</p>
+<p>通过以上实战，你已经成功地将 Hermes Agent 部署到云服务器，并配置了 Telegram 和 Discord 消息网关。现在，你的 AI 助手已经能够随时随地为你服务了！</p>
+<hr>
+<h2>🔧 涉及的命令与工具</h2>
+<table>
+<thead>
+<tr>
+<th align="left">命令/工具</th>
+<th align="left">描述</th>
+<th align="left">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>ssh</code></td>
+<td align="left">Secure Shell 协议，用于远程登录和管理 Linux 服务器。</td>
+<td align="left">连接到云服务器，执行 Hermes Agent 的安装、配置和网关启动。</td>
+</tr>
+<tr>
+<td align="left"><code>curl</code></td>
+<td align="left">命令行工具，用于传输数据，支持多种协议。</td>
+<td align="left">下载 Hermes Agent 的安装脚本。</td>
+</tr>
+<tr>
+<td align="left"><code>bash</code></td>
+<td align="left">Unix Shell 和命令语言。</td>
+<td align="left">执行 Hermes Agent 的安装脚本。</td>
+</tr>
+<tr>
+<td align="left"><code>hermes setup</code></td>
+<td align="left">Hermes Agent 的初始化配置命令。</td>
+<td align="left">首次设置 Agent 的 LLM 提供商和 API Key。</td>
+</tr>
+<tr>
+<td align="left"><code>hermes agent</code></td>
+<td align="left">启动 Hermes Agent 核心进程的命令。</td>
+<td align="left">运行 Agent 的推理、学习和记忆模块。</td>
+</tr>
+<tr>
+<td align="left"><code>hermes gateway telegram</code></td>
+<td align="left">启动 Hermes Agent Telegram 消息网关的命令。</td>
+<td align="left">连接 Agent 到 Telegram Bot API，实现通过 Telegram 的交互。</td>
+</tr>
+<tr>
+<td align="left"><code>hermes gateway discord</code></td>
+<td align="left">启动 Hermes Agent Discord 消息网关的命令。</td>
+<td align="left">连接 Agent 到 Discord Bot API，实现通过 Discord 的交互。</td>
+</tr>
+<tr>
+<td align="left"><code>nohup</code></td>
+<td align="left">运行命令时，忽略挂断信号，使程序在用户退出终端后继续运行。</td>
+<td align="left">在后台持久化运行 Hermes Agent 核心进程和消息网关。</td>
+</tr>
+<tr>
+<td align="left"><code>ps aux</code></td>
+<td align="left">显示当前系统所有进程的状态。</td>
+<td align="left">检查 Hermes Agent 及其网关进程是否正在运行。</td>
+</tr>
+<tr>
+<td align="left"><code>grep</code></td>
+<td align="left">文本搜索工具。</td>
+<td align="left">结合 <code>ps aux</code> 过滤出特定进程信息。</td>
+</tr>
+<tr>
+<td align="left"><code>tail -f</code></td>
+<td align="left">实时跟踪文件末尾新增内容。</td>
+<td align="left">监控 Hermes Agent 和网关的日志输出，便于调试和查看运行状态。</td>
+</tr>
+<tr>
+<td align="left"><code>@BotFather</code></td>
+<td align="left">Telegram 官方 Bot，用于创建和管理 Telegram Bot。</td>
+<td align="left">获取 Telegram Bot 的 API Token。</td>
+</tr>
+<tr>
+<td align="left">Discord Developer Portal</td>
+<td align="left">Discord 官方开发者平台，用于创建和管理 Discord 应用和 Bot。</td>
+<td align="left">创建 Discord Bot，获取 Bot Token 和 Client ID，设置权限，生成邀请链接。</td>
+</tr>
+<tr>
+<td align="left"><code>export</code></td>
+<td align="left">Bash 命令，用于设置环境变量。</td>
+<td align="left">临时设置 API Token 等敏感信息，避免直接在命令行中暴露。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ul>
+<li><strong>消息网关是关键：</strong> Hermes Agent 的消息网关是实现远程、持续交互的核心，允许 Agent 在云端运行并通过常用聊天应用（如 Telegram、Discord）与用户互动。</li>
+<li><strong>云服务器是基础：</strong> 为了实现消息网关的持久化运行，将 Hermes Agent 部署在稳定的云服务器上是必不可少的步骤。</li>
+<li><strong>Telegram Bot 配置：</strong> 通过 <code>@BotFather</code> 创建 Bot，获取 API Token，然后使用 <code>hermes gateway telegram --token &lt;TOKEN&gt;</code> 启动网关。</li>
+<li><strong>Discord Bot 配置：</strong> 通过 Discord 开发者门户创建应用和 Bot，获取 Bot Token 和 Client ID，启用 <code>MESSAGE CONTENT INTENT</code>，邀请 Bot 到服务器，然后使用 <code>hermes gateway discord --token &lt;TOKEN&gt; --client-id &lt;CLIENT_ID&gt;</code> 启动网关。</li>
+<li><strong>后台持久化运行：</strong> 使用 <code>nohup</code> 或其他进程管理工具（如 <code>screen</code>/<code>tmux</code>/<code>systemd</code>）确保 Hermes Agent 核心进程和消息网关在 SSH 会话断开后仍能持续运行。</li>
+<li><strong>安全性与监控：</strong> 妥善保管 API Token，定期检查 Agent 和网关的日志，并监控服务器资源，是保障 Agent 稳定运行的重要实践。</li>
+</ul>
+<hr>
+<h2>🔗 参考资料</h2>
+<ol>
+<li><strong>Hermes Agent GitHub 项目：</strong> <a href="https://github.com/NousResearch/hermes-agent">https://github.com/NousResearch/hermes-agent</a></li>
+<li><strong>Hermes Agent 官方文档：</strong> <a href="https://hermes-agent.nousresearch.com/docs/">https://hermes-agent.nousresearch.com/docs/</a></li>
+<li><strong>Telegram Bot API 文档：</strong> <a href="https://core.telegram.org/bots/api">https://core.telegram.org/bots/api</a></li>
+<li><strong>Discord Developer Portal：</strong> <a href="https://discord.com/developers/applications">https://discord.com/developers/applications</a></li>
+</ol>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 04 期 | Memory 与用户画像：跨会话的持久记忆</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 06 期 | MCP 工具生态：连接外部世界的桥梁</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

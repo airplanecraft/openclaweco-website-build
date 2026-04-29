@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai</title><meta name="description" content="构建一个完整的 AI 对话机器人：理解 Chat Trigger 的消息协议、AI Agent 节点的内部执行循环以及 System Prompt 的设计原则。"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/12-chat-agent/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/12-chat-agent/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/12-chat-agent/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/12-chat-agent/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta property="og:description" content="构建一个完整的 AI 对话机器人：理解 Chat Trigger 的消息协议、AI Agent 节点的内部执行循环以及 System Prompt 的设计原则。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/12-chat-agent/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta name="twitter:description" content="构建一个完整的 AI 对话机器人：理解 Chat Trigger 的消息协议、AI Agent 节点的内部执行循环以及 System Prompt 的设计原则。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/n8n-tutorial/12-chat-agent/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/n8n-tutorial/12-chat-agent/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 n8n 全攻略：从自动化流到多智能体编排 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/01-introduction/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 1 期：为什么是 n8n？2026 自动化与 AI Agent 新纪元 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/02-basic-concepts/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 2 期：基础概念剖析 — 节点、触发器与线缆 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/03-docker-deploy/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 3 期：环境部署 — Docker Compose 本地部署与安全配置 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/04-data-heartbeat/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 4 期：数据的心跳 — 深度搞懂 JSON Items 与隐式循环 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/05-webhook-telegram/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 5 期：首个实战流 — Webhook 触发与 Telegram 机器人双向交互 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/06-branching-loops/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 6 期：分支与循环控制 — If、Switch 与 Loop 节点大解剖 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/07-data-tables/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 7 期：告别外挂数据库 — 内置 Data Tables 的 CRUD 实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/08-http-request/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 8 期：与世界通信 — HTTP Request 节点的认证、轮询与并发 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/09-code-node/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 9 期：代码是最终兵器 — Code 节点编写 JS/Python </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/10-utility-nodes/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期：内置工具锦囊 — Merge、Set、Edit Image 节点大串烧 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/11-llm-credentials/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期：唤醒模型 — 配置大模型凭证与基础 LLM 节点 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/12-chat-agent/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/13-memory/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期：赋予长期记忆 — Window Buffer Memory 与对话状态持久化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/14-agent-tools/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期：赋予数字之手 — 给 Agent 接入 Tools 工具集 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/15-prompt-engineering/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期：意图识别密码 — System Prompt 与 Tool Description 高级调优 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/16-rag-fundamentals/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期：知识即力量 — RAG 架构原理与 Embedding 基础 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/17-indexing-pipeline/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/18-rag-agent/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 18 期：知识变武器 — Vector Store Tool 与 RAG Agent 实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/19-advanced-rag/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 19 期：检索精进 — Hybrid Search、Re-Ranking 与多角度检索 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/20-rag-ops/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 20 期：知识库运维 — 增量更新、过期清理与检索质量监控 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/21-mcp-fundamentals/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>21.</span> 第 21 期：无限工具箱 — MCP 协议原理与 n8n 集成架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/22-mcp-client/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>22.</span> 第 22 期：即插即用 — MCP Client Tool 实战连接 GitHub 与文件系统 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/23-mcp-server/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>23.</span> 第 23 期：角色反转 — 把 n8n 工作流暴露为 MCP Server </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/24-mcp-orchestration/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>24.</span> 第 24 期：MCP 服务编排 — 多 Server 管理、路由与健康检查 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/25-mcp-workspace/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>25.</span> 第 25 期：MCP 综合实战 — 构建 AI 驱动的全能工作台 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/26-error-handling/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>26.</span> 第 26 期：永不崩溃 — 错误处理、重试与告警体系 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/27-sub-workflows/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>27.</span> 第 27 期：模块化构建 — Sub-Workflow 子工作流与 Workflow Tool </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/28-version-control/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>28.</span> 第 28 期：Git 协作 — 工作流版本控制与多环境部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/29-multi-agent/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>29.</span> 第 29 期：群体智慧 — 多 Agent 协作与 Supervisor 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/30-grand-finale/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>30.</span> 第 30 期：大结局 — 企业级 AI Agent 平台全架构参考 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/n8n-tutorial/" data-astro-cid-ilhxcym7>n8n 全攻略：从自动化流到多智能体编排</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"n8n 全攻略：从自动化流到多智能体编排","item":"https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/"},{"@type":"ListItem","position":4,"name":"第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解</h1> <div class="meta" data-astro-cid-p7qzptk4> <span data-astro-cid-p7qzptk4>⏱ 预计阅读 12 分钟</span> <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><h2>AI Agent 节点的内部架构</h2>
+<p>AI Agent 节点是 n8n 中所有智能行为的核心。它不是简单地"调用一次 API"，而是一个<strong>自主决策循环 (Agentic Loop)</strong>：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    subgraph "AI Agent 节点内部执行循环"
+        Input[📥 用户输入] --&gt; Think[🧠 LLM 思考<br>分析意图]
+        Think --&gt; Decision{需要使用工具吗?}
+        
+        Decision --&gt;|"不需要 → 直接回答"| Answer[📤 生成回复]
+        Decision --&gt;|"需要 → 选择工具"| ToolCall[🔧 调用 Tool]
+        
+        ToolCall --&gt; ToolResult[📋 获取工具结果]
+        ToolResult --&gt; Think2[🧠 再次思考<br>结合工具结果]
+        Think2 --&gt; Decision2{还需要其他工具?}
+        
+        Decision2 --&gt;|"是"| ToolCall
+        Decision2 --&gt;|"否 → 汇总作答"| Answer
+    end
+    
+    style Think fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style Think2 fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style ToolCall fill:#ff6d5b,stroke:#e55a4e,color:#fff</pre></div><blockquote>
+<p>📌 <strong>核心理解</strong>：AI Agent ≠ 单次 API 调用。它是一个<strong>多轮内循环</strong>——LLM 可能"想了想觉得自己需要查一下天气"，调完天气 API 后"又想了想觉得还需要查查汇率"，最终综合所有信息给你一个完整的回答。</p>
+</blockquote>
+<hr>
+<h2>1. Chat Trigger 节点</h2>
+<p>Chat Trigger 是 AI 对话工作流的<strong>专属入口</strong>，它提供了一个内置的 Web 聊天界面。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">sequenceDiagram
+    participant User as 👤 用户
+    participant Chat as 💬 n8n 内置聊天 UI
+    participant Trigger as 🔔 Chat Trigger
+    participant Agent as 🤖 AI Agent
+    
+    User-&gt;&gt;Chat: 打开 n8n 聊天窗口
+    User-&gt;&gt;Chat: 输入 "帮我查一下北京今天的天气"
+    Chat-&gt;&gt;Trigger: 传递消息 + sessionId
+    
+    Note over Trigger: 输出 Item:<br>{chatInput: "帮我查...",<br> sessionId: "sess_abc123"}
+    
+    Trigger-&gt;&gt;Agent: 传递用户消息
+    Agent-&gt;&gt;Agent: LLM 思考 → 调用工具 → 生成回复
+    Agent--&gt;&gt;Chat: 返回 "北京今天晴，28°C..."
+    Chat--&gt;&gt;User: 显示 AI 回复</pre></div><pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Chat Trigger 输出的 Item 结构
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "json": {
+    "chatInput": "帮我查一下北京今天的天气",  // 用户的原始输入
+    "sessionId": "sess_abc123",                // 会话 ID (用于记忆管理)
+    "action": "sendMessage"                    // 动作类型
+  }
+}
+
+// Chat Trigger 的配置选项:
+// - Authentication: 无 / Basic Auth / n8n User Auth
+//   ⚠️ 生产环境务必开启认证！否则任何人都能与你的 Agent 对话
+// - Allowed Origins: 限制嵌入来源 (CORS)
+// - Initial Message: 设置 AI 的开场白
+//   例: "你好！我是 AI 助手，有什么可以帮你的？"
+</code></pre>
+<hr>
+<h2>2. 构建完整的 AI 对话机器人</h2>
+<h3>工作流拓扑</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph TB
+    CT[💬 Chat Trigger<br>接收用户消息] --&gt; Agent[🤖 AI Agent]
+    
+    subgraph "Agent 子节点 (嵌入式)"
+        Agent --&gt; Model[🧠 OpenAI Chat Model<br>gpt-4o]
+        Agent --&gt; Mem[💾 Window Buffer Memory<br>记住最近 10 轮对话]
+    end
+    
+    style CT fill:#0088cc,stroke:#006699,color:#fff
+    style Agent fill:#ff6d5b,stroke:#e55a4e,color:#fff
+    style Model fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style Mem fill:#22c55e,stroke:#16a34a,color:#fff</pre></div><h3>AI Agent 节点配置</h3>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// AI Agent 节点核心配置
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// 📝 System Message (系统提示词):
+// """
+// 你是 AgentUpdate.ai 的专属客服助手。
+// 
+// 行为准则:
+// 1. 始终使用中文回复
+// 2. 回答字数控制在 200 字以内
+// 3. 如果用户问题超出你的知识范围，如实告知
+// 4. 禁止讨论政治、宗教等敏感话题
+// 5. 在回答末尾附上一个相关的 emoji
+// """
+
+// 🧠 Chat Model (子节点):
+// - Provider: OpenAI
+// - Model: gpt-4o-mini      // 性价比最高
+// - Temperature: 0.5         // 客服需要准确但灵活
+
+// 💾 Memory (子节点):
+// - Type: Window Buffer Memory
+// - Window Size: 10          // 记住最近 10 条消息 (5 轮对话)
+// - Session ID: {{ $json.sessionId }}  // 关联 Chat Trigger 的 sessionId
+//   ⚠️ 这个关联是关键！没有它，每次对话都是全新的
+
+// 📤 输出:
+// AI Agent 自动将最终回复返回给 Chat Trigger
+// Chat Trigger 负责将回复显示在用户的聊天界面上
+</code></pre>
+<hr>
+<h2>3. System Prompt 设计原则</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph TB
+    subgraph "System Prompt 的四层结构"
+        L1["🎭 Layer 1: 角色定义<br>你是谁？为谁服务？"]
+        L2["📏 Layer 2: 行为规范<br>回答长度、语气、语言"]
+        L3["🚫 Layer 3: 禁区定义<br>不准做什么？哪些话题禁止？"]
+        L4["📋 Layer 4: 输出格式<br>JSON？Markdown？纯文本？"]
+    end
+    
+    L1 --&gt; L2 --&gt; L3 --&gt; L4</pre></div><pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 一个生产级 System Prompt 示例
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const systemPrompt = `
+## 角色 (Role)
+你是"小智"，AgentUpdate.ai 平台的 AI 技术支持助手。
+
+## 知识范围 (Scope)
+- 你可以回答关于 n8n 工作流、AI Agent 配置、API 集成的问题
+- 你熟悉 Docker、Node.js、Python 等技术栈
+- 对于非技术问题，礼貌地引导用户去人工客服
+
+## 行为规范 (Rules)
+1. 使用中文回答，技术术语保留英文
+2. 每次回答不超过 300 字
+3. 关键代码用 \`\`\`代码块\`\`\` 包裹
+4. 如果不确定答案，说"让我帮你转接人工客服"
+5. 禁止生成任何与平台无关的内容
+
+## 输出格式 (Format)
+- 先用一句话直接回答问题
+- 然后展开解释或给出步骤
+- 最后附上一个相关链接（如果有的话）
+`;
+</code></pre>
+<hr>
+<h2>4. 对话流转的完整时序</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-4">sequenceDiagram
+    participant User as 👤 用户
+    participant CT as 💬 Chat Trigger
+    participant Agent as 🤖 AI Agent
+    participant Mem as 💾 Memory
+    participant LLM as 🧠 GPT-4o
+    
+    Note over User,LLM: === 第一轮对话 ===
+    User-&gt;&gt;CT: "你好，你能做什么？"
+    CT-&gt;&gt;Agent: {chatInput: "你好...", sessionId: "s1"}
+    Agent-&gt;&gt;Mem: 读取 sessionId="s1" 的历史 → 空
+    Agent-&gt;&gt;LLM: [System Prompt] + [用户消息]
+    LLM--&gt;&gt;Agent: "你好！我是小智，可以帮你..."
+    Agent-&gt;&gt;Mem: 保存对话: [用户问, AI 答]
+    Agent--&gt;&gt;CT: 返回回复
+    CT--&gt;&gt;User: "你好！我是小智..."
+    
+    Note over User,LLM: === 第二轮对话 ===
+    User-&gt;&gt;CT: "如何配置 Webhook？"
+    CT-&gt;&gt;Agent: {chatInput: "如何配置...", sessionId: "s1"}
+    Agent-&gt;&gt;Mem: 读取历史 → [第一轮完整对话]
+    Agent-&gt;&gt;LLM: [System] + [历史] + [新消息]
+    Note over LLM: 模型看到完整上下文<br>知道用户刚打过招呼
+    LLM--&gt;&gt;Agent: "配置 Webhook 的步骤如下..."
+    Agent-&gt;&gt;Mem: 追加保存第二轮
+    Agent--&gt;&gt;CT: 返回回复</pre></div><hr>
+<h2>常见问题</h2>
+<table>
+<thead>
+<tr>
+<th align="left">问题</th>
+<th align="left">原因</th>
+<th align="left">解决</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">每次对话都忘记之前说的</td>
+<td align="left">没有连接 Memory 节点</td>
+<td align="left">添加 Window Buffer Memory 子节点</td>
+</tr>
+<tr>
+<td align="left">Memory 在不同用户间混淆</td>
+<td align="left">sessionId 写死了固定值</td>
+<td align="left">使用 <code>{{ $json.sessionId }}</code> 动态引用</td>
+</tr>
+<tr>
+<td align="left">回复太长导致超时</td>
+<td align="left">没设 Max Tokens</td>
+<td align="left">在 Chat Model 中限制 <code>maxTokens: 500</code></td>
+</tr>
+<tr>
+<td align="left">Agent 回答跑题</td>
+<td align="left">System Prompt 太宽泛</td>
+<td align="left">加入明确的禁区定义与格式约束</td>
+</tr>
+</tbody></table>
+<h2>下一步</h2>
+<p>Ep 13 将深入 <strong>Memory 节点的内部机制</strong>——Window Buffer、Token Buffer 以及跨 Session 的长期记忆管理。</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/11-llm-credentials/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 11 期：唤醒模型 — 配置大模型凭证与基础 LLM 节点</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/n8n-tutorial/13-memory/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 13 期：赋予长期记忆 — Window Buffer Memory 与对话状态持久化</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

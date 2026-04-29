@@ -1,0 +1,428 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai</title><meta name="description" content="第 20 期 | 群组研讨会 (Network of Agents) 模拟实战"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-20/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-20/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-20/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-20/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta property="og:description" content="第 20 期 | 群组研讨会 (Network of Agents) 模拟实战"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-20/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta name="twitter:description" content="第 20 期 | 群组研讨会 (Network of Agents) 模拟实战"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/langgraph-tutorial/lesson-20/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/langgraph-tutorial/lesson-20/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-01/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-02/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-03/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-04/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-05/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-06/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-07/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-08/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-09/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 11 期 | 并行执行 (Parallel Execution)：分治机制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 13 期 | Human in the Loop (HITL)：审批节点的建立 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 15 期 | 手动修图：通过 update_state 人工修正 Agent 幻觉 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 16 期 | 多智能体架构探秘：Flat vs Hierarchical </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 17 期 | 主管模式 (Supervisor Agent)：打造统筹中心 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 18 期 | Sub-graphs：将底层 Graph 浓缩为一个普通节点 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-20/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>21.</span> 第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>22.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-21/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>23.</span> 第 21 期 | Async 执行：把阻塞留给昨日 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-22/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>24.</span> 第 22 期 | 观测体系：LangSmith 探针无缝挂载 Graph </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-23/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>25.</span> 第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-24/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>26.</span> 第 24 期 | 防超时策略：Timeout与大模型降维重试 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>27.</span> 第 25 期 | 长程记忆：在 Graph 中保存长期偏好 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-26/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>28.</span> 第 26 期 | 前端融合：LangGraph 的前后端分离架构规划 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-27/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>29.</span> 第 27 期 | 生产级利器：LangGraph Cloud 初体验 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-28/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>30.</span> 第 28 期 | 复杂数据的提取 (Structured Outputs) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-29/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>31.</span> 第 29 期 | 测试图：我们该怎么自动化验收智能体的表现？ </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>32.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-30/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>33.</span> 第 30 期 | 终局项目路演：完备的 AI 创作发行机构 (Capstone) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>34.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>35.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>36.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>37.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>38.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>39.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/langgraph-tutorial/" data-astro-cid-ilhxcym7>LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 20 期 | 群组研讨会 (Network of Agents) 模拟实战</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构","item":"https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/"},{"@type":"ListItem","position":4,"name":"第 20 期 | 群组研讨会 (Network of Agents) 模拟实战"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 20 期 | 群组研讨会 (Network of Agents) 模拟实战</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><p><strong>副标题：Writer 写完交给 Editor 挑刺，再发回给 Writer 改稿的三方博弈环形流。</strong></p>
+<p>同学们好！我是你们的 AI 技术导师。今天，我们不玩单挑，我们要玩群殴！哦不，是群组协作！在现实世界中，任何复杂的工作都不是一个人能搞定的，智能体也一样。我们之前构建的 AI 内容机构，虽然有 Planner、Researcher、Writer、Editor 各司其职，但它们之间往往是单向流转。今天，我们要打破这种线性思维，引入一个更真实、更智能的协作模式——<strong>群组研讨会 (Network of Agents)</strong>，特别是那种带有反馈和迭代的环形流。</p>
+<p>想象一下，你的 Writer 吭哧吭哧写了一篇稿子，信心满满地交给 Editor。Editor 一看，眉头一皱，"这不行，逻辑不顺，语气也不对，给我改！" 然后啪嗒一下，稿子又回到了 Writer 手里。Writer 带着委屈和 Editor 的批注，继续修改。这样的来回，是不是很像我们日常工作的真实写照？这就是我们今天要用 LangGraph 模拟的<strong>三方博弈环形流</strong>：Writer (写稿方)、Editor (审稿方)、以及贯穿其中的<strong>内容状态</strong>。</p>
+<p>这种环形流，是构建任何具有迭代、优化、协商机制的复杂 AI 系统不可或缺的能力。学会它，你的 AI Agent 将不再是僵硬的流水线工人，而是能真正“思考”、“反馈”和“迭代”的智能团队成员。准备好了吗？让我们深入 LangGraph 的核心，解锁这个高级技能！</p>
+<h2>🎯 本期学习目标</h2>
+<p>完成本期学习后，你将能够：</p>
+<ol>
+<li><strong>理解并构建基于条件判断的 LangGraph 循环流</strong>：掌握如何利用 <code>add_conditional_edges</code> 实现多智能体之间的动态反馈和迭代机制。</li>
+<li><strong>精细化管理复杂图状态 (Graph State)</strong>：学会在多智能体协作中，如何设计和更新共享状态，以承载各智能体的输入、输出和决策信息。</li>
+<li><strong>模拟 AI 内容机构的真实协作场景</strong>：将 Writer 和 Editor 的角色深度融合，实现从初稿到定稿的自动迭代优化过程。</li>
+<li><strong>掌握避免循环陷阱与优化迭代流程的策略</strong>：了解在构建循环流时可能遇到的问题，并学会如何设计健壮的退出条件和优化机制。</li>
+</ol>
+<h2>📖 原理解析</h2>
+<p>在 LangGraph 中，构建一个多智能体协作的“群组研讨会”核心在于<strong>图状态 (Graph State)</strong> 和<strong>条件边 (Conditional Edges)</strong>。想象一下，Graph State 就是一个共享的白板，所有智能体都在上面写写画画，更新信息。条件边则像是会议的主持人，根据白板上的最新讨论结果（状态），决定下一步该由谁发言，或者是否可以散会了。</p>
+<p>我们今天的“三方博弈”——Writer 写稿、Editor 挑刺、Writer 改稿——其本质是一个<strong>迭代优化循环</strong>。</p>
+<ol>
+<li><strong>Writer (写稿方)</strong>：接收一个主题或待修改的内容，输出一个初稿或修订稿。</li>
+<li><strong>Editor (审稿方)</strong>：接收 Writer 的稿件，进行评估。它会输出两样东西：<ul>
+<li><strong>反馈意见</strong>：告诉 Writer 哪里需要改进。</li>
+<li><strong>决策</strong>：判断稿件是否已达到要求 (<code>approved</code>)，或者仍需修改 (<code>needs_revision</code>)。</li>
+</ul>
+</li>
+<li><strong>内容状态 (Content State)</strong>：这是我们的“白板”，上面记录了：<ul>
+<li>当前稿件 (<code>current_article</code>)。</li>
+<li>Editor 的最新反馈 (<code>editor_feedback</code>)。</li>
+<li>稿件的当前状态 (<code>status</code>: <code>drafting</code>, <code>revising</code>, <code>approved</code>)。</li>
+<li>甚至可以记录修订次数 (<code>revision_count</code>)，以防止无限循环。</li>
+</ul>
+</li>
+</ol>
+<p>这个流程的精髓在于 Editor 的<strong>决策</strong>。如果 Editor 决定 <code>needs_revision</code>，那么流程就会通过条件边，再次回到 Writer 节点。如果 Editor 决定 <code>approved</code>，那么流程就终止（或者进入下一个阶段，比如发布）。</p>
+<h3>Mermaid 图解核心架构</h3>
+<p>让我们用 Mermaid 图来直观地展示这个循环流：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[开始] --&gt; B(Writer: 撰写/修改文章);
+    B --&gt; C{Editor: 审查文章};
+    C -- 稿件需要修改 (needs_revision) --&gt; B;
+    C -- 稿件通过 (approved) --&gt; D[结束: 文章定稿];
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px;
+    style B fill:#bbf,stroke:#333,stroke-width:2px;
+    style C fill:#bfb,stroke:#333,stroke-width:2px;
+    style D fill:#f9f,stroke:#333,stroke-width:2px;</pre></div><p><strong>图解说明：</strong></p>
+<ul>
+<li><strong>开始 (Start)</strong>：整个流程的起点。</li>
+<li><strong>Writer (撰写/修改文章)</strong>：这是一个节点，代表 Writer Agent 的操作。它会根据当前的状态（是初次撰写还是根据反馈修改）来生成或更新文章。</li>
+<li><strong>Editor (审查文章)</strong>：这是另一个节点，代表 Editor Agent 的操作。它会接收 Writer 的输出，进行审查，并做出决策。</li>
+<li><strong>条件边 (Conditional Edges)</strong>：<ul>
+<li><strong>稿件需要修改 (needs_revision)</strong>：如果 Editor 判断稿件需要修改，这条条件边会将流程导回 Writer 节点，形成一个循环。</li>
+<li><strong>稿件通过 (approved)</strong>：如果 Editor 判断稿件已达到要求，这条条件边会将流程导向结束，文章定稿。</li>
+</ul>
+</li>
+<li><strong>结束 (End)</strong>：流程的终点，标志着文章的最终完成。</li>
+</ul>
+<p>这个图清晰地展示了，通过 LangGraph 的条件边机制，我们如何将两个独立的智能体（Writer 和 Editor）连接成一个具有反馈和迭代能力的协作网络。这就是“群组研讨会”的核心魅力！</p>
+<h2>💻 实战代码演练 (Agency项目中的具体应用)</h2>
+<p>好了，理论说得再漂亮，不如代码来得实在。现在，我们把这套“三方博弈”机制，无缝集成到我们的 AI 内容创作机构中。我们将创建一个 <code>ArticleRevisionGraph</code>，它将包含 <code>Writer</code> 和 <code>Editor</code> 两个核心 Agent，并通过 LangGraph 的 <code>StateGraph</code> 和 <code>add_conditional_edges</code> 功能，实现文章的迭代修改。</p>
+<p>我们将使用一个简化的 <code>AgentState</code> 来模拟文章内容、编辑反馈和修订状态。</p>
+<pre><code class="language-python">import operator
+from typing import TypedDict, Annotated, List, Union
+from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_openai import ChatOpenAI
+from langgraph.graph import StateGraph, END
+import os
+
+# 确保你的OpenAI API Key已经设置在环境变量中
+# os.environ["OPENAI_API_KEY"] = "YOUR_OPENAI_API_KEY"
+
+# 定义图的状态
+# Define the state of the graph
+class AgentState(TypedDict):
+    """
+    Represent the state of our content agency's article revision process.
+    代表我们内容机构文章修订流程的状态。
+    """
+    topic: str  # 文章的主题 The topic of the article
+    current_article: str  # 当前的文章内容 The current content of the article
+    editor_feedback: str  # 编辑的反馈意见 Editor's feedback
+    revision_count: Annotated[int, operator.add]  # 修订次数，使用operator.add累加 Revision count, accumulates using operator.add
+    status: str  # 文章的当前状态 (e.g., "drafting", "revising", "approved") The current status of the article
+
+# 模拟的Writer Agent
+# Simulated Writer Agent
+class WriterAgent:
+    def __init__(self, llm_model: str = "gpt-4o-mini"):
+        self.llm = ChatOpenAI(model=llm_model, temperature=0.7)
+
+    def write_or_revise(self, state: AgentState) -&gt; AgentState:
+        """
+        Writer Agent的节点函数：根据当前状态撰写初稿或修订文章。
+        Writer Agent's node function: Writes the initial draft or revises the article based on the current state.
+        """
+        topic = state["topic"]
+        current_article = state["current_article"]
+        editor_feedback = state["editor_feedback"]
+        revision_count = state["revision_count"]
+
+        # 构建给LLM的提示
+        # Construct the prompt for the LLM
+        if revision_count == 0:
+            prompt = HumanMessage(f"你是一位专业的文章写手。请根据以下主题撰写一篇高质量的文章：\n主题: {topic}\n\n请确保文章结构清晰，内容丰富，语言流畅。")
+            print(f"\n--- Writer: 撰写初稿 (Revision {revision_count}) ---")
+        else:
+            prompt = HumanMessage(f"你是一位专业的文章写手。以下是之前的文章内容和编辑的反馈意见，请根据反馈进行修改和润色：\n\n旧文章内容:\n{current_article}\n\n编辑反馈:\n{editor_feedback}\n\n请提供修改后的完整文章。")
+            print(f"\n--- Writer: 正在修订文章 (Revision {revision_count}) ---")
+            print(f"接收到编辑反馈: {editor_feedback}")
+
+        # 调用LLM生成内容
+        # Call LLM to generate content
+        response = self.llm.invoke([prompt])
+        new_article = response.content
+
+        # 更新状态
+        # Update the state
+        print(f"Writer 生成了新文章或修订稿:\n{new_article[:200]}...") # 打印前200字
+        return {"current_article": new_article, "status": "revising", "revision_count": state["revision_count"] + 1}
+
+# 模拟的Editor Agent
+# Simulated Editor Agent
+class EditorAgent:
+    def __init__(self, llm_model: str = "gpt-4o-mini", max_revisions: int = 3):
+        self.llm = ChatOpenAI(model=llm_model, temperature=0.7)
+        self.max_revisions = max_revisions # 设置最大修订次数
+
+    def review_article(self, state: AgentState) -&gt; AgentState:
+        """
+        Editor Agent的节点函数：审查文章，提供反馈，并决定是否通过或需要修改。
+        Editor Agent's node function: Reviews the article, provides feedback, and decides whether to approve or require revision.
+        """
+        current_article = state["current_article"]
+        revision_count = state["revision_count"]
+
+        # 构建给LLM的提示
+        # Construct the prompt for the LLM
+        prompt = HumanMessage(f"你是一位资深的内容编辑。请审查以下文章，并给出详细的修改意见。如果文章已经达到发布标准，请在反馈中明确说明 '文章已通过'。否则，请详细指出需要改进的地方。\n\n文章内容:\n{current_article}")
+        print(f"\n--- Editor: 正在审查文章 (Revision {revision_count-1}的成果) ---")
+
+        # 调用LLM生成反馈
+        # Call LLM to generate feedback
+        response = self.llm.invoke([prompt])
+        feedback = response.content
+
+        # 判断文章是否通过
+        # Determine if the article is approved
+        status = "needs_revision"
+        if "文章已通过" in feedback or "已达到发布标准" in feedback:
+            status = "approved"
+            print("Editor 判定: 文章已通过！")
+        elif revision_count &gt;= self.max_revisions:
+            status = "approved" # 达到最大修订次数，强制通过（实际项目中可能需要人工介入）
+            feedback += "\n[系统提示]：已达到最大修订次数，文章强制通过，可能需要人工复审。"
+            print(f"Editor 判定: 达到最大修订次数 {self.max_revisions}，强制通过。")
+        else:
+            print("Editor 判定: 文章需要修改。")
+
+        # 更新状态
+        # Update the state
+        print(f"Editor 提供了反馈:\n{feedback[:200]}...") # 打印前200字
+        return {"editor_feedback": feedback, "status": status}
+
+# 定义一个路由函数，用于决定下一步的流向
+# Define a routing function to decide the next flow
+def route_article(state: AgentState) -&gt; str:
+    """
+    根据文章的'status'决定下一步的节点。
+    Routes the article based on its 'status'.
+    """
+    if state["status"] == "approved":
+        print("\n--- 路由: 文章已通过，流程结束 ---")
+        return "end"
+    elif state["status"] == "revising":
+        print("\n--- 路由: 文章需要修改，返回给 Writer ---")
+        return "writer"
+    else:
+        # 默认情况，例如初始状态，或者未知状态，通常会回到Writer
+        # Default case, e.g., initial state, or unknown state, usually goes back to Writer
+        print("\n--- 路由: 初始状态或未知状态，返回给 Writer ---")
+        return "writer"
+
+# 构建LangGraph
+# Build the LangGraph
+def build_article_revision_graph(llm_model: str = "gpt-4o-mini", max_revisions: int = 3):
+    writer_agent = WriterAgent(llm_model=llm_model)
+    editor_agent = EditorAgent(llm_model=llm_model, max_revisions=max_revisions)
+
+    # 初始化StateGraph
+    # Initialize StateGraph
+    workflow = StateGraph(AgentState)
+
+    # 添加节点
+    # Add nodes
+    workflow.add_node("writer", writer_agent.write_or_revise)
+    workflow.add_node("editor", editor_agent.review_article)
+
+    # 设置入口点
+    # Set the entry point
+    workflow.set_entry_point("writer")
+
+    # 添加边
+    # Add edges
+    # Writer 节点完成后，总是交给 Editor 审查
+    # After the Writer node completes, it always goes to the Editor for review
+    workflow.add_edge("writer", "editor")
+
+    # Editor 节点完成后，根据路由函数决定是返回 Writer 还是结束
+    # After the Editor node completes, a routing function decides whether to return to Writer or end
+    workflow.add_conditional_edges(
+        "editor",      # 来源节点 From node
+        route_article, # 路由函数 Routing function
+        {              # 映射表 Mapping table
+            "writer": "writer", # 如果路由函数返回"writer"，则流向"writer"节点 If routing function returns "writer", flow to "writer" node
+            "end": END          # 如果路由函数返回"end"，则流程结束 If routing function returns "end", the process ends
+        }
+    )
+
+    # 编译图
+    # Compile the graph
+    app = workflow.compile()
+    return app
+
+# 运行模拟
+# Run the simulation
+if __name__ == "__main__":
+    # 确保OpenAI API Key已设置
+    if not os.getenv("OPENAI_API_KEY"):
+        print("请设置环境变量 OPENAI_API_KEY。")
+        exit()
+
+    # 构建并运行图
+    # Build and run the graph
+    app = build_article_revision_graph(llm_model="gpt-4o-mini", max_revisions=3) # 可以尝试 gpt-3.5-turbo 或 gpt-4o-mini
+
+    initial_state = {
+        "topic": "探索人工智能在教育领域的应用与挑战",
+        "current_article": "",
+        "editor_feedback": "",
+        "revision_count": 0,
+        "status": "drafting"
+    }
+
+    print("--- 开始文章创作与修订流程 ---")
+    final_state = None
+    for s in app.stream(initial_state):
+        print(s) # 打印每一步的状态变化
+        final_state = s
+
+    print("\n--- 流程结束 ---")
+    print("\n最终文章状态:")
+    print(f"主题: {final_state['editor']['topic']}")
+    print(f"最终修订次数: {final_state['editor']['revision_count'] - 1}") # 减1是因为第一次是0，然后每次+1
+    print(f"最终状态: {final_state['editor']['status']}")
+    print("\n--- 最终文章内容 ---")
+    print(final_state['editor']['current_article'])
+    print("\n--- 最终编辑反馈 ---")
+    print(final_state['editor']['editor_feedback'])
+</code></pre>
+<h3>代码解析：</h3>
+<ol>
+<li><strong><code>AgentState</code> 定义</strong>：<ul>
+<li>我们使用 <code>TypedDict</code> 定义了 <code>AgentState</code>，它包含了 <code>topic</code>、<code>current_article</code>、<code>editor_feedback</code>、<code>revision_count</code> 和 <code>status</code>。</li>
+<li><code>revision_count: Annotated[int, operator.add]</code> 是一个 LangGraph 特有的高级用法，它告诉 LangGraph 在合并状态时，对于 <code>revision_count</code> 字段，要使用 <code>operator.add</code> 进行累加，而不是简单的覆盖。这意味着每次节点返回新的 <code>revision_count</code>，都会在原有基础上累加。这非常适合计数器。</li>
+</ul>
+</li>
+<li><strong><code>WriterAgent</code></strong>：<ul>
+<li><code>write_or_revise</code> 方法是 Writer 节点的核心逻辑。</li>
+<li>它根据 <code>revision_count</code> 判断是初次撰写还是进行修改。</li>
+<li>如果是修改，它会把 <code>current_article</code> 和 <code>editor_feedback</code> 作为上下文传递给 LLM，让 LLM 进行有针对性的修改。</li>
+<li>返回一个新的 <code>current_article</code> 和更新后的 <code>status</code> 及 <code>revision_count</code>。</li>
+</ul>
+</li>
+<li><strong><code>EditorAgent</code></strong>：<ul>
+<li><code>review_article</code> 方法是 Editor 节点的核心逻辑。</li>
+<li>它接收 <code>current_article</code>，并要求 LLM 给出反馈。</li>
+<li>关键在于，它会检查 LLM 的反馈中是否包含“文章已通过”或“已达到发布标准”等关键词，以此来判断文章是否可以定稿。</li>
+<li>为了防止无限循环，我们引入了 <code>max_revisions</code> 参数。如果达到最大修订次数，即使 Editor 还没说通过，也会强制通过，这在实际项目中是防止死循环的重要机制（当然，通常会伴随人工介入的提醒）。</li>
+<li>返回 <code>editor_feedback</code> 和更新后的 <code>status</code>。</li>
+</ul>
+</li>
+<li><strong><code>route_article</code> 路由函数</strong>：<ul>
+<li>这是 <code>add_conditional_edges</code> 的核心，它接收当前的 <code>AgentState</code>，并返回一个字符串，这个字符串将作为键去匹配 <code>add_conditional_edges</code> 的映射表，从而决定流程的走向。</li>
+<li>如果 <code>status</code> 是 <code>approved</code>，返回 <code>"end"</code>，流程终止。</li>
+<li>如果 <code>status</code> 是 <code>revising</code>，返回 <code>"writer"</code>，流程回到 Writer 节点。</li>
+</ul>
+</li>
+<li><strong>图的构建 (<code>build_article_revision_graph</code>)</strong>：<ul>
+<li><code>workflow = StateGraph(AgentState)</code>：创建了一个基于 <code>AgentState</code> 的状态图。</li>
+<li><code>workflow.add_node("writer", writer_agent.write_or_revise)</code> 和 <code>workflow.add_node("editor", editor_agent.review_article)</code>：将 Writer 和 Editor 的方法注册为图中的节点。</li>
+<li><code>workflow.set_entry_point("writer")</code>：指定流程从 Writer 开始。</li>
+<li><code>workflow.add_edge("writer", "editor")</code>：Writer 完成后，无条件地将结果传递给 Editor。</li>
+<li><code>workflow.add_conditional_edges("editor", route_article, {"writer": "writer", "end": END})</code>：这是本期的核心！Editor 完成后，根据 <code>route_article</code> 函数的判断结果，决定是回到 <code>writer</code> 节点，还是走向 <code>END</code>（结束）。</li>
+</ul>
+</li>
+<li><strong>运行模拟 (<code>if __name__ == "__main__":</code>)</strong>：<ul>
+<li>设置初始状态 <code>initial_state</code>，包括文章主题、空内容、空反馈和初始修订次数。</li>
+<li><code>app.stream(initial_state)</code> 迭代执行图，每次迭代都会打印当前的状态变化，让你清晰地看到流程是如何一步步推进的。</li>
+</ul>
+</li>
+</ol>
+<p>通过这段代码，你亲手构建了一个能够自我迭代、自我优化的内容创作流程。这不仅仅是两个 Agent 的简单连接，它是一个真正意义上的<strong>智能体网络 (Network of Agents)</strong>，能够模拟人类团队的协作和反馈循环。</p>
+<h2>坑与避坑指南</h2>
+<p>这种带有循环和反馈的复杂工作流，虽然强大，但也容易踩坑。作为高级讲师，我必须给你提前打好预防针。</p>
+<ol>
+<li><strong>无限循环陷阱 (Infinite Loop Trap)</strong>：<ul>
+<li><strong>坑点</strong>：Editor 总是觉得不满意，Writer 总是改不到位，导致流程永远在 Writer-Editor 之间循环，永不停止。你的 API 费用会像流水一样哗哗地流走。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong>设置最大修订次数 (<code>max_revisions</code>)</strong>：这是最直接有效的方法。在 Editor Agent 中加入一个计数器，当达到预设的最大修订次数时，强制结束循环（例如，标记为“需要人工复审”或直接“通过”）。我们在代码中已经实现了这一点。</li>
+<li><strong>清晰的通过标准</strong>：在给 LLM (Editor) 的提示中，明确指出“通过”的标准，例如“文章满足以下所有条件：结构完整、论点清晰、语言流畅、无语法错误”。让 LLM 有明确的判断依据。</li>
+<li><strong>逐步收敛的反馈</strong>：设计 Editor 的反馈，使其每次都尝试让 Writer 更接近目标，而不是每次都提出新的、不相关的问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>状态管理混乱 (Chaotic State Management)</strong>：<ul>
+<li><strong>坑点</strong>：<code>AgentState</code> 设计不合理，关键信息没有在节点间正确传递或更新，导致某个 Agent 拿不到它需要的数据，或者拿到的是旧数据。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong><code>TypedDict</code> 明确结构</strong>：始终使用 <code>TypedDict</code> 定义 <code>AgentState</code>，它提供了类型检查，能有效避免拼写错误和数据结构不一致。</li>
+<li><strong><code>Annotated</code> 用于合并策略</strong>：对于需要累加或特殊合并的字段（如 <code>revision_count</code>），使用 <code>Annotated</code> 配合 <code>operator</code> 模块，确保状态正确更新。</li>
+<li><strong>节点职责单一</strong>：每个节点只负责更新自己相关的状态字段，不要试图在一个节点里修改所有状态，避免副作用。</li>
+<li><strong>日志打印</strong>：在每个节点执行前后，打印关键状态信息，可以帮助你追踪数据流向和状态变化。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>LLM 输出不确定性 (LLM Output Volatility)</strong>：<ul>
+<li><strong>坑点</strong>：LLM 有时候会“胡说八道”，Editor LLM 可能不会按照你预期的格式给出“通过”或“需要修改”的明确信号，导致路由函数判断失误。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong>鲁棒的路由逻辑</strong>：<code>route_article</code> 函数应该对 LLM 的输出有足够的容错性。例如，不要只检查一个精确的字符串，而是检查多个同义词或短语 (<code>"文章已通过" in feedback or "已达到发布标准" in feedback</code>)。</li>
+<li><strong>系统级提示工程</strong>：在 Agent 的 LLM 提示中，明确要求 LLM 以特定格式输出关键信息，例如“请在反馈的最后一行，明确写出 'STATUS: APPROVED' 或 'STATUS: REVISE'”。这样路由函数就能更准确地解析。</li>
+<li><strong>温度参数调整</strong>：在关键决策点，可以适当降低 LLM 的 <code>temperature</code> 参数，使其输出更稳定和确定。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>调试复杂图困难 (Debugging Complex Graphs)</strong>：<ul>
+<li><strong>坑点</strong>：当图的节点和边增多时，追踪问题变得非常困难。</li>
+<li><strong>避坑指南</strong>：<ul>
+<li><strong>使用 <code>app.stream()</code></strong>：如代码所示，<code>stream()</code> 方法可以让你逐步观察每个节点执行后的状态变化，这是调试复杂图的利器。</li>
+<li><strong>细致的 <code>print</code> 日志</strong>：在每个 Agent 内部加入详细的 <code>print</code> 语句，输出当前接收到的输入、生成的输出和做出的决策。</li>
+<li><strong>可视化工具</strong>：LangGraph 提供了 <code>get_graph().draw_mermaid_png()</code> 等方法来生成图的可视化，这对于理解图的结构和潜在问题非常有帮助。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>记住，构建复杂的 AI 系统，就像搭乐高积木，每一块都要放对位置，并且要预想好它可能带来的连锁反应。多思考，多实践，你就能成为 LangGraph 的高手！</p>
+<h2>📝 本期小结</h2>
+<p>恭喜你！在本期《LangGraph 多智能体专家课》中，我们攻克了一个高级且至关重要的模式——<strong>群组研讨会 (Network of Agents)</strong>。我们不再满足于线性的任务流，而是深入 LangGraph 的核心，利用 <code>StateGraph</code>、<code>add_conditional_edges</code> 和巧妙的 <code>AgentState</code> 管理，构建了一个能够<strong>自我迭代、自我反馈</strong>的文章创作与修订循环。</p>
+<p>我们模拟了 AI 内容机构中 Writer 和 Editor 之间真实的“三方博弈”：Writer 提交初稿，Editor 严格审查并给出反馈，如果稿件未达标，则发回 Writer 进行修改，直到 Editor 满意为止。这个环形流不仅提升了内容产出的质量，更让你的 AI Agents 具备了真正的**“学习”和“优化”**能力。</p>
+<p>你学会了如何：</p>
+<ul>
+<li>巧妙设计 <code>AgentState</code>，特别是利用 <code>Annotated</code> 进行状态的累加合并。</li>
+<li>构建 Writer 和 Editor 智能体，使其能够根据上下文进行撰写、审查和决策。</li>
+<li>运用 <code>add_conditional_edges</code> 和路由函数 (<code>route_article</code>)，根据智能体的决策动态调整工作流。</li>
+<li>以及，最重要的，掌握了<strong>防止无限循环</strong>和<strong>有效调试复杂图</strong>的高级技巧。</li>
+</ul>
+<p>这种带有反馈循环的智能体网络，是构建任何复杂、适应性强 AI 系统的基石。无论是内容创作、代码审查、产品设计，还是医疗诊断，只要有迭代和优化的需求，这个模式都将大放异彩。</p>
+<p>下一期，我们将在现有基础上，继续探索更多高级的协作模式和优化技巧。保持热情，下期再见！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-19/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-2/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State)</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

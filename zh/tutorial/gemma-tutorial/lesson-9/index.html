@@ -1,0 +1,413 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 — Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration — AgentUpdate.ai</title><meta name="description" content="第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-9/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-9/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-9/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-9/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta property="og:description" content="第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-9/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta name="twitter:description" content="第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/gemma-tutorial/lesson-9/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/gemma-tutorial/lesson-9/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 认识 Gemma：Google 开源模型家族全景 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 本地极速部署：Ollama + Gemma 一键启动 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | Hugging Face Transformers 推理实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Google Cloud Vertex AI 云端部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 多模态能力解锁：图片理解与视觉问答 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 128K 超长上下文实战：文档分析与代码审查 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Function Calling 与结构化输出 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | LoRA 微调入门：用 PEFT 定制你的专属 Gemma </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-9/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | JAX/Flax 原生微调（官方推荐路线） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | 微调效果评估与模型导出 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | Gemma + LangChain/LlamaIndex：RAG 应用构建 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | Gemma + vLLM：高性能推理服务部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | 终局实战：构建你的私有 AI 助手产品 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/gemma-tutorial/" data-astro-cid-ilhxcym7>Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Google Gemma Masterclass: Deployment, Fine-Tuning & Agent Integration","item":"https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/"},{"@type":"ListItem","position":4,"name":"第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><h2>🎯 学习目标</h2>
+<ul>
+<li>理解 QLoRA (Quantized LoRA) 的核心原理，包括 4-bit NormalFloat (NF4) 量化和双重量化 (Double Quantization)。</li>
+<li>掌握如何使用 <code>bitsandbytes</code> 库在 Hugging Face 生态中对 Gemma 模型进行 4-bit 量化加载。</li>
+<li>学习配置 <code>peft</code> 库的 <code>LoraConfig</code> 和 <code>trl</code> 库的 <code>SFTTrainer</code>，以实现 Gemma 12B/27B 模型的 QLoRA 微调。</li>
+<li>掌握在 RTX 3090/4090 等消费级显卡上进行大模型微调的显存优化技巧，并估算 Gemma 12B/27B 模型的显存需求。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<p>随着大型语言模型 (LLM) 规模的不断扩大，对计算资源的需求也日益增长。Gemma 12B 和 27B 模型虽然性能强大，但其在消费级显卡上进行全参数微调几乎是不可能的。QLoRA 技术应运而生，它通过极致的量化和参数高效微调 (PEFT) 策略，使得我们能够在有限的显存下（如 24GB 的 RTX 3090/4090）对大型模型进行微调。</p>
+<h3>9.1 LoRA 回顾与 QLoRA 诞生背景</h3>
+<p>在第 08 期课程中，我们详细探讨了 LoRA (Low-Rank Adaptation) 技术。LoRA 的核心思想是冻结预训练模型的大部分权重，只在模型中注入少量可训练的低秩适配器 (adapter)。这些适配器在训练过程中学习任务特定的知识，而原始模型权重保持不变。这种方法大大减少了需要训练的参数数量，从而降低了计算成本和显存占用。</p>
+<p>然而，即使是 LoRA，对于 Gemma 12B/27B 这种规模的模型，其原始的 16-bit 浮点权重仍然需要占用大量显存。例如，一个 12B 的模型（约 120 亿参数）如果以 FP16 存储，仅模型权重就需要 12B * 2 字节 ≈ 24GB 的显存。这还不包括优化器状态、梯度、激活值等。因此，对于 24GB 显存的消费级显卡来说，即使是 LoRA 微调也可能捉襟见肘。</p>
+<p><strong>QLoRA (Quantized LoRA)</strong> 正是为了解决这个问题而提出的。它在 LoRA 的基础上进一步引入了 <strong>4-bit 量化</strong>，旨在将整个预训练模型量化到 4-bit，同时保持 LoRA 适配器本身的 16-bit 精度进行训练，从而大幅降低显存占用。</p>
+<h3>9.2 QLoRA 核心原理：4-bit NormalFloat 与双重量化</h3>
+<p>QLoRA 的主要创新点在于其独特的 4-bit 量化策略，这主要通过 <code>bitsandbytes</code> 库实现。</p>
+<h4>9.2.1 4-bit NormalFloat (NF4) 量化</h4>
+<p>传统的量化方法（如 int8）通常存在精度损失问题。QLoRA 引入了 <strong>4-bit NormalFloat (NF4)</strong> 数据类型，这是一种专为正态分布数据设计的量化格式。LLM 的权重通常呈现出近似正态分布的特性，因此 NF4 能够更有效地捕捉这些权重的分布，从而在极低的比特数下保持更好的精度。</p>
+<p>NF4 量化过程大致如下：</p>
+<ol>
+<li><strong>分块量化 (Block-wise Quantization):</strong> 模型权重被分成小块，每个块独立进行量化。这样做是为了适应权重在不同层或不同部分可能存在的不同分布范围。</li>
+<li><strong>归一化 (Normalization):</strong> 在每个块内部，权重首先被归一化到 <code>[-1, 1]</code> 的范围。</li>
+<li><strong>分位数量化 (Quantile Quantization):</strong> NF4 使用非线性的分位数量化。它不是简单地将数据均匀地映射到量化级别，而是根据权重的分布特性，将更多的量化级别分配给数据密度更高的区域（即靠近零的区域），从而减少量化误差。</li>
+<li><strong>存储为 4-bit 整数:</strong> 归一化后的权重值被映射并存储为 4-bit 的整数。</li>
+</ol>
+<p>在推理或训练时，这些 4-bit 整数会被反量化回浮点数进行计算。关键是，反量化过程是可微分的，这使得 QLoRA 能够与梯度下降相结合。</p>
+<h4>9.2.2 双重量化 (Double Quantization, DQ)</h4>
+<p>双重量化是 QLoRA 提出的另一个显存优化技巧。在 4-bit 量化过程中，为了存储每个量化块所需的<strong>量化常数 (quantization constants)</strong>（如缩放因子和零点），这些常数本身也需要一定的显存。虽然它们数量相对较少，但对于超大规模模型，累积起来也不容忽视。</p>
+<p>双重量化就是对这些<strong>量化常数本身再进行一次 8-bit 量化</strong>。这意味着，我们不再以 16-bit 浮点数存储量化常数，而是将它们量化到 8-bit 整数，从而进一步节省显存。</p>
+<p>结合 NF4 和双重量化，QLoRA 能够将 16-bit 的模型权重压缩到平均每参数低于 4-bit 的存储空间，从而显著减少显存占用。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[原始 FP16 模型权重] --&gt; B{分块};
+    B --&gt; C[块 1 (FP16)];
+    B --&gt; D[块 2 (FP16)];
+    C --&gt; E[NF4 量化];
+    D --&gt; F[NF4 量化];
+    E --&gt; G[4-bit 量化权重];
+    E --&gt; H[量化常数 (FP16)];
+    G --&gt; I[存储在 GPU 显存];
+    H --&gt; J[双重量化 (8-bit)];
+    J --&gt; K[8-bit 量化常数];
+    K --&gt; L[存储在 GPU 显存];
+
+    subgraph QLoRA 核心
+        E; F; G; H; J; K; L
+    end
+
+    M[LoRA 适配器 (FP16/BF16)] --&gt; N[训练可更新];
+    I -- 反量化 --&gt; O[FP16/BF16 权重];
+    K -- 反量化 --&gt; P[FP16/BF16 量化常数];
+    O + P --&gt; Q[用于前向/后向计算];
+    Q + N --&gt; R[模型输出与梯度];</pre></div><p><strong>总结 QLoRA 的优势：</strong></p>
+<ul>
+<li><strong>极低的显存占用：</strong> 这是 QLoRA 最显著的优势，使得在 24GB 消费级显卡上微调 Gemma 12B/27B 成为可能。</li>
+<li><strong>接近 FP16 的性能：</strong> NF4 量化和双重量化在保持模型性能方面表现出色，通常只带来微小的精度损失。</li>
+<li><strong>训练速度快：</strong> 虽然量化/反量化会带来一些计算开销，但由于模型大部分参数是冻结的，整体训练速度仍然很快。</li>
+</ul>
+<h3>9.3 bitsandbytes 配置详解</h3>
+<p><code>bitsandbytes</code> 库是实现 QLoRA 的核心。在 Hugging Face <code>transformers</code> 库中加载模型时，可以通过 <code>BitsAndBytesConfig</code> 来配置 4-bit 量化。</p>
+<pre><code class="language-python">from transformers import BitsAndBytesConfig
+import torch
+
+# 定义 4-bit 量化配置
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,                   # 启用 4-bit 量化
+    bnb_4bit_quant_type="nf4",           # 4-bit 量化类型，推荐使用 "nf4"
+    bnb_4bit_use_double_quant=True,      # 启用双重量化，进一步节省显存
+    bnb_4bit_compute_dtype=torch.bfloat16 # 计算数据类型，推荐使用 bfloat16 (BF16)
+)
+</code></pre>
+<ul>
+<li><code>load_in_4bit=True</code>: 告诉 <code>transformers</code> 在加载模型时进行 4-bit 量化。</li>
+<li><code>bnb_4bit_quant_type="nf4"</code>: 指定 4-bit 量化的类型为 NormalFloat 4 (NF4)。这是 QLoRA 论文中推荐的量化类型，因为它能更好地处理具有正态分布的权重。</li>
+<li><code>bnb_4bit_use_double_quant=True</code>: 启用双重量化。对量化常数进行 8-bit 量化，进一步减少总体的显存占用。</li>
+<li><code>bnb_4bit_compute_dtype=torch.bfloat16</code>: 指定计算数据类型。在 4-bit 权重被反量化后，它们会以这个数据类型进行前向和后向传播计算。<ul>
+<li><strong><code>torch.bfloat16</code> (BF16):</strong> 推荐选项，因为它在数值范围上与 FP32 相同，但在精度上略低于 FP16。对于大多数 LLM 训练，BF16 已经足够，并且在现代 GPU（如 RTX 3090/4090）上通常有硬件加速。</li>
+<li><code>torch.float16</code> (FP16): 如果你的 GPU 不支持 BF16 (如较老的 Volta 架构)，或者你发现 BF16 导致收敛问题，可以尝试 FP16。但请注意 FP16 的数值范围比 BF16 小，可能更容易出现溢出/下溢。</li>
+<li><code>torch.float32</code>: 如果选择 FP32，虽然精度最高，但会导致计算量和显存占用增加，失去了部分量化带来的优势。通常不推荐。</li>
+</ul>
+</li>
+</ul>
+<h3>9.4 显存优化技巧与 Gemma 显存需求估算</h3>
+<p>除了 QLoRA 本身，还有一些通用的显存优化技巧可以与 QLoRA 结合使用，进一步降低显存占用，提高训练稳定性。</p>
+<h4>9.4.1 梯度累积 (Gradient Accumulation)</h4>
+<p>梯度累积允许你使用较小的批次大小（<code>per_device_train_batch_size</code>）进行多次前向和后向传播，然后累积它们的梯度，每 <code>gradient_accumulation_steps</code> 步才执行一次优化器更新。这等效于使用一个更大的有效批次大小，同时降低了每次迭代所需的显存。</p>
+<ul>
+<li><strong>优点:</strong> 可以在显存不足以容纳大批次时，模拟大批次训练的效果。</li>
+<li><strong>缺点:</strong> 训练时间会相应增加，因为需要进行更多的前向/后向传播。</li>
+</ul>
+<h4>9.4.2 梯度检查点 (Gradient Checkpointing)</h4>
+<p>梯度检查点是一种通过重新计算部分激活值来节省显存的策略。它不是存储所有层的激活值，而是在前向传播时只存储少量关键点的激活值。在后向传播时，如果需要某个层的激活值，则从最近的关键点重新计算。</p>
+<ul>
+<li><strong>优点:</strong> 显著降低激活值带来的显存占用。</li>
+<li><strong>缺点:</strong> 增加了计算量，导致训练速度变慢。</li>
+</ul>
+<h4>9.4.3 Gemma 12B/27B QLoRA 微调显存估算</h4>
+<p>我们来估算一下在 RTX 3090/4090 (24GB VRAM) 上 QLoRA 微调 Gemma 12B/27B 的显存需求。</p>
+<p><strong>基础模型大小：</strong></p>
+<ul>
+<li><strong>Gemma 12B:</strong> 约 120 亿参数。<ul>
+<li>FP16 存储: 12B * 2 字节 ≈ 24 GB</li>
+<li><strong>QLoRA 4-bit 存储 (模型权重):</strong> 12B * (4/8 字节) ≈ 6 GB (实际会略高，因为有量化常数等开销，但通常在 6-8GB 范围)</li>
+</ul>
+</li>
+<li><strong>Gemma 27B:</strong> 约 270 亿参数。<ul>
+<li>FP16 存储: 27B * 2 字节 ≈ 54 GB</li>
+<li><strong>QLoRA 4-bit 存储 (模型权重):</strong> 27B * (4/8 字节) ≈ 13.5 GB (实际在 14-18GB 范围)</li>
+</ul>
+</li>
+</ul>
+<p><strong>QLoRA 微调时的显存构成：</strong></p>
+<ol>
+<li><strong>模型权重:</strong> QLoRA 量化后的模型权重，是显存占用的最大部分。<ul>
+<li>Gemma 12B: ~6-8 GB</li>
+<li>Gemma 27B: ~14-18 GB</li>
+</ul>
+</li>
+<li><strong>LoRA 适配器:</strong> 通常以 FP16/BF16 存储，参数量远小于主模型，显存占用较小（通常几十到几百 MB）。</li>
+<li><strong>优化器状态 (Optimizer States):</strong><ul>
+<li>对于 AdamW 优化器，每个可训练参数需要 2 个状态（动量和方差）。</li>
+<li>LoRA 参数量假设为 0.1% * 12B = 12M 参数。</li>
+<li>12M * 2 (状态) * 2 (字节/状态，FP16) ≈ 48 MB。</li>
+<li>对于 QLoRA，由于 LoRA 适配器是 FP16/BF16，优化器状态也是 FP16/BF16。</li>
+</ul>
+</li>
+<li><strong>梯度 (Gradients):</strong><ul>
+<li>与 LoRA 适配器参数量相同，通常与优化器状态量级接近。</li>
+<li>12M * 2 字节 (FP16) ≈ 24 MB。</li>
+</ul>
+</li>
+<li><strong>激活值 (Activations):</strong><ul>
+<li>这部分取决于批次大小、序列长度和模型结构。在全参数微调中，激活值是巨大的。</li>
+<li>QLoRA 配合梯度检查点可以大幅减少激活值的显存占用，使其成为一个可控的变量。</li>
+</ul>
+</li>
+<li><strong>其他开销:</strong> PyTorch 内部开销、CUDA 上下文、操作系统等，通常几百 MB 到 1-2 GB。</li>
+</ol>
+<p><strong>综合估算 (以 Gemma 27B 为例，假设 RTX 4090 24GB VRAM)：</strong></p>
+<ul>
+<li><strong>模型权重 (QLoRA 4-bit):</strong> ~14-18 GB</li>
+<li><strong>LoRA 适配器、优化器状态、梯度:</strong> ~100-500 MB (取决于 LoRA 秩和优化器)</li>
+<li><strong>激活值 (使用梯度检查点):</strong> ~2-5 GB (取决于序列长度和批次大小)</li>
+<li><strong>其他开销:</strong> ~1-2 GB</li>
+</ul>
+<p><strong>总计:</strong> ~17-25 GB</p>
+<p><strong>结论:</strong></p>
+<ul>
+<li><strong>Gemma 12B:</strong> 配合 QLoRA 和梯度检查点，在 RTX 3090/4090 (24GB) 上进行微调是完全可行的，甚至可以尝试更大的 batch size 或序列长度。</li>
+<li><strong>Gemma 27B:</strong> 配合 QLoRA 和梯度检查点，在 RTX 3090/4090 (24GB) 上进行微调会非常紧张，可能需要将 <code>per_device_train_batch_size</code> 设为 1，并配合 <code>gradient_accumulation_steps</code>。如果显存仍然不足，可能需要尝试更短的序列长度或更小的 LoRA 秩。</li>
+</ul>
+<hr>
+<h2>💻 实战演示</h2>
+<p>本节将演示如何在消费级显卡上使用 QLoRA 微调 Gemma 2B 模型。虽然我们这里使用 2B 模型进行演示以确保在大多数机器上都能运行，但所使用的配置和原理完全适用于 Gemma 12B/27B。你只需要将模型名称替换为 <code>google/gemma-7b</code> 或 <code>google/gemma-27b</code> 即可。</p>
+<h3>9.5 环境准备</h3>
+<p>首先，安装所有必要的库。</p>
+<pre><code class="language-bash"># 确保 PyTorch 已正确安装，推荐使用 CUDA 11.8 或 12.1+
+# 例如：pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
+
+pip install -U transformers peft bitsandbytes accelerate trl sentencepiece
+pip install datasets # 用于处理数据集
+</code></pre>
+<h3>9.6 QLoRA 微调 Gemma 模型</h3>
+<p>我们将创建一个 Python 脚本，演示 QLoRA 微调的完整流程。</p>
+<pre><code class="language-python">import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TrainingArguments
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from trl import SFTTrainer
+from datasets import Dataset # 使用 Hugging Face datasets 库
+
+# 1. 配置 QLoRA 量化
+# --------------------------------------------------------------------------------
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,                   # 启用 4-bit 量化
+    bnb_4bit_quant_type="nf4",           # 4-bit 量化类型：NormalFloat 4
+    bnb_4bit_use_double_quant=True,      # 启用双重量化
+    bnb_4bit_compute_dtype=torch.bfloat16 # 计算数据类型，推荐 bfloat16
+)
+
+# 2. 加载 Gemma 模型和分词器
+# --------------------------------------------------------------------------------
+# 使用 Gemma 2B Instruction 调优模型作为基座
+# 如果要微调 Gemma 7B/12B/27B，只需修改模型名称即可
+# 注意：Gemma 27B 需要 Hugging Face 权限，请确保已登录并同意条款。
+# 例如：google/gemma-7b-it, google/gemma-12b-it, google/gemma-27b-it
+model_name = "google/gemma-2b-it" # 替换为你想微调的 Gemma 模型
+
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+# Gemma 模型的填充 token 设置
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right" # 对于因果语言模型，通常右侧填充
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    quantization_config=bnb_config,
+    device_map="auto", # 自动将模型层分配到可用的 GPU 设备
+    torch_dtype=torch.bfloat16 # 确保模型加载时使用 bfloat16
+)
+
+# 3. 准备模型进行 k-bit 训练 (QLoRA)
+# --------------------------------------------------------------------------------
+# 启用梯度检查点以节省显存 (但会增加训练时间)
+model.gradient_checkpointing_enable()
+# 对模型进行 k-bit 训练的准备，例如将所有 nn.Linear 层转换为量化版本，并处理一些边缘情况
+model = prepare_model_for_kbit_training(model)
+
+# 4. 配置 LoRA
+# --------------------------------------------------------------------------------
+# r: LoRA 秩，决定适配器的参数量，越大则表达能力越强，显存占用也略高
+# lora_alpha: LoRA 缩放因子，通常设置为 r 的两倍
+# target_modules: 目标模块，通常是查询、键、值、输出投影层，这些层通常是 nn.Linear
+# lora_dropout: LoRA 适配器上的 Dropout 概率
+# bias: 是否对 LoRA 层的 bias 进行微调，"none" 表示不微调 bias
+peft_config = LoraConfig(
+    r=16, # LoRA 秩，可以根据显存和性能需求调整，通常 8, 16, 32, 64
+    lora_alpha=32, # LoRA 缩放因子，通常是 r 的两倍
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM", # 任务类型：因果语言模型
+)
+
+# 将 LoRA 适配器添加到量化模型中
+model = get_peft_model(model, peft_config)
+# 打印模型的可训练参数，会看到只有 LoRA 适配器是可训练的
+model.print_trainable_parameters()
+# Expected output: trainable params: 3,932,160 || all params: 2,509,926,400 || trainable%: 0.15663365851493638
+
+# 5. 准备训练数据集
+# --------------------------------------------------------------------------------
+# 创建一个简单的指令微调数据集
+# 实际应用中，你会加载一个真实的指令数据集，例如 Alpaca、ShareGPT 等
+# 确保数据集格式为 [{'instruction': '...', 'input': '...', 'output': '...'}, ...]
+# 或者直接是格式化好的对话
+def format_instruction(sample):
+    # Gemma 模型的指令微调格式
+    # 详见：https://huggingface.co/google/gemma-2b-it#usage-with-transformers
+    prompt = f"&lt;bos&gt;&lt;start_of_turn&gt;user\n{sample['instruction']}\n&lt;end_of_turn&gt;\n&lt;start_of_turn&gt;model\n{sample['output']}&lt;end_of_turn&gt;&lt;eos&gt;"
+    return {"text": prompt}
+
+# 示例数据集
+data = [
+    {"instruction": "解释一下什么是量子力学。", "output": "量子力学是物理学的一个分支，研究原子和亚原子尺度的物质和能量行为。"},
+    {"instruction": "如何用Python实现斐波那契数列？", "output": "可以使用递归或迭代的方式。迭代方式通常更高效。例如：\n```python\ndef fibonacci_iterative(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n```"},
+    {"instruction": "推荐一本关于人工智能的好书。", "output": "《人工智能：一种现代方法》(Artificial Intelligence: A Modern Approach) 是经典教材。"},
+    {"instruction": "描述一下地球的自转。", "output": "地球绕着地轴自西向东旋转，完成一周大约需要23小时56分4秒。"}
+]
+
+# 将列表转换为 Hugging Face Dataset
+dataset = Dataset.from_list(data)
+# 格式化数据集
+formatted_dataset = dataset.map(format_instruction)
+
+# 6. 配置训练参数
+# --------------------------------------------------------------------------------
+output_dir = "./gemma_qlora_finetuned"
+training_args = TrainingArguments(
+    output_dir=output_dir,
+    num_train_epochs=3,                  # 训练轮次
+    per_device_train_batch_size=1,       # 每个 GPU 上的训练批次大小，QLoRA 微调 Gemma 27B 可能需要设置为 1
+    gradient_accumulation_steps=4,       # 梯度累积步数，模拟更大的批次大小 (有效批次大小为 1 * 4 = 4)
+    optim="paged_adamw_8bit",            # 优化器，推荐使用 paged_adamw_8bit 进一步节省显存
+    learning_rate=2e-4,                  # 学习率
+    fp16=False,                          # 如果使用 BF16，则不需要 FP16
+    bf16=True,                           # 启用 BF16 训练
+    max_grad_norm=0.3,                   # 最大梯度范数，防止梯度爆炸
+    warmup_ratio=0.03,                   # 学习率预热比例
+    lr_scheduler_type="cosine",          # 学习率调度器类型
+    logging_steps=25,                    # 每隔多少步记录一次日志
+    save_steps=50,                       # 每隔多少步保存一次检查点
+    group_by_length=True,                # 按序列长度分组，提高训练效率
+    report_to="none",                    # 不报告到任何平台，如 wandb
+    disable_tqdm=False,                  # 显示 tqdm 进度条
+    # 开启梯度检查点 (已在 prepare_model_for_kbit_training 后启用)
+    # gradient_checkpointing=True,
+    # gradient_checkpointing_kwargs={'use_reentrant':False} # 推荐设置
+)
+
+# 7. 使用 SFTTrainer 进行训练
+# --------------------------------------------------------------------------------
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=formatted_dataset,
+    peft_config=peft_config,
+    tokenizer=tokenizer,
+    args=training_args,
+    packing=False, # 是否将多个短序列打包成一个长序列，节省计算，但需要处理好数据集
+    max_seq_length=512, # 最大序列长度，根据显存调整
+    dataset_text_field="text", # 指定数据集中文本字段的名称
+)
+
+# 开始训练
+print("Starting training...")
+trainer.train()
+print("Training finished.")
+
+# 8. 保存 LoRA 适配器
+# --------------------------------------------------------------------------------
+# 只保存 LoRA 适配器，而不是整个量化模型
+trainer.save_model(output_dir)
+print(f"LoRA adapters saved to {output_dir}")
+
+# 9. 加载适配器并进行推理 (可选)
+# --------------------------------------------------------------------------------
+from peft import PeftModel
+
+print("\n--- Performing Inference ---")
+# 重新加载原始的量化基座模型
+base_model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    quantization_config=bnb_config,
+    device_map="auto",
+    torch_dtype=torch.bfloat16
+)
+
+# 加载保存的 LoRA 适配器
+finetuned_model = PeftModel.from_pretrained(base_model, output_dir)
+finetuned_model = finetuned_model.eval() # 设置为评估模式
+
+# 准备推理输入
+prompt_text = "&lt;bos&gt;&lt;start_of_turn&gt;user\n推荐一个适合初学者的编程语言。\n&lt;end_of_turn&gt;\n&lt;start_of_turn&gt;model\n"
+input_ids = tokenizer(prompt_text, return_tensors="pt").to("cuda")
+
+# 生成文本
+with torch.no_grad():
+    outputs = finetuned_model.generate(**input_ids, max_new_tokens=100, do_sample=True, top_p=0.9, temperature=0.7)
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=False)
+
+print("Generated Text:")
+print(generated_text)
+
+# 预期输出可能类似（取决于训练效果）：
+# &lt;bos&gt;&lt;start_of_turn&gt;user
+# 推荐一个适合初学者的编程语言。
+# &lt;end_of_turn&gt;
+# &lt;start_of_turn&gt;model
+# 对于初学者，Python 是一个非常好的选择。它语法简洁，易于学习，拥有庞大的社区和丰富的库支持，可以应用于Web开发、数据科学、人工智能等多个领域。此外，Python 的资源非常丰富，有很多免费的教程和课程可以帮助你快速入门。&lt;end_of_turn&gt;&lt;eos&gt;
+</code></pre>
+<p><strong>代码说明：</strong></p>
+<ol>
+<li><strong><code>BitsAndBytesConfig</code></strong>: 核心配置，启用 4-bit NF4 量化和双重量化，并指定 <code>bfloat16</code> 作为计算数据类型。</li>
+<li><strong><code>AutoModelForCausalLM.from_pretrained</code></strong>: 加载 Gemma 模型时传入 <code>quantization_config</code> 和 <code>device_map="auto"</code>。<code>device_map="auto"</code> 会自动将模型的层分配到可用的 GPU 上，这对于大型模型非常有用。</li>
+</ol>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-8/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 08 期 | LoRA 微调入门：用 PEFT 定制你的专属 Gemma</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-10/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 10 期 | JAX/Flax 原生微调（官方推荐路线）</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

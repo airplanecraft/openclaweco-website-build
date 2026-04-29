@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 1 期：Dify 是什么？开源 LLM 平台全景概览 — Dify 全攻略：从零到生产级 LLM 应用开发 — AgentUpdate.ai</title><meta name="description" content="深度解读 GitHub 136K Star 的 Dify 平台，理解 App、Workflow、Chatflow、DSL 四大核心概念。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/dify-tutorial/01-introduction/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/dify-tutorial/01-introduction/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/dify-tutorial/01-introduction/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/dify-tutorial/01-introduction/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 1 期：Dify 是什么？开源 LLM 平台全景概览 — Dify 全攻略：从零到生产级 LLM 应用开发 — AgentUpdate.ai"><meta property="og:description" content="深度解读 GitHub 136K Star 的 Dify 平台，理解 App、Workflow、Chatflow、DSL 四大核心概念。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/dify-tutorial/01-introduction/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 1 期：Dify 是什么？开源 LLM 平台全景概览 — Dify 全攻略：从零到生产级 LLM 应用开发 — AgentUpdate.ai"><meta name="twitter:description" content="深度解读 GitHub 136K Star 的 Dify 平台，理解 App、Workflow、Chatflow、DSL 四大核心概念。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/dify-tutorial/01-introduction/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/dify-tutorial/01-introduction/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Dify 全攻略：从零到生产级 LLM 应用开发 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/01-introduction/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 1 期：Dify 是什么？开源 LLM 平台全景概览 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/02-docker-deploy/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 2 期：极速安装 — Docker Compose 一键部署 Dify </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/03-source-deploy/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 3 期：从源码部署 Dify 开发环境 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/04-model-providers/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 4 期：接入你的第一个模型 Provider </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/05-first-app/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 5 期：30 分钟创建第一个 AI 应用 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/06-workflow-basics/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 6 期：Workflow 101 — 可视化画布入门 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/07-llm-node/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 7 期：LLM 节点深度配置 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/08-branching-loops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 8 期：条件分支与循环节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/09-code-node/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 9 期：代码节点 — 在 Workflow 中执行 Python/JS </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/10-http-request/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期：HTTP 请求节点与外部 API 集成 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/11-variable-template/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期：变量聚合与模板转换节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/12-chatflow/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期：Chatflow 专题 — 多轮对话工作流 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/13-knowledge-creation/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期：知识库原理与创建方法 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/14-retrieval-strategies/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期：检索策略精调 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/15-knowledge-integration/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期：在应用中集成知识库 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/16-enterprise-qa/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期：实战 — 构建企业知识问答系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/17-knowledge-maintenance/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期：知识库维护与性能优化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/18-agent-basics/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期：Agent 基础 — Function Calling 与 ReAct </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/19-builtin-tools/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期：内置工具箱 — 50+ 预置工具实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/20-custom-tools/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期：自定义工具开发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/21-mcp-server/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 21 期：MCP Server — 将 Dify 应用发布为工具 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/22-multi-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 22 期：多 Agent 协作编排 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/23-publishing/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 23 期：应用发布全攻略 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/24-api-development/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 24 期：RESTful API 开发实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/25-llmops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 25 期：监控与日志 (LLMOps) </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/26-observability/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 26 期：集成 Langfuse / Opik 可观测性平台 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/27-production-deploy/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 27 期：生产环境高可用部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/28-customer-service/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 28 期：综合项目 — 智能客服系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/29-content-pipeline/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 29 期：综合项目 — 自动化内容生产线 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/30-plugin-marketplace/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 30 期：Dify 插件开发与 Marketplace 发布 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/dify-tutorial/" data-astro-cid-ilhxcym7>Dify 全攻略：从零到生产级 LLM 应用开发</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 1 期：Dify 是什么？开源 LLM 平台全景概览</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Dify 全攻略：从零到生产级 LLM 应用开发","item":"https://www.agentupdate.ai/tutorial/dify-tutorial/"},{"@type":"ListItem","position":4,"name":"第 1 期：Dify 是什么？开源 LLM 平台全景概览"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 1 期：Dify 是什么？开源 LLM 平台全景概览</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>为什么选择 Dify？</h2>
+<p>当你想构建一个基于大语言模型的应用时，通常面临以下几条路线：</p>
+<ol>
+<li><strong>纯代码路线</strong>（LangChain / LlamaIndex）— 灵活但开发成本高</li>
+<li><strong>纯 SaaS 路线</strong>（ChatGPT / Claude）— 简单但无法定制</li>
+<li><strong>平台路线（Dify）</strong>— 可视化 + API + 开源自部署，兼顾灵活与效率</li>
+</ol>
+<p>Dify 的定位是 <strong>Production-ready platform for agentic workflow development</strong>（面向生产环境的智能工作流开发平台）。它不是一个玩具，而是一个已经被大量企业在生产环境中使用的严肃平台。</p>
+<h2>核心功能矩阵</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    A[Dify Platform] --&gt; B[Workflow Engine]
+    A --&gt; C[RAG Pipeline]
+    A --&gt; D[Agent Framework]
+    A --&gt; E[Model Management]
+    A --&gt; F[LLMOps]
+    A --&gt; G[Backend-as-a-Service]
+    
+    B --&gt; B1[可视化画布编排]
+    B --&gt; B2[20+ 节点类型]
+    B --&gt; B3[DSL 导入导出]
+    
+    C --&gt; C1[文档导入/分段]
+    C --&gt; C2[向量/全文/混合检索]
+    C --&gt; C3[多 Embedding 模型支持]
+    
+    D --&gt; D1[Function Calling]
+    D --&gt; D2[ReAct 推理]
+    D --&gt; D3[50+ 内置工具]
+    
+    E --&gt; E1[数百模型一键接入]
+    E --&gt; E2[OpenAI/Gemini/Ollama]
+    E --&gt; E3[负载均衡/配额管理]
+    
+    F --&gt; F1[Dashboard 数据分析]
+    F --&gt; F2[日志追踪]
+    F --&gt; F3[Langfuse/Opik 集成]</pre></div><h2>四大核心概念</h2>
+<h3>1. Dify App（应用）</h3>
+<p>Dify 中的每个 AI 应用都是一个独立的 App。你可以把它理解为一个"AI 微服务"，拥有自己的 Prompt、模型配置、工具集和发布渠道。</p>
+<h3>2. Workflow（工作流）</h3>
+<p>Workflow 是 Dify 最强大的编排引擎。它可以通过可视化画布，将 LLM 调用、代码执行、API 请求、条件判断等节点串联成复杂的自动化流程。</p>
+<pre><code class="language-python"># Workflow 的本质就是一个有向无环图 (DAG)
+# 每个节点接收上游输出，处理后传递给下游
+workflow = {
+    "nodes": [
+        {"id": "start", "type": "start"},
+        {"id": "llm_1", "type": "llm", "model": "gpt-4"},
+        {"id": "code_1", "type": "code", "language": "python3"},
+        {"id": "end", "type": "end"}
+    ],
+    "edges": [
+        {"source": "start", "target": "llm_1"},
+        {"source": "llm_1", "target": "code_1"},
+        {"source": "code_1", "target": "end"}
+    ]
+}
+</code></pre>
+<h3>3. Chatflow（对话流）</h3>
+<p>Chatflow 是 Workflow 的变体，专门针对多轮对话场景。它内置了对话历史记忆管理，支持 <code>sys.conversation_id</code>、<code>sys.dialogue_count</code> 等会话级系统变量。</p>
+<h3>4. Dify DSL</h3>
+<p>DSL (Domain Specific Language) 是 Dify 应用的序列化格式（YAML）。你可以将任何应用导出为 DSL 文件，在团队间分享或版本控制。</p>
+<pre><code class="language-yaml"># 一个最简的 Dify DSL 示例
+app:
+  name: "Hello World Bot"
+  mode: chatbot
+  model_config:
+    provider: openai
+    model: gpt-4o-mini
+    parameters:
+      temperature: 0.7
+  prompt_template:
+    system: "你是一个友好的 AI 助手。"
+</code></pre>
+<h2>技术栈一览</h2>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>技术</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前端</td>
+<td>Next.js (TypeScript)</td>
+</tr>
+<tr>
+<td>后端</td>
+<td>Flask (Python)</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>PostgreSQL</td>
+</tr>
+<tr>
+<td>缓存</td>
+<td>Redis</td>
+</tr>
+<tr>
+<td>向量数据库</td>
+<td>Weaviate / Qdrant / Milvus / pgvector</td>
+</tr>
+<tr>
+<td>消息队列</td>
+<td>Celery</td>
+</tr>
+<tr>
+<td>容器化</td>
+<td>Docker Compose / Kubernetes</td>
+</tr>
+</tbody></table>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt>  </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/dify-tutorial/02-docker-deploy/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 2 期：极速安装 — Docker Compose 一键部署 Dify</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

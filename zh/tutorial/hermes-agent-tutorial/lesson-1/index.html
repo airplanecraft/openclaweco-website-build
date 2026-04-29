@@ -1,0 +1,458 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 01 期 | 认识 Hermes Agent：架构总览与极速安装 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="第 01 期 | 认识 Hermes Agent：架构总览与极速安装"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-1/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-1/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-1/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-1/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 01 期 | 认识 Hermes Agent：架构总览与极速安装 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="第 01 期 | 认识 Hermes Agent：架构总览与极速安装"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-1/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 01 期 | 认识 Hermes Agent：架构总览与极速安装 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="第 01 期 | 认识 Hermes Agent：架构总览与极速安装"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/hermes-agent-tutorial/lesson-1/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/hermes-agent-tutorial/lesson-1/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 01 期 | 认识 Hermes Agent：架构总览与极速安装</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 01 期 | 认识 Hermes Agent：架构总览与极速安装"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 01 期 | 认识 Hermes Agent：架构总览与极速安装</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><p>副标题：了解 Hermes Agent 的核心设计理念、与 OpenClaw 的关系、支持的 LLM 列表，以及一键安装到 Linux/Mac/WSL2 的完整流程。</p>
+<hr>
+<h2>🎯 学习目标</h2>
+<p>完成本期课程后，您将能够：</p>
+<ul>
+<li>深入理解 Hermes Agent 的核心设计理念与关键特性，包括其自进化学习循环和跨会话记忆机制。</li>
+<li>明晰 Hermes Agent 与 NousResearch OpenClaw 框架之间的关系，以及它们在构建智能代理生态中的定位。</li>
+<li>掌握通过 OpenRouter 接入 200+ 大语言模型的能力，并了解其带来的灵活性与成本效益。</li>
+<li>在 Linux、macOS 或 WSL2 环境中，通过一键脚本快速完成 Hermes Agent 的安装与初步配置。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>1.1 Hermes Agent 是什么？</h3>
+<p>Hermes Agent 是由 NousResearch 团队开发并开源的一款<strong>自进化 AI 代理</strong>。它的核心设计理念是创建一个能够从经验中学习、不断优化自身能力的智能系统。不同于传统的固定功能代理，Hermes Agent 具备一个内置的“学习循环”，使其能够根据任务执行的反馈，自主创建和改进“技能”（Skills），从而适应更复杂、更动态的应用场景。</p>
+<p>想象一个永不停止学习的数字助手，它不仅能执行指令，还能通过每次的执行结果来提升自己的解决问题能力。这就是 Hermes Agent 的愿景。它旨在成为一个强大的、可扩展的基石，用于构建各种高级的、自主运行的 AI 应用。</p>
+<h3>1.2 核心特性深度解析</h3>
+<p>Hermes Agent 不仅仅是一个代码库，它是一个集成了多项前沿技术和设计模式的智能系统。让我们逐一剖析其核心特性：</p>
+<h4>1.2.1 内置学习循环：从经验创建 Skill</h4>
+<p>这是 Hermes Agent 最引人注目的特性之一。代理在执行任务时，会记录其决策、行动、观察结果以及最终的成功或失败。通过分析这些经验数据，Hermes Agent 能够：</p>
+<ul>
+<li><strong>识别模式：</strong> 发现重复出现的问题解决路径或高效的操作序列。</li>
+<li><strong>生成 Skill：</strong> 将这些模式抽象为可复用的“技能”（Skills）。一个 Skill 可以被视为一个微型程序或一个特定领域的知识模块，它定义了在特定情境下如何执行一系列操作以达成目标。</li>
+<li><strong>优化 Skill：</strong> 随着经验的积累，代理会不断评估现有 Skill 的效果，并尝试对其进行改进，甚至创建全新的 Skill 来应对未曾遇到的挑战。</li>
+</ul>
+<p>这个学习循环使得 Hermes Agent 能够持续进化，无需人工干预即可提升性能和适应性。</p>
+<h4>1.2.2 跨会话记忆：构建长期知识库</h4>
+<p>Hermes Agent 具备强大的记忆管理能力，能够维护<strong>跨会话的长期记忆</strong>。这意味着代理不仅能记住当前任务的上下文，还能记住过去所有会话中积累的知识、经验和用户偏好。</p>
+<ul>
+<li><strong>记忆类型：</strong> 通常包括工作记忆（短期、当前任务相关）、情景记忆（特定事件和经历）和语义记忆（事实、概念和技能）。</li>
+<li><strong>记忆存储：</strong> 这些记忆通常存储在向量数据库（如 ChromaDB、Pinecone 等）中，通过嵌入（embeddings）技术实现高效的检索。</li>
+<li><strong>记忆优势：</strong> 长期记忆使得 Hermes Agent 能够进行更复杂的推理、利用过去的成功经验避免重复错误，并为用户提供更加个性化和一致的服务。</li>
+</ul>
+<h4>1.2.3 支持 200+ LLM 模型（通过 OpenRouter）</h4>
+<p>为了提供极致的灵活性和性能，Hermes Agent 没有绑定到任何单一的 LLM 提供商。它通过集成 <strong>OpenRouter</strong> 平台，实现了对市面上 200 多个大语言模型的广泛支持。</p>
+<ul>
+<li><strong>OpenRouter 的作用：</strong> OpenRouter 是一个统一的 API 网关，它聚合了来自 OpenAI、Anthropic、Google、Meta 等众多 LLM 提供商的模型。用户只需一个 OpenRouter API Key，即可访问所有支持的模型，无需为每个提供商单独注册和管理密钥。</li>
+<li><strong>优势：</strong><ul>
+<li><strong>模型选择自由：</strong> 用户可以根据任务需求、成本预算和性能偏好，自由切换不同的 LLM。</li>
+<li><strong>成本效益：</strong> OpenRouter 提供了透明的定价机制，并可能通过其路由优化，帮助用户找到性价比最高的模型。</li>
+<li><strong>韧性与冗余：</strong> 当某个模型或提供商出现问题时，可以快速切换到其他可用模型，提高系统的健壮性。</li>
+<li><strong>前沿技术接入：</strong> OpenRouter 会不断集成最新的 LLM 模型，确保 Hermes Agent 始终能够利用最先进的语言能力。</li>
+</ul>
+</li>
+</ul>
+<h4>1.2.4 Telegram/Discord 消息网关</h4>
+<p>为了方便用户交互和代理部署，Hermes Agent 内置了对主流消息平台的支持，包括 Telegram 和 Discord。</p>
+<ul>
+<li><strong>消息网关作用：</strong> 它们充当用户与 Hermes Agent 之间的桥梁，将用户在聊天应用中发送的消息转化为代理可理解的指令，并将代理的回复发送回聊天应用。</li>
+<li><strong>部署场景：</strong> 这使得 Hermes Agent 可以轻松部署为聊天机器人，应用于客户服务、信息查询、任务自动化等场景，极大地降低了用户与 AI 代理交互的门槛。</li>
+<li><strong>易于扩展：</strong> 这种模块化的设计也为未来集成更多消息平台（如 Slack、微信等）提供了可能。</li>
+</ul>
+<h4>1.2.5 MCP (Multi-Agent Communication Protocol) 集成</h4>
+<p>Hermes Agent 支持 <strong>MCP (Multi-Agent Communication Protocol)</strong>，这是一个由 NousResearch 提出的多代理通信协议。</p>
+<ul>
+<li><strong>多代理协作：</strong> MCP 允许不同的 Hermes Agent 实例，甚至其他遵循该协议的 AI 代理，之间进行高效、结构化的通信和协作。</li>
+<li><strong>复杂任务分解：</strong> 通过 MCP，可以将一个复杂的宏观任务分解为多个子任务，并分配给不同的专业代理并行处理，最后汇总结果。这极大地提升了处理复杂问题的能力和效率。</li>
+<li><strong>构建代理网络：</strong> MCP 是构建去中心化、协作式 AI 代理网络的关键，每个代理可以在网络中扮演特定角色，共同完成目标。</li>
+</ul>
+<h4>1.2.6 Cron 调度</h4>
+<p>Hermes Agent 内置了对 Cron 调度的支持，这意味着您可以安排代理在特定时间或以固定周期执行任务。</p>
+<ul>
+<li><strong>自动化例行任务：</strong> 例如，每天早上自动生成一份新闻摘要，每周定期检查某个网站的更新，或每小时执行一次数据同步。</li>
+<li><strong>无需持续监控：</strong> 一旦设置，代理将按照预定的时间表自主运行，无需人工干预。</li>
+<li><strong>灵活配置：</strong> 支持标准的 Cron 表达式，提供了高度灵活的任务调度能力。</li>
+</ul>
+<h3>1.3 架构总览</h3>
+<p>Hermes Agent 的架构设计旨在实现模块化、可扩展性和高自主性。其核心是一个事件驱动（event-driven）的循环，处理来自不同来源的输入，并协调内部组件以生成响应或执行动作。</p>
+<p>以下是一个简化的架构示意图：</p>
+<pre><code>+-----------------------------------------------------------------------------------+
+|                                 Hermes Agent Core                                 |
+|                                                                                   |
+|  +-----------------------------------------------------------------------------+  |
+|  |                             Agent Main Loop                                 |  |
+|  |  (Perceive -&gt; Plan -&gt; Act -&gt; Learn)                                         |  |
+|  +-----------------------------------------------------------------------------+  |
+|                                     ^     |                                       |
+|                                     |     v                                       |
+|  +---------------+      +----------------------+      +----------------------+  |
+|  |   Gateways    | &lt;--&gt; |   Event Processor    | &lt;--&gt; |   Skill Manager      |  |
+|  | (Telegram,    |      | (Input/Output       |      | (Create, Retrieve,   |  |
+|  |  Discord,     |      |  Handling, Task     |      |  Execute Skills)     |  |
+|  |  MCP, CLI)    |      |  Orchestration)      |      |                      |  |
+|  +---------------+      +----------------------+      +----------------------+  |
+|         ^                               ^                               ^         |
+|         |                               |                               |         |
+|         v                               v                               v         |
+|  +---------------+      +----------------------+      +----------------------+  |
+|  |   Scheduler   | &lt;--&gt; |    Memory System     | &lt;--&gt; |       Tools          |  |
+|  | (Cron-based   |      | (Vector DB,          |      | (Web Browsing,       |  |
+|  |  Task Trigger)|      |  Long-term Context)  |      |  Code Interpreter,   |  |
+|  +---------------+      +----------------------+      |  Custom Tools)       |  |
+|                                     ^                               ^         |
+|                                     |                               |         |
+|                                     v                               v         |
+|                          +---------------------------------------------------+  |
+|                          |           LLM Interface (via OpenRouter)          |  |
+|                          | (GPT-4, Claude, Llama, Mixtral, etc. - 200+ models)|  |
+|                          +---------------------------------------------------+  |
++-----------------------------------------------------------------------------------+
+</code></pre>
+<p><strong>关键组件说明：</strong></p>
+<ol>
+<li><strong>Gateways (网关):</strong> 外部世界与 Hermes Agent 交互的入口。包括消息应用（Telegram, Discord）、多代理通信协议（MCP）以及命令行接口（CLI）。</li>
+<li><strong>Scheduler (调度器):</strong> 基于 Cron 表达式定时触发任务或事件，实现自动化。</li>
+<li><strong>Event Processor (事件处理器):</strong> 代理的核心中枢，负责接收来自网关或调度器的事件，解析用户意图，并将任务分解、分配给其他组件。</li>
+<li><strong>Memory System (记忆系统):</strong> 存储代理的长期记忆、情景记忆和语义记忆。通常利用向量数据库实现高效的上下文检索和管理。</li>
+<li><strong>Skill Manager (技能管理器):</strong> 负责代理技能的创建、存储、检索和执行。这是学习循环的核心，代理通过它来学习和应用新知识。</li>
+<li><strong>Tools (工具):</strong> 代理用来与外部环境交互的接口，例如网页浏览器、代码解释器、文件系统操作以及用户自定义的各种 API 或功能。</li>
+<li><strong>LLM Interface (LLM 接口):</strong> 通过 OpenRouter 聚合了多种大语言模型。它是代理进行复杂推理、生成文本、理解自然语言的关键。</li>
+</ol>
+<p>整个流程概括为：<strong>感知 (Perceive)</strong> 外部输入 -&gt; <strong>规划 (Plan)</strong> 响应或行动策略 -&gt; <strong>行动 (Act)</strong> 通过工具或技能执行 -&gt; <strong>学习 (Learn)</strong> 从经验中提取知识并创建/优化技能。</p>
+<h3>1.4 Hermes Agent 与 OpenClaw 的关系</h3>
+<p>理解 Hermes Agent，就不能不提 <strong>NousResearch OpenClaw</strong>。OpenClaw 是 NousResearch 推出的一个<strong>开源的、模块化的 AI 代理框架</strong>。它的目标是提供一个灵活且强大的基础，让开发者能够更容易地构建、部署和管理各种 AI 代理。</p>
+<p><strong>关系阐述：</strong></p>
+<ul>
+<li><strong>OpenClaw 是基础框架，Hermes Agent 是具体实现。</strong><ul>
+<li>你可以把 OpenClaw 想象成一个操作系统，它提供了进程管理、内存管理、文件系统等基础服务。</li>
+<li>而 Hermes Agent 则是一个运行在这个操作系统上的“应用程序”，它利用了操作系统的各项服务，并在此基础上构建了特定的功能（如自进化学习、跨会话记忆、多模型支持等）。</li>
+</ul>
+</li>
+<li><strong>能力继承与扩展：</strong> Hermes Agent 继承了 OpenClaw 框架的诸多优势，例如其模块化设计、对工具的抽象、事件驱动机制等。在此基础上，Hermes Agent 进一步扩展了这些能力，加入了其独特的自进化学习循环、强大的记忆系统、OpenRouter 集成以及消息网关等高级特性。</li>
+<li><strong>生态系统：</strong> 它们共同构成了 NousResearch 在 AI 代理领域的一个生态系统。OpenClaw 提供了通用构建块，而 Hermes Agent 则展示了如何利用这些构建块构建一个高度智能和自主的代理。</li>
+</ul>
+<p>简而言之，<strong>Hermes Agent 是基于 OpenClaw 框架构建的一个功能完备、高度智能的自进化 AI 代理实例。</strong></p>
+<h3>1.5 支持的 LLM 模型列表 (通过 OpenRouter)</h3>
+<p>OpenRouter 是 Hermes Agent 连接大语言模型的关键。它不仅提供了统一的 API 接口，更汇集了来自全球顶尖 AI 实验室的 200+ 模型。这意味着 Hermes Agent 能够利用最广泛、最先进的语言能力。</p>
+<p>虽然具体列表会实时更新，但通常包括以下几大类及其代表模型：</p>
+<ul>
+<li><strong>OpenAI 系列：</strong><ul>
+<li><code>gpt-4-turbo</code> (最新的 GPT-4 Turbo 版本)</li>
+<li><code>gpt-4o</code> (最新多模态模型)</li>
+<li><code>gpt-3.5-turbo</code> (高效的 GPT-3.5 版本)</li>
+</ul>
+</li>
+<li><strong>Anthropic Claude 系列：</strong><ul>
+<li><code>claude-3-opus</code> (最强大的 Claude 3 模型)</li>
+<li><code>claude-3-sonnet</code> (平衡性能与速度)</li>
+<li><code>claude-3-haiku</code> (最快、最经济的模型)</li>
+</ul>
+</li>
+<li><strong>Google Gemini 系列：</strong><ul>
+<li><code>gemini-pro</code> (Google 的通用模型)</li>
+<li><code>gemini-1.5-flash</code> (快速、高效)</li>
+<li><code>gemini-1.5-pro</code> (更强大的版本)</li>
+</ul>
+</li>
+<li><strong>Meta Llama 系列：</strong><ul>
+<li><code>llama-3-8b-instruct</code> (Meta 最新开源模型，80亿参数指令微调版)</li>
+<li><code>llama-3-70b-instruct</code> (Meta 最新开源模型，700亿参数指令微调版)</li>
+</ul>
+</li>
+<li><strong>Mistral AI 系列：</strong><ul>
+<li><code>mixtral-8x7b-instruct</code> (稀疏专家混合模型，性能强大)</li>
+<li><code>mistral-large</code> (Mistral AI 的旗舰模型)</li>
+</ul>
+</li>
+<li><strong>其他开源与商业模型：</strong><ul>
+<li>各种 Qwen (通义千问), Cohere, Perplexity, Together AI 等平台提供的模型。</li>
+<li>许多经过微调的专业模型。</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何查看最新列表：</strong> 您可以访问 OpenRouter 官方网站的 <a href="https://openrouter.ai/models">Models 页面</a> 或在 Hermes Agent 命令行中运行 <code>hermes model list</code> 命令来获取当前支持的完整且最新的模型列表。</p>
+<p>通过 OpenRouter，Hermes Agent 实现了模型无关性，让用户能够根据具体任务需求和成本预算，灵活选择最适合的 LLM，从而最大化代理的效能。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>本节将引导您完成 Hermes Agent 的极速安装与初步配置。</p>
+<h3>2.1 极速安装 Hermes Agent</h3>
+<p>Hermes Agent 提供了非常便捷的一键安装脚本，支持 Linux、macOS 和 WSL2 环境。</p>
+<p><strong>前置条件：</strong></p>
+<ul>
+<li>确保您的系统已安装 <code>curl</code> 和 <code>bash</code>（大多数 Linux/macOS/WSL2 系统默认已安装）。</li>
+<li>推荐使用 Python 3.9 或更高版本，安装脚本会自动处理 Python 虚拟环境。</li>
+</ul>
+<p><strong>安装步骤：</strong></p>
+<ol>
+<li><p><strong>打开终端：</strong> 在您的 Linux、macOS 或 WSL2 环境中打开一个终端窗口。</p>
+</li>
+<li><p><strong>执行安装命令：</strong> 复制并粘贴以下命令到您的终端中，然后按回车键。</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+</code></pre>
+<ul>
+<li><code>curl -fsSL</code>: <code>curl</code> 是一个用于传输数据的命令行工具。<ul>
+<li><code>-f</code>: 在服务器错误时，不输出 HTTP 错误信息。</li>
+<li><code>-s</code>: 静默模式，不显示进度条或错误信息。</li>
+<li><code>-S</code>: 即使在静默模式下，也显示错误信息。</li>
+<li><code>-L</code>: 允许 <code>curl</code> 跟随重定向。</li>
+</ul>
+</li>
+<li><code>https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh</code>: 这是 Hermes Agent 官方提供的一键安装脚本的原始链接。</li>
+<li><code>| bash</code>: 将 <code>curl</code> 下载的脚本内容直接通过管道传输给 <code>bash</code> shell 执行。</li>
+</ul>
+</li>
+<li><p><strong>观察安装过程：</strong> 脚本会执行以下操作（可能略有差异，取决于您的系统）：</p>
+<ul>
+<li>检查并安装必要的系统依赖。</li>
+<li>创建 Python 虚拟环境。</li>
+<li>安装 Hermes Agent 及其所有 Python 依赖。</li>
+<li>设置 <code>hermes</code> CLI 命令的软链接，使其在您的 PATH 环境变量中可用。</li>
+</ul>
+<p>您将看到类似以下的输出（部分截取）：</p>
+<pre><code>Installing Hermes Agent...
+Checking for Python 3.9+...
+Python 3.10.12 found.
+Creating virtual environment...
+Installing dependencies...
+... (大量pip安装输出) ...
+Successfully installed hermes-agent-x.x.x ...
+Setting up hermes CLI...
+Hermes Agent installed successfully!
+You can now run 'hermes --help' to get started.
+</code></pre>
+</li>
+<li><p><strong>验证安装：</strong> 安装完成后，您可以运行 <code>hermes --help</code> 命令来验证 <code>hermes</code> 命令是否已成功添加到您的系统 PATH 中。</p>
+<pre><code class="language-bash">hermes --help
+</code></pre>
+<p>预期输出将显示 Hermes Agent 的主要命令和用法信息：</p>
+<pre><code>Usage: hermes [OPTIONS] COMMAND [ARGS]...
+
+  Hermes Agent CLI.
+
+Options:
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+
+Commands:
+  config    Manage Hermes configuration.
+  doctor    Check Hermes Agent health.
+  gateway   Manage Hermes gateways.
+  model     Manage LLM models.
+  setup     Run initial Hermes Agent setup.
+  tools     Manage Hermes tools.
+</code></pre>
+<p>如果看到类似输出，恭喜您，Hermes Agent 已成功安装！</p>
+</li>
+</ol>
+<h3>2.2 首次配置与验证</h3>
+<p>Hermes Agent 的核心功能依赖于大语言模型，因此，配置 OpenRouter API Key 是首要任务。</p>
+<ol>
+<li><p><strong>获取 OpenRouter API Key：</strong></p>
+<ul>
+<li>访问 <a href="https://openrouter.ai/">OpenRouter 官网</a>。</li>
+<li>注册或登录您的账户。</li>
+<li>导航到您的账户设置或 API Keys 页面，生成一个新的 API Key。请务必妥善保管此 Key，因为它提供了对 200+ LLM 的访问权限。</li>
+</ul>
+</li>
+<li><p><strong>运行初始设置向导：</strong> Hermes Agent 提供了一个方便的 <code>setup</code> 命令来引导您完成初始配置。</p>
+<pre><code class="language-bash">hermes setup
+</code></pre>
+<p>脚本会询问您一系列问题，例如您的 OpenRouter API Key。</p>
+<pre><code>Welcome to Hermes Agent setup!
+This will guide you through the initial configuration.
+
+Do you want to configure OpenRouter API Key? (y/N): y
+Please enter your OpenRouter API Key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OpenRouter API Key configured successfully.
+
+Do you want to configure any other settings? (y/N): n
+Setup complete!
+</code></pre>
+<p><strong>注意：</strong> 将 <code>sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code> 替换为您实际的 OpenRouter API Key。</p>
+</li>
+<li><p><strong>手动配置 OpenRouter API Key（可选）：</strong> 如果您跳过了 <code>setup</code> 步骤，或者需要修改配置，可以使用 <code>hermes config set</code> 命令。</p>
+<pre><code class="language-bash">hermes config set openrouter_api_key &lt;YOUR_OPENROUTER_API_KEY&gt;
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-bash">hermes config set openrouter_api_key sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+</code></pre>
+<p>成功设置后，通常不会有详细输出，但您可以通过 <code>hermes config get openrouter_api_key</code> 来验证（尽管为了安全，可能不会直接显示完整 key）。</p>
+</li>
+<li><p><strong>验证模型列表：</strong> 既然已经配置了 OpenRouter API Key，我们可以验证 Hermes Agent 是否能成功连接 OpenRouter 并获取模型列表。</p>
+<pre><code class="language-bash">hermes model list
+</code></pre>
+<p>这将显示 OpenRouter 当前支持的所有模型，以及它们的状态和提供商。输出可能很长，但会是类似以下的格式：</p>
+<pre><code>Available Models:
+------------------------------------------------------------------------------------------------------
+Model Name                  Provider                 Context Window  Price/Input (USD/M Tokens)  Price/Output (USD/M Tokens)
+------------------------------------------------------------------------------------------------------
+gpt-4o                      OpenAI                   128000          $5.00                       $15.00
+gpt-4-turbo                 OpenAI                   128000          $10.00                      $30.00
+claude-3-opus               Anthropic                200000          $15.00                      $75.00
+claude-3-sonnet             Anthropic                200000          $3.00                       $15.00
+llama-3-70b-instruct        Meta                     8192            $0.79                       $0.79
+mixtral-8x7b-instruct       Mistral AI               32768           $0.24                       $0.24
+... (更多模型) ...
+------------------------------------------------------------------------------------------------------
+</code></pre>
+<p>如果看到模型列表，说明您的 OpenRouter 配置成功，并且 Hermes Agent 能够与 LLM 服务进行通信。</p>
+</li>
+<li><p><strong>运行健康检查：</strong> <code>hermes doctor</code> 命令可以帮助您检查 Hermes Agent 的运行环境和关键配置是否正常。</p>
+<pre><code class="language-bash">hermes doctor
+</code></pre>
+<p>预期输出：</p>
+<pre><code>Hermes Agent Health Check:
+--------------------------
+✅ Python Version: 3.10.12 (adequate)
+✅ Virtual Environment: Active
+✅ Hermes CLI: Found
+✅ OpenRouter API Key: Configured (sk-or-v1-...)
+✅ Connectivity to OpenRouter: Successful
+✅ Default LLM: gpt-4o (configured)
+✅ Memory System: Initialized (ChromaDB)
+✅ Tool Manager: Initialized (0 tools loaded)
+✅ Skill Manager: Initialized (0 skills loaded)
+
+All essential components are healthy!
+</code></pre>
+<p>如果所有检查项都显示为 ✅，则表明您的 Hermes Agent 已准备就绪！</p>
+</li>
+</ol>
+<hr>
+<h2>🔧 涉及的命令与工具</h2>
+<table>
+<thead>
+<tr>
+<th align="left">命令/工具</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>curl</code></td>
+<td align="left">用于从服务器传输数据的命令行工具。在本教程中用于下载安装脚本。</td>
+<td align="left"><code>curl -fsSL &lt;URL&gt;</code></td>
+</tr>
+<tr>
+<td align="left"><code>bash</code></td>
+<td align="left">Unix shell 和命令语言。在本教程中用于执行安装脚本。</td>
+<td align="left">`curl ...</td>
+</tr>
+<tr>
+<td align="left"><code>hermes</code></td>
+<td align="left">Hermes Agent 的主命令行接口。</td>
+<td align="left"><code>hermes --help</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes --help</code></td>
+<td align="left">显示 <code>hermes</code> 命令的整体帮助信息和可用子命令。</td>
+<td align="left"><code>hermes --help</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes setup</code></td>
+<td align="left">引导用户进行 Hermes Agent 的初始配置，特别是 API 密钥设置。</td>
+<td align="left"><code>hermes setup</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes config</code></td>
+<td align="left">用于管理 Hermes Agent 的配置设置。</td>
+<td align="left"><code>hermes config set openrouter_api_key &lt;YOUR_KEY&gt;</code> <br> <code>hermes config get openrouter_api_key</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes model</code></td>
+<td align="left">用于管理和查看 Hermes Agent 可用的大语言模型。</td>
+<td align="left"><code>hermes model list</code> <br> <code>hermes model set-default gpt-4o</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes tools</code></td>
+<td align="left">用于管理 Hermes Agent 可用的工具。</td>
+<td align="left"><code>hermes tools list</code> <br> <code>hermes tools add web_browser</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes gateway</code></td>
+<td align="left">用于管理 Hermes Agent 的消息网关（如 Telegram, Discord）。</td>
+<td align="left"><code>hermes gateway add telegram</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes doctor</code></td>
+<td align="left">对 Hermes Agent 的运行环境和核心组件进行健康检查。</td>
+<td align="left"><code>hermes doctor</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ul>
+<li><strong>Hermes Agent 是自进化 AI 代理：</strong> 它由 NousResearch 开发，通过内置学习循环和跨会话记忆，能够从经验中自主创建和优化技能。</li>
+<li><strong>OpenClaw 是基础框架：</strong> Hermes Agent 基于 NousResearch OpenClaw 框架构建，继承了其模块化和工具抽象能力，并在此基础上扩展了自进化、记忆等高级特性。</li>
+<li><strong>LLM 接入通过 OpenRouter：</strong> Hermes Agent 利用 OpenRouter 统一 API 访问 200+ 大语言模型，提供灵活、经济且强大的语言能力。</li>
+<li><strong>多功能设计：</strong> 集成了 Telegram/Discord 消息网关、MCP 多代理通信协议和 Cron 调度，支持多种交互和自动化场景。</li>
+<li><strong>安装与配置简便：</strong> 通过一键 <code>curl | bash</code> 脚本可在 Linux/macOS/WSL2 上快速安装，并通过 <code>hermes setup</code> 或 <code>hermes config set</code> 轻松配置 OpenRouter API Key。</li>
+</ul>
+<hr>
+<h2>🔗 参考资料</h2>
+<ul>
+<li><strong>Hermes Agent GitHub 仓库：</strong> <a href="https://github.com/NousResearch/hermes-agent">https://github.com/NousResearch/hermes-agent</a></li>
+<li><strong>Hermes Agent 官方文档：</strong> <a href="https://hermes-agent.nousresearch.com/docs/">https://hermes-agent.nousresearch.com/docs/</a></li>
+<li><strong>OpenRouter 官方网站：</strong> <a href="https://openrouter.ai/">https://openrouter.ai/</a></li>
+</ul>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4>  </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 02 期 | 模型切换与 Provider 配置实战</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

@@ -1,0 +1,482 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 11 期 | 微调效果评估与模型导出 — Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration — AgentUpdate.ai</title><meta name="description" content="第 11 期 | 微调效果评估与模型导出"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-11/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-11/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-11/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-11/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 11 期 | 微调效果评估与模型导出 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta property="og:description" content="第 11 期 | 微调效果评估与模型导出"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-11/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 11 期 | 微调效果评估与模型导出 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta name="twitter:description" content="第 11 期 | 微调效果评估与模型导出"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/gemma-tutorial/lesson-11/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/gemma-tutorial/lesson-11/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 认识 Gemma：Google 开源模型家族全景 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 本地极速部署：Ollama + Gemma 一键启动 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | Hugging Face Transformers 推理实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Google Cloud Vertex AI 云端部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 多模态能力解锁：图片理解与视觉问答 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 128K 超长上下文实战：文档分析与代码审查 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Function Calling 与结构化输出 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | LoRA 微调入门：用 PEFT 定制你的专属 Gemma </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | JAX/Flax 原生微调（官方推荐路线） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-11/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | 微调效果评估与模型导出 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | Gemma + LangChain/LlamaIndex：RAG 应用构建 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | Gemma + vLLM：高性能推理服务部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | 终局实战：构建你的私有 AI 助手产品 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/gemma-tutorial/" data-astro-cid-ilhxcym7>Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 11 期 | 微调效果评估与模型导出</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Google Gemma Masterclass: Deployment, Fine-Tuning & Agent Integration","item":"https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/"},{"@type":"ListItem","position":4,"name":"第 11 期 | 微调效果评估与模型导出"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 11 期 | 微调效果评估与模型导出</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><h2>🎯 学习目标</h2>
+<ul>
+<li>理解大语言模型微调后进行效果评估的重要性，并掌握常见评估指标。</li>
+<li>熟练运用 <code>lm-evaluation-harness</code> 框架，对微调后的 Google Gemma 模型进行基准测试。</li>
+<li>学会解读 MMLU 和 HellaSwag 等通用基准测试结果，评估模型的泛化能力和专业知识水平。</li>
+<li>掌握将微调后的 Gemma 模型导出为 GGUF 格式的流程，为 CPU 部署和边缘设备优化做准备。</li>
+<li>了解模型卡 (Model Card) 的作用，以及如何在模型发布和版本管理中应用最佳实践。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>11.1 微调效果评估的必要性与常见指标</h3>
+<p>微调（Fine-tuning）是大语言模型（LLM）适应特定任务或数据集的关键步骤。然而，仅仅完成训练并不意味着成功。我们需要一套严谨的方法来量化模型改进的程度，识别潜在的问题（如过拟合），并确保模型在实际应用中表现良好。</p>
+<p><strong>评估的必要性：</strong></p>
+<ul>
+<li><strong>量化改进：</strong> 客观衡量微调对模型性能带来的提升。</li>
+<li><strong>避免过拟合：</strong> 检查模型是否仅仅记住了训练数据，而在未见过的数据上表现不佳。</li>
+<li><strong>指导迭代：</strong> 评估结果为进一步的微调、数据增强或架构调整提供依据。</li>
+<li><strong>风险管理：</strong> 评估模型的鲁棒性、偏见和安全性，确保其符合伦理要求。</li>
+<li><strong>发布与对比：</strong> 提供标准化的性能数据，便于与其他模型进行比较，并向社区展示模型能力。</li>
+</ul>
+<p><strong>评估维度：</strong></p>
+<ol>
+<li><strong>通用能力：</strong> 模型在广泛任务上的语言理解、推理和生成能力。</li>
+<li><strong>特定任务能力：</strong> 模型在微调目标任务上的精确度、召回率、F1 分数等。</li>
+<li><strong>鲁棒性：</strong> 模型对输入扰动（如拼写错误、同义词替换）的抵抗能力。</li>
+<li><strong>安全性与伦理：</strong> 模型是否产生有害、偏见或不当内容。</li>
+<li><strong>效率：</strong> 推理速度、内存占用等。</li>
+</ol>
+<p><strong>常见评估工具与指标：</strong></p>
+<ul>
+<li><strong><code>lm-evaluation-harness</code>：</strong> 一个广泛使用的 LLM 评估框架，支持多种模型和数百个基准数据集。</li>
+<li><strong>MMLU (Massive Multitask Language Understanding)：</strong> 包含 57 个学科（如历史、法律、数学、医学等）的多项选择题，旨在衡量模型在广泛知识领域的理解和推理能力。分数范围 0-100%，越高越好。</li>
+<li><strong>HellaSwag：</strong> 一个常识推理数据集，要求模型从多个看似合理的选项中选择最符合常识的句子。用于评估模型在日常情境中的推理能力。分数范围 0-100%，越高越好。</li>
+<li><strong>ARC (AI2 Reasoning Challenge)：</strong> 科学领域的多项选择题，分为挑战集和简单集，评估模型在科学推理方面的能力。</li>
+<li><strong>TruthfulQA：</strong> 评估模型在面对易于产生错误答案的问题时，是否能给出真实、无误的回答，侧重于事实性和避免幻觉。</li>
+</ul>
+<h3>11.2 <code>lm-evaluation-harness</code> 简介与使用</h3>
+<p><code>lm-evaluation-harness</code> 是一个由 EleutherAI 开发的强大工具，旨在标准化和简化大语言模型的评估过程。它提供了一个统一的接口，可以对各种模型（如 Hugging Face Transformers 模型、OpenAI API 模型等）在大量基准测试数据集上进行评估。</p>
+<p><strong>核心概念：</strong></p>
+<ul>
+<li><strong>Tasks (任务)：</strong> 指的是具体的评估数据集和其对应的评估逻辑，例如 <code>mmlu_stem</code>、<code>hellaswag</code> 等。</li>
+<li><strong>Models (模型)：</strong> 指的是待评估的语言模型，可以是本地加载的 Hugging Face 模型，也可以是远程 API。</li>
+<li><strong>Datasets (数据集)：</strong> 任务背后所依赖的原始数据。</li>
+</ul>
+<p><strong>安装：</strong></p>
+<pre><code class="language-bash">pip install lm-evaluation-harness
+# 如果需要评估Hugging Face模型，还需要安装transformers和pytorch
+pip install transformers torch accelerate
+</code></pre>
+<p><strong>基本用法：</strong></p>
+<p>通过 <code>lm_eval</code> 命令行工具，可以指定模型、任务以及其他参数来运行评估。</p>
+<pre><code class="language-bash">lm_eval --model hf \
+        --model_args pretrained=google/gemma-2b \
+        --tasks mmlu_stem,hellaswag \
+        --num_fewshot 0 \
+        --device cuda:0 \
+        --batch_size 4 \
+        --output_path ./eval_results/gemma_2b_base_eval.json
+</code></pre>
+<p>上述命令解释：</p>
+<ul>
+<li><code>--model hf</code>: 指定使用 Hugging Face <code>transformers</code> 库加载模型。</li>
+<li><code>--model_args pretrained=google/gemma-2b</code>: 指定要评估的模型名称或本地路径。</li>
+<li><code>--tasks mmlu_stem,hellaswag</code>: 指定要运行的评估任务列表，多个任务用逗号分隔。</li>
+<li><code>--num_fewshot 0</code>: 指定是否使用 Few-shot 评估。0 表示 Zero-shot。</li>
+<li><code>--device cuda:0</code>: 指定运行设备。</li>
+<li><code>--batch_size 4</code>: 推理批处理大小。</li>
+<li><code>--output_path</code>: 评估结果的保存路径。</li>
+</ul>
+<h3>11.3 MMLU 与 HellaSwag 分数解读</h3>
+<p>理解这些基准测试的含义和分数解读至关重要。</p>
+<p><strong>MMLU (Massive Multitask Language Understanding)：</strong></p>
+<ul>
+<li><strong>目的：</strong> 衡量模型在广泛的、多样化的知识领域中的理解、推理和泛化能力。</li>
+<li><strong>内容：</strong> 包含 57 个子任务，涵盖人文、社会科学、自然科学、工程等多个学科。每个子任务都是多项选择题。</li>
+<li><strong>分数解读：</strong> MMLU 报告的是所有子任务的平均准确率。<ul>
+<li><strong>高分 (例如 70%+):</strong> 表明模型具有强大的通用知识和跨领域推理能力，在学术和专业领域表现出色。</li>
+<li><strong>中等分数 (例如 50-70%):</strong> 模型具备一定的知识储备，但在某些专业领域可能仍有不足。微调通常旨在提升特定领域的 MMLU 分数。</li>
+<li><strong>低分 (&lt;50%):</strong> 模型在通用知识或理解方面存在显著缺陷。</li>
+</ul>
+</li>
+<li><strong>Few-shot / Zero-shot：</strong> MMLU 通常在 Few-shot (5-shot) 设置下评估，即在每个问题前提供几个示例，这更能反映模型在有上下文提示时的学习和推理能力。</li>
+</ul>
+<p><strong>HellaSwag：</strong></p>
+<ul>
+<li><strong>目的：</strong> 评估模型在日常情境中的常识推理能力，即从多个看似合理的选项中选择最符合逻辑和常识的延续。</li>
+<li><strong>内容：</strong> 给出一段上下文，然后是四个可能的后续句子，模型需要选择最自然、最符合常识的一个。</li>
+<li><strong>分数解读：</strong> HellaSwag 报告的是选择正确选项的准确率。<ul>
+<li><strong>高分 (例如 80%+):</strong> 表明模型具有出色的常识理解和推理能力，能够理解日常对话和情境的隐含意义。</li>
+<li><strong>中等分数 (例如 60-80%):</strong> 模型在多数常识情境中表现良好，但在一些微妙或复杂的情况下可能出错。</li>
+<li><strong>低分 (&lt;60%):</strong> 模型在常识推理方面存在明显不足，可能产生不合逻辑的回答。</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何看待分数：</strong></p>
+<ul>
+<li><strong>绝对值：</strong> 直接反映模型在该基准上的性能。</li>
+<li><strong>相对值：</strong> 将微调后的模型分数与基座模型（如原始 Gemma 2B/7B）、同等规模的其他开源模型，甚至 SOTA (State-of-the-Art) 模型进行比较。这能更清晰地看出微调带来的提升和模型所处的水平。</li>
+<li><strong>任务相关性：</strong> 对于特定应用场景，应优先关注与该任务最相关的评估指标。例如，如果模型用于法律咨询，那么法律相关的 MMLU 子任务分数会更重要。</li>
+</ul>
+<h3>11.4 模型导出：GGUF 格式详解</h3>
+<p>在微调完成后，模型通常以 Hugging Face <code>transformers</code> 格式（PyTorch <code>.bin</code> 或 TensorFlow <code>.h5</code> 文件和配置文件）存储。然而，这种格式在 CPU 上进行推理时效率不高，尤其是在资源受限的设备上。GGUF (Gemma GGML Unified Format) 是一种专门为 CPU 和边缘设备优化的大语言模型文件格式，它由 <code>llama.cpp</code> 项目引入，并迅速成为 CPU 推理的事实标准。</p>
+<p><strong>为什么选择 GGUF？</strong></p>
+<ul>
+<li><strong>CPU 友好：</strong> GGUF 格式设计时考虑了 CPU 的内存访问模式，能够更高效地利用 CPU 资源进行推理。</li>
+<li><strong>量化支持：</strong> GGUF 原生支持多种量化方案（如 Q4_K_M, Q5_K_M, Q8_0 等），可以将模型权重从 16 位浮点数（FP16）或 32 位浮点数（FP32）压缩到 8 位、5 位甚至 4 位整数，大幅减少模型文件大小和内存占用，同时保持可接受的性能损失。</li>
+<li><strong>跨平台：</strong> GGUF 文件可以在支持 <code>llama.cpp</code> 的各种操作系统和硬件上运行，包括 Linux、macOS、Windows，甚至树莓派等嵌入式设备。</li>
+<li><strong>元数据：</strong> GGUF 文件可以包含丰富的元数据，如模型名称、作者、量化类型、上下文窗口大小等，便于管理和识别。</li>
+<li><strong>生态系统：</strong> 得到了 Ollama 等轻量级 LLM 运行时的广泛支持，部署极为便捷。</li>
+</ul>
+<p><strong>Gemma 到 GGUF 的转换流程：</strong></p>
+<p>由于 Gemma 模型是基于 <code>transformers</code> 库发布的，我们可以利用 <code>llama.cpp</code> 项目提供的转换脚本将其转换为 GGUF 格式。这个过程通常包括以下步骤：</p>
+<ol>
+<li><strong>加载模型：</strong> 使用 Hugging Face <code>transformers</code> 库加载微调后的 Gemma 模型。</li>
+<li><strong>转换权重：</strong> 使用 <code>llama.cpp</code> 仓库中的 <code>convert.py</code> 脚本，将 PyTorch 格式的权重转换为 GGUF 格式。这个脚本会处理模型的架构、分词器和权重，并应用指定的量化。</li>
+</ol>
+<p><strong>GGUF 转换工具链：</strong></p>
+<p><code>llama.cpp</code> 仓库是 GGUF 格式的核心。它提供了一个 Python 脚本 <code>convert.py</code>，用于将 Hugging Face <code>transformers</code> 模型转换为 GGUF。</p>
+<pre><code class="language-bash"># 首先克隆 llama.cpp 仓库
+git clone https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp
+
+# 安装必要的 Python 依赖
+pip install -r requirements.txt
+
+# 假设你的微调模型保存在 `./my_gemma_finetune` 目录下
+# 运行转换脚本
+# --outfile 指定输出的 GGUF 文件名
+# --model_id 指定 Hugging Face 模型ID 或本地模型路径
+# --quantization_type 指定量化类型 (可选，默认为 FP16)
+# 例如，转换为 Q4_K_M 量化
+python convert.py --outfile ../my_gemma_finetune_q4_k_m.gguf \
+                  --model_id ../my_gemma_finetune \
+                  --quantization_type Q4_K_M
+</code></pre>
+<p><code>quantization_type</code> 选项非常关键，常见的量化类型包括：</p>
+<ul>
+<li><code>F16</code> (或 <code>FP16</code>): 16位浮点数，无损或极低损耗，文件较大，推理较慢。</li>
+<li><code>Q8_0</code>: 8位整数，文件大小减半，推理速度提升，性能损失极小。</li>
+<li><code>Q5_K_M</code>: 5位混合量化，兼顾文件大小和性能，是常用选择。</li>
+<li><code>Q4_K_M</code>: 4位混合量化，文件最小，推理最快，但性能损失可能稍大。</li>
+</ul>
+<p>选择合适的量化类型需要在文件大小、推理速度和模型性能之间进行权衡。</p>
+<h3>11.5 模型卡与版本管理</h3>
+<p>随着模型开发周期的推进，有效的模型管理变得至关重要。</p>
+<p><strong>模型卡 (Model Card)：</strong></p>
+<p>模型卡是一种结构化的文档，旨在提供关于模型的重要元数据和上下文信息。它通常包含：</p>
+<ul>
+<li><strong>模型名称与版本：</strong> 清晰标识模型。</li>
+<li><strong>开发者：</strong> 团队或个人信息。</li>
+<li><strong>发布日期：</strong> 模型发布时间。</li>
+<li><strong>模型架构：</strong> 使用的基座模型、微调方法（LoRA/QLoRA等）。</li>
+<li><strong>训练数据：</strong> 使用的训练数据集、数据来源、数据大小、任何预处理步骤。</li>
+<li><strong>预期用途：</strong> 模型设计用于解决什么问题，目标用户是谁。</li>
+<li><strong>限制与风险：</strong> 模型可能存在的偏见、局限性、不适合的应用场景。</li>
+<li><strong>评估结果：</strong> 详细的基准测试结果（如 MMLU、HellaSwag 分数），包括评估设置（few-shot/zero-shot）。</li>
+<li><strong>能耗：</strong> 训练和推理的估计能耗。</li>
+<li><strong>许可证：</strong> 模型和权重的许可协议。</li>
+</ul>
+<p><strong>为什么要创建模型卡？</strong></p>
+<ul>
+<li><strong>透明度：</strong> 提高模型的透明度，帮助用户理解模型的能力和局限性。</li>
+<li><strong>负责任的 AI：</strong> 促进负责任的 AI 开发和部署。</li>
+<li><strong>可追溯性：</strong> 记录模型的关键信息，便于后续维护和审计。</li>
+<li><strong>沟通：</strong> 作为开发者、用户和利益相关者之间沟通的桥梁。</li>
+</ul>
+<p><strong>版本管理：</strong></p>
+<p>在模型开发和部署过程中，模型版本管理是必不可少的。</p>
+<ul>
+<li><strong>Git LFS (Large File Storage)：</strong> 对于模型权重这种大文件，标准的 Git 仓库管理效率低下。Git LFS 允许你在 Git 仓库中跟踪大文件，但实际文件内容存储在远程 LFS 服务器上，只在需要时下载。</li>
+<li><strong>Hugging Face Hub：</strong> Hugging Face Hub 提供了一个强大的平台，用于托管、分享和版本化 LLM。你可以将微调后的 Gemma 模型直接上传到 Hub，它会自动处理大文件、提供模型卡模板、版本历史和社区互动功能。<ul>
+<li><strong>上传流程：</strong><ol>
+<li>安装 <code>huggingface_hub</code> 库并登录：<code>pip install huggingface_hub &amp;&amp; huggingface-cli login</code></li>
+<li>创建一个新的仓库：<code>huggingface-cli repo create &lt;your-model-name&gt; --type model</code></li>
+<li>使用 <code>push_to_hub</code> 方法：<code>model.push_to_hub("your-org/your-model-name")</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>最佳实践：</strong></p>
+<ul>
+<li>每次对模型进行重大更改（如更改数据集、超参数、架构）后，都应视为新版本并记录。</li>
+<li>为每个版本创建清晰的标签或提交信息。</li>
+<li>在模型卡中记录每个版本的详细信息，包括其评估结果。</li>
+</ul>
+<hr>
+<h2>💻 实战演示</h2>
+<h3>11.6 实战一：使用 <code>lm-evaluation-harness</code> 评估微调后的 Gemma 模型</h3>
+<p>本实战将演示如何使用 <code>lm-evaluation-harness</code> 评估一个假设已经微调完成的 Gemma 模型。</p>
+<p><strong>前置条件：</strong></p>
+<ul>
+<li>您已经安装了 <code>lm-evaluation-harness</code>、<code>transformers</code> 和 <code>torch</code>。</li>
+<li>您有一个微调后的 Gemma 模型，保存为 Hugging Face 格式，例如在 <code>./my_gemma_finetune</code> 目录下。</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><p><strong>准备评估环境</strong></p>
+<p>确保所有依赖都已安装。</p>
+<pre><code class="language-bash">pip install lm-evaluation-harness transformers torch accelerate
+</code></pre>
+</li>
+<li><p><strong>运行评估命令</strong></p>
+<p>我们将评估微调后的 Gemma 模型在 <code>mmlu_stem</code> 和 <code>hellaswag</code> 任务上的表现。这里我们假设模型路径为 <code>./my_gemma_finetune</code>，您需要将其替换为您的实际模型路径。</p>
+<pre><code class="language-bash"># 注意：评估大型模型可能需要大量 GPU 内存和时间。
+# 确保您的 GPU 能够加载模型并处理批量推理。
+# 对于 Gemma 7B/27B，可能需要 A100 或 H100 GPU。
+# 如果内存不足，请降低 --batch_size 或使用更小的模型。
+
+LM_EVAL_DIR="./eval_results"
+MODEL_PATH="./my_gemma_finetune" # 替换为您的微调模型路径
+
+mkdir -p $LM_EVAL_DIR
+
+lm_eval --model hf \
+        --model_args pretrained=$MODEL_PATH,trust_remote_code=True \
+        --tasks mmlu_stem,hellaswag \
+        --num_fewshot 0 \
+        --device cuda:0 \
+        --batch_size 4 \
+        --output_path $LM_EVAL_DIR/gemma_finetuned_eval.json \
+        --log_samples # 记录每个样本的预测结果
+</code></pre>
+<ul>
+<li><code>pretrained=$MODEL_PATH</code>: 指定加载本地微调模型。</li>
+<li><code>trust_remote_code=True</code>: 如果您的模型使用了自定义代码（例如自定义层或分词器），则需要此参数。Gemma 模型通常不需要，但为了兼容性可以加上。</li>
+<li><code>--num_fewshot 0</code>: 这里我们演示 Zero-shot 评估。在实际的 MMLU 评估中，通常使用 Few-shot (例如 <code>--num_fewshot 5</code>) 来获得更具代表性的结果。</li>
+</ul>
+</li>
+<li><p><strong>解读评估结果</strong></p>
+<p>评估完成后，结果将保存在 <code>$LM_EVAL_DIR/gemma_finetuned_eval.json</code> 文件中。打开该文件，您会看到类似以下结构的 JSON 输出：</p>
+<pre><code class="language-json">{
+  "results": {
+    "mmlu_stem": {
+      "acc": 0.5567,
+      "acc_stderr": 0.0123,
+      "acc_norm": 0.5789,
+      "acc_norm_stderr": 0.0125
+    },
+    "hellaswag": {
+      "acc": 0.7891,
+      "acc_stderr": 0.0034,
+      "acc_norm": 0.7912,
+      "acc_norm_stderr": 0.0033
+    }
+  },
+  "versions": {
+    "mmlu_stem": 0,
+    "hellaswag": 0
+  },
+  "config": {
+    // ... 评估配置信息 ...
+  }
+}
+</code></pre>
+<ul>
+<li><code>acc</code>: 准确率 (accuracy)。</li>
+<li><code>acc_stderr</code>: 准确率的标准误差，反映了结果的置信度。</li>
+<li><code>acc_norm</code>: 归一化准确率 (normalized accuracy)，对于某些任务，这可能更具代表性。</li>
+</ul>
+<p>根据这些结果，您可以与原始 Gemma 模型或其他基准模型进行比较，判断微调的效果。例如，如果原始 Gemma 2B 在 MMLU 上的 <code>acc</code> 是 40%，而您的微调模型达到了 55%，那么微调是成功的。</p>
+</li>
+</ol>
+<h3>11.7 实战二：将微调后的 Gemma 模型导出为 GGUF 格式</h3>
+<p>本实战将演示如何将微调后的 Hugging Face 格式的 Gemma 模型转换为 GGUF 格式。</p>
+<p><strong>前置条件：</strong></p>
+<ul>
+<li>您已经克隆了 <code>llama.cpp</code> 仓库并安装了其 Python 依赖。</li>
+<li>您有一个微调后的 Gemma 模型，保存为 Hugging Face 格式，例如在 <code>./my_gemma_finetune</code> 目录下。</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><p><strong>克隆 <code>llama.cpp</code> 仓库并安装依赖</strong></p>
+<pre><code class="language-bash">git clone https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp
+pip install -r requirements.txt
+</code></pre>
+</li>
+<li><p><strong>执行 GGUF 转换</strong></p>
+<p>假设您的微调模型位于 <code>../my_gemma_finetune</code> (相对于 <code>llama.cpp</code> 目录)。我们将它转换为 Q4_K_M 量化版本。</p>
+<pre><code class="language-bash"># 假设当前在 llama.cpp 目录下
+MODEL_HF_PATH="../my_gemma_finetune" # 替换为您的微调模型路径
+OUTPUT_GGUF_PATH="../my_gemma_finetune_q4_k_m.gguf"
+
+python convert.py --outfile $OUTPUT_GGUF_PATH \
+                  --model_id $MODEL_HF_PATH \
+                  --quantization_type Q4_K_M
+
+echo "GGUF 模型已导出到: $OUTPUT_GGUF_PATH"
+</code></pre>
+<ul>
+<li><code>--model_id</code>: 可以是 Hugging Face 模型 ID (例如 <code>google/gemma-2b</code>) 或本地模型目录路径。</li>
+<li><code>--quantization_type</code>: 指定量化类型。除了 <code>Q4_K_M</code>，您还可以尝试 <code>F16</code> (全精度)、<code>Q8_0</code>、<code>Q5_K_M</code> 等。</li>
+</ul>
+<p>转换过程可能需要一些时间，具体取决于模型大小和您的 CPU 性能。完成后，您将在指定路径得到一个 <code>.gguf</code> 文件。</p>
+</li>
+</ol>
+<h3>11.8 实战三：使用 Ollama 部署 GGUF 模型</h3>
+<p>Ollama 是一个轻量级的 LLM 运行环境，它使得在本地运行 GGUF 模型变得异常简单。</p>
+<p><strong>前置条件：</strong></p>
+<ul>
+<li>您已经安装了 Ollama。可以从 <a href="https://ollama.com/download">https://ollama.com/download</a> 下载并安装。</li>
+<li>您已经将微调后的 Gemma 模型导出为 GGUF 格式（如上一步骤）。</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><p><strong>准备 Modelfile</strong></p>
+<p>Ollama 使用 <code>Modelfile</code> 来定义模型。创建一个名为 <code>Modelfile</code> 的文件（与您的 GGUF 模型在同一目录下，或者指定路径），内容如下：</p>
+<pre><code class="language-dockerfile"># Modelfile
+
+# 从你的 GGUF 模型文件导入
+FROM ./my_gemma_finetune_q4_k_m.gguf
+
+# 设置模型参数 (可选)
+# TEMPLATE "{{ .Prompt }}"
+# PARAMETER temperature 0.7
+# PARAMETER top_k 40
+# PARAMETER top_p 0.9
+
+# 设置模型描述 (可选)
+# MESSAGE system "你是一个专业的AI助手，擅长回答技术问题。"
+
+# 标签，用于识别模型
+LABEL author "Your Name/Org"
+LABEL license "Apache 2.0"
+LABEL description "Fine-tuned Gemma for specific task X, quantized to Q4_K_M."
+</code></pre>
+<ul>
+<li><code>FROM ./my_gemma_finetune_q4_k_m.gguf</code>: 替换为您的 GGUF 模型的实际路径。</li>
+<li><code>TEMPLATE</code>: Gemma 模型通常有特定的提示模板，可以根据需要设置。</li>
+<li><code>PARAMETER</code>: 可以设置模型推理参数。</li>
+<li><code>LABEL</code>: 添加元数据，便于识别和管理。</li>
+</ul>
+</li>
+<li><p><strong>创建 Ollama 模型</strong></p>
+<p>在包含 <code>Modelfile</code> 的目录下打开终端，执行以下命令：</p>
+<pre><code class="language-bash">ollama create my-finetuned-gemma -f Modelfile
+</code></pre>
+<ul>
+<li><code>my-finetuned-gemma</code>: 您为该模型指定的名称。</li>
+</ul>
+<p>Ollama 会读取 <code>Modelfile</code> 并将您的 GGUF 模型导入到其本地模型库中。</p>
+</li>
+<li><p><strong>运行 Ollama 模型</strong></p>
+<p>创建成功后，您就可以像运行任何其他 Ollama 模型一样运行您的微调 Gemma 模型了：</p>
+<pre><code class="language-bash">ollama run my-finetuned-gemma
+</code></pre>
+<p>现在，您可以在终端中与您的微调 Gemma 模型进行交互了。</p>
+<pre><code>&gt;&gt;&gt; How can I fine-tune a Gemma model?
+(Model responds based on its fine-tuned knowledge)
+</code></pre>
+<p>您也可以通过 Ollama API 与模型交互，这使得将模型集成到应用程序中变得非常方便。</p>
+</li>
+</ol>
+<hr>
+<h2>🔧 涉及的工具与命令</h2>
+<table>
+<thead>
+<tr>
+<th align="left">工具/命令</th>
+<th align="left">描述</th>
+<th align="left">示例用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>pip install lm-evaluation-harness</code></td>
+<td align="left">安装 <code>lm-evaluation-harness</code> 评估框架。</td>
+<td align="left"><code>pip install lm-evaluation-harness transformers torch accelerate</code></td>
+</tr>
+<tr>
+<td align="left"><code>lm_eval</code></td>
+<td align="left">运行 <code>lm-evaluation-harness</code> 命令行工具进行模型评估。</td>
+<td align="left"><code>lm_eval --model hf --model_args pretrained=./my_model --tasks mmlu_stem</code></td>
+</tr>
+<tr>
+<td align="left"><code>git clone</code></td>
+<td align="left">克隆 <code>llama.cpp</code> 仓库，获取 GGUF 转换工具。</td>
+<td align="left"><code>git clone https://github.com/ggerganov/llama.cpp.git</code></td>
+</tr>
+<tr>
+<td align="left"><code>python convert.py</code></td>
+<td align="left"><code>llama.cpp</code> 提供的 Python 脚本，用于将 Hugging Face 模型转换为 GGUF 格式。</td>
+<td align="left"><code>python convert.py --outfile model.gguf --model_id my_hf_model_path</code></td>
+</tr>
+<tr>
+<td align="left"><code>ollama create</code></td>
+<td align="left">使用 <code>Modelfile</code> 将 GGUF 模型导入到 Ollama。</td>
+<td align="left"><code>ollama create my-model -f Modelfile</code></td>
+</tr>
+<tr>
+<td align="left"><code>ollama run</code></td>
+<td align="left">在 Ollama 中运行已导入的模型进行交互式推理。</td>
+<td align="left"><code>ollama run my-model</code></td>
+</tr>
+<tr>
+<td align="left"><code>huggingface-cli login</code></td>
+<td align="left">登录 Hugging Face Hub，用于模型上传。</td>
+<td align="left"><code>huggingface-cli login</code></td>
+</tr>
+<tr>
+<td align="left"><code>model.push_to_hub()</code></td>
+<td align="left"><code>transformers</code> 库中用于将模型上传到 Hugging Face Hub 的方法。</td>
+<td align="left"><code>model.push_to_hub("your-org/your-gemma-finetune")</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ul>
+<li><strong>评估至关重要：</strong> 微调后的模型评估是开发流程中不可或缺的一环，它能客观量化模型的改进，避免过拟合，并指导后续优化。</li>
+<li><strong><code>lm-evaluation-harness</code> 是利器：</strong> 掌握 <code>lm-evaluation-harness</code> 框架，能够标准化地评估 Gemma 模型在各种基准测试上的性能，如</li>
+</ul>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-10/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 10 期 | JAX/Flax 原生微调（官方推荐路线）</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-12/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 10 期 | JAX/Flax 原生微调（官方推荐路线） — Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration — AgentUpdate.ai</title><meta name="description" content="第 10 期 | JAX/Flax 原生微调（官方推荐路线）"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-10/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-10/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-10/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-10/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 10 期 | JAX/Flax 原生微调（官方推荐路线） — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta property="og:description" content="第 10 期 | JAX/Flax 原生微调（官方推荐路线）"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-10/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 10 期 | JAX/Flax 原生微调（官方推荐路线） — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta name="twitter:description" content="第 10 期 | JAX/Flax 原生微调（官方推荐路线）"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/gemma-tutorial/lesson-10/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/gemma-tutorial/lesson-10/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 认识 Gemma：Google 开源模型家族全景 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 本地极速部署：Ollama + Gemma 一键启动 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | Hugging Face Transformers 推理实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Google Cloud Vertex AI 云端部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 多模态能力解锁：图片理解与视觉问答 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 128K 超长上下文实战：文档分析与代码审查 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Function Calling 与结构化输出 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | LoRA 微调入门：用 PEFT 定制你的专属 Gemma </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-10/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | JAX/Flax 原生微调（官方推荐路线） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | 微调效果评估与模型导出 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | Gemma + LangChain/LlamaIndex：RAG 应用构建 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | Gemma + vLLM：高性能推理服务部署 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | 终局实战：构建你的私有 AI 助手产品 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/gemma-tutorial/" data-astro-cid-ilhxcym7>Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 10 期 | JAX/Flax 原生微调（官方推荐路线）</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Google Gemma Masterclass: Deployment, Fine-Tuning & Agent Integration","item":"https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/"},{"@type":"ListItem","position":4,"name":"第 10 期 | JAX/Flax 原生微调（官方推荐路线）"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 10 期 | JAX/Flax 原生微调（官方推荐路线）</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><p>副标题：使用 Google 官方 gemma PyPI 包进行微调，JAX 生态优势、TPU 训练配置、与 PyTorch 路线的对比选择。</p>
+<h2>🎯 学习目标</h2>
+<ul>
+<li>深入理解 Google JAX/Flax 生态系统在大型语言模型（LLM）微调中的独特优势和应用场景。</li>
+<li>掌握利用 Google DeepMind 官方 <code>gemma</code> PyPI 包，在 JAX/Flax 框架下对 Gemma 模型进行参数高效微调（PEFT）的流程。</li>
+<li>了解如何配置和利用 Google Cloud TPU 资源，为 Gemma 模型提供高性能的训练环境。</li>
+<li>对比 JAX/Flax 与 PyTorch 在 Gemma 微调路线上的异同，并根据实际需求做出明智的技术选型。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>10.1 JAX/Flax 生态在 LLM 训练中的优势</h3>
+<p>JAX 是 Google DeepMind 开发的一个高性能数值计算库，它结合了 NumPy 的 API、自动微分功能以及 XLA（Accelerated Linear Algebra）编译器的强大性能。Flax 是构建在 JAX 之上的神经网络库，提供了模块化的组件和函数式编程范式，非常适合大规模模型训练。对于 Gemma 这样的先进 LLM，JAX/Flax 提供了以下显著优势：</p>
+<ol>
+<li><strong>极致性能与 XLA 编译器：</strong> JAX 的核心在于 XLA 编译器。它能够将 JAX 代码即时（JIT）编译成针对特定硬件（如 CPU、GPU、TPU）高度优化的机器码。这意味着模型训练和推理的计算图在运行前就被优化，避免了 Python 解释器的开销，实现了接近原生 C++ 的性能。</li>
+<li><strong>原生 TPU 支持与优化：</strong> JAX 是 Google 内部为 TPU 设计和优化的框架。TPU（Tensor Processing Unit）是 Google 专门为机器学习工作负载设计的 ASIC。JAX 与 TPU 的结合提供了无与伦比的训练速度和效率，尤其是在处理大规模矩阵运算和并行计算时。它能够充分利用 TPU 的高带宽内存和高吞吐量计算能力。</li>
+<li><strong>函数式编程范式：</strong> JAX 鼓励纯函数式编程。模型定义、参数更新、数据处理等都被封装为纯函数，这使得代码更加模块化、可测试，并且天然支持并行化和分布式计算，减少了副作用和状态管理的复杂性。</li>
+<li><strong>SPMD (Single Program, Multiple Data) 分布式训练：</strong> JAX 通过 <code>jax.pmap</code>（parallel map）提供了一种简洁高效的 SPMD 编程模型。开发者只需编写一份代码，JAX 就能自动在多个设备（如多个 TPU 核心）上复制模型和数据，并协调计算，极大地简化了大规模分布式训练的实现。</li>
+<li><strong>精细的内存控制：</strong> JAX 允许开发者对内存布局和操作进行更精细的控制，这对于训练拥有数十亿甚至上千亿参数的 LLM 至关重要。在 TPU 上，JAX 能够更好地管理 HBM（High Bandwidth Memory），从而在相同硬件条件下支持更大的模型或批次大小。</li>
+<li><strong>梯度变换与自动微分：</strong> JAX 的 <code>jax.grad</code> 提供了灵活的自动微分功能，可以轻松地计算任意阶导数，并支持复杂的微分规则。这对于实现各种优化器和高级训练技术（如混合精度训练、梯度累积）非常方便。</li>
+<li><strong>官方推荐与最佳兼容性：</strong> Gemma 是 Google DeepMind 的产物，其原生实现和官方推荐的微调路线就是基于 JAX/Flax。这意味着使用 JAX 进行 Gemma 微调能够获得最佳的兼容性、最新的特性支持以及最直接的性能优化。</li>
+</ol>
+<h3>10.2 Gemma 官方 <code>gemma</code> PyPI 包介绍</h3>
+<p>Google DeepMind 针对 Gemma 模型发布了一个官方的 PyPI 包，名为 <code>gemma</code>。这个库是专门为 Gemma 模型在 JAX/Flax 生态中提供便利的工具集，它与 Hugging Face <code>transformers</code> 库的 JAX/Flax 后端有所不同，是 Google 团队为 Gemma 模型量身定制并持续优化的。</p>
+<p>该 <code>gemma</code> 包的核心功能包括：</p>
+<ul>
+<li><strong>模型架构实现：</strong> 提供了 <code>gemma.model.Gemma</code> 等类，实现了 Gemma 模型的完整 JAX/Flax 架构，包括注意力机制、前馈网络、归一化层等。</li>
+<li><strong>配置管理：</strong> 包含 <code>gemma.config.GemmaConfig</code>，用于定义模型的各种超参数，如模型尺寸、层数、隐藏层维度、注意力头数等。它还支持通过配置来启用或禁用 LoRA 等微调功能。</li>
+<li><strong>分词器（Tokenizer）：</strong> 提供了 <code>gemma.tokenizer.GemmaTokenizer</code>，用于处理文本的编码和解码，与 Gemma 模型预训练时使用的分词器保持一致。</li>
+<li><strong>采样器（Sampler）：</strong> 包含 <code>gemma.sampler.SampleFn</code> 等，用于在推理阶段根据模型输出的概率分布生成文本。</li>
+<li><strong>权重加载与管理：</strong> 提供了便捷的函数来加载官方发布的 Gemma 模型权重，并支持将权重映射到 JAX/Flax 模型结构中。</li>
+<li><strong>微调工具：</strong> 集成了对 LoRA 等参数高效微调方法的支持，允许用户在不修改核心模型结构的情况下，通过配置启用微调。</li>
+</ul>
+<p>使用 <code>gemma</code> 包进行微调的优势在于，它提供了与 Gemma 模型原生设计最匹配的实现，能够确保在 JAX/Flax 和 TPU 环境下获得最佳性能和兼容性。</p>
+<h3>10.3 Gemma 微调策略：JAX/Flax 中的 LoRA</h3>
+<p>LoRA (Low-Rank Adaptation of Large Language Models) 是一种高效的参数微调（PEFT）技术，它通过在预训练模型的线性层旁插入小型的低秩矩阵来训练，从而显著减少了需要更新的参数量，降低了计算和内存开销，同时保持了良好的性能。在 JAX/Flax 中实现 LoRA 的核心思想是将 LoRA 模块无缝集成到现有的 Flax <code>nn.Module</code> 中。</p>
+<p><strong>LoRA 原理简述：</strong>
+对于一个预训练的权重矩阵 $W_0 \in \mathbb{R}^{d \times k}$，LoRA 在其更新时不是直接修改 $W_0$，而是引入两个低秩矩阵 $A \in \mathbb{R}^{d \times r}$ 和 $B \in \mathbb{R}^{r \times k}$，其中 $r \ll \min(d, k)$。微调过程中，我们只训练 $A$ 和 $B$，而 $W_0$ 保持不变。更新后的权重矩阵变为 $W_0 + BA$，其中 $BA$ 的秩为 $r$。</p>
+<p><strong>JAX/Flax 中的 LoRA 实现考量：</strong></p>
+<ol>
+<li><p><strong>模块化设计：</strong> 在 Flax 中，LoRA 可以被实现为一个自定义的 <code>nn.Module</code>，它接收一个原始的线性层作为输入，并在其上添加 LoRA 适配器。</p>
+</li>
+<li><p><strong>参数管理：</strong> Flax 的 <code>param_init</code> 和 <code>apply</code> 方法使得 LoRA 适配器的新增参数能够与原始模型参数分离管理。在训练时，可以只更新 LoRA 模块的参数。</p>
+</li>
+<li><p><strong>集成到 Gemma 模型：</strong> <code>gemma</code> PyPI 包很可能已经在 <code>gemma.model.Gemma</code> 的内部实现了 LoRA 适配器的集成，通过 <code>GemmaConfig</code> 中的配置项（如 <code>lora_rank</code>，<code>lora_target_modules</code>）来启用和控制 LoRA 行为。
+例如，在 Gemma 的 <code>GemmaConfig</code> 中可能包含类似如下的配置：</p>
+<pre><code class="language-python">from gemma import config as gemma_config
+
+cfg = gemma_config.GemmaConfig(...)
+cfg.lora_rank = 8  # 设置 LoRA 的秩
+cfg.lora_target_modules = ['q_proj', 'v_proj'] # 指定哪些线性层应用 LoRA
+# ... 其他配置
+</code></pre>
+<p>当模型使用此配置初始化时，Flax 内部会在指定的层中自动添加 LoRA 模块。</p>
+</li>
+<li><p><strong>梯度计算与优化：</strong> JAX 的自动微分机制会正确处理包含 LoRA 适配器的计算图。在 <code>jax.value_and_grad</code> 计算梯度时，只会针对那些设置为可训练的 LoRA 参数计算梯度，然后通过 <code>optax</code> 优化器进行更新。</p>
+</li>
+</ol>
+<p>通过 LoRA，我们可以在保持高效训练的同时，显著减少微调所需的计算资源和存储空间，使得在有限的硬件条件下也能对大型 Gemma 模型进行个性化适配。</p>
+<h3>10.4 TPU 训练配置与分布式策略</h3>
+<p>Google Cloud TPU 是进行大规模 JAX/Flax 训练的理想硬件。本节将介绍如何在 Google Cloud 上配置 TPU 环境，并了解 JAX 在 TPU 上的分布式训练策略。</p>
+<h4>10.4.1 Google Cloud TPU 环境设置</h4>
+<ol>
+<li><strong>Google Cloud 项目与配额：</strong> 确保你有一个有效的 Google Cloud 项目，并且拥有足够的 TPU 配额（例如 <code>tpu-v4-8</code> 或 <code>tpu-v5e-8</code>）。</li>
+<li><strong>安装 Google Cloud SDK：</strong> 在本地机器上安装 <code>gcloud</code> 命令行工具，并进行认证：<pre><code class="language-bash">gcloud init
+gcloud auth login
+gcloud config set project your-gcp-project-id
+</code></pre>
+</li>
+<li><strong>创建 TPU VM 实例：</strong> TPU VM 是一个运行在 Google Cloud 上的虚拟机，它直接连接到 TPU 芯片。<pre><code class="language-bash">export ZONE="us-central1-a" # 选择一个支持 TPU 的区域
+export TPU_TYPE="tpu-v4-8" # 例如 tpu-v4-8, tpu-v5e-8
+export VM_NAME="gemma-tpu-vm"
+export ACCELERATOR_TYPE="v4-8" # 对应 TPU_TYPE
+export RUNTIME_VERSION="tpu-vm-tf-2.15.0-pjrt" # 选择一个合适的运行时版本，通常是pjrt版本
+
+gcloud compute tpus tpu-vm create ${VM_NAME} \
+    --zone=${ZONE} \
+    --accelerator-type=${ACCELERATOR_TYPE} \
+    --version=${RUNTIME_VERSION} \
+    --project=${YOUR_GCP_PROJECT_ID}
+</code></pre>
+这将创建一个带有 8 个 TPU v4 核心的 VM。</li>
+<li><strong>SSH 连接到 TPU VM：</strong><pre><code class="language-bash">gcloud compute tpus tpu-vm ssh ${VM_NAME} --zone=${ZONE}
+</code></pre>
+进入 VM 后，可以像操作普通 Linux 服务器一样安装软件包和运行代码。</li>
+</ol>
+<h4>10.4.2 JAX 在 TPU 上的分布式策略 (SPMD)</h4>
+<p>JAX 采用 SPMD（Single Program, Multiple Data）范式进行分布式训练。这意味着你编写一份代码，这份代码会在每个设备（如 TPU 核心）上运行，但处理不同的数据分片。</p>
+<p>核心概念：</p>
+<ul>
+<li><strong><code>jax.devices()</code>：</strong> 获取当前可用的所有 JAX 设备（例如 TPU 核心）。</li>
+<li><strong><code>jax.local_devices()</code>：</strong> 获取当前机器上的本地设备。</li>
+<li><strong><code>jax.device_count()</code>：</strong> 获取设备总数。</li>
+<li><strong><code>jax.pmap</code>：</strong> JAX 中用于 SPMD 并行计算的核心原语。它将一个函数映射到所有设备上并行执行。<code>pmap</code> 会自动处理数据的分发和结果的聚合。<ul>
+<li>当一个函数被 <code>jax.pmap</code> 装饰时，它会在每个设备上独立运行。</li>
+<li>函数的输入参数会被沿第一个维度自动分片（默认行为），发送到每个设备。</li>
+<li>函数内部的计算会在每个设备上并行进行。</li>
+<li><code>axis_name</code> 参数用于在 <code>pmap</code> 内部进行跨设备通信（例如 <code>jax.lax.pmean</code> 用于计算全局平均）。</li>
+</ul>
+</li>
+<li><strong>数据并行：</strong> 这是最常见的分布式训练方式。每个设备拥有模型的完整副本，但处理不同批次的数据。梯度在设备之间进行平均，然后用于更新模型参数。JAX 的 <code>pmap</code> 结合 <code>jax.lax.pmean</code> 可以高效实现数据并行。</li>
+<li><strong>模型并行：</strong> 对于超大型模型，模型的不同部分可以分布在不同的设备上。这通常更复杂，需要仔细设计模型架构和通信模式。JAX 提供了 <code>shard_map</code> 和更底层的 SPMD primitives 来支持模型并行。</li>
+<li><strong>参数分片 (Sharding)：</strong> JAX XLA 编译器能够自动对模型参数进行分片，以适应设备的内存限制。通过 <code>jax.experimental.mesh_utils.create_device_mesh</code> 和 <code>jax.sharding.NamedSharding</code> 可以更精细地控制参数和数据在设备网格上的分布。</li>
+</ul>
+<p><strong>SPMD 示例结构：</strong></p>
+<pre><code class="language-python">import jax
+import jax.numpy as jnp
+from jax.experimental import mesh_utils
+from jax.sharding import NamedSharding, PartitionSpec as P
+
+# 获取设备
+devices = jax.devices()
+num_devices = len(devices)
+print(f"Number of JAX devices: {num_devices}")
+
+# 创建设备网格 (用于更复杂的 sharding)
+mesh = mesh_utils.create_device_mesh((num_devices,))
+# 定义 sharding 规则
+params_sharding = NamedSharding(mesh, P()) # 所有设备都有完整参数副本 (数据并行)
+data_sharding = NamedSharding(mesh, P('batch')) # 批次维度在设备间分片
+
+# 示例：一个简单的训练步骤
+def train_step(params, batch, opt_state):
+    def loss_fn(params):
+        # 假设这是一个简单的模型和损失计算
+        logits = jnp.dot(batch['inputs'], params['w']) + params['b']
+        loss = jnp.mean((logits - batch['labels'])**2)
+        return loss
+
+    loss, grads = jax.value_and_grad(loss_fn)(params)
+
+    # 跨设备平均梯度 (数据并行)
+    grads = jax.lax.pmean(grads, axis_name='devices')
+
+    # 更新参数 (使用 optax)
+    # updates, new_opt_state = optimizer.update(grads, opt_state, params)
+    # new_params = optax.apply_updates(params, updates)
+
+    return loss #, new_params, new_opt_state
+
+# 使用 jax.pmap 编译训练步骤
+# 'devices' 是 axis_name，用于 pmean 等操作
+p_train_step = jax.pmap(train_step, axis_name='devices')
+
+# 假设初始化参数和优化器状态，并准备数据
+# params = ...
+# opt_state = ...
+# batched_data = jax.tree_map(lambda x: x.reshape(num_devices, -1, *x.shape[1:]), data) # 将数据分片到每个设备
+
+# 运行训练
+# losses = p_train_step(params, batched_data, opt_state)
+# print(f"Losses on each device: {losses}")
+</code></pre>
+<p>在 Gemma 微调中，<code>gemma</code> 包会利用这些 JAX 原语在后台处理分布式训练的细节，开发者通常只需关注模型、数据和训练循环的逻辑。</p>
+<h3>10.5 JAX/Flax 与 PyTorch 路线的对比选择</h3>
+<p>在 Gemma 微调中，开发者面临 JAX/Flax 和 PyTorch 两种主要的技术栈选择。两者各有优劣，选择哪种取决于具体的需求、团队经验和硬件环境。</p>
+<table>
+<thead>
+<tr>
+<th align="left">特性/框架</th>
+<th align="left">JAX/Flax</th>
+<th align="left">PyTorch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>硬件亲和性</strong></td>
+<td align="left"><strong>原生 TPU 优化</strong>，GPU 支持良好</td>
+<td align="left"><strong>原生 GPU 优化</strong>，TPU 支持通过 PyTorch/XLA</td>
+</tr>
+<tr>
+<td align="left"><strong>性能</strong></td>
+<td align="left">XLA 编译器带来极致性能，尤其在 TPU 上</td>
+<td align="left">性能优异，但通常略逊于 JAX+TPU 的组合</td>
+</tr>
+<tr>
+<td align="left"><strong>编程范式</strong></td>
+<td align="left"><strong>函数式编程</strong>，不可变状态，纯函数</td>
+<td align="left"><strong>面向对象编程</strong>，更直观，状态可变</td>
+</tr>
+<tr>
+<td align="left"><strong>学习曲线</strong></td>
+<td align="left">相对较陡峭，需要适应函数式编程和 JIT 编译</td>
+<td align="left">相对平缓，与传统 Python 开发模式更接近</td>
+</tr>
+<tr>
+<td align="left"><strong>生态系统</strong></td>
+<td align="left">相对较小，但在 Google 内部和研究领域强大</td>
+<td align="left"><strong>庞大且成熟</strong>，拥有丰富的库、工具和社区</td>
+</tr>
+<tr>
+<td align="left"><strong>调试</strong></td>
+<td align="left">纯函数和 JIT 编译有时使调试复杂，需借助 <code>pdb</code> 或 <code>print</code> 调试技巧</td>
+<td align="left">动态图易于调试，有丰富的调试工具</td>
+</tr>
+<tr>
+<td align="left"><strong>分布式训练</strong></td>
+<td align="left"><code>jax.pmap</code> (SPMD) 简洁高效，TPU 优化</td>
+<td align="left"><code>torch.distributed</code> 灵活强大，支持多种后端</td>
+</tr>
+<tr>
+<td align="left"><strong>内存管理</strong></td>
+<td align="left">精细控制，高效利用 TPU HBM</td>
+<td align="left">自动管理，易于使用，但有时不如 JAX 精细</td>
+</tr>
+<tr>
+<td align="left"><strong>Gemma 官方支持</strong></td>
+<td align="left"><strong>原生和推荐</strong>，有官方 <code>gemma</code> PyPI 包</td>
+<td align="left">通过 Hugging Face <code>transformers</code> 库支持</td>
+</tr>
+<tr>
+<td align="left"><strong>模型部署</strong></td>
+<td align="left">通过 JAX/Flax 或 ONNX/TF SavedModel 导出</td>
+<td align="left">广泛支持 ONNX、TorchScript、TensorRT 等</td>
+</tr>
+<tr>
+<td align="left"><strong>适用场景</strong></td>
+<td align="left">追求极致性能、大规模分布式训练、TPU 优先；研究和前沿模型开发</td>
+<td align="left">快速迭代、广泛工具链、GPU 优先；工业界应用和生产环境</td>
+</tr>
+</tbody></table>
+<p><strong>选择建议：</strong></p>
+<ul>
+<li><strong>如果目标是最大化 Gemma 在 TPU 上的训练效率和性能，并且愿意投入学习 JAX 的函数式编程范式，那么 JAX/Flax 是官方推荐且最佳的选择。</strong></li>
+<li><strong>如果团队已经熟悉 PyTorch 生态，拥有大量 GPU 资源，或者更看重快速开发和丰富的社区支持，那么 PyTorch 路线（通过 Hugging Face <code>transformers</code> 库）会是更便捷的选择。</strong></li>
+</ul>
+<p>本教程专注于官方推荐的 JAX/Flax 路线，旨在帮助读者充分利用 Gemma 的原生优势。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>本实战演示将指导您在 Google Cloud TPU VM 上，使用官方 <code>gemma</code> PyPI 包对 Gemma 模型进行 LoRA 微调。</p>
+<p><strong>前提条件：</strong></p>
+<ol>
+<li>一个有效的 Google Cloud 项目，并已设置好计费。</li>
+<li>拥有足够的 TPU 配额（例如 <code>tpu-v4-8</code> 或 <code>tpu-v5e-8</code>）。</li>
+<li>已在本地安装 Google Cloud SDK 并完成认证。</li>
+<li>已通过 Kaggle 认证并接受 Gemma 模型的条款，以便下载模型权重。</li>
+</ol>
+<h3>场景一：环境配置与 Gemma 官方库安装</h3>
+<p>首先，我们需要在 Google Cloud 上创建一个 TPU VM，并安装必要的软件。</p>
+<ol>
+<li><p><strong>创建 TPU VM 实例并 SSH 连接：</strong>
+在本地终端执行以下命令。请替换 <code>YOUR_GCP_PROJECT_ID</code> 为您的项目 ID。</p>
+<pre><code class="language-bash"># 1. 设置环境变量
+export ZONE="us-central1-a" # 选择一个支持 TPU 的区域，例如 us-central1-a, europe-west4-a
+export TPU_TYPE="tpu-v4-8" # 例如 tpu-v4-8, tpu-v5e-8
+export VM_NAME="gemma-tpu-vm-lora"
+export ACCELERATOR_TYPE="v4-8" # 对应 TPU_TYPE
+export RUNTIME_VERSION="tpu-vm-tf-2.15.0-pjrt" # 推荐使用 pjrt 版本
+
+# 2. 创建 TPU VM
+echo "Creating TPU VM: ${VM_NAME} in zone ${ZONE} with accelerator type ${ACCELERATOR_TYPE}..."
+gcloud compute tpus tpu-vm create ${VM_NAME} \
+    --zone=${ZONE} \
+    --accelerator-type=${ACCELERATOR_TYPE} \
+    --version=${RUNTIME_VERSION} \
+    --project=${YOUR_GCP_PROJECT_ID} \
+    --provision-network-bandwidth=20gbps # 可选，更高带宽
+
+echo "TPU VM created. Connecting via SSH..."
+# 3. SSH 连接到 TPU VM
+gcloud compute tpus tpu-vm ssh ${VM_NAME} --zone=${ZONE}
+</code></pre>
+<p>成功连接后，您将进入 TPU VM 的 shell 环境。</p>
+</li>
+<li><p><strong>在 TPU VM 中安装依赖：</strong>
+在 TPU VM 内部执行以下命令。</p>
+<pre><code class="language-bash"># 1. 更新系统包
+sudo apt update &amp;&amp; sudo apt upgrade -y
+
+# 2. 安装 Python 依赖
+# jax[tpu] 会安装 JAX 和针对 TPU 的后端
+# gemma 是官方库
+# ml_collections 用于配置管理
+# tqdm 用于显示进度条
+# einops 用于张量操作
+pip install --upgrade pip
+pip install "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
+pip install gemma ml_collections tqdm einops
+</code></pre>
+</li>
+<li><p><strong>下载 Gemma 模型权重：</strong>
+Gemma 模型权重需要通过 Kaggle 认证才能下载。请确保您已在 Kaggle 上接受了 Gemma 的条款。
+在本地机器上（不是 TPU VM），通过 Kaggle API 下载权重，然后上传到 TPU VM。</p>
+<ul>
+<li><strong>本地操作：</strong><ol>
+<li>安装 Kaggle API 客户端：<code>pip install kaggle</code></li>
+<li>从 Kaggle 网站生成 API Token (在个人资料页 -&gt; Account -&gt; API -&gt; Create New API Token)。下载 <code>kaggle.json</code> 文件。</li>
+<li>将 <code>kaggle.json</code> 移动到 <code>~/.kaggle/</code> 目录。</li>
+<li>下载 Gemma 模型（例如 <code>gemma-2b-it</code>）：<pre><code class="language-bash">kaggle models download google/gemma/gemma-2b-it
+# 下载的模型文件会解压到当前目录下的 gemma-2b-it 文件夹
+</code></pre>
+</li>
+<li>将下载的权重文件上传到 TPU VM。假设您想上传 <code>gemma-2b-it</code> 文件夹到 VM 的 <code>/home/user/gemma_weights/</code> 目录：<pre><code class="language-bash">gcloud compute tpus tpu-vm scp --recurse gemma-2b-it ${VM_NAME}:~/gemma_weights/ --zone=${ZONE}
+</code></pre>
+</li>
+</ol>
+</li>
+<li><strong>TPU VM 操作（验证）：</strong>
+SSH 连接到 TPU VM 后，检查权重文件是否已存在：<pre><code class="language-bash">ls -l ~/gemma_weights/gemma-2b-it/
+# 应该能看到 model.safetensors, tokenizer.json 等文件
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h3>场景二：使用 <code>gemma</code> 库进行简单的 LoRA 微调</h3>
+<p>我们将编写一个 Python 脚本，使用 <code>gemma</code> 库加载 Gemma 模型，定义一个简单的指令微调数据集，并使用 LoRA 进行训练。</p>
+<p>在 TPU VM 中创建一个名为 <code>finetune_gemma_lora.py</code> 的文件，并粘贴以下代码：</p>
+<pre><code class="language-python">import os
+import json
+import jax
+import jax.numpy as jnp
+from jax.experimental import mesh_utils
+from jax.sharding import NamedSharding, PartitionSpec as P
+import optax
+import ml_collections
+from tqdm import tqdm
+
+from gemma import config as gemma_config
+from gemma import model as gemma_model
+from gemma import tokenizer as gemma_tokenizer
+from gemma import sampler as gemma_sampler
+
+# --- 1. 配置参数 ---
+# 定义模型和训练配置
+def get_config():
+    config = ml_collections.ConfigDict()
+
+    # Gemma 模型配置
+    config.model_name = "gemma-2b-it" # 确保与下载的权重匹配
+    config.model_path = os.path.expanduser(f"~/gemma_weights/{config.model_name}/")
+    config.model_config_path = os.path.join(config.model_path, "config.json")
+    config.model_weights_path = os.path.join(config.model_path, "model.safetensors")
+    config.tokenizer_path = os.path.join(config.model_path, "tokenizer.json")
+
+    # LoRA 微调配置
+    config.lora_rank = 8
+    config.lora_target_modules = ["q_proj", "v_proj"] # 注意力机制的 Q 和 V 投影层
+
+    # 训练配置
+    config.batch_size = 4 # 每个设备上的批次大小
+    config.learning_rate = 1e-4
+    config.num_epochs = 3
+    config
+</code></pre>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-9/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/gemma-tutorial/lesson-11/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 11 期 | 微调效果评估与模型导出</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

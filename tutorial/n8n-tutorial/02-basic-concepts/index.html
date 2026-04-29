@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 2 期：基础概念剖析 — 节点、触发器与线缆 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai</title><meta name="description" content="透彻理解 n8n 工作流的三大构件：节点 (Nodes) 的类型体系、触发器 (Triggers) 的事件源模型与线缆 (Connections) 的数据传输契约。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/02-basic-concepts/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/02-basic-concepts/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/02-basic-concepts/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/02-basic-concepts/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 2 期：基础概念剖析 — 节点、触发器与线缆 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta property="og:description" content="透彻理解 n8n 工作流的三大构件：节点 (Nodes) 的类型体系、触发器 (Triggers) 的事件源模型与线缆 (Connections) 的数据传输契约。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/n8n-tutorial/02-basic-concepts/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 2 期：基础概念剖析 — 节点、触发器与线缆 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta name="twitter:description" content="透彻理解 n8n 工作流的三大构件：节点 (Nodes) 的类型体系、触发器 (Triggers) 的事件源模型与线缆 (Connections) 的数据传输契约。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/n8n-tutorial/02-basic-concepts/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/n8n-tutorial/02-basic-concepts/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 n8n 全攻略：从自动化流到多智能体编排 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/01-introduction/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 1 期：为什么是 n8n？2026 自动化与 AI Agent 新纪元 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/02-basic-concepts/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 2 期：基础概念剖析 — 节点、触发器与线缆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/03-docker-deploy/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 3 期：环境部署 — Docker Compose 本地部署与安全配置 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/04-data-heartbeat/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 4 期：数据的心跳 — 深度搞懂 JSON Items 与隐式循环 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/05-webhook-telegram/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 5 期：首个实战流 — Webhook 触发与 Telegram 机器人双向交互 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/06-branching-loops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 6 期：分支与循环控制 — If、Switch 与 Loop 节点大解剖 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/07-data-tables/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 7 期：告别外挂数据库 — 内置 Data Tables 的 CRUD 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/08-http-request/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 8 期：与世界通信 — HTTP Request 节点的认证、轮询与并发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/09-code-node/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 9 期：代码是最终兵器 — Code 节点编写 JS/Python </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/10-utility-nodes/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期：内置工具锦囊 — Merge、Set、Edit Image 节点大串烧 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/11-llm-credentials/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期：唤醒模型 — 配置大模型凭证与基础 LLM 节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/12-chat-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/13-memory/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期：赋予长期记忆 — Window Buffer Memory 与对话状态持久化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/14-agent-tools/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期：赋予数字之手 — 给 Agent 接入 Tools 工具集 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/15-prompt-engineering/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期：意图识别密码 — System Prompt 与 Tool Description 高级调优 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/16-rag-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期：知识即力量 — RAG 架构原理与 Embedding 基础 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/17-indexing-pipeline/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/18-rag-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期：知识变武器 — Vector Store Tool 与 RAG Agent 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/19-advanced-rag/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期：检索精进 — Hybrid Search、Re-Ranking 与多角度检索 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/20-rag-ops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期：知识库运维 — 增量更新、过期清理与检索质量监控 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/21-mcp-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 21 期：无限工具箱 — MCP 协议原理与 n8n 集成架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/22-mcp-client/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 22 期：即插即用 — MCP Client Tool 实战连接 GitHub 与文件系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/23-mcp-server/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 23 期：角色反转 — 把 n8n 工作流暴露为 MCP Server </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/24-mcp-orchestration/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 24 期：MCP 服务编排 — 多 Server 管理、路由与健康检查 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/25-mcp-workspace/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 25 期：MCP 综合实战 — 构建 AI 驱动的全能工作台 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/26-error-handling/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 26 期：永不崩溃 — 错误处理、重试与告警体系 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/27-sub-workflows/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 27 期：模块化构建 — Sub-Workflow 子工作流与 Workflow Tool </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/28-version-control/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 28 期：Git 协作 — 工作流版本控制与多环境部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/29-multi-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 29 期：群体智慧 — 多 Agent 协作与 Supervisor 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/30-grand-finale/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 30 期：大结局 — 企业级 AI Agent 平台全架构参考 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/n8n-tutorial/" data-astro-cid-ilhxcym7>n8n 全攻略：从自动化流到多智能体编排</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 2 期：基础概念剖析 — 节点、触发器与线缆</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"n8n 全攻略：从自动化流到多智能体编排","item":"https://www.agentupdate.ai/tutorial/n8n-tutorial/"},{"@type":"ListItem","position":4,"name":"第 2 期：基础概念剖析 — 节点、触发器与线缆"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 2 期：基础概念剖析 — 节点、触发器与线缆</h1> <div class="meta" data-astro-cid-vma7orrt> <span data-astro-cid-vma7orrt>⏱ Est. reading time: 13 min</span> <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>工作流的三个建筑构件</h2>
+<p>在 n8n 中，所有的自动化逻辑都构建在三个基本概念之上。理解它们之间的关系，是掌握整个平台的基础。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    subgraph "n8n 工作流三要素"
+        direction LR
+        T["🔔 触发器<br>(Triggers)<br>何时开始？"] 
+        N["⚙️ 节点<br>(Nodes)<br>做什么？"]
+        C["🔗 线缆<br>(Connections)<br>数据怎么传？"]
+        
+        T --&gt;|"启动工作流"| N
+        N --&gt;|"通过线缆传递 Items"| N
+    end
+    
+    style T fill:#6366f1,stroke:#4f46e5,color:#fff
+    style N fill:#22c55e,stroke:#16a34a,color:#fff
+    style C fill:#f59e0b,stroke:#d97706,color:#fff</pre></div><hr>
+<h2>1. 触发器 (Triggers) — 工作流的起点</h2>
+<p>触发器决定了一个工作流<strong>何时被唤醒</strong>。n8n 提供了四大类触发方式：</p>
+<table>
+<thead>
+<tr>
+<th align="left">触发类型</th>
+<th align="left">典型节点</th>
+<th align="left">工作原理</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>手动触发</strong></td>
+<td align="left">Manual Trigger</td>
+<td align="left">点击 "Test Workflow" 按钮</td>
+<td align="left">调试与测试</td>
+</tr>
+<tr>
+<td align="left"><strong>定时触发</strong></td>
+<td align="left">Schedule Trigger</td>
+<td align="left">基于 Cron 表达式定时唤醒</td>
+<td align="left">每日报告、定期同步</td>
+</tr>
+<tr>
+<td align="left"><strong>Webhook 触发</strong></td>
+<td align="left">Webhook</td>
+<td align="left">外部 HTTP 请求命中端点</td>
+<td align="left">API 回调、表单提交</td>
+</tr>
+<tr>
+<td align="left"><strong>事件触发</strong></td>
+<td align="left">Gmail Trigger / Telegram Trigger</td>
+<td align="left">轮询或长连接监听第三方事件</td>
+<td align="left">新邮件处理、消息机器人</td>
+</tr>
+<tr>
+<td align="left"><strong>聊天触发</strong></td>
+<td align="left">Chat Trigger</td>
+<td align="left">n8n 内置聊天界面接收消息</td>
+<td align="left">AI 对话机器人</td>
+</tr>
+</tbody></table>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">sequenceDiagram
+    participant External as 外部系统
+    participant Trigger as 🔔 触发器
+    participant WF as ⚙️ 工作流引擎
+    participant Node1 as 节点 A
+    participant Node2 as 节点 B
+
+    Note over External,Trigger: 第一阶段：等待事件
+    External-&gt;&gt;Trigger: 事件到达 (HTTP请求 / 新邮件 / 定时器 / 聊天消息)
+    
+    Note over Trigger,WF: 第二阶段：唤醒工作流
+    Trigger-&gt;&gt;WF: 携带初始 Data Items 启动执行
+    
+    Note over WF,Node2: 第三阶段：逐节点执行
+    WF-&gt;&gt;Node1: 传递 Items
+    Node1-&gt;&gt;Node2: 加工后继续传递
+    Node2-&gt;&gt;WF: 执行完毕，记录日志</pre></div><h3>Webhook 触发器配置示例</h3>
+<pre><code class="language-bash"># 当你启用一个 Webhook 触发器时，n8n 会自动生成两个 URL：
+
+# 测试用 URL（仅在编辑器打开时生效）
+# Test URL (only active when the editor is open)
+https://your-n8n.com/webhook-test/unique-path-id
+
+# 生产用 URL（工作流激活后永久生效）
+# Production URL (active permanently after workflow is activated)
+https://your-n8n.com/webhook/unique-path-id
+</code></pre>
+<pre><code class="language-javascript">// Webhook 节点收到 POST 请求后，会将 HTTP Body 转换为 n8n 的标准 Item 格式
+// 例如，外部发来: POST { "name": "张三", "email": "zhang@test.com" }
+// 
+// n8n 内部会将其包装为:
+[
+  {
+    "json": {                    // json 是 n8n Item 的核心数据载体
+      "name": "张三",             // 原始字段被完整保留
+      "email": "zhang@test.com",
+      "headers": { ... },        // HTTP 请求头信息
+      "params": { ... },         // URL 查询参数
+    },
+    "binary": { ... }            // 如果有文件上传，会放在 binary 中
+  }
+]
+</code></pre>
+<hr>
+<h2>2. 节点 (Nodes) — 工作流的执行单元</h2>
+<p>节点是 n8n 中<strong>实际干活的人</strong>。每个节点接收上游传来的 Data Items，执行特定操作，然后将结果作为新的 Items 传给下游。</p>
+<h3>节点的六大类别</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph TB
+    subgraph "n8n 节点类型体系"
+        Root[全部节点 1000+]
+        
+        Root --&gt; Cat1[🔌 集成节点<br>Gmail / Slack / GitHub<br>直连第三方 API]
+        Root --&gt; Cat2[⚙️ 核心节点<br>If / Switch / Merge / Set<br>数据流控制]
+        Root --&gt; Cat3[💻 代码节点<br>Code (JS/Python)<br>自定义逻辑]
+        Root --&gt; Cat4[🤖 AI 节点<br>Agent / LLM / Memory<br>大模型调用]
+        Root --&gt; Cat5[📦 数据节点<br>Data Tables / Spreadsheet<br>持久化存储]
+        Root --&gt; Cat6[🧩 社区节点<br>Community Nodes<br>npm 安装扩展]
+    end
+
+    style Root fill:#1a1d28,stroke:#ff6d5b,color:#fff
+    style Cat4 fill:#ff6d5b,stroke:#e55a4e,color:#fff</pre></div><h3>节点的输入与输出</h3>
+<p>每个节点都有严格的 I/O 契约：</p>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 节点执行时的数据结构示例
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// 🔵 输入 (Input): 上游节点传来的 Items 数组
+const input = [
+  { "json": { "id": 1, "name": "产品A", "price": 299 } },
+  { "json": { "id": 2, "name": "产品B", "price": 59 } },
+  { "json": { "id": 3, "name": "产品C", "price": 188 } }
+];
+
+// ⚙️ 节点处理 (Processing): 例如 If 节点按条件分流
+// 条件: price &gt; 100
+
+// 🟢 输出 True 分支 (Output - true):
+const outputTrue = [
+  { "json": { "id": 1, "name": "产品A", "price": 299 } },  // ✓ 通过
+  { "json": { "id": 3, "name": "产品C", "price": 188 } }   // ✓ 通过
+];
+
+// 🔴 输出 False 分支 (Output - false):
+const outputFalse = [
+  { "json": { "id": 2, "name": "产品B", "price": 59 } }    // ✗ 不满足条件
+];
+</code></pre>
+<hr>
+<h2>3. 线缆 (Connections) — 数据的高速公路</h2>
+<p>线缆是连接节点之间的<strong>有向边 (Directed Edge)</strong>。它不仅定义了执行顺序，还承载着 Data Items 的传输管道。</p>
+<h3>线缆的三种连接模式</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph LR
+    subgraph "模式1: 串行连接 (Sequential)"
+        S1[节点 A] --&gt; S2[节点 B] --&gt; S3[节点 C]
+    end
+    
+    subgraph "模式2: 分支连接 (Branching)"
+        B1[If 节点] --&gt;|True| B2[发送邮件]
+        B1 --&gt;|False| B3[记录日志]
+    end
+    
+    subgraph "模式3: 汇聚连接 (Merging)"
+        M1[API 源 1] --&gt; M3[Merge 节点]
+        M2[API 源 2] --&gt; M3
+        M3 --&gt; M4[统一处理]
+    end</pre></div><h3>关键规则：Items 透传机制</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-4">sequenceDiagram
+    participant NodeA as 节点 A (输出 3 Items)
+    participant Edge as 线缆 (管道)
+    participant NodeB as 节点 B (逐个处理)
+    
+    Note over NodeA: 输出: [{id:1}, {id:2}, {id:3}]
+    NodeA-&gt;&gt;Edge: 发射 3 个 Items
+    
+    Note over NodeB: n8n 自动遍历！<br>不需要写 for 循环
+    Edge-&gt;&gt;NodeB: Item 1 {id:1}
+    Note over NodeB: 执行第 1 次
+    Edge-&gt;&gt;NodeB: Item 2 {id:2}
+    Note over NodeB: 执行第 2 次
+    Edge-&gt;&gt;NodeB: Item 3 {id:3}
+    Note over NodeB: 执行第 3 次
+    
+    Note over NodeB: 汇总: 3 个处理后的 Items</pre></div><blockquote>
+<p>⚠️ <strong>核心理解</strong>：在 n8n 中，你几乎<strong>永远不需要手写循环</strong>。如果上游吐出了 N 个 Items，下游节点会自动被执行 N 次。这就是 n8n 的 <strong>Item-Driven 隐式循环机制</strong>，我们将在第 4 期深度展开。</p>
+</blockquote>
+<hr>
+<h2>4. 节点面板的三大视图</h2>
+<p>当你点击画布上的任何一个节点时，右侧会弹出详情面板，包含三个核心 Tab：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tab 名称</th>
+<th align="left">作用</th>
+<th align="left">何时查看</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Parameters</strong></td>
+<td align="left">配置节点的行为参数</td>
+<td align="left">构建工作流时</td>
+</tr>
+<tr>
+<td align="left"><strong>Input</strong></td>
+<td align="left">查看上游传入的 Data Items</td>
+<td align="left">调试数据流时</td>
+</tr>
+<tr>
+<td align="left"><strong>Output</strong></td>
+<td align="left">查看节点执行后的输出结果</td>
+<td align="left">验证逻辑正确性时</td>
+</tr>
+</tbody></table>
+<pre><code class="language-json">// 示例：一个 Set 节点的 Output Tab 展示的内容
+// Set 节点的作用是"设置/修改 Item 的字段"
+{
+  "json": {
+    "fullName": "张三",          // 新增字段: 合并了 firstName + lastName
+    "isVIP": true,               // 新增字段: 基于条件计算
+    "registeredAt": "2026-04-09" // 新增字段: 当前日期
+  }
+}
+</code></pre>
+<hr>
+<h2>本期小结</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-5">mindmap
+  root((n8n 基础三要素))
+    触发器 Triggers
+      手动触发
+      定时触发 (Cron)
+      Webhook (HTTP)
+      事件触发 (Polling)
+      聊天触发 (Chat)
+    节点 Nodes
+      集成节点 (1000+ API)
+      核心节点 (If/Switch/Merge)
+      代码节点 (JS/Python)
+      AI 节点 (Agent/LLM)
+      数据节点 (Data Tables)
+      社区节点 (npm)
+    线缆 Connections
+      串行连接
+      分支连接
+      汇聚连接
+      Item 透传机制</pre></div><h2>下一步</h2>
+<p>在 Ep 03 中，我们将动手实操——通过 Docker Compose 在本地 3 分钟内搭建一个完整的 n8n 实例，并配置好加密密钥与数据持久化。</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/01-introduction/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 1 期：为什么是 n8n？2026 自动化与 AI Agent 新纪元</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/03-docker-deploy/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 3 期：环境部署 — Docker Compose 本地部署与安全配置</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

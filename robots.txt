@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# LLM-friendly content
+# See /llms.txt for AI-readable site overview
+
+Sitemap: https://www.agentupdate.ai/sitemap.xml

@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 24 期 | LangServe 初探：一键部署你的 LangChain 应用 — LangChain 全栈大师课：从零基础到生产级 AI 应用 — AgentUpdate.ai</title><meta name="description" content="第 24 期 | LangServe 初探：一键部署你的 LangChain 应用"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/langchain-tutorial/lesson-24/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-24/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langchain-tutorial/lesson-24/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-24/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 24 期 | LangServe 初探：一键部署你的 LangChain 应用 — LangChain 全栈大师课：从零基础到生产级 AI 应用 — AgentUpdate.ai"><meta property="og:description" content="第 24 期 | LangServe 初探：一键部署你的 LangChain 应用"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/langchain-tutorial/lesson-24/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 24 期 | LangServe 初探：一键部署你的 LangChain 应用 — LangChain 全栈大师课：从零基础到生产级 AI 应用 — AgentUpdate.ai"><meta name="twitter:description" content="第 24 期 | LangServe 初探：一键部署你的 LangChain 应用"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/langchain-tutorial/lesson-24/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/langchain-tutorial/lesson-24/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 LangChain 全栈大师课：从零基础到生产级 AI 应用 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-01/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 课程蓝图与架构设计：构建智能客服该从何入手？ </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-02/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 核心三剑客：Models, Prompts 与 Parsers </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-03/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | LCEL 语法精讲：现代化链式编排 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-04/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | 记忆系统：赋予客服机器人的上下文记忆 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-05/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 流式输出与可观测性：Callbacks 与打字机效果 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-06/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 数据摄入：全面解析 Document Loaders </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-07/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | 切分艺术：Text Splitters 与上下文保全 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-08/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | 语意升维：Embedding 向量模型与跨源比对 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-09/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 知识底座：构建专属 Chroma/Pinecone 向量数据库 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | 检索技巧 (Retrievers)：让知识触手可及 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | RAG 架构实战：检索增强生成的完美闭环 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | 工具调用 (Tool Calling)：让 LLM 具备行动力 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | Routing 路由机制：复杂意图的分发中心 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | ReAct 框架解析：思考与行动交替的艺术 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | Agent 核心：打造自主决策小助手 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期 | 多 Agent 协作：将任务拆解为工作流 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 17 期 | Agent Executor 与调试：拯救跑偏的 Agent </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 18 期 | SQL 智能问答：自然语言查库秘籍 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 19 期 | 结构化数据输出：用 Pydantic 约束 LLM </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 20 期 | Agent 评测与反馈：LLM-as-a-judge </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-21/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>21.</span> 第 21 期 | 外部 API 集成：使用 OpenAPI 查询天气与汇率 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-22/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>22.</span> 第 22 期 | 多模态输入：让客服机器人能够“看”图 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-23/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>23.</span> 第 23 期 | 长历史上下文优化：Context Window 挤压战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-24/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>24.</span> 第 24 期 | LangServe 初探：一键部署你的 LangChain 应用 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-25/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>25.</span> 第 25 期 | LangSmith 进阶：Prompt 管理与 A/B 测试 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-26/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>26.</span> 第 26 期 | 本地模型替身：结合 Ollama 与 Llama3 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-27/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>27.</span> 第 27 期 | 生产环境排坑：处理超长响应与重试策略 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-28/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>28.</span> 第 28 期 | 复杂流程编排：深入理解底层数据结构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-29/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>29.</span> 第 29 期 | 项目打磨：UI 集成与最终呈现 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-30/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>30.</span> 第 30 期 | 全栈复盘与未来展望：进军更高阶的 AI 应用 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/langchain-tutorial/" data-astro-cid-ilhxcym7>LangChain 全栈大师课：从零基础到生产级 AI 应用</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 24 期 | LangServe 初探：一键部署你的 LangChain 应用</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"LangChain 全栈大师课：从零基础到生产级 AI 应用","item":"https://www.agentupdate.ai/zh/tutorial/langchain-tutorial/"},{"@type":"ListItem","position":4,"name":"第 24 期 | LangServe 初探：一键部署你的 LangChain 应用"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 24 期 | LangServe 初探：一键部署你的 LangChain 应用</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><h2>🎯 本期学习目标</h2>
+<p>各位未来的 AI 大师们，欢迎来到《LangChain 全栈大师课》的第五站！今天我们要攻克的是 LangChain 中最激动人心、也最具魔力的概念之一——<strong>Agents (智能体)</strong>。学完本期，你将：</p>
+<ol>
+<li><strong>彻底理解 Agent 的核心工作机制：</strong> 从 LLM 的“大脑”到工具的“手脚”，掌握 Agent 如何进行思考、决策和行动。</li>
+<li><strong>熟练掌握自定义工具的创建与集成：</strong> 为你的智能客服小助手配备查询订单、修改资料等强大技能，让它不再是“纸上谈兵”。</li>
+<li><strong>构建一个能够动态决策、解决复杂问题的智能客服Agent：</strong> 让你的助手从固定脚本的“傻瓜”蜕变为能根据用户意图灵活应对的“智多星”。</li>
+<li><strong>识别并规避 Agent 设计中的常见陷阱：</strong> 避免智能体陷入“幻觉”、无效循环或错误工具调用，确保其稳定可靠地运行。</li>
+</ol>
+<h2>📖 原理解析</h2>
+<p>好了，伙计们，系好安全带，我们准备深入 LangChain 的智能体世界。</p>
+<p>在之前的课程中，我们学习了如何构建 Chain，将 LLM 的能力串联起来。Chain 就像一条预设好的生产线，每一步做什么，输入输出是什么，都规划得清清楚楚。这对于完成明确、固定的任务非常有效。</p>
+<p>但等等，现实世界是这样的吗？你的智能客服小助手，用户的问题总是那么规规矩矩、一成不变吗？</p>
+<p>“我想查一下我上周买的那个蓝牙耳机的订单状态。”
+“我的收货地址填错了，能帮我改一下吗？”
+“这款新品鼠标什么时候有货？”</p>
+<p>这些问题，哪个能用一个简单的 LLM 调用或一个固定 Chain 搞定？不行！它需要：</p>
+<ol>
+<li><strong>理解用户意图：</strong> 是要查订单，还是要改地址，还是要问库存？</li>
+<li><strong>获取外部信息：</strong> 订单状态、用户地址、商品库存，这些信息都在公司的数据库或第三方 API 里。</li>
+<li><strong>执行外部操作：</strong> 查询数据库、调用 API、更新记录。</li>
+</ol>
+<p>这就是 Chain 的局限性——它没有“思考”和“行动”的能力。它只能按部就班。而 Agent，正是来解决这个问题的！</p>
+<h3>Agent 的核心思想：LLM 的“思考”与工具的“行动”</h3>
+<p>Agent 的核心理念是：<strong>让大型语言模型（LLM）成为一个“推理引擎”，它能够根据用户的输入和可用的“工具”来决定下一步该做什么。</strong> 简单来说，LLM 扮演了大脑的角色，而“工具”则扮演了手脚的角色。</p>
+<p>Agent 的工作流程是一个动态的、迭代的**“思考-行动”循环 (Reasoning-Action Loop)**：</p>
+<ol>
+<li><strong>观察 (Observation)：</strong> Agent 接收到用户的输入，或者上一步工具执行的结果。</li>
+<li><strong>思考 (Thought)：</strong> LLM 根据当前观察到的信息，结合它被赋予的“人设”和“工具箱”，进行推理，决定下一步应该采取什么行动。它会思考：“我应该用哪个工具？工具的输入参数是什么？”</li>
+<li><strong>行动 (Action)：</strong> LLM 决定好行动后，就会调用一个或多个工具，并提供相应的输入。</li>
+<li><strong>循环：</strong> 工具执行完毕，返回结果（Observation），Agent 再次进入“思考”阶段，直到它认为任务已经完成，或者无法继续。</li>
+</ol>
+<h3>ReAct 范式：Agent 的黄金法则</h3>
+<p>在 Agent 的世界里，有一个非常著名的范式叫做 <strong>ReAct (Reasoning and Acting)</strong>，它完美地诠释了上述的“思考-行动”循环。</p>
+<p>ReAct 的核心思想是：LLM 不仅要生成最终答案，还要在生成答案的过程中，清晰地展示它的**“思考过程 (Thought)”<strong>、它决定采取的</strong>“行动 (Action)”<strong>，以及行动后得到的</strong>“观察结果 (Observation)”**。这个过程反复进行，直到 LLM 认为可以给出最终的“回答 (Final Answer)”。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[用户请求: "查询订单号XYZ的物流状态"] --&gt; B(Agent Executor)
+    B --&gt; C{LLM (大语言模型)}
+    C -- "Thought: 用户想查订单状态，我需要一个查询订单的工具。" --&gt; D[Action: 调用查询订单工具]
+    D --&gt; E(Tool: query_order_status(订单号=XYZ))
+    E -- "Observation: 订单状态为：已发货，预计明天送达。" --&gt; C
+    C -- "Thought: 我已获取订单状态，现在可以回复用户了。" --&gt; F[Action: Final Answer]
+    F -- "Final Answer: 您的订单XYZ已发货，预计明天送达。" --&gt; G(用户)
+    C -- "如果需要更多信息或用户后续追问" -- C</pre></div><p><strong>ReAct 流程图解析：</strong></p>
+<ol>
+<li><strong>用户请求：</strong> Agent 接收到用户的原始问题。</li>
+<li><strong>LLM (Thought):</strong> LLM 分析用户请求，结合其被赋予的系统提示和可用工具列表，进行推理。它会生成一个“思考”文本，表明它理解了什么，以及下一步打算做什么。</li>
+<li><strong>Action (工具调用):</strong> 基于“思考”，LLM 决定调用哪个工具，并构造工具的输入参数。LangChain 的 Agent Executor 会解析这个 Action，并实际去执行对应的工具。</li>
+<li><strong>Tool (工具执行):</strong> 注册好的工具被调用，执行其内部逻辑（例如：查询数据库、调用外部 API）。</li>
+<li><strong>Observation (观察结果):</strong> 工具执行完毕，返回结果。这个结果将作为新的输入，再次传递给 LLM。</li>
+<li><strong>LLM (Thought) &amp; Action (循环):</strong> LLM 再次进行思考，根据新的 Observation 决定是继续调用其他工具，还是已经可以给出最终答案。这个循环会一直持续，直到 LLM 生成一个“Final Answer”的 Action。</li>
+<li><strong>Final Answer：</strong> Agent 最终将这个答案返回给用户。</li>
+</ol>
+<p>这种迭代的 ReAct 模式赋予了 Agent 强大的动态决策能力，让它能够像人类一样，一步步地思考、尝试、观察，最终解决复杂问题。</p>
+<h3>Agent 的构成要素</h3>
+<p>一个 LangChain Agent 主要由以下几部分组成：</p>
+<ul>
+<li><strong>LLM (Large Language Model):</strong> 这是 Agent 的“大脑”，负责所有的推理和决策。</li>
+<li><strong>Tools (工具):</strong> 这是 Agent 的“手脚”，封装了各种外部能力，如查询数据库、调用 API、执行代码等。每个工具都有一个描述，告诉 LLM 它的功能、输入参数等。</li>
+<li><strong>Agent Executor (代理执行器):</strong> 这是 Agent 的“调度中心”，它负责驱动整个“思考-行动”循环。它会接收 LLM 的 Action，执行对应的 Tool，然后将 Tool 的 Observation 返回给 LLM。</li>
+<li><strong>Agent Type (代理类型):</strong> LangChain 提供了多种预设的 Agent 类型，它们定义了 LLM 如何被提示，以及如何解析 LLM 的输出以提取 Thought、Action 和 Final Answer。最常用的是 <code>zero-shot-react-description</code> (基于 ReAct 范式) 和 <code>OpenAIFunctionsAgent</code> (利用 OpenAI 函数调用能力)。</li>
+</ul>
+<p>在我们的智能客服项目中，Agent 将是核心大脑，它将协调各种工具来响应用户的复杂需求。</p>
+<h2>💻 实战代码演练 (客服项目中的具体应用)</h2>
+<p>现在，我们把 Agent 的理论落地到我们的“智能客服知识库”项目。</p>
+<p>设想一下，我们的智能客服小助手，除了能回答基于知识库的常见问题外，用户还希望它能处理以下事务：</p>
+<ol>
+<li><strong>查询商品库存：</strong> 用户询问某款商品是否有货。</li>
+<li><strong>查询订单状态：</strong> 用户提供订单号，查询物流信息。</li>
+</ol>
+<p>这些都需要调用我们后端系统的 API。好，我们来为 Agent 构建这些“手脚”！</p>
+<p>我们将使用 Python 进行演示，因为 LangChain 的 Python 生态更为成熟和广泛。</p>
+<pre><code class="language-python">import os
+from dotenv import load_dotenv
+
+# 加载环境变量，确保安全地使用 API 密钥
+load_dotenv()
+
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+# 导入必要的模块
+from langchain.agents import AgentExecutor, create_react_agent
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+
+# 为了演示，我们先模拟一些外部 API
+# 实际项目中，这些会是调用你的后端服务或数据库的函数
+
+@tool
+def search_product_inventory(product_name: str) -&gt; str:
+    """
+    根据商品名称查询商品的当前库存量。
+    输入参数：
+    - product_name (str): 要查询的商品名称。
+    返回：
+    - str: 包含商品库存信息的字符串，例如 "iPhone 15 Pro Max 当前库存 50 件。"
+    """
+    print(f"\n--- 调用工具: search_product_inventory(product_name='{product_name}') ---")
+    # 模拟数据库查询或 API 调用
+    inventory_data = {
+        "iPhone 15 Pro Max": "50",
+        "华为 MateBook X Pro": "20",
+        "小米手环 8 Pro": "120",
+        "索尼 WH-1000XM5 耳机": "35",
+        "戴森吹风机": "缺货",
+        "Apple Watch Ultra 2": "15"
+    }
+    result = inventory_data.get(product_name, "抱歉，未找到该商品或无法获取库存信息。")
+    if result == "缺货":
+        return f"抱歉，{product_name} 目前缺货。"
+    elif "未找到" in result:
+        return result
+    else:
+        return f"{product_name} 当前库存 {result} 件。"
+
+@tool
+def get_order_status(order_id: str) -&gt; str:
+    """
+    根据订单ID查询订单的当前状态和物流信息。
+    输入参数：
+    - order_id (str): 要查询的订单编号。
+    返回：
+    - str: 包含订单状态和物流信息的字符串。
+    """
+    print(f"\n--- 调用工具: get_order_status(order_id='{order_id}') ---")
+    # 模拟外部物流 API 调用
+    order_data = {
+        "20231026001": "您的订单已于10月26日发货，快递单号SF123456789，预计10月28日送达。",
+        "20231025002": "您的订单正在打包中，预计今天下午发出。",
+        "20231024003": "抱歉，该订单已取消，请联系客服处理。",
+        "20231023004": "您的订单已于10月23日签收，感谢您的购买！",
+    }
+    return order_data.get(order_id, "抱歉，未找到该订单号或订单信息。")
+
+# 将工具列表化
+tools = [search_product_inventory, get_order_status]
+
+# 初始化 LLM
+# 建议使用支持函数调用的模型，如 gpt-3.5-turbo 或 gpt-4
+# 确保你的 OPENAI_API_KEY 已经设置在环境变量中
+llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0) # temperature=0 让模型更“理性”
+
+# 1. 定义 Agent 的 Prompt
+# LangChain 提供了一个 create_react_agent 函数，它会帮我们构建一个符合 ReAct 范式的 prompt
+# 但我们也可以自定义，这里我们用 create_react_agent 推荐的结构，并稍作修改以适应中文语境和客服场景
+prompt_template = ChatPromptTemplate.from_messages(
+    [
+        ("system", "你是一个智能客服助手，你的任务是高效、准确地回答用户的问题并处理他们的请求。你可以使用提供的工具来获取实时信息或执行操作。如果问题无法通过工具解决，请尽量给出友好且有帮助的回复。"),
+        MessagesPlaceholder("chat_history"), # 预留给后续的聊天历史，本期暂不涉及
+        ("human", "{input}"),
+        MessagesPlaceholder("agent_scratchpad"), # 这是 Agent 内部思考和行动的“草稿本”
+    ]
+)
+
+# 2. 创建 Agent
+# create_react_agent 函数会结合 LLM、Tools 和 Prompt 来创建一个 Agent Runnable
+agent = create_react_agent(llm, tools, prompt_template)
+
+# 3. 创建 Agent Executor
+# Agent Executor 是实际运行 Agent 的引擎，它会驱动 Thought-Action-Observation 循环
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
+
+print("--- 智能客服 Agent 启动！请开始提问（输入 'exit' 退出）---")
+
+# 模拟与智能客服的交互
+while True:
+    user_query = input("\n用户：")
+    if user_query.lower() == 'exit':
+        print("客服助手：再见！")
+        break
+
+    try:
+        # 调用 Agent Executor 来处理用户查询
+        # chat_history 暂时为空，后续课程会加入内存管理
+        response = agent_executor.invoke({"input": user_query, "chat_history": []})
+        print(f"客服助手：{response['output']}")
+    except Exception as e:
+        print(f"客服助手：抱歉，处理您的请求时遇到问题：{e}")
+        print("请尝试换一种方式提问，或稍后再试。")
+</code></pre>
+<p><strong>代码解析：</strong></p>
+<ol>
+<li><strong>工具定义 (<code>@tool</code> 装饰器):</strong> 我们定义了 <code>search_product_inventory</code> 和 <code>get_order_status</code> 两个函数，并用 LangChain 的 <code>@tool</code> 装饰器将其转换为 Agent 可识别的工具。<ul>
+<li><strong>关键点：</strong> 每个工具函数必须有清晰的 <code>docstring</code> (文档字符串)。这个 <code>docstring</code> 会被 LLM 用来理解工具的功能、输入参数以及何时使用它。这是 Agent 正确决策的基础！参数类型注解也很重要。</li>
+<li><strong>模拟外部系统：</strong> 在实际项目中，这些函数会调用你的数据库、微服务 API 等。这里我们用 Python 字典模拟了数据。</li>
+</ul>
+</li>
+<li><strong>LLM 初始化：</strong> 我们使用 <code>ChatOpenAI</code> 作为 LLM。推荐使用支持函数调用的模型（如 <code>gpt-3.5-turbo-1106</code> 或 <code>gpt-4</code>），它们在工具调用方面表现更佳。</li>
+<li><strong>Prompt 定义 (<code>ChatPromptTemplate</code>):</strong><ul>
+<li>我们构建了一个 <code>ChatPromptTemplate</code>，它包含了系统指令 (<code>system</code>) 和用户输入 (<code>human</code>)。</li>
+<li><code>MessagesPlaceholder("agent_scratchpad")</code> 是一个非常关键的占位符。Agent Executor 会将每次 Thought、Action 和 Observation 的历史记录填充到这里，从而形成完整的 ReAct 循环。</li>
+<li><code>MessagesPlaceholder("chat_history")</code> 预留给后续的内存管理，本期我们暂时留空。</li>
+</ul>
+</li>
+<li><strong>创建 Agent (<code>create_react_agent</code>):</strong> LangChain 提供了 <code>create_react_agent</code> 这个便捷函数，它会根据 ReAct 范式，将 LLM、工具和 Prompt 组装成一个 Agent 的“Runnable”。</li>
+<li><strong>创建 Agent Executor (<code>AgentExecutor</code>):</strong> 这是 Agent 的运行引擎。<ul>
+<li><code>agent</code>: 传入我们创建好的 Agent Runnable。</li>
+<li><code>tools</code>: 传入 Agent 可以使用的工具列表。</li>
+<li><code>verbose=True</code>: <strong>这个非常重要！</strong> 在开发和调试阶段，务必设置为 <code>True</code>。它会打印出 Agent 内部详细的 Thought、Action、Observation 过程，让你清晰地看到 LLM 是如何思考和调用工具的。</li>
+<li><code>handle_parsing_errors=True</code>: 允许 Agent 在解析 LLM 输出失败时进行重试或处理。</li>
+</ul>
+</li>
+</ol>
+<p><strong>运行演示：</strong></p>
+<p>当你运行上述代码并输入以下问题时，你会看到 Agent 的思考过程：</p>
+<pre><code>用户：苹果手机现在还有货吗？
+</code></pre>
+<p>你会看到 LLM 思考：“用户想查库存，我应该用 <code>search_product_inventory</code> 工具，参数是 <code>product_name='iPhone 15 Pro Max'</code>。”然后工具被调用，返回库存信息。</p>
+<pre><code>用户：查一下20231026001这个订单的物流
+</code></pre>
+<p>LLM 思考：“用户想查订单，我应该用 <code>get_order_status</code> 工具，参数是 <code>order_id='20231026001'</code>。”然后工具被调用，返回物流信息。</p>
+<pre><code>用户：你好，请问你们公司是做什么的？
+</code></pre>
+<p>LLM 会发现这个问题不需要调用任何工具，直接回答。</p>
+<p>通过 <code>verbose=True</code>，你将亲眼见证 Agent 如何从一个问题，经过思考，选择合适的工具，执行工具，再根据工具结果继续思考，最终给出答案。这就像给 LLM 装上了“眼睛”和“双手”，让它真正地“活”了起来！</p>
+<h2>坑与避坑指南</h2>
+<p>恭喜你，已经掌握了 Agent 的基本构建！但别高兴得太早，Agent 虽然强大，但也并非万能，它是一个“熊孩子”，需要你精心调教。这里有几个常见的“坑”和“避坑指南”，请务必牢记：</p>
+<h3>1. 工具描述模糊或不准确</h3>
+<ul>
+<li><strong>坑：</strong> LLM 完全依赖工具的 <code>docstring</code> 来理解工具的功能和何时使用。如果 <code>docstring</code> 写得含糊不清、有歧义，或者参数描述不准确，LLM 很容易错误地调用工具，或者根本不知道何时使用。例如，<code>def search(query: str)</code> 这样的工具，LLM 不知道 <code>query</code> 是指商品名、订单号还是别的什么。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>像写 API 文档一样写工具描述：</strong> 详细说明工具的作用、它能解决什么问题、它的输入参数（类型、示例）以及返回结果的含义。</li>
+<li><strong>明确边界：</strong> 指出工具不能做什么，或者在什么情况下不应该使用。</li>
+<li><strong>使用具体示例：</strong> 在描述中加入一些使用场景的示例，帮助 LLM 更好地理解。</li>
+<li><strong>参数命名清晰：</strong> <code>product_name</code> 比 <code>name</code> 更明确。</li>
+</ul>
+</li>
+</ul>
+<h3>2. Prompt 工程不足，Agent “人设”崩塌</h3>
+<ul>
+<li><strong>坑：</strong> 如果系统提示词 (System Prompt) 写得不好，Agent 可能不知道自己的角色、目标，或者在遇到工具无法解决的问题时表现得不知所措。它可能会“幻觉”出不存在的工具，或者在不该使用工具时乱用。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>明确角色与目标：</strong> 在 System Prompt 中清晰地定义 Agent 的身份（“你是一个智能客服助手”）、它的主要任务（“高效、准确地回答用户问题”），以及优先级（“优先使用工具获取信息”）。</li>
+<li><strong>指明处理未知情况：</strong> 告诉 Agent 在无法使用工具时应该如何应对，例如“如果问题无法通过工具解决，请尽量给出友好且有帮助的回复。”</li>
+<li><strong>引导工具使用：</strong> 可以通过示例或指令，轻微引导 LLM 在特定场景下考虑使用哪些工具。</li>
+</ul>
+</li>
+</ul>
+<h3>3. 工具粒度不当</h3>
+<ul>
+<li><strong>坑：</strong><ul>
+<li><strong>工具粒度过粗：</strong> 一个工具包含太多功能，导致 LLM 难以精准控制。例如，一个 <code>handle_customer_request(request_type: str, details: str)</code> 工具，LLM 很难在 <code>details</code> 中正确地构造复杂请求。</li>
+<li><strong>工具粒度过细：</strong> 过多的细小工具会让 LLM 在决策时负担过重，增加思考的复杂度和成本。</li>
+</ul>
+</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>单一职责原则：</strong> 每个工具应该只做一件事，并把它做好。例如，<code>search_product_inventory</code> 和 <code>get_order_status</code> 是两个独立的工具。</li>
+<li><strong>操作与信息获取分离：</strong> 尽量将查询类工具和修改/操作类工具分开。</li>
+<li><strong>考虑用户意图：</strong> 工具的设计应该与用户可能提出的高层级意图相对应。</li>
+</ul>
+</li>
+</ul>
+<h3>4. 陷入循环或无法得出结论</h3>
+<ul>
+<li><strong>坑：</strong> Agent 可能会在 Thought-Action-Observation 循环中反复横跳，无法收敛到最终答案。这通常发生在 LLM 无法正确解析工具结果，或者工具返回的信息不足以让 LLM 做出下一步决策时。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>设置 <code>max_iterations</code>：</strong> 在 <code>AgentExecutor</code> 中设置 <code>max_iterations</code> 参数（例如 <code>max_iterations=10</code>），防止无限循环。达到最大迭代次数后，Agent 会停止并返回一个错误或部分结果。</li>
+<li><strong>清晰的工具输出：</strong> 确保工具的输出信息是清晰、简洁、无歧义的，能直接帮助 LLM 进行下一步判断。</li>
+<li><strong>错误处理：</strong> 工具内部应有健壮的错误处理机制，即使外部 API 调用失败，也能返回有意义的错误信息给 LLM，而不是抛出异常或返回空。</li>
+<li><strong>Prompt 引导结束：</strong> 在 Prompt 中明确告诉 LLM 何时应该生成 <code>Final Answer</code>。</li>
+</ul>
+</li>
+</ul>
+<h3>5. 性能与成本考量</h3>
+<ul>
+<li><strong>坑：</strong> 每次 Thought 都是一次 LLM 调用，每次 Action 都会执行一个工具（可能也是一次外部 API 调用）。如果 Agent 迭代次数过多，会显著增加延迟和成本。</li>
+<li><strong>避坑指南：</strong><ul>
+<li><strong>优化 Prompt：</strong> 精简 Prompt，减少 LLM 不必要的思考。</li>
+<li><strong>高效工具：</strong> 确保工具执行速度快，减少外部 API 的延迟。</li>
+<li><strong>缓存：</strong> 对频繁查询且结果不常变动的工具，考虑加入缓存机制。</li>
+<li><strong>选择合适的 LLM：</strong> 对于不需要极高智能的步骤，可以考虑使用更轻量、更便宜的模型。</li>
+</ul>
+</li>
+</ul>
+<p>Agent 的调教是一个迭代的过程，需要你不断地尝试、观察 <code>verbose=True</code> 的输出、调整 Prompt 和工具描述。把它当成你的学徒，多给它反馈，它会变得越来越聪明！</p>
+<h2>📝 本期小结</h2>
+<p>各位，今天我们完成了一次智能体世界的深度探索！我们不仅理解了 LangChain Agents 的核心原理——LLM 的“思考”与工具的“行动”相结合，实现了动态决策的能力，还亲手为我们的智能客服小助手打造了“手脚”，让它能够查询库存、获取订单状态。</p>
+<p>Agent 的引入，将我们的智能客服从一个被动的问答机器，提升为一个能够主动解决问题、执行任务的“智能助理”。它不再局限于知识库中的死板信息，而是能够与外部世界交互，获取实时数据，甚至执行复杂操作。这是构建真正生产级 AI 应用的关键一步！</p>
+<p>当然，我们也看到了 Agent 背后需要精细调教的一面。工具的描述、Prompt 的设计、粒度的把握，以及对性能和稳定性的考量，都是我们在实际项目中需要面对和克服的挑战。</p>
+<p><strong>下期预告：</strong> 尽管 Agent 已经很强大，但它目前还是个“金鱼脑”，不记事儿。用户和它多聊几句，它就忘了之前说过什么。在下一期，我们将深入探讨 <strong>LangChain 的内存管理 (Memory)</strong>，教你如何让你的智能客服小助手拥有“长期记忆”，实现真正的多轮对话，让用户体验更上一层楼！敬请期待！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-23/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 23 期 | 长历史上下文优化：Context Window 挤压战</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langchain-tutorial/lesson-25/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 25 期 | LangSmith 进阶：Prompt 管理与 A/B 测试</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

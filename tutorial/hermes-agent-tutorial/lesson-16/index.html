@@ -1,0 +1,737 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 16 期 | 性能调优与 Token 经济学 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-16/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 16 期 | 性能调优与 Token 经济学 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 16 期 | 性能调优与 Token 经济学 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 16 期 | 性能调优与 Token 经济学</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 16 期 | 性能调优与 Token 经济学"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 16 期 | 性能调优与 Token 经济学</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><p>优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。</p>
+<hr>
+<h2>🎯 学习目标</h2>
+<ul>
+<li>理解大型语言模型 (LLM) 的 Token 经济学原理，以及它对 Agent 成本和性能的影响。</li>
+<li>掌握 Hermes Agent 的上下文窗口 (Context Window) 管理策略，学会如何高效利用和优化。</li>
+<li>学会根据任务需求和预算，通过 OpenRouter 平台选择最适合的 LLM 模型。</li>
+<li>探索 Hermes Agent 中潜在的缓存机制，以及如何利用它来减少重复计算和 API 调用。</li>
+<li>了解批量处理和异步优化在提升 Agent 吞吐量方面的应用。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>### 16.1 Token 经济学与上下文窗口的艺术</h3>
+<p>在大型语言模型 (LLM) 的世界中，"Token" 是信息处理的基本单位。无论是用户输入的提示 (Prompt)，还是模型生成的响应 (Completion)，所有文本都会被分解成 Token。一个 Token 通常对应英文单词的一部分、一个标点符号或一个汉字。理解 Token 经济学至关重要，因为它直接影响 Agent 的运行成本、响应速度以及处理复杂任务的能力。</p>
+<p><strong>Token 成本与计费：</strong>
+大多数 LLM 提供商（如 OpenAI、Anthropic、Google 等）都根据 Token 数量进行计费，通常是 "每输入 1k Token" 和 "每输出 1k Token" 独立计费。这意味着更长的提示和更长的响应都会增加成本。对于 Hermes Agent 而言，通过 OpenRouter 聚合了 200+ 模型，每个模型有其独特的 Token 计费标准，这使得成本优化成为一个持续的挑战。</p>
+<p><strong>上下文窗口 (Context Window)：</strong>
+每个 LLM 都有一个固定的上下文窗口大小，这指的是模型在单次调用中能够处理的最大 Token 数量（输入提示 + 输出响应）。例如，GPT-3.5-turbo 可能有 4k 或 16k 的上下文窗口，而 GPT-4-turbo 则可能达到 128k。超出这个限制的文本将被截断，模型将无法“看到”这部分信息。上下文窗口的大小直接决定了 Agent 能记住多长的对话历史、能处理多大的文档、以及能执行多复杂的指令。</p>
+<p><strong>上下文窗口管理策略：</strong>
+由于上下文窗口的限制和 Token 成本的考虑，我们需要精心管理 Agent 的上下文。Hermes Agent 作为自进化的 AI 代理，其核心任务之一就是有效地利用和管理上下文。</p>
+<ol>
+<li><p><strong>精简提示 (Prompt Engineering)：</strong>
+最直接的方式是确保发送给 LLM 的提示尽可能简洁明了，避免冗余信息。在 [第 03 期 | Skills 系统深度剖析] 中，我们学习了如何编写高效的 Skill，其中就包含了构建清晰、精炼的提示。</p>
+<pre><code class="language-python"># 示例：一个精简的 Skill 提示
+@tool
+def summarize_text(self, text: str) -&gt; str:
+    """Summarizes the given text concisely."""
+    return self.llm(f"请将以下文本精简为一段摘要：\n\n{text}")
+</code></pre>
+<p>相较于一个包含大量无关背景信息的提示，精简的提示可以显著减少输入 Token。</p>
+</li>
+<li><p><strong>摘要与压缩 (Summarization &amp; Compression)：</strong>
+对于长篇对话历史或大型文档，直接将其全部放入上下文窗口既昂贵又容易超出限制。这时，摘要是关键技术。在 [第 04 期 | Memory 与用户画像] 中，我们讨论了 Agent 如何维护跨会话记忆。Hermes Agent 可以配置在将历史对话注入上下文之前，先对其进行摘要。</p>
+<pre><code class="language-yaml"># Hermes Agent 配置文件 (config.yaml 示例)
+llm:
+  # ... 其他 LLM 配置
+  context_strategy:
+    type: "summary" # 可以配置为 "truncation" 或 "summary"
+    max_tokens: 4000 # 限制上下文总 Token 数
+    summary_model: "gpt-3.5-turbo" # 用于摘要的便宜模型
+</code></pre>
+<p>通过设置 <code>context_strategy</code> 为 <code>summary</code>，Agent 会在需要时调用一个专门的、通常更便宜的模型对历史对话或相关文档进行摘要，然后将摘要注入主模型的上下文。</p>
+</li>
+<li><p><strong>上下文截断 (Context Truncation)：</strong>
+当上下文内容（包括提示、记忆、工具输出等）的总 Token 数超过模型限制时，最简单的处理方式是截断。Hermes Agent 允许你配置截断策略，例如保留最新 N 个 Token，或优先保留指令部分。虽然简单，但可能导致信息丢失。</p>
+<pre><code class="language-yaml">llm:
+  context_strategy:
+    type: "truncation" # 直接截断
+    max_tokens: 4000 # 保持在 4000 Token 内
+    # truncation_priority: "latest" # 优先保留最新信息，或 "instruction" 优先保留指令
+</code></pre>
+</li>
+<li><p><strong>滑动窗口 (Sliding Window)：</strong>
+这是一种更高级的上下文管理技术，尤其适用于长对话。Agent 维护一个固定大小的“窗口”，只将窗口内的最新对话和关键信息发送给 LLM。当新对话进来时，最旧的信息会被“滑出”窗口。这确保了模型始终关注最新的交互，同时避免了上下文无限增长。Hermes Agent 的 Memory 模块可能内置了类似的机制来管理对话历史。</p>
+</li>
+<li><p><strong>检索增强生成 (RAG - Retrieval Augmented Generation)：</strong>
+在 [第 13 期 | 知识库构建：RAG 与长期文档管理] 中，我们深入探讨了 RAG。RAG 是一种通过从外部知识库中检索相关信息，然后将其作为上下文注入 LLM 的技术。这种方法避免了将整个知识库塞入上下文，从而大大节省了 Token 成本，并提高了相关性和准确性。</p>
+<pre><code class="language-python"># 示例：一个结合 RAG 的 Skill
+@tool
+def answer_from_docs(self, query: str) -&gt; str:
+    """Retrieves relevant information from the knowledge base and answers the query."""
+    relevant_chunks = self.memory.retrieve_relevant_documents(query, top_k=3) # 假设 Agent 内置了 RAG 能力
+    context = "\n".join([chunk.text for chunk in relevant_chunks])
+    return self.llm(f"基于以下信息回答问题：\n\n信息：{context}\n\n问题：{query}")
+</code></pre>
+<p>RAG 的核心思想是只将“需要”的上下文注入，而不是“所有”可能的上下文。这是一种非常高效的 Token 优化策略。</p>
+</li>
+</ol>
+<p>通过这些策略，我们可以有效地在 Agent 的智能、响应速度和运行成本之间找到最佳平衡点。</p>
+<h3>### 16.2 模型选择与性价比优化</h3>
+<p>Hermes Agent 的一个强大特性是其通过 OpenRouter 支持 200+ LLM 模型。这为我们提供了巨大的灵活性，但也带来了选择困难。不同的模型在性能、成本和速度上差异巨大。明智的模型选择是实现性能调优和 Token 经济学的关键。</p>
+<p><strong>OpenRouter 的角色：</strong>
+OpenRouter (<a href="https://openrouter.ai/">https://openrouter.ai/</a>) 作为一个聚合平台，统一了不同 LLM 提供商的 API 接口，并提供了详细的模型成本、速率限制等信息。Hermes Agent 利用 OpenRouter 作为其 LLM Provider，使得用户可以轻松地在不同模型之间切换，而无需修改底层代码。在 [第 02 期 | 模型切换与 Provider 配置实战] 中，我们已经详细介绍了如何配置和切换模型。</p>
+<p><strong>模型选择的考量因素：</strong></p>
+<ol>
+<li><p><strong>任务复杂度：</strong></p>
+<ul>
+<li><strong>简单任务 (Simple Tasks):</strong> 例如文本分类、情感分析、简单的信息提取或生成短文本。对于这类任务，可以选择成本较低、速度较快的模型，如 <code>gpt-3.5-turbo</code>、<code>mixtral-8x7b-instruct</code> 或一些开源的小型模型。</li>
+<li><strong>复杂任务 (Complex Tasks):</strong> 例如多步推理、代码生成、创意写作、长篇内容生成或需要高精度理解的场景。这类任务通常需要更强大的模型，如 <code>gpt-4-turbo</code>、<code>claude-3-opus</code> 等，尽管它们的成本更高。</li>
+</ul>
+</li>
+<li><p><strong>成本 (Cost)：</strong>
+这是最直接的经济学指标。不同模型的 Token 价格差异巨大。例如，GPT-4-turbo 的价格可能是 GPT-3.5-turbo 的数倍甚至数十倍。在选择模型时，务必查阅 OpenRouter 上的最新价格信息。</p>
+</li>
+<li><p><strong>速度 (Speed / Latency)：</strong>
+模型的响应速度会直接影响 Agent 的用户体验。对于需要实时交互的应用，选择响应快的模型至关重要。通常，较小的模型或经过优化的模型（如某些专业微调模型）会更快。</p>
+</li>
+<li><p><strong>上下文窗口大小 (Context Window Size)：</strong>
+如果任务需要处理大量信息（如总结长文档、分析大型代码库），则需要选择具有更大上下文窗口的模型。但这通常也意味着更高的成本。</p>
+</li>
+</ol>
+<p><strong>性价比对比 (Cost-Performance Comparison)：</strong>
+没有一个“最佳”的模型，只有“最适合”的模型。我们需要在成本、性能和速度之间找到平衡点。</p>
+<table>
+<thead>
+<tr>
+<th align="left">模型名称 (OpenRouter ID)</th>
+<th align="left">典型能力</th>
+<th align="left">成本 (参考，$/1M Token)</th>
+<th align="left">速度 (参考)</th>
+<th align="left">上下文窗口 (Token)</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>gpt-4-turbo</code></td>
+<td align="left">顶级推理、代码生成</td>
+<td align="left">~10 (输入), ~30 (输出)</td>
+<td align="left">中等</td>
+<td align="left">128k</td>
+<td align="left">复杂规划、代码、创意、高精度问答</td>
+</tr>
+<tr>
+<td align="left"><code>gpt-3.5-turbo</code></td>
+<td align="left">快速、通用、高性价比</td>
+<td align="left">~0.5 (输入), ~1.5 (输出)</td>
+<td align="left">较快</td>
+<td align="left">16k</td>
+<td align="left">简单问答、摘要、文本生成、入门级任务</td>
+</tr>
+<tr>
+<td align="left"><code>claude-3-opus</code></td>
+<td align="left">顶级推理、长文本理解</td>
+<td align="left">~15 (输入), ~75 (输出)</td>
+<td align="left">中等</td>
+<td align="left">200k</td>
+<td align="left">复杂分析、长文档处理、企业级应用</td>
+</tr>
+<tr>
+<td align="left"><code>claude-3-sonnet</code></td>
+<td align="left">平衡型、中等推理</td>
+<td align="left">~3 (输入), ~15 (输出)</td>
+<td align="left">较快</td>
+<td align="left">200k</td>
+<td align="left">通用任务、中等复杂度、长文本摘要</td>
+</tr>
+<tr>
+<td align="left"><code>mixtral-8x7b-instruct</code></td>
+<td align="left">优秀推理、多语言</td>
+<td align="left">~0.24 (输入), ~0.24 (输出)</td>
+<td align="left">较快</td>
+<td align="left">32k</td>
+<td align="left">开源替代、中等复杂度、成本敏感型任务</td>
+</tr>
+<tr>
+<td align="left"><code>llama-3-8b-instruct</code></td>
+<td align="left">快速、小巧、开源</td>
+<td align="left">~0.05 (输入), ~0.05 (输出)</td>
+<td align="left">极快</td>
+<td align="left">8k</td>
+<td align="left">简单任务、本地部署、对速度要求高</td>
+</tr>
+</tbody></table>
+<p><em>注意：上述成本和速度数据为示例，实际值请以 OpenRouter 官网为准，且可能随时间变化。</em></p>
+<p><strong>在 Hermes Agent 中配置模型：</strong>
+你可以通过 <code>hermes config set</code> 命令全局设置默认模型，也可以在特定的 Skill 中覆盖默认模型。</p>
+<pre><code class="language-bash"># 全局设置默认模型为 gpt-3.5-turbo
+hermes config set llm.default_model gpt-3.5-turbo
+
+# 检查当前配置
+hermes config get llm.default_model
+
+# 在 Skill 中指定模型 (假设 Skill 支持 llm_model 参数)
+# from hermes_agent.skill_library.tools import tool
+# @tool
+# def complex_analysis(self, data: str) -&gt; str:
+#     """Performs complex analysis using a powerful model."""
+#     # 可以在 Skill 内部通过 self.llm 传递 model 参数
+#     return self.llm(f"请对以下数据进行深度分析: {data}", model="gpt-4-turbo")
+</code></pre>
+<p>在自定义 Skill 中，你可以根据任务的复杂度和重要性，动态选择使用的 LLM 模型。例如，一个用于生成代码的 Skill 可能会默认使用 <code>gpt-4-turbo</code>，而一个用于简单问答的 Skill 则使用 <code>gpt-3.5-turbo</code>。这种策略称为“模型路由”或“专家模型系统”，是实现高性价比 Agent 的关键。</p>
+<h3>### 16.3 缓存机制与重复计算规避</h3>
+<p>在 Agent 的运行过程中，很多计算可能是重复的，或者某些 LLM 调用的结果在短时间内是稳定的。利用缓存机制可以显著减少 API 调用次数，降低成本，并提高响应速度。</p>
+<p><strong>为什么需要缓存？</strong></p>
+<ol>
+<li><strong>降低成本：</strong> 每次 LLM API 调用都需要付费。缓存可以避免重复支付。</li>
+<li><strong>提升速度：</strong> 从缓存中读取数据远比等待 LLM 响应快。</li>
+<li><strong>减少 API 速率限制：</strong> 频繁的 API 调用可能触发提供商的速率限制，导致请求失败或延迟。缓存可以缓解这一压力。</li>
+</ol>
+<p><strong>Hermes Agent 的缓存考量：</strong>
+Hermes Agent 的设计哲学是自进化和学习。虽然官方文档没有明确指出一个通用的、可配置的“LLM 响应缓存”模块，但其核心组件如 Memory 和 Skills 系统本身就包含了类似缓存的思想。</p>
+<ol>
+<li><p><strong>Memory (记忆) 模块的“缓存”效应：</strong>
+在 [第 04 期 | Memory 与用户画像] 中，我们知道 Hermes Agent 会存储对话历史、学习到的 Skill 定义、用户画像等。当 Agent 需要这些信息时，它会从本地存储（例如 SQLite 数据库）中读取，而不是每次都向 LLM 询问。这本身就是一种“记忆缓存”，避免了重复生成或检索这些核心数据。</p>
+<ul>
+<li><strong>长期记忆 (Long-Term Memory):</strong> 存储学习到的 Skill、用户画像等，这些信息一旦存储，就可以在多次会话中重复使用。</li>
+<li><strong>短期记忆 (Short-Term Memory):</strong> 存储当前会话的对话历史。虽然会随时间增长，但其读取通常是本地的。</li>
+</ul>
+</li>
+<li><p><strong>Skill 结果的潜在缓存：</strong>
+对于某些确定性强、计算成本高昂且结果相对稳定的 Skill，开发者可以在 Skill 内部实现缓存逻辑。例如，一个 Skill 可能需要查询一个外部 API，或者执行一个复杂的计算。如果输入参数相同，其结果很可能也是相同的。</p>
+<pre><code class="language-python">import functools
+from hermes_agent.skill_library.tools import tool
+
+# 使用 Python 的 functools.lru_cache 实现简单的内存缓存
+@tool
+@functools.lru_cache(maxsize=128) # 缓存最近 128 个不同输入的计算结果
+def expensive_api_call(self, query: str) -&gt; dict:
+    """
+    Performs an expensive API call and caches its result.
+    This skill simulates calling an external service that might be slow or rate-limited.
+    """
+    print(f"Executing expensive_api_call for query: '{query}' (not from cache)")
+    # 模拟耗时操作
+    import time
+    time.sleep(2)
+    # 模拟 API 响应
+    return {"query": query, "result": f"Data for {query} processed at {time.time()}"}
+
+# 实际调用时，第二次相同 query 会直接返回缓存结果
+# agent.run("expensive_api_call", query="report_q1_2024")
+# agent.run("expensive_api_call", query="report_q1_2024") # 这一次会更快
+</code></pre>
+<p>这种 <code>lru_cache</code> 适用于单个 Agent 实例的内存缓存。如果 Agent 部署在多个实例中，或者需要持久化缓存，则需要考虑使用 Redis、Memcached 或数据库等外部缓存系统。</p>
+</li>
+<li><p><strong>LLM 响应缓存 (External LLM Caching)：</strong>
+虽然 Hermes Agent 本身可能没有内置一个全局的 LLM 响应缓存，但你可以通过代理层或自定义 <code>LLMProvider</code> 来实现。例如，可以使用 <code>LiteLLM</code> 或 <code>LangChain</code> 等库提供的缓存功能，它们可以集成到 Hermes Agent 的 <code>llm</code> 调用路径中。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[Hermes Agent] --&gt; B{LLM Call}
+    B --&gt; C{Cache Check}
+    C -- Cache Hit --&gt; D[Return Cached Response]
+    C -- Cache Miss --&gt; E[Call OpenRouter/LLM API]
+    E --&gt; F[LLM Response]
+    F --&gt; G[Store in Cache]
+    G --&gt; D</pre></div><p>上图展示了一个典型的 LLM 缓存流程。当 Hermes Agent 发起一个 LLM 调用时，首先检查缓存。如果命中，则直接返回；如果未命中，则调用实际的 LLM API，并将结果存入缓存以备后用。</p>
+</li>
+</ol>
+<p><strong>缓存策略：</strong></p>
+<ul>
+<li><strong>缓存键 (Cache Key)：</strong> 通常由 Prompt 和其他 LLM 参数（如模型名称、温度等）共同构成。确保缓存键能够唯一标识一个 LLM 请求。</li>
+<li><strong>过期策略 (Expiration Policy)：</strong> 缓存不能无限期存储。可以设置 TTL (Time-To-Live)，让缓存项在一定时间后失效。对于 LLM 响应，通常可以设置较短的 TTL (例如几分钟到几小时)，因为模型输出可能随时间或模型更新而变化。</li>
+<li><strong>缓存一致性 (Cache Consistency)：</strong> 当底层数据（例如知识库或 Skill 定义）发生变化时，需要确保缓存的数据能够及时更新或失效。</li>
+</ul>
+<p>通过合理利用缓存，Agent 可以在保持智能的同时，显著提升运行效率并控制成本。</p>
+<h3>### 16.4 批量处理与异步优化</h3>
+<p>在某些场景下，Agent 可能需要执行一系列相似但不相关的任务，或者需要并行处理多个请求。批量处理 (Batch Processing) 和异步优化 (Asynchronous Optimization) 是提高 Agent 吞吐量和响应效率的有效手段。</p>
+<p><strong>批量处理 (Batch Processing)：</strong>
+批量处理是指将多个独立的请求或任务打包成一个批次，然后一次性地发送给 LLM 或其他外部服务进行处理。这在以下情况下特别有用：</p>
+<ul>
+<li><strong>降低 API 开销：</strong> 许多 LLM API 对于单次调用的固定开销（如网络延迟、API 网关处理时间）相对较高。将多个请求打包可以分摊这些固定开销。</li>
+<li><strong>提高吞吐量：</strong> 对于可以并行处理的任务，批量处理可以显著缩短总处理时间。</li>
+<li><strong>适用于数据预处理/后处理：</strong> 例如，一次性对多个文本进行摘要、分类或实体提取。</li>
+</ul>
+<p><strong>Hermes Agent 中的批量处理：</strong>
+虽然 Hermes Agent 的核心交互是基于单次对话和推理，但你可以在自定义 Skill 中实现批量处理逻辑。</p>
+<pre><code class="language-python">from typing import List
+from hermes_agent.skill_library.tools import tool
+
+@tool
+def batch_summarize(self, texts: List[str]) -&gt; List[str]:
+    """
+    Summarizes a list of texts in a single LLM call if possible,
+    or processes them in batches to optimize.
+    """
+    # 假设 LLM 支持批量输入，或者我们手动构建批量请求
+    # 注意：大多数 LLM 的 API 接口通常接受单个 Prompt，但可以通过构建一个包含多个子任务的 Prompt 来模拟批量处理。
+    # 或者，更常见的是在 Skill 内部循环调用 LLM，但配合异步优化。
+    
+    # 策略一：构建一个大 Prompt（适用于短文本，且总 Token 不超限）
+    if sum(len(text.split()) for text in texts) &lt; self.llm.model_max_tokens * 0.5: # 估算 Token
+        combined_prompt = "请对以下每段文本分别进行摘要，并用数字列表返回：\n"
+        for i, text in enumerate(texts):
+            combined_prompt += f"{i+1}. {text}\n"
+        response = self.llm(combined_prompt)
+        # 解析 response，提取每个摘要
+        # ...
+        return ["Summary 1", "Summary 2"] # 示例
+    
+    # 策略二：如果文本过长，或者 LLM 不适合一次处理多个，则逐个处理 (可以结合异步)
+    summaries = []
+    for text in texts:
+        summary = self.llm(f"请对以下文本进行摘要：{text}")
+        summaries.append(summary)
+    return summaries
+</code></pre>
+<p>在实际应用中，如果 LLM API 本身提供了批量推理的端点（例如某些模型微调服务），那么直接调用这些端点会更高效。否则，通过构建一个包含多个子任务的大 Prompt 是一种常见的模拟批量处理的方式，但要小心上下文窗口限制。</p>
+<p><strong>异步优化 (Asynchronous Optimization)：</strong>
+异步编程允许程序在等待某个耗时操作（如网络请求、磁盘 I/O）完成时，去执行其他任务，而不是阻塞整个程序。对于 Hermes Agent 这种需要频繁与外部服务（LLM API、外部工具 API）交互的应用来说，异步优化至关重要。</p>
+<p>Python 的 <code>asyncio</code> 库是实现异步编程的核心。当 Agent 需要同时执行多个独立的 LLM 调用或工具调用时，异步可以大大提高效率。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph TD
+    A[Agent Request] --&gt; B{Task 1}
+    A --&gt; C{Task 2}
+    A --&gt; D{Task 3}
+    B -- Async Call --&gt; B1[LLM API 1]
+    C -- Async Call --&gt; C1[LLM API 2]
+    D -- Async Call --&gt; D1[Tool API 1]
+    B1 --&gt; B2[Result 1]
+    C1 --&gt; C2[Result 2]
+    D1 --&gt; D2[Result 3]
+    B2 &amp; C2 &amp; D2 --&gt; E[Aggregate Results]
+    E --&gt; F[Agent Response]</pre></div><p>上图展示了三个任务如何通过异步调用并行执行，最终聚合结果。</p>
+<p><strong>在 Hermes Agent 中使用异步：</strong>
+Hermes Agent 的底层框架（如 <code>langchain</code> 或 <code>crewai</code> 的某些组件）通常已经支持异步操作。在编写自定义 Skill 时，你可以利用 <code>async def</code> 和 <code>await</code> 关键字来创建异步 Skill。</p>
+<pre><code class="language-python">import asyncio
+from typing import List
+from hermes_agent.skill_library.tools import tool
+
+# 假设你的 LLM 客户端支持异步调用 (例如，OpenAI 的 async client)
+# self.llm 通常是同步接口，但我们可以模拟异步执行
+# 实际 Hermes Agent 的 llm 接口可能需要自行封装为异步
+async def async_llm_call(llm_instance, prompt: str, model: str) -&gt; str:
+    """Simulates an async LLM call."""
+    # 实际这里会调用 llm_instance.async_invoke(prompt, model=model) 或类似的异步方法
+    await asyncio.sleep(1) # 模拟网络延迟和 LLM 处理时间
+    return f"Async response for: {prompt[:30]}..."
+
+@tool
+async def process_multiple_queries_async(self, queries: List[str]) -&gt; List[str]:
+    """
+    Processes multiple queries asynchronously using the LLM.
+    """
+    print(f"Processing {len(queries)} queries asynchronously...")
+    tasks = []
+    for query in queries:
+        # 假设 self.llm 可以通过某种方式进行异步调用
+        # 实际使用时，需要确保 self.llm 背后是支持异步的客户端，例如 openai.AsyncOpenAI
+        # 或者使用一个包装器
+        tasks.append(async_llm_call(self.llm, f"请回答：{query}", model=self.llm.default_model))
+        
+    results = await asyncio.gather(*tasks) # 并行等待所有任务完成
+    return results
+
+# 调用方式 (需要在一个异步上下文中)
+# async def main():
+#     agent = HermesAgent(...) # 假设 agent 实例
+#     skill_instance = agent.get_skill("process_multiple_queries_async")
+#     responses = await skill_instance.process_multiple_queries_async(queries=["What is AI?", "What is ML?", "What is DL?"])
+#     print(responses)
+# asyncio.run(main())
+</code></pre>
+<p>通过异步优化，Agent 可以同时处理多个用户请求，或者在执行一个复杂任务时，并行调用多个工具和 LLM，从而大大缩短总的响应时间，提升用户体验和系统吞吐量。这对于构建高性能、高并发的 Agent 服务至关重要。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>我们将通过几个实战场景，演示如何应用上述性能调优和 Token 经济学策略。</p>
+<h3>场景一：对比不同模型的 Token 消耗与响应速度</h3>
+<p>在这个场景中，我们将使用 Hermes Agent 切换不同的 LLM 模型，并观察它们在处理相同任务时的 Token 消耗和响应时间差异。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>确保 OpenRouter 配置正确：</strong> 如果您是首次使用，请确保在 [第 02 期 | 模型切换与 Provider 配置实战] 中已正确配置 OpenRouter API Key。</p>
+<pre><code class="language-bash"># 检查当前 Hermes Agent 配置
+hermes config get llm.provider
+hermes config get llm.openrouter_api_key
+</code></pre>
+</li>
+<li><p><strong>定义一个简单的测试任务：</strong> 我们将让 Agent 总结一段较长的文本。</p>
+<pre><code class="language-python"># 创建一个名为 summarize_long_text.py 的 Skill 文件
+# ~/.hermes/skills/summarize_long_text.py
+
+from hermes_agent.skill_library.tools import tool
+from hermes_agent.core.llm import HermesLLM
+
+@tool
+def summarize_long_text(self, text: str) -&gt; str:
+    """
+    Summarizes a given long text.
+    """
+    print(f"Summarizing text with model: {self.llm.default_model_id}")
+    prompt = f"请将以下长文本精简为一段 100 字左右的摘要，突出核心观点：\n\n{text}"
+    response = self.llm(prompt)
+    return response
+
+# 重新加载 Hermes Agent 以确保新 Skill 可用
+# 如果 Hermes Agent 正在运行，可能需要重启或使用 hermes tools refresh
+</code></pre>
+<p>假设我们有一段很长的文本，例如一篇新闻报道或文档片段：</p>
+<pre><code class="language-text"># long_article.txt
+随着人工智能技术的飞速发展，大型语言模型（LLM）已成为科技领域最热门的话题之一。从内容创作到代码生成，LLM 的应用场景日益广泛，深刻改变着各行各业的工作模式。然而，LLM 的强大能力也伴随着一系列挑战，其中最突出的是其高昂的运行成本和对计算资源的巨大需求。
+这些模型通常需要大量的 GPU 算力进行训练和推理，导致运营成本居高不下。尤其是在企业级应用中，如何平衡性能与成本成为决策者必须面对的问题。Token 经济学应运而生，它关注如何优化每次 API 调用的 Token 数量，从而直接影响到成本。
+上下文窗口是另一个关键概念。每个 LLM 都有一个固定的上下文窗口大小，限制了模型在单次交互中能够处理的信息量。超出这个限制，模型就会“失忆”。因此，有效地管理上下文，如通过摘要、截断或检索增强生成（RAG）等技术，对于保持 Agent 的效率和智能至关重要。
+此外，模型选择也直接影响性价比。OpenRouter 平台聚合了众多 LLM 模型，它们在性能、速度和价格上各有千秋。针对不同复杂度的任务选择合适的模型，是实现成本效益最大化的关键。例如，对于简单的问答，选择成本较低的模型即可；而对于复杂的推理或代码生成，则可能需要更高性能的模型。
+缓存机制和批量处理也是提升性能的重要策略。缓存可以避免重复的 LLM 调用，减少 API 成本和延迟。批量处理则可以将多个请求打包，提高吞吐量，尤其是在处理大量独立任务时。异步编程进一步提升了 Agent 的并发处理能力，使其能够同时处理多个请求，从而提供更流畅的用户体验。
+未来，随着模型效率的提升和新的优化技术的出现，LLM 的应用将更加普及和经济。
+</code></pre>
+</li>
+<li><p><strong>使用 <code>gpt-3.5-turbo</code> 运行并观察：</strong></p>
+<pre><code class="language-bash"># 设置模型为 gpt-3.5-turbo
+hermes config set llm.default_model gpt-3.5-turbo
+
+# 读取长文本内容
+LONG_TEXT=$(cat long_article.txt)
+
+# 运行 Agent 并调用 Skill
+echo "Running with gpt-3.5-turbo..."
+hermes run summarize_long_text --text "$LONG_TEXT"
+# 观察输出，注意响应时间和可能的 Token 统计信息（如果 Hermes 提供）
+</code></pre>
+<p><strong>预期输出示例 (响应时间会因网络和负载而异)：</strong></p>
+<pre><code>Running with gpt-3.5-turbo...
+[Hermes Agent] Initializing...
+[Hermes Agent] Model set to: gpt-3.5-turbo
+[Hermes Agent] Calling skill: summarize_long_text
+Summarizing text with model: gpt-3.5-turbo
+[LLM Call Details] Model: gpt-3.5-turbo, Input Tokens: 500, Output Tokens: 120, Cost: $0.0005
+[Hermes Agent] Skill 'summarize_long_text' output:
+人工智能（AI）和大型语言模型（LLM）正迅速改变各行各业，但其高昂的运行成本和计算资源需求是主要挑战。Token 经济学和上下文窗口管理对于优化成本和效率至关重要，通过摘要、RAG 等技术可有效利用有限上下文。模型选择需权衡任务复杂度、成本和速度，OpenRouter 提供了丰富选择。缓存和批量处理能进一步提升性能，异步优化则增强并发能力。未来，随着技术进步，LLM 应用将更普及和经济。
+</code></pre>
+</li>
+<li><p><strong>使用 <code>gpt-4-turbo</code> 运行并观察：</strong></p>
+<pre><code class="language-bash"># 设置模型为 gpt-4-turbo
+hermes config set llm.default_model gpt-4-turbo
+
+# 运行 Agent 并调用 Skill
+echo "Running with gpt-4-turbo..."
+hermes run summarize_long_text --text "$LONG_TEXT"
+# 再次观察输出，比较响应时间和 Token 统计信息
+</code></pre>
+<p><strong>预期输出示例 (响应时间会因网络和负载而异)：</strong></p>
+<pre><code>Running with gpt-4-turbo...
+[Hermes Agent] Initializing...
+[Hermes Agent] Model set to: gpt-4-turbo
+[Hermes Agent] Calling skill: summarize_long_text
+Summarizing text with model: gpt-4-turbo
+[LLM Call Details] Model: gpt-4-turbo, Input Tokens: 500, Output Tokens: 110, Cost: $0.0055
+[Hermes Agent] Skill 'summarize_long_text' output:
+大型语言模型（LLM）的快速发展带来了内容创作、代码生成等广泛应用，但也面临高昂运行成本和资源需求的挑战。Token 经济学是优化成本的关键，需关注每次API调用的Token数量。上下文窗口限制了模型处理信息量，通过摘要、RAG等技术进行有效管理至关重要。OpenRouter平台提供多种LLM模型，需根据任务复杂度、成本和速度进行选择。缓存、批量处理和异步优化是提升Agent性能和吞吐量的有效策略，共同推动LLM应用更经济高效。
+</code></pre>
+<p><strong>对比分析：</strong> 你会发现 <code>gpt-4-turbo</code> 可能在摘要质量上略优，但其成本（<code>Cost</code>）显著高于 <code>gpt-3.5-turbo</code>，响应时间也可能稍长。这验证了模型选择对成本和性能的直接影响。</p>
+</li>
+</ol>
+<h3>场景二：上下文管理与摘要策略（模拟）</h3>
+<p>此场景将演示如何通过精简 Prompt 或在 Skill 中引入摘要逻辑来减少 Token 消耗。由于 Hermes Agent 的 <code>context_strategy</code> 配置在当前版本中可能不直接暴露给 CLI，我们将通过 Skill 内部逻辑来模拟。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>准备一个包含冗余信息的长 Prompt：</strong></p>
+<pre><code class="language-text"># redundant_prompt.txt
+以下是一个关于人工智能发展的背景介绍，你需要阅读它，并基于此回答一个非常简单的问题。请忽略所有与问题无关的细节，只关注核心信息。
+
+人工智能（AI）是计算机科学的一个分支，旨在创建能够执行通常需要人类智能的任务的机器。它涵盖了机器学习、深度学习、自然语言处理、计算机视觉等多个子领域。自20世纪50年代“人工智能”概念被提出以来，AI经历了多次兴衰。近年来，随着大数据、高性能计算和先进算法的突破，AI再次迎来爆发式增长，尤其是在深度学习和大型语言模型（LLM）方面。LLM如GPT系列，展现了惊人的文本理解、生成和推理能力，推动了AI在各行各业的广泛应用。
+
+现在，请回答这个问题：什么是AI的核心目标？
+</code></pre>
+</li>
+<li><p><strong>创建两个 Skill：一个直接发送冗余 Prompt，一个精简 Prompt：</strong></p>
+<pre><code class="language-python"># ~/.hermes/skills/context_management.py
+
+from hermes_agent.skill_library.tools import tool
+
+@tool
+def ask_with_redundant_context(self, context_and_question: str) -&gt; str:
+    """
+    Asks a question with a long, potentially redundant context.
+    """
+    print(f"Asking with redundant context using model: {self.llm.default_model_id}")
+    response = self.llm(context_and_question)
+    return response
+
+@tool
+def ask_with_optimized_context(self, context: str, question: str) -&gt; str:
+    """
+    Asks a question after extracting only relevant context.
+    This simulates an internal summarization or context extraction.
+    """
+    print(f"Asking with optimized context using model: {self.llm.default_model_id}")
+    # 模拟上下文摘要/提取逻辑
+    # 实际的 Agent 可以调用一个专门的摘要 Skill 或 LLM 来做这个
+    # 这里我们手动模拟提取核心信息
+    if "人工智能（AI）是计算机科学的一个分支" in context:
+        relevant_context = "人工智能（AI）是计算机科学的一个分支，旨在创建能够执行通常需要人类智能的任务的机器。"
+    else:
+        relevant_context = context # fallback
+    
+    optimized_prompt = f"基于以下信息回答问题：\n\n信息：{relevant_context}\n\n问题：{question}"
+    response = self.llm(optimized_prompt)
+    return response
+</code></pre>
+</li>
+<li><p><strong>运行并对比 Token 消耗：</strong></p>
+<pre><code class="language-bash"># 确保模型设置为 gpt-3.5-turbo 以便观察成本差异
+hermes config set llm.default_model gpt-3.5-turbo
+
+# 读取冗余 Prompt
+REDUNDANT_PROMPT=$(cat redundant_prompt.txt)
+
+echo "--- Running with redundant context ---"
+hermes run ask_with_redundant_context --context_and_question "$REDUNDANT_PROMPT"
+# 观察 Input Tokens 和 Cost
+
+echo "--- Running with optimized context ---"
+# 提取原始文本和问题
+ORIGINAL_CONTEXT="人工智能（AI）是计算机科学的一个分支，旨在创建能够执行通常需要人类智能的任务的机器。它涵盖了机器学习、深度学习、自然语言处理、计算机视觉等多个子领域。自20世纪50年代“人工智能”概念被提出以来，AI经历了多次兴衰。近年来，随着大数据、高性能计算和先进算法的突破，AI再次迎来爆发式增长，尤其是在深度学习和大型语言模型（LLM）方面。LLM如GPT系列，展现了惊人的文本理解、生成和推理能力，推动了AI在AI在各行各业的广泛应用。"
+QUESTION="什么是AI的核心目标？"
+hermes run ask_with_optimized_context --context "$ORIGINAL_CONTEXT" --question "$QUESTION"
+# 观察 Input Tokens 和 Cost
+</code></pre>
+<p><strong>预期输出示例：</strong></p>
+<pre><code>--- Running with redundant context ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Model set to: gpt-3.5-turbo
+[Hermes Agent] Calling skill: ask_with_redundant_context
+Asking with redundant context using model: gpt-3.5-turbo
+[LLM Call Details] Model: gpt-3.5-turbo, Input Tokens: 250, Output Tokens: 20, Cost: $0.00015
+[Hermes Agent] Skill 'ask_with_redundant_context' output:
+AI的核心目标是创建能够执行通常需要人类智能的任务的机器。
+
+--- Running with optimized context ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Model set to: gpt-3.5-turbo
+[Hermes Agent] Calling skill: ask_with_optimized_context
+Asking with optimized context using model: gpt-3.5-turbo
+[LLM Call Details] Model: gpt-3.5-turbo, Input Tokens: 80, Output Tokens: 20, Cost: $0.00005
+[Hermes Agent] Skill 'ask_with_optimized_context' output:
+AI的核心目标是创建能够执行通常需要人类智能的任务的机器。
+</code></pre>
+<p><strong>对比分析：</strong> 尽管两个 Skill 得到了相同的答案，但 <code>ask_with_optimized_context</code> 通过减少发送给 LLM 的上下文信息，显著降低了 <code>Input Tokens</code> 数量和相应的成本。这演示了上下文管理在 Token 经济学中的重要性。</p>
+</li>
+</ol>
+<h3>场景三：模拟缓存效果</h3>
+<p>我们将通过一个自定义 Skill 来模拟缓存的效果，展示重复调用相同任务时，如何通过内部缓存机制避免重复的 LLM 调用或耗时操作。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>创建带有 <code>lru_cache</code> 的 Skill：</strong></p>
+<pre><code class="language-python"># ~/.hermes/skills/cached_operations.py
+
+import functools
+import time
+from hermes_agent.skill_library.tools import tool
+
+@tool
+@functools.lru_cache(maxsize=128) # 缓存最近 128 个不同输入的计算结果
+def get_weather_data(self, city: str) -&gt; str:
+    """
+    Simulates fetching weather data for a city, with caching.
+    This operation is 'expensive' (simulated by sleep) and its result is stable for a short period.
+    """
+    print(f"Fetching actual weather data for {city}... (not from cache)")
+    time.sleep(2) # Simulate network delay or complex computation
+    current_time = time.strftime("%H:%M:%S", time.localtime())
+    return f"The weather in {city} at {current_time} is sunny, 25°C."
+
+@tool
+def get_time_sensitive_data(self, topic: str) -&gt; str:
+    """
+    Simulates fetching time-sensitive data that should NOT be cached by lru_cache.
+    """
+    print(f"Fetching time-sensitive data for {topic}...")
+    time.sleep(1)
+    current_time = time.strftime("%H:%M:%S", time.localtime())
+    return f"Real-time news for {topic} at {current_time}: Market is volatile."
+</code></pre>
+</li>
+<li><p><strong>运行并观察缓存效果：</strong></p>
+<pre><code class="language-bash">echo "--- First call to get_weather_data (should be slow) ---"
+hermes run get_weather_data --city "London"
+
+echo "--- Second call to get_weather_data with same city (should be fast, from cache) ---"
+hermes run get_weather_data --city "London"
+
+echo "--- Third call to get_weather_data with different city (should be slow again) ---"
+hermes run get_weather_data --city "Paris"
+
+echo "--- First call to get_time_sensitive_data (should always be slow) ---"
+hermes run get_time_sensitive_data --topic "Stock Market"
+
+echo "--- Second call to get_time_sensitive_data with same topic (should still be slow, no lru_cache) ---"
+hermes run get_time_sensitive_data --topic "Stock Market"
+</code></pre>
+<p><strong>预期输出示例：</strong></p>
+<pre><code>--- First call to get_weather_data (should be slow) ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Calling skill: get_weather_data
+Fetching actual weather data for London... (not from cache)
+[Hermes Agent] Skill 'get_weather_data' output:
+The weather in London at 10:00:05 is sunny, 25°C.
+(Approx. 2-3 seconds elapsed)
+
+--- Second call to get_weather_data with same city (should be fast, from cache) ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Calling skill: get_weather_data
+[Hermes Agent] Skill 'get_weather_data' output:
+The weather in London at 10:00:05 is sunny, 25°C.
+(Approx. &lt;1 second elapsed, notice "Fetching actual weather data..." did not print)
+
+--- Third call to get_weather_data with different city (should be slow again) ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Calling skill: get_weather_data
+Fetching actual weather data for Paris... (not from cache)
+[Hermes Agent] Skill 'get_weather_data' output:
+The weather in Paris at 10:00:10 is sunny, 25°C.
+(Approx. 2-3 seconds elapsed)
+
+--- First call to get_time_sensitive_data (should always be slow) ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Calling skill: get_time_sensitive_data
+Fetching time-sensitive data for Stock Market...
+[Hermes Agent] Skill 'get_time_sensitive_data' output:
+Real-time news for Stock Market at 10:00:13: Market is volatile.
+(Approx. 1-2 seconds elapsed)
+
+--- Second call to get_time_sensitive_data with same topic (should still be slow, no lru_cache) ---
+[Hermes Agent] Initializing...
+[Hermes Agent] Calling skill: get_time_sensitive_data
+Fetching time-sensitive data for Stock Market...
+[Hermes Agent] Skill 'get_time_sensitive_data' output:
+Real-time news for Stock Market at 10:00:15: Market is volatile.
+(Approx. 1-2 seconds elapsed, notice "Fetching time-sensitive data..." printed again)
+</code></pre>
+<p><strong>对比分析：</strong> <code>get_weather_data</code> 在第二次调用相同参数时，由于 <code>lru_cache</code> 机制，跳过了模拟的耗时操作，直接返回了缓存结果，响应速度显著提升。而 <code>get_time_sensitive_data</code> 没有使用缓存，每次调用都会重新执行耗时操作。这清晰地展示了缓存对于提升 Agent 性能的巨大作用。在实际应用中，对于那些结果相对稳定、调用频繁且耗时的 Skill 或 LLM 调用，引入缓存是极其有效的优化手段。</p>
+</li>
+</ol>
+<hr>
+<h2>🔧 涉及的命令与工具</h2>
+<table>
+<thead>
+<tr>
+<th align="left">命令/工具</th>
+<th align="left">说明</th>
+<th align="left">课程关联</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>hermes config set</code></td>
+<td align="left">设置 Hermes Agent 的配置参数，如默认 LLM 模型、LLM provider 等。</td>
+<td align="left">第 02 期，本期用于模型切换</td>
+</tr>
+<tr>
+<td align="left"><code>hermes config get</code></td>
+<td align="left">查看 Hermes Agent 的当前配置参数。</td>
+<td align="left">第 02 期，本期用于查看配置</td>
+</tr>
+<tr>
+<td align="left"><code>hermes run</code></td>
+<td align="left">运行 Hermes Agent 并执行指定的 Skill 或自然语言指令。</td>
+<td align="left">第 03 期，本期用于执行实战 Skill</td>
+</tr>
+<tr>
+<td align="left"><code>hermes tools</code></td>
+<td align="left">管理和刷新 Agent 的 Skill 工具库。</td>
+<td align="left">第 03 期，本期用于确保新 Skill 可用</td>
+</tr>
+<tr>
+<td align="left"><code>hermes model</code></td>
+<td align="left">查看可用的 LLM 模型列表，通常通过 OpenRouter 提供。</td>
+<td align="left">第 02 期，本期用于了解模型选择</td>
+</tr>
+<tr>
+<td align="left">OpenRouter</td>
+<td align="left">一个聚合了 200+ LLM 模型的平台，为 Hermes Agent 提供统一的 LLM API 访问和成本管理。</td>
+<td align="left">第 02 期，本期核心平台</td>
+</tr>
+<tr>
+<td align="left"><code>functools.lru_cache</code></td>
+<td align="left">Python 内置的轻量级内存缓存装饰器，用于缓存函数调用结果。适用于单个进程内的缓存优化。</td>
+<td align="left">本期实战用于 Skill 内部缓存模拟</td>
+</tr>
+<tr>
+<td align="left"><code>asyncio</code></td>
+<td align="left">Python 标准库，用于编写并发代码，通过事件循环管理协程，实现异步 I/O。</td>
+<td align="left">本期核心概念，用于异步优化</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ul>
+<li><strong>Token 经济学是核心：</strong> 每次 LLM 调用都基于 Token 计费，理解 Token 消耗是控制成本和优化性能的基础。</li>
+<li><strong>上下文窗口是瓶颈：</strong> LLM 的上下文窗口限制了单次交互的信息量，需要通过精简提示、摘要、截断、RAG 等策略高效管理。</li>
+<li><strong>模型选择影响深远：</strong> 通过 OpenRouter，可以根据任务复杂度、成本、速度和上下文窗口大小，灵活选择最合适的 LLM 模型，实现性价比最大化。</li>
+<li><strong>缓存是性能利器：</strong> 针对重复或稳定的 LLM 调用和耗时 Skill，引入缓存机制（如 <code>lru_cache</code> 或外部缓存系统）可以显著降低 API 调用次数、成本和响应延迟。</li>
+<li><strong>批量处理与异步提升吞吐量：</strong> 对于多个独立任务，批量处理和异步编程能够有效提高 Agent 的并发处理能力和总吞吐量，缩短总响应时间。</li>
+</ul>
+<hr>
+<h2>🔗 参考资料</h2>
+<ul>
+<li><strong>Hermes Agent 官方文档：</strong> <a href="https://hermes-agent.nousresearch.com/docs/">https://hermes-agent.nousresearch.com/docs/</a></li>
+<li><strong>OpenRouter 官方网站：</strong> <a href="https://openrouter.ai/">https://openrouter.ai/</a> (用于查询模型列表和最新价格)</li>
+<li><strong>NousResearch Hermes Agent GitHub 仓库：</strong> <a href="https://github.com/NousResearch/hermes-agent">https://github.com/NousResearch/hermes-agent</a></li>
+</ul>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 17 期 | 日志系统与可观测性实践</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

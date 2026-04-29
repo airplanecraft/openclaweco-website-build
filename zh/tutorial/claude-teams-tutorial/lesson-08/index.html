@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑 — 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 — AgentUpdate.ai</title><meta name="description" content="掌握 Agent() 工具调用、bypassPermissions 模式配置及 settings.json 权限白名单。"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/claude-teams-tutorial/lesson-08/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-teams-tutorial/lesson-08/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-teams-tutorial/lesson-08/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-teams-tutorial/lesson-08/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑 — 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 — AgentUpdate.ai"><meta property="og:description" content="掌握 Agent() 工具调用、bypassPermissions 模式配置及 settings.json 权限白名单。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/claude-teams-tutorial/lesson-08/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑 — 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 — AgentUpdate.ai"><meta name="twitter:description" content="掌握 Agent() 工具调用、bypassPermissions 模式配置及 settings.json 权限白名单。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/claude-teams-tutorial/lesson-08/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/claude-teams-tutorial/lesson-08/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-01/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 项目背景与双模式需求概览 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-02/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 多 Agent 并行开发架构详解 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-03/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | 开发环境搭建：tmux 与 Claude 协作系统 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-04/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Phase 0: 项目初始化与核心需求分析 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-05/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | CLAUDE.md：制定多 Agent 协作的项目宪法 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-06/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 规划先行：基于文件的 Task 进度体系 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-07/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Teams 初始化与任务分配 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-08/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-09/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | Phase A: UI 与样式的并行开发 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | Phase A: 计算引擎的并行开发 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | Phase B: UI 与逻辑的集成构建 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Phase C: 单元测试与 TDD 实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | Phase D: 浏览器集成测试与无障碍 (a11y) 验收 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | 进阶：Plugin Hooks 扩展、性能基准与配置参考 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期：Q&amp;A (一) 多 Agent 架构与任务分配 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 17 期：Q&amp;A (二) 权限控制与自动化排障 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 18 期：Q&amp;A (三) 高级状态同步与宏观拓扑 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/claude-teams-tutorial/" data-astro-cid-ilhxcym7>🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南","item":"https://www.agentupdate.ai/zh/tutorial/claude-teams-tutorial/"},{"@type":"ListItem","position":4,"name":"第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑</h1> <div class="meta" data-astro-cid-p7qzptk4> <span data-astro-cid-p7qzptk4>⏱ 预计阅读 11 分钟</span> <span data-astro-cid-p7qzptk4>更新于 2026/4/29</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><blockquote>
+<p><strong>避坑：依赖方向不能搞反！</strong> 本项目中曾误设 <code>Task #2 blockedBy Task #1</code>（Phase B blockedBy Phase A 是对的），但描述文本写了错误的依赖号导致 agent 困惑。<strong>blockedBy 中的 ID 必须是前置任务的 ID。</strong></p>
+</blockquote>
+<h3>8.1 配置权限白名单</h3>
+<p>创建 <code>.claude/settings.json</code>：</p>
+<pre><code class="language-json">{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(open:*)",
+      "Bash(which:*)",
+      "Bash(node:*)",
+      "Bash(npx:*)",
+      "Bash(npm:*)",
+      "Bash(python3:*)",
+      "Bash(git:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(touch:*)",
+      "Bash(rm:*)",
+      "Bash(echo:*)",
+      "Bash(tmux:*)",
+      "Bash(bash:*)",
+      "Edit",
+      "Write",
+      "Read",
+      "WebSearch",
+      "Skill",
+      "Agent",
+      "SendMessage",
+      "TeamCreate",
+      "TeamDelete",
+      "TaskCreate",
+      "TaskGet",
+      "TaskList",
+      "TaskUpdate"
+    ]
+  }
+}
+</code></pre>
+<blockquote>
+<p><strong>避坑：权限格式必须用冒号！</strong> <code>Bash(ls:*)</code> 是正确的，<code>Bash(ls *)</code>（空格）无效。</p>
+</blockquote>
+<p><strong>权限条目详解：</strong></p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Bash(ls:*)</code></td>
+<td>允许以 <code>ls</code> 开头的所有 bash 命令</td>
+</tr>
+<tr>
+<td><code>Edit</code></td>
+<td>允许文件编辑（无需参数限制）</td>
+</tr>
+<tr>
+<td><code>Write</code></td>
+<td>允许文件写入</td>
+</tr>
+<tr>
+<td><code>Read</code></td>
+<td>允许文件读取</td>
+</tr>
+<tr>
+<td><code>Skill</code></td>
+<td>允许调用 Skill（重要！）</td>
+</tr>
+<tr>
+<td><code>SendMessage</code></td>
+<td>允许 agent 间通信</td>
+</tr>
+<tr>
+<td><code>Agent</code></td>
+<td>允许 spawn 子 agent</td>
+</tr>
+</tbody></table>
+<h3>8.1.1 Spawn Agent</h3>
+<h4>ui-dev</h4>
+<pre><code class="language-javascript">Agent({
+  name: "ui-dev",
+  mode: "bypassPermissions",
+  team_name: "calc-dev",
+  prompt: `你是 ui-dev，负责 HTML 和 CSS 开发。
+
+重要规则：
+- 不要调用任何 Skill（不用 /planning-with-files、/brainstorming 等）
+- 直接写代码，不要创建 plan 文件
+- planning 已在 task_plan.md 里完成，你只负责实现
+
+先读 requirement.md 了解需求。
+
+你的第一个任务：创建 index.html
+- 语义化结构：header(模式切换) + main(显示区 + 按钮网格) + aside(历史面板)
+- 显示区：expression-line(id="expression") + result-line(id="result")
+- 按钮网格：4×5 grid，每个按钮有唯一 id
+  - 数字：btn-0 到 btn-9
+  - 运算符：btn-plus, btn-minus, btn-multiply, btn-divide, btn-percent
+  - 功能：btn-equals, btn-clear, btn-backspace, btn-decimal, btn-toggle-sign
+  - 括号：btn-paren-left, btn-paren-right
+  - 模式切换：btn-mode-toggle
+- 历史面板：id="history-panel"，内含 id="history-list"
+- 所有按钮加 aria-label
+
+你的第二个任务：创建 style.css
+- CSS 变量体系，[data-theme="senior"] 和 [data-theme="standard"] 两套
+- 老年模式：按钮 28px+、显示 36px+、按钮 80×80px+、高对比黑白
+- 标准模式：按钮 18-20px、显示 24px、按钮 48×48px、现代配色
+- transition: all 0.3s 过渡动画
+- 响应式：@media 断点 1024px 和 768px
+
+每个任务完成时：
+1. TaskUpdate 标记 completed
+2. SendMessage 通知 team-lead
+
+Working directory: /Users/eric/work/teamtest`
+})
+</code></pre>
+<h4>logic-dev</h4>
+<pre><code class="language-javascript">Agent({
+  name: "logic-dev",
+  mode: "bypassPermissions",
+  team_name: "calc-dev",
+  prompt: `你是 logic-dev，负责 JavaScript 计算引擎和交互逻辑。
+
+重要规则：
+- 不要调用任何 Skill
+- 直接写代码
+- Phase A 只写纯函数，不操作 DOM
+
+先读 requirement.md 了解需求。
+
+你的第一个任务：创建 app.js 计算引擎
+- tokenize: 词法分析
+- parseExpression: Shunting-yard 算法转 RPN
+- evaluate: RPN 求值
+- 输入辅助：appendNumber, appendOperator, appendDecimal, toggleSign, appendParenthesis
+- 除零保护：返回 "Error"
+- previewResult: 实时预览
+- 单元测试（TDD）
+
+你的第二个任务：DOM 事件绑定
+- 通过 HTML 中的 id 绑定事件
+- 键盘映射：0-9, +-*/, Enter, Backspace, Escape
+- 模式切换：document.documentElement.dataset.theme + localStorage
+- 历史记录：数组，10 条上限
+- aria-live 结果播报
+
+每个任务完成时：
+1. TaskUpdate 标记 completed
+2. SendMessage 通知 team-lead
+
+Working directory: /Users/eric/work/teamtest`
+})
+</code></pre>
+<blockquote>
+<p><strong>避坑：为什么子 Agent 不能调用 Skill？</strong></p>
+<p><code>bypassPermissions</code> 只自动批准 <code>settings.json</code> 中 <code>allow</code> 列表里的操作。<strong>Skill 是独立于 TeamCreate/Agent/TaskUpdate 的工具调用</strong>，需要单独的 <code>Skill</code> 条目。但即使加了 <code>Skill</code> 条目，子 agent 调用 Skill 时仍可能触发权限请求弹窗（因为 Skill 内部可能包含未在 allow 列表中的操作链）。</p>
+<p><strong>最佳实践：在 agent prompt 中明确写 "不要调用任何 Skill"。</strong> 规划工作在 team-lead 完成就够了，子 agent 只负责实现。</p>
+</blockquote>
+<h3>8.1.2 分配任务</h3>
+<pre><code class="language-javascript">TaskUpdate({ taskId: "1", owner: "ui-dev" })
+TaskUpdate({ taskId: "2", owner: "ui-dev" })
+TaskUpdate({ taskId: "3", owner: "logic-dev" })
+TaskUpdate({ taskId: "4", owner: "logic-dev" })
+</code></pre>
+<h2>8.2 避坑指南（核心问题与解决方案）</h2>
+<h3>8.2.1 settings.json 权限格式</h3>
+<pre><code class="language-json">// ❌ 错误：空格分隔
+"Bash(ls *)"
+
+// ✅ 正确：冒号分隔
+"Bash(ls:*)"
+</code></pre>
+<p>冒号格式是 Claude Code 识别的权限匹配语法。<code>Bash(node:*)</code> 表示允许所有以 <code>node</code> 开头的 bash 命令。</p>
+<h3>8.2.2 bypassPermissions 不等于万能通行证</h3>
+<p><code>mode: "bypassPermissions"</code> 只跳过 <strong>settings.json allow 列表内</strong> 的工具的确认弹窗。</p>
+<p><strong>不在 allow 列表中的工具调用仍会触发权限请求。</strong> 特别是：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>是否在默认 bypassPermissions 范围内</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Bash(node:*)</code></td>
+<td>✅（如果在 allow 中）</td>
+<td>确保 settings.json 有该条目</td>
+</tr>
+<tr>
+<td><code>Edit</code></td>
+<td>✅</td>
+<td>加入 allow</td>
+</tr>
+<tr>
+<td><code>Write</code></td>
+<td>✅</td>
+<td>加入 allow</td>
+</tr>
+<tr>
+<td><code>Skill</code></td>
+<td>⚠️ 即使加入 allow，内部操作链可能仍触发弹窗</td>
+<td><strong>在 prompt 中禁止调用 Skill</strong></td>
+</tr>
+<tr>
+<td><code>Agent</code></td>
+<td>✅</td>
+<td>加入 allow</td>
+</tr>
+</tbody></table>
+<h3>8.2.3 子 Agent 为什么不能调用 Skill</h3>
+<p><strong>根本原因：</strong> Skill 工具的执行链涉及多个步骤（读取 skill 定义 → 解析参数 → 执行 skill 逻辑 → 可能触发额外工具调用）。<code>bypassPermissions</code> 只覆盖单层工具调用，<strong>不覆盖 Skill 内部的嵌套操作</strong>。</p>
+<pre><code>Agent 调用 Skill("planning-with-files")
+  → Skill 内部读取 .agents/workflows/planning-with-files.md
+  → Skill 内部可能调用 Write（创建 plan 文件）
+  → Write 触发权限检查 ← 这里卡住！
+</code></pre>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li><strong>最佳：</strong> 在 agent prompt 中写 "不要调用任何 Skill，直接写代码"</li>
+<li><strong>备选：</strong> 把规划工作在 team-lead 中完成，agent 只执行</li>
+<li><strong>不推荐：</strong> 尝试把所有可能用到的工具都加入 allow — 太脆弱</li>
+</ol>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-07/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 07 期 | Teams 初始化与任务分配</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-teams-tutorial/lesson-09/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 09 期 | Phase A: UI 与样式的并行开发</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

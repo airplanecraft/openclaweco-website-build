@@ -1,0 +1,512 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 06 期 | 128K 超长上下文实战：文档分析与代码审查 — Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration — AgentUpdate.ai</title><meta name="description" content="第 06 期 | 128K 超长上下文实战：文档分析与代码审查"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-6/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-6/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-6/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-6/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 06 期 | 128K 超长上下文实战：文档分析与代码审查 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta property="og:description" content="第 06 期 | 128K 超长上下文实战：文档分析与代码审查"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-6/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 06 期 | 128K 超长上下文实战：文档分析与代码审查 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta name="twitter:description" content="第 06 期 | 128K 超长上下文实战：文档分析与代码审查"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/gemma-tutorial/lesson-6/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/gemma-tutorial/lesson-6/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 认识 Gemma：Google 开源模型家族全景 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 本地极速部署：Ollama + Gemma 一键启动 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | Hugging Face Transformers 推理实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Google Cloud Vertex AI 云端部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 多模态能力解锁：图片理解与视觉问答 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-6/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | 128K 超长上下文实战：文档分析与代码审查 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Function Calling 与结构化输出 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | LoRA 微调入门：用 PEFT 定制你的专属 Gemma </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | JAX/Flax 原生微调（官方推荐路线） </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | 微调效果评估与模型导出 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | Gemma + LangChain/LlamaIndex：RAG 应用构建 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | Gemma + vLLM：高性能推理服务部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | 终局实战：构建你的私有 AI 助手产品 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/gemma-tutorial/" data-astro-cid-ilhxcym7>Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 06 期 | 128K 超长上下文实战：文档分析与代码审查</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Google Gemma Masterclass: Deployment, Fine-Tuning & Agent Integration","item":"https://www.agentupdate.ai/tutorial/gemma-tutorial/"},{"@type":"ListItem","position":4,"name":"第 06 期 | 128K 超长上下文实战：文档分析与代码审查"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 06 期 | 128K 超长上下文实战：文档分析与代码审查</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><p>副标题：利用 Gemma 3 的 128K 上下文窗口处理长文档摘要、合同条款分析、大型代码库审查，与 RAG 方案的取舍对比。</p>
+<h2>🎯 学习目标</h2>
+<ul>
+<li>理解 Gemma 3 128K 超长上下文窗口的技术特性及其在实际应用中的巨大潜力。</li>
+<li>掌握如何利用 Gemma 3 进行高效的长文档（如商业合同、技术报告）摘要与关键信息提取。</li>
+<li>探索 Gemma 3 在大型代码库（多文件项目）审查、功能概述与潜在问题识别中的应用实践。</li>
+<li>深入对比超长上下文方案与传统检索增强生成（RAG）方案的优劣，并学会根据场景进行技术选型。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>6.1 Gemma 3 的 128K 上下文窗口：新一代信息处理能力</h3>
+<p>Gemma 3 作为 Google DeepMind 推出的最新一代开源大语言模型，其最引人注目的特性之一便是高达 128K token 的超长上下文窗口。这意味着 Gemma 3 能够一次性处理和理解远超以往模型的巨量信息，为多项复杂任务带来了革命性的解决方案。</p>
+<h4>6.1.1 128K Token 的直观感受</h4>
+<p>128K token 是一个什么概念？虽然 token 到字符/单词的转换比例因语言而异（中文一个汉字通常算 1-2 个 token，英文一个单词通常算 1-1.5 个 token），我们可以进行一个大致的估算：</p>
+<table>
+<thead>
+<tr>
+<th align="left">指标</th>
+<th align="left">估算值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">英文单词数</td>
+<td align="left">约 96,000 - 100,000 单词</td>
+</tr>
+<tr>
+<td align="left">中文字符数</td>
+<td align="left">约 64,000 - 80,000 字符</td>
+</tr>
+<tr>
+<td align="left">A4 纸页数（单倍行距）</td>
+<td align="left">约 150 - 200 页 （取决于字体大小和段落密度）</td>
+</tr>
+<tr>
+<td align="left">典型文档类型</td>
+<td align="left">一本中等篇幅的技术报告、法律合同、小型代码库的全部文件内容</td>
+</tr>
+</tbody></table>
+<p>这意味着 Gemma 3 几乎可以“阅读”并理解一本薄书的内容，而无需分段或多次调用。</p>
+<h4>6.1.2 技术优势与解决的痛点</h4>
+<p>超长上下文窗口并非仅仅是 token 数量的增加，它背后是模型架构和训练策略的重大进步，带来的核心优势和解决的痛点包括：</p>
+<ul>
+<li><strong>全局理解能力提升</strong>: 模型能够一次性获取所有相关信息，建立更完整的语境联系，避免了因信息截断导致的理解偏差。</li>
+<li><strong>减少信息丢失</strong>: 传统模型在处理长文本时，需要将文本切片处理，容易丢失片断之间的关联信息；超长上下文则避免了这一问题。</li>
+<li><strong>简化复杂工作流</strong>: 对于文档摘要、问答等任务，不再需要复杂的 RAG（Retrieval Augmented Generation）流程进行信息检索，可以直接将完整文档输入模型。</li>
+<li><strong>降低多次调用成本与延迟</strong>: 避免了因上下文限制而需要多次 API 调用或分段处理，提高了效率并降低了计算成本。</li>
+<li><strong>更深层次的推理</strong>: 能够在一整个长篇文本中进行跨章节、跨段落的复杂逻辑推理和信息整合。</li>
+</ul>
+<h3>6.2 超长上下文与 RAG 的对比与取舍</h3>
+<p>在处理外部知识或长文本时，超长上下文和 RAG 是两种主流的技术方案。理解它们的异同对于选择合适的工具至关重要。</p>
+<h4>6.2.1 工作流示意</h4>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    subgraph 超长上下文
+        A[用户查询] --&gt; B{完整文档/上下文}
+        B --&gt; C[Gemma 3 (128K Context)]
+        C --&gt; D[直接生成回答/分析]
+    end
+
+    subgraph RAG (检索增强生成)
+        E[用户查询] --&gt; F[检索器 (Vector DB/搜索)]
+        F --&gt; G{相关文档片段}
+        G --&gt; H[LLM (短上下文)]
+        H --&gt; I[生成回答/分析]
+    end</pre></div><h4>6.2.2 核心对比表格</h4>
+<table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">超长上下文 (Gemma 3)</th>
+<th align="left">RAG (检索增强生成)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>上下文容量</strong></td>
+<td align="left">极大 (128K tokens)，一次性处理巨量信息</td>
+<td align="left">相对较小 (通常 4K-32K tokens)，依赖检索器提供相关片段</td>
+</tr>
+<tr>
+<td align="left"><strong>数据范围</strong></td>
+<td align="left">限于单次输入窗口内的所有数据，需一次性加载</td>
+<td align="left">可处理任意规模的外部知识库，通过检索机制按需获取</td>
+</tr>
+<tr>
+<td align="left"><strong>信息丢失</strong></td>
+<td align="left">极少，模型能建立全局关联</td>
+<td align="left">存在风险，检索器可能遗漏关键信息或召回不准确</td>
+</tr>
+<tr>
+<td align="left"><strong>时效性</strong></td>
+<td align="left">取决于输入文档的时效性，通常用于静态或更新频率低的文档</td>
+<td align="left">可通过实时更新知识库来保证高时效性</td>
+</tr>
+<tr>
+<td align="left"><strong>复杂性</strong></td>
+<td align="left">相对简单，主要在于 Prompt Engineering</td>
+<td align="left">较高，需要构建、维护检索器、向量数据库、分块策略等</td>
+</tr>
+<tr>
+<td align="left"><strong>计算成本</strong></td>
+<td align="left">单次调用成本较高 (输入 tokens 量大)，但调用次数少</td>
+<td align="left">单次调用成本较低 (输入 tokens 量小)，但可能需要多次检索和生成</td>
+</tr>
+<tr>
+<td align="left"><strong>延迟</strong></td>
+<td align="left">单次生成延迟可能较高 (处理长输入)，但端到端流程短</td>
+<td align="left">检索和生成都有延迟，可能累加，但单次生成延迟低</td>
+</tr>
+<tr>
+<td align="left"><strong>幻觉风险</strong></td>
+<td align="left">较低，因为模型能看到全部上下文，不易“编造”</td>
+<td align="left">较高，如果检索到不准确或无关信息，模型可能基于此产生幻觉</td>
+</tr>
+<tr>
+<td align="left"><strong>适用场景</strong></td>
+<td align="left">完整文档分析、合同审查、代码库概述、长篇报告摘要</td>
+<td align="left">实时问答、知识库查询、动态信息整合、超大规模数据</td>
+</tr>
+</tbody></table>
+<h4>6.2.3 取舍与混合策略</h4>
+<ul>
+<li><strong>选择超长上下文</strong>: 当你需要对一份相对完整、篇幅较长的单一文档（或一组紧密相关的文档集，其总长度在 128K token 范围内）进行深入理解、摘要、分析或推理时，超长上下文是更优的选择。它能提供更强的全局一致性和更低的幻觉风险。</li>
+<li><strong>选择 RAG</strong>: 当你的知识库非常庞大、信息更新频繁、或需要从海量异构数据中检索特定信息时，RAG 方案更具优势。它能有效地扩展 LLM 的知识边界，并保证信息的时效性。</li>
+<li><strong>混合策略</strong>: 理想情况下，可以将两者结合。例如，使用 RAG 从大规模知识库中检索出若干篇相关的长文档，然后将这些长文档作为整体输入到 Gemma 3 的 128K 上下文窗口中进行深度分析和生成。这种方式兼顾了广度与深度。</li>
+</ul>
+<h3>6.3 超长上下文在文档分析中的应用</h3>
+<p>Gemma 3 的 128K 上下文窗口在文档分析领域具有颠覆性的潜力，尤其适用于以下场景：</p>
+<h4>6.3.1 长文档摘要与关键信息提取</h4>
+<ul>
+<li><strong>应用</strong>: 法律文书、商业报告、研究论文、会议纪要等。</li>
+<li><strong>优势</strong>: 模型能够一次性阅读整个文档，生成更连贯、更全面的摘要，并准确提取跨章节的关键数据点、论点和结论。</li>
+<li><strong>Prompt Engineering 提示</strong>:<ul>
+<li>明确摘要类型（概括性摘要、要点摘要、批判性摘要）。</li>
+<li>指定摘要长度和格式（例如，"请用 300 字总结，并列出 5 个核心观点"）。</li>
+<li>要求提取特定类型信息（例如，"请提取所有日期、金额和涉及方"）。</li>
+</ul>
+</li>
+</ul>
+<h4>6.3.2 合同条款分析与风险识别</h4>
+<ul>
+<li><strong>应用</strong>: 采购合同、劳动合同、服务协议、保密协议等。</li>
+<li><strong>优势</strong>: 模型可以全面审查合同的各个条款，识别潜在的风险点、不一致性、模糊表述，并与标准模板进行对比。</li>
+<li><strong>Prompt Engineering 提示</strong>:<ul>
+<li>"请分析这份合同，列出所有涉及违约责任的条款，并指出对我们公司潜在的风险。"</li>
+<li>"请对比这份合同与我们公司标准服务协议的主要差异点。"</li>
+<li>"请提取合同中所有付款条件和交付日期。"</li>
+</ul>
+</li>
+</ul>
+<h4>6.3.3 报告分析与数据洞察</h4>
+<ul>
+<li><strong>应用</strong>: 市场分析报告、财务审计报告、项目进度报告。</li>
+<li><strong>优势</strong>: 能够从多页报告中整合数据、识别趋势、生成洞察，甚至对报告内容提出质疑或建议。</li>
+<li><strong>Prompt Engineering 提示</strong>:<ul>
+<li>"请根据这份市场分析报告，总结当前市场的主要趋势和机遇。"</li>
+<li>"请从财务报告中提取所有资产负债表数据，并计算关键财务比率。"</li>
+</ul>
+</li>
+</ul>
+<h3>6.4 超长上下文在代码审查中的应用</h3>
+<p>代码审查是软件开发中至关重要的环节，Gemma 3 的超长上下文为这一领域带来了新的可能性。</p>
+<h4>6.4.1 大型代码库的功能概述与结构理解</h4>
+<ul>
+<li><strong>应用</strong>: 快速理解一个新接手的项目、模块或大型 PR（Pull Request）。</li>
+<li><strong>优势</strong>: 将多个相关源文件（例如一个模块的所有 <code>.py</code> 文件，或一个组件的所有 <code>.js</code> 和 <code>.ts</code> 文件）一次性输入，让模型生成整体的功能概述、架构说明和模块间依赖关系图。</li>
+<li><strong>Prompt Engineering 提示</strong>:<ul>
+<li>"请分析以下 Python 代码文件，总结 <code>user_management</code> 模块的核心功能和它与数据库交互的方式。"</li>
+<li>"请描述这段 JavaScript 代码的整体结构，并指出它所实现的用户界面组件。"</li>
+</ul>
+</li>
+</ul>
+<h4>6.4.2 潜在 Bug、安全漏洞与性能瓶颈识别</h4>
+<ul>
+<li><strong>应用</strong>: 辅助人工代码审查，发现常见问题。</li>
+<li><strong>优势</strong>: 模型可以识别代码中的常见错误模式（如未处理的异常、SQL 注入风险、资源未释放、潜在的死锁等），并提供改进建议。</li>
+<li><strong>Prompt Engineering 提示</strong>:<ul>
+<li>"请审查以下 Python 代码，指出所有可能的安全漏洞（如注入、XSS、不当的权限检查）和性能瓶颈。"</li>
+<li>"这段 Java 代码是否存在任何并发问题或资源泄漏的风险？请详细说明并提供修复建议。"</li>
+</ul>
+</li>
+</ul>
+<h4>6.4.3 代码风格检查与重构建议</h4>
+<ul>
+<li><strong>应用</strong>: 保持代码库的一致性和可维护性。</li>
+<li><strong>优势</strong>: 模型可以根据预设的代码规范（如 PEP 8 for Python）检查代码风格，并提供重构建议，使其更具可读性、模块化或符合设计模式。</li>
+<li><strong>Prompt Engineering 提示</strong>:<ul>
+<li>"请根据 PEP 8 规范审查以下 Python 代码，指出所有不符合规范的地方，并提供改进建议。"</li>
+<li>"请对以下 JavaScript 函数进行重构，使其更具可读性和模块化，并遵循函数式编程范式。"</li>
+</ul>
+</li>
+</ul>
+<h4>6.4.4 挑战与局限性</h4>
+<p>尽管超长上下文在代码审查中潜力巨大，但也存在挑战：</p>
+<ul>
+<li><strong>Token 限制下的代码表示</strong>: 即使是 128K token，对于真正庞大的企业级代码库仍然是有限的。需要智能地选择输入哪些文件或代码段。</li>
+<li><strong>深度语义理解</strong>: LLM 擅长模式识别和自然语言理解，但在深度代码逻辑、复杂算法、类型系统和编译时优化方面，可能不如专门的静态分析工具。</li>
+<li><strong>幻觉风险</strong>: 模型可能生成看似合理但实际上错误的建议或解释。人工复核仍然不可或缺。</li>
+<li><strong>环境上下文缺失</strong>: 模型无法感知代码运行时的真实环境、外部依赖、部署配置等，这可能影响其判断的准确性。</li>
+</ul>
+<h2>💻 实战演示</h2>
+<p>本次实战我们将使用 Ollama 部署 Gemma 3 模型。请确保您已安装 Ollama，并拉取了 <code>gemma:27b</code> 或 <code>gemma:12b</code> 模型（推荐 <code>27b</code> 以获得最佳长上下文处理能力）。</p>
+<pre><code class="language-bash"># 如果尚未安装 Ollama
+# curl -fsSL https://ollama.com/install.sh | sh
+
+# 拉取 Gemma 3 模型 (推荐 27B，需要较大内存)
+ollama pull gemma:27b
+# 或者拉取 12B 版本
+# ollama pull gemma:12b
+
+# 确保 Ollama 服务正在运行
+ollama serve
+</code></pre>
+<p>我们将通过 Python 客户端库与 Ollama 进行交互。</p>
+<h3>场景 1: 合同关键条款提取与风险分析</h3>
+<p><strong>目标</strong>: 给定一份模拟长篇合同，利用 Gemma 3 提取关键条款，并评估潜在风险。</p>
+<p><strong>模拟合同文本 (contract.txt)</strong>:</p>
+<pre><code># contract.txt 内容 (部分，实际会更长)
+
+**软件许可与服务协议**
+
+本协议由以下双方于 2024 年 5 月 20 日签订：
+
+**许可方**: 创新科技有限公司 (以下简称“甲方”)
+注册地址: 深圳市南山区科技园路1号
+统一社会信用代码: 91440300XXXXXXXXXX
+
+**被许可方**: 智慧互联股份有限公司 (以下简称“乙方”)
+注册地址: 北京市海淀区中关村大街100号
+统一社会信用代码: 91110108YYYYYYYYYY
+
+**鉴于**:
+A. 甲方拥有“云智办公套件”软件（以下简称“本软件”）的完整知识产权和许可权。
+B. 乙方希望获取本软件的许可，并在其内部业务中使用。
+
+**第一条 许可范围**
+1.1 甲方授予乙方一项非排他性、不可转让的、有限的软件使用许可，允许乙方在全球范围内在其内部业务中安装和使用本软件。
+1.2 许可期限为自本协议生效之日起三年。期满后，双方可协商续约。
+
+**第二条 费用与支付**
+2.1 乙方应向甲方支付软件许可费人民币伍拾万元整 (¥500,000.00)。
+2.2 支付方式：本协议生效后七个工作日内支付 50%，软件部署完成并通过验收后三十个工作日内支付剩余 50%。
+2.3 若乙方逾期支付任何款项，每逾期一日，应向甲方支付逾期未付款项的万分之五作为违约金。
+
+**第三条 软件部署与验收**
+3.1 甲方应在本协议生效后三十个工作日内完成本软件的部署。
+3.2 乙方应在软件部署完成后十个工作日内进行验收。验收标准以附件A《验收标准》为准。
+3.3 若乙方在规定时间内未提出书面异议，则视为验收合格。
+
+**第四条 知识产权**
+4.1 本软件的所有知识产权（包括但不限于著作权、专利权、商标权）均归甲方所有。
+4.2 乙方不得对本软件进行反向工程、反编译、反汇编，或以其他方式试图获取软件源代码。
+
+**第五条 违约责任**
+5.1 任何一方违反本协议项下任何条款，守约方有权要求违约方赔偿因此造成的一切损失。
+5.2 若乙方严重违反本协议第四条，甲方有权立即终止本协议，并要求乙方支付软件许可费总额的 20% 作为违约金。
+5.3 若甲方未能在第三条规定的期限内完成部署，每逾期一日，应向乙方支付软件许可费总额的万分之二作为违约金，但违约金总额不超过软件许可费总额的 10%。
+
+**第六条 争议解决**
+6.1 凡因本协议引起的或与本协议有关的争议，双方应友好协商解决。
+6.2 协商不成的，任何一方均可向甲方所在地人民法院提起诉讼。
+
+**第七条 协议生效**
+7.1 本协议自双方授权代表签字盖章之日起生效。
+</code></pre>
+<p><strong>Python 代码 (analyze_contract.py)</strong>:</p>
+<pre><code class="language-python">import ollama
+import os
+
+def analyze_contract(file_path):
+    """
+    读取合同文件内容，并利用 Gemma 3 进行关键条款提取和风险分析。
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            contract_content = f.read()
+    except FileNotFoundError:
+        print(f"错误：文件 '{file_path}' 未找到。")
+        return
+
+    # 构建 Prompt
+    # 强调角色、任务和输出格式
+    prompt = f"""
+    你是一名资深法律顾问，请仔细阅读以下软件许可与服务协议。
+    
+    协议内容如下：
+    ---
+    {contract_content}
+    ---
+    
+    请完成以下任务：
+    1.  **总结协议核心目的和主要内容** (不超过 200 字)。
+    2.  **提取关键条款**：
+        *   许可方和被许可方名称及地址
+        *   软件名称和许可期限
+        *   许可费用和支付方式
+        *   部署与验收期限
+        *   知识产权归属
+        *   主要违约责任条款（甲方和乙方各自的违约责任，及对应的违约金或赔偿方式）
+        *   争议解决方式
+    3.  **识别潜在风险点**：站在被许可方（智慧互联股份有限公司）的角度，指出本协议中可能存在的风险，并提供简要的风险评估和建议。
+    
+    请以清晰、结构化的 Markdown 格式输出分析结果。
+    """
+
+    print("正在发送合同内容到 Gemma 3 进行分析，请稍候...")
+
+    try:
+        # 调用 Ollama API
+        response = ollama.chat(
+            model='gemma:27b', # 使用拉取的 Gemma 3 模型
+            messages=[
+                {'role': 'user', 'content': prompt}
+            ],
+            options={
+                'num_ctx': 128000 # 明确设置上下文窗口大小，确保模型能处理全部内容
+            }
+        )
+        print("\n--- Gemma 3 分析结果 ---\n")
+        print(response['message']['content'])
+    except Exception as e:
+        print(f"调用 Gemma 3 API 发生错误: {e}")
+        print("请确保 Ollama 服务正在运行 (`ollama serve`) 并且模型已成功拉取。")
+
+if __name__ == "__main__":
+    # 创建模拟合同文件
+    contract_text = """
+**软件许可与服务协议**
+
+本协议由以下双方于 2024 年 5 月 20 日签订：
+
+**许可方**: 创新科技有限公司 (以下简称“甲方”)
+注册地址: 深圳市南山区科技园路1号
+统一社会信用代码: 91440300XXXXXXXXXX
+
+**被许可方**: 智慧互联股份有限公司 (以下简称“乙方”)
+注册地址: 北京市海淀区中关村大街100号
+统一社会信用代码: 91110108YYYYYYYYYY
+
+**鉴于**:
+A. 甲方拥有“云智办公套件”软件（以下简称“本软件”）的完整知识产权和许可权。
+B. 乙方希望获取本软件的许可，并在其内部业务中使用。
+
+**第一条 许可范围**
+1.1 甲方授予乙方一项非排他性、不可转让的、有限的软件使用许可，允许乙方在全球范围内在其内部业务中安装和使用本软件。
+1.2 许可期限为自本协议生效之日起三年。期满后，双方可协商续约。
+
+**第二条 费用与支付**
+2.1 乙方应向甲方支付软件许可费人民币伍拾万元整 (¥500,000.00)。
+2.2 支付方式：本协议生效后七个工作日内支付 50%，软件部署完成并通过验收后三十个工作日内支付剩余 50%。
+2.3 若乙方逾期支付任何款项，每逾期一日，应向甲方支付逾期未付款项的万分之五作为违约金。
+
+**第三条 软件部署与验收**
+3.1 甲方应在本协议生效后三十个工作日内完成本软件的部署。
+3.2 乙方应在软件部署完成后十个工作日内进行验收。验收标准以附件A《验收标准》为准。
+3.3 若乙方在规定时间内未提出书面异议，则视为验收合格。
+
+**第四条 知识产权**
+4.1 本软件的所有知识产权（包括但不限于著作权、专利权、商标权）均归甲方所有。
+4.2 乙方不得对本软件进行反向工程、反编译、反汇编，或以其他方式试图获取软件源代码。
+
+**第五条 违约责任**
+5.1 任何一方违反本协议项下任何条款，守约方有权要求违约方赔偿因此造成的一切损失。
+5.2 若乙方严重违反本协议第四条，甲方有权立即终止本协议，并要求乙方支付软件许可费总额的 20% 作为违约金。
+5.3 若甲方未能在第三条规定的期限内完成部署，每逾期一日，应向乙方支付软件许可费总额的万分之二作为违约金，但违约金总额不超过软件许可费总额的 10%。
+
+**第六条 争议解决**
+6.1 凡因本协议引起的或与本协议有关的争议，双方应友好协商解决。
+6.2 协商不成的，任何一方均可向甲方所在地人民法院提起诉讼。
+
+**第七条 协议生效**
+7.1 本协议自双方授权代表签字盖章之日起生效。
+"""
+    with open("contract.txt", "w", encoding="utf-8") as f:
+        f.write(contract_text)
+    
+    analyze_contract("contract.txt")
+</code></pre>
+<p><strong>运行结果示例 (可能因模型版本和随机性而异)</strong>:</p>
+<pre><code class="language-markdown">--- Gemma 3 分析结果 ---
+
+### 1. 协议核心目的和主要内容
+
+本协议旨在规范创新科技有限公司（许可方，甲方）向智慧互联股份有限公司（被许可方，乙方）授予“云智办公套件”软件使用许可的权利与义务。主要内容包括许可范围（非排他性、三年期限）、许可费用及支付方式、软件部署与验收流程、知识产权归属、双方的违约责任及争议解决机制，确保软件的合法使用和双方权益。
+
+### 2. 关键条款提取
+
+*   **许可方和被许可方名称及地址**:
+    *   **许可方**: 创新科技有限公司, 深圳市南山区科技园路1号
+    *   **被许可方**: 智慧互联股份有限公司, 北京市海淀区中关村大街100号
+*   **软件名称和许可期限**:
+    *   **软件名称**: “云智办公套件”
+    *   **许可期限**: 自协议生效之日起三年
+*   **许可费用和支付方式**:
+    *   **费用**: 人民币伍拾万元整 (¥500,000.00)
+    *   **支付方式**:
+        *   协议生效后七个工作日内支付 50%
+        *   软件部署完成并通过验收后三十个工作日内支付剩余 50%
+*   **部署与验收期限**:
+    *   **部署期限**: 协议生效后三十个工作日内完成
+    *   **验收期限**: 软件部署完成后十个工作日内进行验收
+*   **知识产权归属**: 本软件的所有知识产权均归许可方（甲方）所有。
+*   **主要违约责任条款**:
+    *   **乙方逾期支付**: 每逾期一日，支付逾期未付款项的万分之五作为违约金。
+    *   **乙方严重违反知识产权条款**: 甲方有权立即终止协议，并要求乙方支付软件许可费总额的 20% 作为违约金。
+    *   **甲方未按期部署**: 每逾期一日，支付软件许可费总额的万分之二作为违约金，但总额不超过软件许可费总额的 10%。
+*   **争议解决方式**: 友好协商解决；协商不成，向甲方所在地人民法院提起诉讼。
+
+### 3. 潜在风险点 (站在被许可方 - 智慧互联股份有限公司的角度)
+
+1.  **验收期限较短**: 乙方仅有 10 个工作日进行验收，如果软件功能复杂或测试任务繁重，可能导致验收不充分，未能及时发现潜在问题。
+    *   **建议**: 争取延长验收期限，或明确验收流程中包含详细测试用例和缺陷报告机制。
+2.  **逾期付款违约金较高**: 乙方逾期支付的违约金为每日万分之五，虽然常见，但如果金额较大且支付流程复杂，需确保内部流程顺畅，避免不必要的罚款。
+    *   **建议**: 确保内部支付流程与合同约定时间匹配，并设立提醒机制。
+3.  **甲方所在地法院管辖**: 争议解决条款规定向甲方所在地人民法院提起诉讼。这意味着如果发生争议，乙方可能需要前往甲方所在地进行诉讼，增加了维权成本和不便。
+    *   **建议**: 尝试协商改为双方均可接受的第三方仲裁机构，或约定被告所在地法院管辖。
+4.  **知识产权违约金比例**: 乙方若严重违反知识产权条款，需支付软件许可费总额 20% 的违约金，金额较大。这强调了乙方在使用软件时必须严格遵守知识产权条款。
+    *   **建议**: 内部培训员工，确保严格遵守软件使用协议，不得进行反向工程等行为。
+5.  **附件A《验收标准》未提供**: 协议中提到验收标准以附件A为准，但协议文本中并未包含附件A。若附件A缺失或不明确，可能在验收时产生争议。
+    *   **建议**: 务必在签署协议前，确认附件A的内容，并确保其详细、可衡量。
+</code></pre>
+<h3>场景 2: 大型代码库功能模块概述与潜在问题识别</h3>
+<p><strong>目标</strong>: 给定一个包含多个文件的模拟 Python Web 应用程序模块，让 Gemma 3 总结其功能，并指出潜在的改进点。</p>
+<p><strong>模拟代码库结构</strong>:</p>
+<pre><code>my_web_app/
+├── __init__.py
+├── app.py          # Flask 应用主文件
+├── models.py       # 数据库模型
+├── views.py        # 视图函数
+└── utils.py        # 辅助工具函数
+</code></pre>
+<p><strong>模拟代码内容</strong>:</p>
+<p><strong><code>my_web_app/app.py</code></strong>:</p>
+<pre><code class="language-python"># my_web_app/app.py
+from flask import Flask, request, jsonify
+from my_web_app.models import db, User, Post
+from my_web_app.views import user_bp, post_bp
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'super_secret_key_for_demo' #
+</code></pre>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-5/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 05 期 | 多模态能力解锁：图片理解与视觉问答</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-7/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 07 期 | Function Calling 与结构化输出</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

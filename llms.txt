@@ -1,0 +1,52 @@
+# AgentUpdate.ai
+
+> AgentUpdate.ai is a bilingual (English/Chinese) platform for the AI agent ecosystem. It covers autonomous coding agents, workflow automation tools, reusable skills, plugins, version releases, experiential simulators, and in-depth tutorials. The site is built with Astro and deployed as a static site at www.agentupdate.ai.
+
+Key facts:
+- Content is available in English (default, `/`) and Chinese (`/zh/`)
+- The platform tracks 20+ AI agent products from Big Tech, startups, and open-source communities
+- Tutorials cover tools like Claude Code, Antigravity, OpenClaw, Dify, and Multica
+- News is curated daily from the AI agent industry
+
+## Tutorials
+
+- [Antigravity Masterclass](https://www.agentupdate.ai/tutorial/antigravity-masterclass/): Complete course on autonomous AI coding agents — covers skills, workflows, planning, and self-governance
+- [Claude Code Tutorial](https://www.agentupdate.ai/tutorial/claude-code-tutorial/): Practical guide to using Claude as an AI coding assistant
+- [Multica Tutorial](https://www.agentupdate.ai/tutorial/multica-tutorial/): Multi-agent coordination patterns and runtime configuration
+- [Dify Tutorial](https://www.agentupdate.ai/tutorial/dify-tutorial/): Building AI workflows with the Dify platform
+- [OpenClaw Masterclass](https://www.agentupdate.ai/tutorial/openclaw-masterclass/): Deep dive into the OpenClaw agent framework
+- [OpenCLI Masterclass](https://www.agentupdate.ai/tutorial/opencli-masterclass/): Command-line interface for AI agent management
+- [Gemma Tutorial](https://www.agentupdate.ai/tutorial/gemma-tutorial/): Working with Google's Gemma models
+- [Hermes Agent Tutorial](https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/): Building agents with the Hermes framework
+- [AutoResearch Tutorial](https://www.agentupdate.ai/tutorial/autoresearch-tutorial/): Automated research workflows with AI agents
+
+## Products
+
+- [Product Catalog](https://www.agentupdate.ai/product/): Directory of 20+ AI agent tools — filterable by type (Big Tech, Startup, Open Source, Hosting, Hardware)
+
+## Skills & Plugins
+
+- [Skill Markets](https://www.agentupdate.ai/skills/): Platforms for discovering and sharing reusable agent capabilities
+- [Plugin Directory](https://www.agentupdate.ai/plugins/): Community-built plugins and official integrations for AI agents
+
+## News
+
+- [Latest News](https://www.agentupdate.ai/news/): Daily curated AI agent industry updates, product launches, and analysis
+
+## Releases
+
+- [Latest Releases](https://www.agentupdate.ai/releases/): Automated tracking of the latest version updates, changelogs, and announcements from various AI agent tools
+
+## Simulators
+
+- [Simulators](https://www.agentupdate.ai/simulators/): Interactive, browser-based environments to preview and learn about autonomous AI agents (e.g. Claude Code Simulator)
+
+## Optional
+
+- [中文首页](https://www.agentupdate.ai/zh/): Chinese language homepage
+- [中文教程](https://www.agentupdate.ai/zh/tutorial/): Chinese language tutorial index
+- [中文新闻](https://www.agentupdate.ai/zh/news/): Chinese language news
+- [中文产品](https://www.agentupdate.ai/zh/product/): Chinese language product catalog
+- [中文版更](https://www.agentupdate.ai/zh/releases/): Chinese language releases
+- [中文模拟器](https://www.agentupdate.ai/zh/simulators/): Chinese language simulators
+- [Tags](https://www.agentupdate.ai/tags/): Browse all content by topic tags

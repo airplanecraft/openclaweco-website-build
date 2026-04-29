@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 24 期 | 防超时策略：Timeout与大模型降维重试 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai</title><meta name="description" content="第 24 期 | 防超时策略：Timeout与大模型降维重试"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-24/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-24/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-24/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-24/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 24 期 | 防超时策略：Timeout与大模型降维重试 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta property="og:description" content="第 24 期 | 防超时策略：Timeout与大模型降维重试"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-24/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 24 期 | 防超时策略：Timeout与大模型降维重试 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta name="twitter:description" content="第 24 期 | 防超时策略：Timeout与大模型降维重试"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/langgraph-tutorial/lesson-24/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/langgraph-tutorial/lesson-24/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-01/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-02/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-03/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-04/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-05/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-06/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-07/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-08/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-09/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 11 期 | 并行执行 (Parallel Execution)：分治机制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 13 期 | Human in the Loop (HITL)：审批节点的建立 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 15 期 | 手动修图：通过 update_state 人工修正 Agent 幻觉 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 16 期 | 多智能体架构探秘：Flat vs Hierarchical </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 17 期 | 主管模式 (Supervisor Agent)：打造统筹中心 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 18 期 | Sub-graphs：将底层 Graph 浓缩为一个普通节点 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>21.</span> 第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>22.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-21/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>23.</span> 第 21 期 | Async 执行：把阻塞留给昨日 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-22/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>24.</span> 第 22 期 | 观测体系：LangSmith 探针无缝挂载 Graph </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-23/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>25.</span> 第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-24/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>26.</span> 第 24 期 | 防超时策略：Timeout与大模型降维重试 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>27.</span> 第 25 期 | 长程记忆：在 Graph 中保存长期偏好 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-26/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>28.</span> 第 26 期 | 前端融合：LangGraph 的前后端分离架构规划 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-27/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>29.</span> 第 27 期 | 生产级利器：LangGraph Cloud 初体验 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-28/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>30.</span> 第 28 期 | 复杂数据的提取 (Structured Outputs) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-29/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>31.</span> 第 29 期 | 测试图：我们该怎么自动化验收智能体的表现？ </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>32.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-30/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>33.</span> 第 30 期 | 终局项目路演：完备的 AI 创作发行机构 (Capstone) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>34.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>35.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>36.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>37.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>38.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>39.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/langgraph-tutorial/" data-astro-cid-ilhxcym7>LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 24 期 | 防超时策略：Timeout与大模型降维重试</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构","item":"https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/"},{"@type":"ListItem","position":4,"name":"第 24 期 | 防超时策略：Timeout与大模型降维重试"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 24 期 | 防超时策略：Timeout与大模型降维重试</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><p>同学们好，欢迎回到我们的《LangGraph 多智能体专家课》。我是你们的老朋友。</p>
+<p>在前面的 23 期里，我们的「AI 万能内容创作机构 (AI Content Agency)」已经初具规模了。Planner 挥斥方遒规划选题，Researcher 像个不知疲倦的猎犬一样全网搜集资料，Writer 奋笔疾书，Editor 铁面无私地进行审校。看着满屏跑通的绿灯，你是不是觉得自己的架构已经天下无敌了？</p>
+<p><strong>别天真了，欢迎来到真实的生产环境。</strong></p>
+<p>在真实的业务线里，大模型 API 就像薛定谔的猫——在你发起请求之前，你永远不知道它会秒回，还是会让你等到海枯石烂，最后无情地抛出一个 <code>TimeoutError</code> 或者 <code>502 Bad Gateway</code>。
+想象一下，你的 Researcher 辛辛苦苦爬了 10 万字的资料，丢给 Writer 节点。Writer 节点调用了最顶配的 <code>GPT-4o</code> 或者 <code>Claude-3.5-Sonnet</code> 准备生成一篇深度长文。结果，因为网络抖动或者 OpenAI 算力告急，请求卡死了。30 秒后，整个 LangGraph 工作流崩溃，之前的所有计算成本和时间全部打水漂。</p>
+<p>老板看着白屏的系统，问你：“这就是你写的智能体架构？”</p>
+<p>为了保住大家的年终奖，今天这节课，我们就来解决这个极其致命的工程痛点：<strong>如何为 Node 设定超时销毁规则，并在失败时自动降级（Fallback）到更轻量级的模型，保证整个 Agency 的工作流「降级但绝不宕机」。</strong></p>
+<hr>
+<h2>🎯 本期学习目标</h2>
+<ol>
+<li><strong>理解超时的爆炸半径</strong>：明白为什么在 Multi-Agent 架构中，单节点的超时会导致雪崩效应。</li>
+<li><strong>掌握底层 Timeout 机制</strong>：学会在 LLM 层面和 LangGraph Node 层面设置严格的执行时间上限（Fail-Fast 原则）。</li>
+<li><strong>实现大模型降维重试 (Fallback)</strong>：使用 LangChain 的 <code>with_fallbacks</code> 语法，构建“主力模型 -&gt; 备用模型 -&gt; 兜底方案”的三级火箭架构。</li>
+<li><strong>Agency 业务实操</strong>：将防超时策略完美融入我们的 Writer Agent，让它在极端网络下依然能产出初稿。</li>
+</ol>
+<hr>
+<h2>📖 原理解析</h2>
+<p>在分布式系统里有一个金科玉律：<strong>Design for Failure（为失败而设计）</strong>。
+我们的 AI Content Agency 本质上就是一个由多个大模型 API 节点组成的分布式微服务系统。</p>
+<h3>1. 为什么要主动设置 Timeout？</h3>
+<p>很多新手写代码，调用大模型时从不传 <code>timeout</code> 参数。这就意味着，如果 API 服务商那边发生阻塞，你的线程就会一直挂起。在并发场景下，这会迅速耗尽你服务器的连接池，导致整个系统假死。
+<strong>高级架构师的做法是：Fail-Fast（快速失败）。</strong> 如果 Writer 节点 15 秒内写不出初稿，就立刻掐断连接，不要死等。</p>
+<h3>2. 什么是降维重试 (Fallback)？</h3>
+<p>掐断连接后怎么办？直接报错吗？当然不行。
+在我们的 Agency 里，Writer 节点的主力是“资深作家”（比如 GPT-4o，聪明但慢且贵）。如果资深作家今天“请病假”（超时/宕机），我们就必须立刻拉一个“实习生”（比如 GPT-4o-mini 或 Claude-3-Haiku，稍微笨点但极快且便宜）来顶上。
+虽然实习生写的初稿质量可能稍差，但后续还有 Editor 节点可以兜底修改。<strong>在业务上，有结果（哪怕是 60 分的结果）永远好过抛异常（0 分）。</strong></p>
+<p>下面是我们本期 Writer 节点重构后的核心工作流走向：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[Researcher 搜集完资料] --&gt;|传递 State| B[Writer Node 开始执行]
+    
+    subgraph "Writer Node 内部容错防线"
+        B --&gt; C{调用 主力大模型 GPT-4o}
+        C -- 成功 (10秒内) --&gt; D[返回高质量 90分初稿]
+        
+        C -- 失败 (Timeout/RateLimit/500) --&gt; E[🔥 触发 Fallback 机制]
+        
+        E --&gt; F{调用 降维大模型 GPT-4o-mini}
+        F -- 成功 (15秒内) --&gt; G[返回降级 60分初稿]
+        
+        F -- 失败 (再次异常) --&gt; H[🛡️ 触发最终兜底逻辑]
+        H --&gt; I[返回系统预设的默认错误文案]
+    end
+    
+    D --&gt; J[流转至 Editor Node]
+    G --&gt; J
+    I --&gt; J
+    
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#ff9999,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px</pre></div><hr>
+<h2>💻 实战代码演练</h2>
+<p>为了让大家看得最清楚，我们将直接抽离出 Writer 节点的逻辑进行重构。</p>
+<p><strong>👨‍🏫 讲师 Trick 预警</strong>：在下面的演示代码中，为了强制触发 Timeout 让我们看到 Fallback 的效果，我故意把主力模型 <code>GPT-4o</code> 的超时时间设置成了极其变态的 <code>0.01</code> 秒。这样它一定会超时失败，从而优雅地降级到 <code>GPT-4o-mini</code>。</p>
+<h3>核心环境与依赖</h3>
+<p>请确保你的环境中安装了以下库：
+<code>pip install langgraph langchain-openai langchain-core</code></p>
+<h3>完整演示代码</h3>
+<pre><code class="language-python">import time
+from typing import TypedDict, Annotated
+from langgraph.graph import StateGraph, END
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.runnables import RunnableConfig
+
+# ==========================================
+# 1. 定义 Agency 的全局状态 (State)
+# ==========================================
+class AgencyState(TypedDict):
+    topic: str
+    draft: str
+    model_used: str # 用于记录最终到底是哪个模型产出的内容，方便监控
+
+# ==========================================
+# 2. 核心：构建带有降维重试机制的 LLM 链
+# ==========================================
+# 角色 A：资深作家 (主力模型)
+# 我们故意设置 request_timeout=0.01，强制让它超时，模拟生产环境的 API 拥堵！
+# 正常生产环境中，这里可能设置为 30.0 秒
+senior_writer_llm = ChatOpenAI(
+    model="gpt-4o",
+    temperature=0.7,
+    request_timeout=0.01, # ⚠️ 极短超时，逼迫其 Fail-Fast
+    max_retries=0         # 禁用自带的无脑重试，我们用 fallback 接管
+)
+
+# 角色 B：实习生作家 (降级模型)
+# 速度快，便宜，作为 Plan B。给它充裕的时间。
+intern_writer_llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0.7,
+    request_timeout=15.0, # 正常的超时时间
+    max_retries=1
+)
+
+# 🚀 魔法发生在这里：使用 .with_fallbacks() 绑定降级策略
+# 如果 senior_writer_llm 抛出异常（如 Timeout），自动无缝切换到 intern_writer_llm
+robust_writer_llm = senior_writer_llm.with_fallbacks(
+    fallbacks=[intern_writer_llm]
+)
+
+# ==========================================
+# 3. 定义 Writer 节点 (Node)
+# ==========================================
+def writer_node(state: AgencyState, config: RunnableConfig):
+    print("\n[Writer Node] 接收到写作任务，开始创作...")
+    topic = state["topic"]
+    
+    prompt = f"你是一个专业的内容创作者。请为主题【{topic}】写一段200字的引言。"
+    
+    start_time = time.time()
+    try:
+        # 调用我们封装好的、带有防超时降级机制的 LLM
+        # 即使主力超时，Fallback 也会在底层自动接管，对上层业务透明
+        response: AIMessage = robust_writer_llm.invoke([HumanMessage(content=prompt)])
+        
+        # 提取使用的模型名称，验证降级是否成功
+        # OpenAI 的 response.response_metadata 中会包含实际使用的 model
+        actual_model = response.response_metadata.get("model_name", "unknown")
+        
+        cost_time = time.time() - start_time
+        print(f"[Writer Node] 创作完成! 耗时: {cost_time:.2f}秒. 实际使用模型: {actual_model}")
+        
+        return {
+            "draft": response.content,
+            "model_used": actual_model
+        }
+        
+    except Exception as e:
+        # 终极兜底逻辑：如果连降级模型都挂了，或者网络彻底断了
+        print(f"[Writer Node] 🚨 灾难性错误，所有模型均不可用: {e}")
+        return {
+            "draft": "【系统提示：AI 创作者集体罢工，请人类小编手动介入处理此选题。】",
+            "model_used": "human_fallback"
+        }
+
+# ==========================================
+# 4. 组装 LangGraph 工作流
+# ==========================================
+workflow = StateGraph(AgencyState)
+
+workflow.add_node("writer", writer_node)
+workflow.set_entry_point("writer")
+workflow.add_edge("writer", END)
+
+app = workflow.compile()
+
+# ==========================================
+# 5. 模拟运行 Demo
+# ==========================================
+if __name__ == "__main__":
+    print("=== AI Content Agency 启动 ===")
+    initial_state = {"topic": "2024年人工智能发展趋势", "draft": "", "model_used": ""}
+    
+    # 执行 Graph
+    final_state = app.invoke(initial_state)
+    
+    print("\n=== 最终 State 结果 ===")
+    print(f"主题: {final_state['topic']}")
+    print(f"产出模型: {final_state['model_used']}  &lt;-- 注意看这里！")
+    print(f"草稿内容: {final_state['draft']}")
+</code></pre>
+<h3>运行结果剖析</h3>
+<p>当你运行这段代码时，你会看到控制台输出类似如下的内容：</p>
+<pre><code class="language-text">=== AI Content Agency 启动 ===
+
+[Writer Node] 接收到写作任务，开始创作...
+[Writer Node] 创作完成! 耗时: 2.15秒. 实际使用模型: gpt-4o-mini
+
+=== 最终 State 结果 ===
+主题: 2024年人工智能发展趋势
+产出模型: gpt-4o-mini  &lt;-- 注意看这里！
+草稿内容: 2024年，人工智能的发展正以前所未有的速度重塑我们的世界...（省略）
+</code></pre>
+<p><strong>看懂了吗同学们？这就是优雅！</strong>
+由于我们把 GPT-4o 的 <code>request_timeout</code> 设为了 0.01 秒，它必定触发 <code>APITimeoutError</code>。但是我们的 LangGraph 节点<strong>并没有崩溃</strong>！
+底层 <code>with_fallbacks</code> 捕获了异常，悄无声息地将 Prompt 转发给了 <code>gpt-4o-mini</code>，并在 2 秒后拿回了结果。整个工作流状态 (State) 被完美更新，可以继续流转给下游的 Editor。</p>
+<hr>
+<h2>坑与避坑指南</h2>
+<p>作为你们的导师，我不仅要教你们怎么写出能跑的代码，更要教你们怎么排查半夜把你们叫醒的 Bug。关于 Timeout 和 Fallback，有三个天坑：</p>
+<h3>💣 坑一：无限套娃的重试风暴 (Retry Storm)</h3>
+<p><strong>现象</strong>：你设置了 Fallback，但发现系统依然卡死，甚至账单爆炸。
+<strong>原因</strong>：LangChain 的某些 LLM 封装默认带有 <code>max_retries=2</code> 或更高。如果你不显式关闭主力模型的重试（<code>max_retries=0</code>），它会在超时后，自己傻乎乎地再试 2 次（每次等很久），然后再抛出异常给 Fallback。
+<strong>避坑</strong>：<strong>在构建 Fallback 链时，主力模型一定要设置 <code>max_retries=0</code></strong>。让它死得痛快点，赶紧把接力棒交给备用模型。</p>
+<h3>💣 坑二：状态污染 (State Corruption)</h3>
+<p><strong>现象</strong>：模型降级成功了，但生成的格式完全不对，下游的 Editor 节点解析报错。
+<strong>原因</strong>：你可能在主力模型里用了复杂的 <code>bind_tools</code> 或结构化输出 (Structured Output)，但你在降级模型（比如一个开源的轻量模型）里忘记绑定同样的格式要求，导致它输出了纯文本。
+<strong>避坑</strong>：Fallback 数组中的每一个备用 LLM，都必须和主力 LLM 保持<strong>相同的接口契约</strong>。如果主力绑定了 JSON 输出，备用模型也必须绑定相同 Schema 的 JSON 输出。</p>
+<h3>💣 坑三：悄无声息的降级 (Silent Degradation)</h3>
+<p><strong>现象</strong>：系统跑了三个月，你一直以为是 GPT-4o 在干活，月底看账单才发现全是 GPT-4o-mini 的费用。因为系统一直在静默降级，你完全不知道！
+<strong>原因</strong>：Fallback 机制对上层太透明了，掩盖了底层网络或账号限流的真实问题。
+<strong>避坑</strong>：像我在代码里演示的那样，<strong>必须将实际使用的模型名称写回 State 中</strong>（<code>model_used</code> 字段）。在真实的生产中，这里还应该加一行代码：向 Prometheus 或你的日志监控系统打一个 Warning 埋点记录降级事件。</p>
+<hr>
+<h2>📝 本期小结</h2>
+<p>今天我们为 AI Content Agency 的 Writer 节点穿上了一件“防弹衣”。</p>
+<ol>
+<li>我们明确了 <strong>Fail-Fast</strong> 的架构理念，拒绝无意义的死等。</li>
+<li>我们利用 LLM 级别的 <code>request_timeout</code> 结合 <code>with_fallbacks</code>，实现了<strong>主力模型到降维模型的无缝切换</strong>。</li>
+<li>我们设计了<strong>终极兜底逻辑</strong>，确保即使所有大模型 API 都挂了，LangGraph 也能输出友好的提示并引导人工介入，而不是抛出一堆可怕的 Traceback 堆栈。</li>
+</ol>
+<p>有了这套机制，你的 Multi-Agent 系统才算真正具备了走向生产环境的资格。它不再是一个脆弱的玩具，而是一个具备高可用性 (High Availability) 的工业级架构。</p>
+<p><strong>下期预告：</strong>
+现在的 Agency 已经不怕超时了，但是，如果 Writer 生成的内容极其糟糕，Editor 看了想打人怎么办？
+在第 25 期《LangGraph 多智能体专家课》中，我们将引入<strong>人类在环 (Human-in-the-loop, HITL) 机制</strong>。我将教大家如何让 LangGraph 走到特定节点时自动暂停（Interrupt），发消息给人类主管（你）钉钉/企业微信审批，你点头同意后，工作流才继续往下走！</p>
+<p>同学们，我们下期见！记得把这期代码敲一遍，体会一下强制超时的快感！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-23/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;)</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 25 期 | 长程记忆：在 Graph 中保存长期偏好</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

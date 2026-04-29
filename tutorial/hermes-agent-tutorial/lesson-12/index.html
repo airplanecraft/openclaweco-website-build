@@ -1,0 +1,517 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 12 期 | Agent 协作：多 Agent 通信与任务委派 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="探索 Hermes 的 Agent-to-Agent 通信协议，如何搭建一个由多个专业化 Agent 组成的&#34;AI团队&#34;。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-12/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-12/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-12/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-12/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 12 期 | Agent 协作：多 Agent 通信与任务委派 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="探索 Hermes 的 Agent-to-Agent 通信协议，如何搭建一个由多个专业化 Agent 组成的&#34;AI团队&#34;。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-12/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 12 期 | Agent 协作：多 Agent 通信与任务委派 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="探索 Hermes 的 Agent-to-Agent 通信协议，如何搭建一个由多个专业化 Agent 组成的&#34;AI团队&#34;。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-12/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-12/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 12 期 | Agent 协作：多 Agent 通信与任务委派</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 12 期 | Agent 协作：多 Agent 通信与任务委派"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 12 期 | Agent 协作：多 Agent 通信与任务委派</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><p>好的，这是为 Hermes Agent 教程撰写的第 12 期文章。</p>
+<hr>
+<p><strong>副标题：探索 Hermes 的 Agent-to-Agent 通信协议，如何搭建一个由多个专业化 Agent 组成的"AI团队"</strong></p>
+<h2>学习目标</h2>
+<p>在本期课程中，你将深入学习 Hermes Agent 框架中最激动人心的功能之一：多 Agent 协作。完成本章后，你将能够：</p>
+<ol>
+<li><strong>理解多 Agent 协作的必要性</strong>：明白为什么将复杂任务分解并委派给多个专业化 Agent 是构建高级 AI 应用的关键。</li>
+<li><strong>掌握核心协作架构</strong>：深入了解 Hermes Agent 协作的三个核心组件：Agent Registry、HIACP 协议和内部消息总线。</li>
+<li><strong>配置并启动多个 Agent</strong>：学习如何为每个 Agent 配置唯一的身份和通信端点，并让它们在网络中互相发现。</li>
+<li><strong>实现任务的委派与响应</strong>：通过编写一个新的 Skill，实践如何在一个 Agent 中调用另一个 Agent 的能力，并处理返回结果。</li>
+<li><strong>构建并运行一个 "AI 团队"</strong>：亲手搭建一个由“项目经理”、“研究员”和“程序员”三个 Agent 组成的团队，协同完成一个复杂任务。</li>
+</ol>
+<hr>
+<h2>核心概念讲解</h2>
+<p>随着我们构建的 Agent 应用越来越复杂，我们很快会遇到“单一全能 Agent” (Monolithic Agent) 的瓶颈。一个试图精通所有领域的 Agent 往往在任何领域都无法达到专家水平。就像在人类世界中，我们依赖团队协作一样，AI Agent 的未来也必然走向群体智能和协作。</p>
+<p>Hermes Agent 框架为此提供了一套完整的 Agent-to-Agent (A2A) 通信与协作机制。其设计哲学借鉴了成熟的软件工程概念，如微服务架构 (Microservices Architecture) 和演员模型 (Actor Model)。</p>
+<h3>The "AI Team" Paradigm: AI 团队范式</h3>
+<p>想象一下，你要完成一个任务：“调研最新的 AI 技术‘Transformer’，编写一个简单的代码示例，并总结成一篇技术博客。”</p>
+<p>一个单一的 Agent 处理这个任务的流程可能是：</p>
+<ol>
+<li>调用搜索工具，浏览大量网页。</li>
+<li>在内心（上下文）中消化和理解信息。</li>
+<li>切换到代码生成模式，编写代码。</li>
+<li>再次切换到写作模式，整理成文。</li>
+</ol>
+<p>这个过程效率低下且容易出错。上下文切换成本高，且 Agent 可能会在不同任务模式间“精神分裂”。</p>
+<p>而一个 "AI 团队" 的工作模式则完全不同：</p>
+<ul>
+<li><strong>项目经理 Agent (Project Manager Agent)</strong>：作为总入口，接收用户的高级指令。它不亲自执行具体任务，而是负责任务分解和协调。</li>
+<li><strong>研究员 Agent (Researcher Agent)</strong>：专门负责信息检索。它拥有强大的 <code>web_search</code>、<code>read_document</code> 等 Skills，并配置了专门的搜索引擎 API Key。它的核心使命是快速、准确地提供信息。</li>
+<li><strong>程序员 Agent (Coder Agent)</strong>：精通多种编程语言，拥有 <code>write_code</code>、<code>debug_code</code>、<code>run_test</code> 等 Skills。它接收明确的编程需求，并产出高质量的代码。</li>
+<li><strong>作家 Agent (Writer Agent)</strong>：擅长文本润色、格式化和风格转换。它负责将原始信息和代码整合成一篇通顺、专业的文章。</li>
+</ul>
+<p>这种模式的优势是显而易见的：</p>
+<ul>
+<li><strong>专业化 (Specialization)</strong>：每个 Agent 都可以使用针对其特定任务最优化的模型、Prompt 和 Skills。</li>
+<li><strong>可扩展性 (Scalability)</strong>：可以轻松地为团队增加新的专家 Agent，如“数据分析师 Agent”或“设计师 Agent”。</li>
+<li><strong>鲁棒性 (Robustness)</strong>：单个 Agent 的失败不会导致整个系统崩溃。项目经理 Agent 可以将任务重新委派给备用 Agent。</li>
+<li><strong>并发性 (Concurrency)</strong>：多个任务可以并行执行，例如，在研究员 Agent 搜集资料的同时，程序员 Agent 可以开始搭建代码框架。</li>
+</ul>
+<p>为了实现这一范式，Hermes 提供了以下三大核心组件。</p>
+<h3>1. Agent Registry (代理注册中心)</h3>
+<p>Agent 如何知道网络中存在哪些其他的 Agent，以及它们分别擅长什么？答案就是 Agent Registry。</p>
+<p>Agent Registry 是一个服务发现 (Service Discovery) 组件。当一个 Hermes Agent 启动时，如果开启了协作模式，它会向 Registry 注册自己的信息，通常包括：</p>
+<ul>
+<li><code>agent_id</code>: 全局唯一的 Agent 名称，如 <code>researcher-01</code>。</li>
+<li><code>address</code>: Agent 的网络地址和端口，如 <code>127.0.0.1:8001</code>。</li>
+<li><code>capabilities</code>: 该 Agent 拥有的技能列表，如 <code>["web_search", "summarize_text"]</code>。这使得其他 Agent 可以根据能力来查找服务。</li>
+</ul>
+<p>当一个 Agent (如 PM Agent) 需要委派任务时，它会首先向 Registry 查询：“谁拥有 <code>web_search</code> 这个 Skill？” Registry 会返回所有匹配的 Agent 列表，PM Agent 就可以选择一个进行通信。</p>
+<p>在 Hermes 中，任何一个 Agent 都可以被配置为兼任 Registry 的角色，以简化部署。在生产环境中，则建议部署一个独立的 Registry 服务。</p>
+<h3>2. Hermes Inter-Agent Communication Protocol (HIACP)</h3>
+<p>一旦 Agent 发现了彼此，它们需要一种共同的语言来交流。这就是 HIACP 协议的作用。HIACP 是一种标准化的 JSON 消息格式，定义了 Agent 之间交互的结构和语义。它的设计灵感来源于经典的 FIPA-ACL (Agent Communication Language)。</p>
+<p>一个典型的 HIACP 消息结构如下：</p>
+<pre><code class="language-json">{
+  "protocol_version": "1.0",
+  "message_id": "uuid-1234-abcd-5678",
+  "conversation_id": "conv-xyz-987",
+  "sender_id": "pm-agent-main",
+  "receiver_id": "researcher-01",
+  "performative": "DELEGATE_TASK",
+  "content": {
+    "task_name": "research_topic",
+    "parameters": {
+      "topic": "What is the Transformer architecture in AI?",
+      "depth": "detailed"
+    }
+  },
+  "timestamp": "2023-10-27T10:00:00Z"
+}
+</code></pre>
+<p>关键字段解析：</p>
+<ul>
+<li><code>message_id</code>: 每条消息的唯一标识符。</li>
+<li><code>conversation_id</code>: 用于追踪一个完整的多步对话或任务流程。</li>
+<li><code>sender_id</code> / <code>receiver_id</code>: 发送者和接收者的 <code>agent_id</code>。</li>
+<li><code>performative</code>: <strong>消息的意图</strong>，这是 HIACP 的核心。常见的 <code>performative</code> 包括：<ul>
+<li><code>REQUEST</code>: 请求对方执行一个动作（通常是调用一个 Skill）。</li>
+<li><code>INFORM</code>: 发送一个陈述性事实或结果。</li>
+<li><code>QUERY_REF</code>: 查询某个信息。</li>
+<li><code>DELEGATE_TASK</code>: 将一个完整的子任务委派给对方。</li>
+<li><code>ACCEPT</code> / <code>REFUSE</code>: 同意或拒绝一个请求。</li>
+<li><code>FAILURE</code>: 通知任务执行失败。</li>
+</ul>
+</li>
+<li><code>content</code>: 消息的具体内容，其结构由任务本身决定。</li>
+</ul>
+<p>通过遵循 HIACP，Hermes 确保了不同开发者、甚至不同版本的 Agent 之间都能够进行可预测、可靠的通信。</p>
+<h3>3. 内部消息总线 (Internal Message Bus)</h3>
+<p>HIACP 定义了“说什么”，而消息总线则解决了“怎么说”的问题。它负责消息的可靠传输。Hermes 内置了一个基于 ZeroMQ 的轻量级异步消息总线。</p>
+<p>当你通过 Agent 的协作 API (如 <code>agent.collaborate.send(...)</code>) 发送一条 HIACP 消息时，实际上是将其推入到这个消息总线。总线会处理网络连接、消息序列化、超时和重试等底层细节，让 Skill 开发者可以专注于业务逻辑。</p>
+<p>这种解耦的设计意味着，即使目标 Agent 暂时离线，消息总线也可以在一定时间内缓存消息，待其上线后再次投递，极大地提高了系统的韧性。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>现在，让我们动手搭建一个由三个 Agent 组成的 "AI 团队"，来完成我们之前提到的任务：<strong>“请调研一下什么是 LangChain，并写一个简单的 Python 示例代码，最后整理成一篇报告。”</strong></p>
+<p>我们的团队成员：</p>
+<ol>
+<li><code>pm_agent</code>: 项目经理，用户入口，负责任务分解和协调。它将兼任 Agent Registry。</li>
+<li><code>research_agent</code>: 研究员，只负责调用 <code>web_search</code> Skill。</li>
+<li><code>coder_agent</code>: 程序员，只负责根据需求编写 Python 代码。</li>
+</ol>
+<h3>Step 1: 环境准备与目录结构</h3>
+<p>首先，创建我们的项目根目录和三个 Agent 的子目录。</p>
+<pre><code class="language-bash">mkdir hermes_ai_team
+cd hermes_ai_team
+
+mkdir pm_agent
+mkdir pm_agent/skills
+
+mkdir research_agent
+mkdir research_agent/skills
+
+mkdir coder_agent
+mkdir coder_agent/skills
+</code></pre>
+<h3>Step 2: Agent 配置</h3>
+<p>我们需要为每个 Agent 创建一个 <code>config.yml</code> 文件。</p>
+<p><strong>1. <code>pm_agent/config.yml</code></strong></p>
+<p>这个 Agent 是我们的核心，它将作为 Registry。</p>
+<pre><code class="language-yaml"># pm_agent/config.yml
+agent:
+  name: ProjectManagerAgent
+  description: The main agent that interacts with the user and delegates tasks.
+
+# 使用本地的 Ollama 模型作为大脑
+llm_provider:
+  default: ollama
+  ollama:
+    model: llama3:8b
+    api_base: http://localhost:11434
+
+# 开启协作模式
+collaboration:
+  enabled: true
+  agent_id: pm_agent_main  # 全局唯一的 ID
+  host: 0.0.0.0
+  port: 8000
+  # 将此 Agent 设置为 Registry 服务
+  registry:
+    enabled: true
+    host: 0.0.0.0
+    port: 8080 # Registry 服务的端口
+</code></pre>
+<p><strong>2. <code>research_agent/config.yml</code></strong></p>
+<p>这个 Agent 是一个客户端，它需要知道 Registry 在哪里。</p>
+<pre><code class="language-yaml"># research_agent/config.yml
+agent:
+  name: ResearcherAgent
+  description: A specialized agent for searching the web and summarizing information.
+
+llm_provider:
+  default: ollama
+  ollama:
+    model: llama3:8b
+    api_base: http://localhost:11434
+
+collaboration:
+  enabled: true
+  agent_id: researcher_01
+  host: 0.0.0.0
+  port: 8001 # 自身服务的端口
+  # 指向 PM Agent 提供的 Registry 服务
+  registry_url: http://127.0.0.1:8080 
+</code></pre>
+<p><strong>3. <code>coder_agent/config.yml</code></strong></p>
+<p>与 <code>research_agent</code> 类似，也指向同一个 Registry。</p>
+<pre><code class="language-yaml"># coder_agent/config.yml
+agent:
+  name: CoderAgent
+  description: A specialized agent for writing and explaining code snippets.
+
+llm_provider:
+  default: ollama
+  ollama:
+    model: llama3:8b
+    api_base: http://localhost:11434
+
+collaboration:
+  enabled: true
+  agent_id: coder_01
+  host: 0.0.0.0
+  port: 8002 # 自身服务的端口
+  registry_url: http://127.0.0.1:8080
+</code></pre>
+<h3>Step 3: 创建专业化 Skills</h3>
+<p>现在，我们为 <code>research_agent</code> 和 <code>coder_agent</code> 添加它们的专业技能。</p>
+<p><strong>1. <code>research_agent/skills/web_research.py</code></strong></p>
+<p>为了简化，我们这里用一个伪代码来模拟网络搜索。在真实场景中，你可以集成 Tavily, Serper 等搜索 API。</p>
+<pre><code class="language-python"># research_agent/skills/web_research.py
+from hermes_agent.skills import Skill
+
+class WebResearchSkill(Skill):
+    name = "web_research"
+    description = "Performs web research on a given topic and returns a summary."
+
+    def __init__(self, agent):
+        super().__init__(agent)
+
+    async def execute(self, topic: str) -&gt; str:
+        """
+        Simulates web research.
+        In a real-world scenario, this would use a search API.
+        """
+        self.agent.logger.info(f"Received research request for topic: {topic}")
+        if "langchain" in topic.lower():
+            return (
+                "LangChain is a framework for developing applications powered by "
+                "language models. It provides a standard interface for chains, "
+                "a plethora of integrations with other tools, and end-to-end chains "
+                "for common applications. Key components include Models, Prompts, "
+                "Indexes, Chains, and Agents."
+            )
+        return f"Sorry, I couldn't find information on {topic}."
+</code></pre>
+<p><strong>2. <code>coder_agent/skills/code_generator.py</code></strong></p>
+<p>这个 Skill 接收需求并生成代码。</p>
+<pre><code class="language-python"># coder_agent/skills/code_generator.py
+from hermes_agent.skills import Skill
+
+class CodeGeneratorSkill(Skill):
+    name = "generate_python_example"
+    description = "Generates a simple Python code example based on a description."
+
+    def __init__(self, agent):
+        super().__init__(agent)
+
+    async def execute(self, requirement: str) -&gt; str:
+        """
+        Simulates code generation.
+        In a real-world scenario, this would involve a call to an LLM with a specific prompt.
+        """
+        self.agent.logger.info(f"Received code generation request for: {requirement}")
+        if "langchain" in requirement.lower() and "hello world" in requirement.lower():
+            code = """
+# main.py
+from langchain_community.llms import Ollama
+from langchain_core.prompts import ChatPromptTemplate
+
+# Initialize the LLM
+llm = Ollama(model="llama3:8b")
+
+# Create a prompt template
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant."),
+    ("user", "{input}")
+])
+
+# Create a chain
+chain = prompt | llm 
+
+# Invoke the chain
+response = chain.invoke({"input": "Hello, LangChain!"})
+print(response)
+"""
+            return f"Here is a simple 'Hello World' example for LangChain:\n```python\n{code.strip()}\n```"
+        return "Sorry, I can't generate code for that requirement."
+</code></pre>
+<h3>Step 4: 编写核心委派 Skill</h3>
+<p>这是本次实战的核心。我们在 <code>pm_agent</code> 中创建一个 Skill，它将负责调用其他两个 Agent。</p>
+<p><strong><code>pm_agent/skills/research_and_code_coordinator.py</code></strong></p>
+<pre><code class="language-python"># pm_agent/skills/research_and_code_coordinator.py
+import asyncio
+from hermes_agent.skills import Skill
+from hermes_agent.collaboration import HIACPMessage, Performative
+
+class ResearchAndCodeCoordinatorSkill(Skill):
+    name = "coordinate_research_and_code"
+    description = (
+        "Coordinates research and coding tasks by delegating to specialized agents. "
+        "Use this for complex queries involving both information retrieval and code generation."
+    )
+
+    def __init__(self, agent):
+        super().__init__(agent)
+
+    async def execute(self, topic: str) -&gt; str:
+        self.agent.logger.info(f"Starting coordination for topic: {topic}")
+
+        # --- Step 1: Delegate research task ---
+        self.agent.logger.info("Finding a research agent...")
+        # Discover an agent that has the 'web_research' capability
+        # The collaboration module handles querying the registry
+        researcher_id = await self.agent.collaboration.discover_agent_by_skill("web_research")
+        
+        if not researcher_id:
+            return "Error: Could not find any agent with 'web_research' capability."
+        
+        self.agent.logger.info(f"Found researcher: {researcher_id}. Delegating research task...")
+        
+        # Construct the HIACP message
+        research_task = HIACPMessage(
+            receiver_id=researcher_id,
+            performative=Performative.REQUEST,
+            content={"skill": "web_research", "parameters": {"topic": f"What is {topic}?"}}
+        )
+        
+        # Send the message and wait for the response. The timeout is in seconds.
+        research_response = await self.agent.collaboration.send_and_wait(research_task, timeout=30)
+        
+        if not research_response or research_response.performative == Performative.FAILURE:
+            self.agent.logger.error("Research task failed or timed out.")
+            return "Error: The research task failed."
+        
+        research_summary = research_response.content.get("result")
+        self.agent.logger.info(f"Received research summary: {research_summary[:100]}...")
+
+        # --- Step 2: Delegate coding task ---
+        self.agent.logger.info("Finding a coder agent...")
+        coder_id = await self.agent.collaboration.discover_agent_by_skill("generate_python_example")
+
+        if not coder_id:
+            return "Error: Could not find any agent with 'generate_python_example' capability."
+            
+        self.agent.logger.info(f"Found coder: {coder_id}. Delegating coding task...")
+
+        coding_requirement = f"A simple 'hello world' style example for {topic}, based on this info: {research_summary}"
+        
+        code_task = HIACPMessage(
+            receiver_id=coder_id,
+            performative=Performative.REQUEST,
+            content={"skill": "generate_python_example", "parameters": {"requirement": coding_requirement}}
+        )
+        
+        code_response = await self.agent.collaboration.send_and_wait(code_task, timeout=30)
+        
+        if not code_response or code_response.performative == Performative.FAILURE:
+            self.agent.logger.error("Coding task failed or timed out.")
+            return "Error: The coding task failed."
+            
+        code_example = code_response.content.get("result")
+        self.agent.logger.info("Received code example.")
+
+        # --- Step 3: Synthesize the final report ---
+        self.agent.logger.info("Synthesizing the final report...")
+        final_prompt = f"""
+        You are a tech writer. Based on the following information, please generate a final report.
+        The report should include an introduction based on the research summary and a code section with the provided example.
+
+        Research Summary:
+        {research_summary}
+
+        Code Example:
+        {code_example}
+        """
+
+        # Use the agent's own LLM to generate the final output
+        final_report = await self.agent.llm.invoke(final_prompt)
+        
+        return final_report
+</code></pre>
+<h3>Step 5: 启动并测试 "AI 团队"</h3>
+<p>现在，激动人心的时刻到了。我们需要打开 <strong>三个</strong> 终端窗口。</p>
+<p><strong>终端 1: 启动 PM Agent (兼 Registry)</strong></p>
+<pre><code class="language-bash">hermes start --config hermes_ai_team/pm_agent/config.yml
+</code></pre>
+<p>你会看到日志显示 <code>ProjectManagerAgent</code> 已启动，并且 Registry 服务正在 <code>0.0.0.0:8080</code> 上监听。</p>
+<p><strong>终端 2: 启动 Researcher Agent</strong></p>
+<pre><code class="language-bash">hermes start --config hermes_ai_team/research_agent/config.yml
+</code></pre>
+<p>在 <code>pm_agent</code> 的日志中，你应该能看到一条类似 <code>[Registry] Agent researcher_01 registered</code> 的消息。</p>
+<p><strong>终端 3: 启动 Coder Agent</strong></p>
+<pre><code class="language-bash">hermes start --config hermes_ai_team/coder_agent/config.yml
+</code></pre>
+<p>同样，<code>pm_agent</code> 的日志中会显示 <code>[Registry] Agent coder_01 registered</code>。</p>
+<p><strong>终端 4: 与 PM Agent 交互</strong></p>
+<p>现在我们的 AI 团队已经准备就绪。打开第四个终端，使用 Hermes CLI 与 <code>pm_agent</code> 对话。</p>
+<pre><code class="language-bash"># PM Agent 运行在 8000 端口
+hermes chat --port 8000
+</code></pre>
+<p>进入聊天界面后，输入我们的任务指令：</p>
+<pre><code>&gt; 请调研一下什么是 LangChain，并写一个简单的 Python 示例代码，最后整理成一篇报告。
+</code></pre>
+<p>现在，观察所有三个 Agent 的终端日志。你会看到一个精彩的协作流程：</p>
+<ol>
+<li><p><strong>PM Agent 日志</strong>:</p>
+<ul>
+<li><code>INFO: Starting coordination for topic: LangChain</code></li>
+<li><code>INFO: Finding a research agent...</code></li>
+<li><code>INFO: Found researcher: researcher_01. Delegating research task...</code></li>
+<li><code>INFO: Received research summary: LangChain is a framework...</code></li>
+<li><code>INFO: Finding a coder agent...</code></li>
+<li><code>INFO: Found coder: coder_01. Delegating coding task...</code></li>
+<li><code>INFO: Received code example.</code></li>
+<li><code>INFO: Synthesizing the final report...</code></li>
+</ul>
+</li>
+<li><p><strong>Researcher Agent 日志</strong>:</p>
+<ul>
+<li><code>INFO: Received research request for topic: What is LangChain?</code></li>
+<li>(日志显示任务完成并返回结果)</li>
+</ul>
+</li>
+<li><p><strong>Coder Agent 日志</strong>:</p>
+<ul>
+<li><code>INFO: Received code generation request for: A simple 'hello world' style example for LangChain...</code></li>
+<li>(日志显示任务完成并返回结果)</li>
+</ul>
+</li>
+</ol>
+<p>最终，<code>pm_agent</code> 会将整合后的完整报告返回给你，内容类似：</p>
+<pre><code>当然，这是关于 LangChain 的调研报告和代码示例。
+
+### 简介
+
+LangChain 是一个用于开发由语言模型驱动的应用程序的框架。它为链（Chains）提供了一个标准接口，与各种工具有大量的集成，并为常见应用提供了端到端的链。其核心组件包括模型（Models）、提示（Prompts）、索引（Indexes）、链（Chains）和代理（Agents）。
+
+### Python 代码示例
+
+这是一个使用 LangChain 和 Ollama 的简单“Hello World”示例：
+
+```python
+# main.py
+from langchain_community.llms import Ollama
+from langchain_core.prompts import ChatPromptTemplate
+
+# Initialize the LLM
+llm = Ollama(model="llama3:8b")
+
+# Create a prompt template
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant."),
+    ("user", "{input}")
+])
+
+# Create a chain
+chain = prompt | llm 
+
+# Invoke the chain
+response = chain.invoke({"input": "Hello, LangChain!"})
+print(response)
+</code></pre>
+<pre><code>
+恭喜！你已成功搭建并指挥了一个由多个专业化 Agent 组成的 AI 团队！
+
+---
+
+## 涉及命令
+
+*   `mkdir &lt;directory_name&gt;`: 创建新目录。
+*   `hermes start --config &lt;path_to_config.yml&gt;`: 根据指定的配置文件启动一个 Hermes Agent 实例。
+*   `hermes chat --port &lt;port_number&gt;`: 通过命令行与在指定端口运行的 Hermes Agent 进行交互。
+
+---
+
+##
+</code></pre>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 11 期 | 自定义 Persona：打造专属领域 Agent</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 13 期 | 知识库构建：RAG 与长期文档管理</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

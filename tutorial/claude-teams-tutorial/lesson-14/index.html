@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线 — 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 — AgentUpdate.ai</title><meta name="description" content="掌握 .agents/workflows 规范，定制功能开发、Bug 修复及会话归档的自动化流程。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/claude-teams-tutorial/lesson-14/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-teams-tutorial/lesson-14/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-teams-tutorial/lesson-14/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-teams-tutorial/lesson-14/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线 — 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 — AgentUpdate.ai"><meta property="og:description" content="掌握 .agents/workflows 规范，定制功能开发、Bug 修复及会话归档的自动化流程。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/claude-teams-tutorial/lesson-14/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线 — 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 — AgentUpdate.ai"><meta name="twitter:description" content="掌握 .agents/workflows 规范，定制功能开发、Bug 修复及会话归档的自动化流程。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/claude-teams-tutorial/lesson-14/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/claude-teams-tutorial/lesson-14/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-01/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 项目背景与双模式需求概览 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-02/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 多 Agent 并行开发架构详解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-03/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | 开发环境搭建：tmux 与 Claude 协作系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-04/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Phase 0: 项目初始化与核心需求分析 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-05/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | CLAUDE.md：制定多 Agent 协作的项目宪法 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-06/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | 规划先行：基于文件的 Task 进度体系 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-07/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Teams 初始化与任务分配 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-08/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | 实战：子 Agent 的召唤、授权与权限避坑 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-09/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | Phase A: UI 与样式的并行开发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | Phase A: 计算引擎的并行开发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | Phase B: UI 与逻辑的集成构建 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Phase C: 单元测试与 TDD 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | Phase D: 浏览器集成测试与无障碍 (a11y) 验收 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-14/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | 进阶：Plugin Hooks 扩展、性能基准与配置参考 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-16/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期：Q&amp;A (一) 多 Agent 架构与任务分配 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期：Q&amp;A (二) 权限控制与自动化排障 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期：Q&amp;A (三) 高级状态同步与宏观拓扑 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/claude-teams-tutorial/" data-astro-cid-ilhxcym7>🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"🤝 Claude Code Teams 实战：多 Agent 并行开发深度指南","item":"https://www.agentupdate.ai/tutorial/claude-teams-tutorial/"},{"@type":"ListItem","position":4,"name":"第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 14 期 | 工作流自动化：Workflow 定义与 Skill 流水线</h1> <div class="meta" data-astro-cid-vma7orrt> <span data-astro-cid-vma7orrt>⏱ Est. reading time: 17 min</span> <span data-astro-cid-vma7orrt>Updated on 4/29/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>14.1 Workflow 工作流定义</h2>
+<p>Workflows 定义在 <code>.agents/workflows/</code> 目录中，是 Skill 流水线的<strong>具体步骤描述</strong>。每个 workflow 文件是一个 markdown 文档，按阶段列出 agent 应遵循的操作序列。</p>
+<h3>14.1.1 Workflow 目录结构</h3>
+<pre><code>.agents/workflows/
+├── feature-development.md   # 新功能开发（8 阶段，27 步）
+├── bug-fix.md               # Bug 修复（4 阶段，13 步）
+├── plan-and-research.md     # 规划与调研（4 阶段，13 步）
+└── session-archive.md       # 会话归档（3 阶段，10 步）
+</code></pre>
+<h3>14.1.2 Workflow 加载机制</h3>
+<pre><code>Agent 执行 Skill（如 /planning-with-files）
+  → Skill 读取 .agents/workflows/ 下对应的 workflow 文件
+  → 将 workflow 步骤注入到 agent 上下文中
+  → Agent 按步骤执行
+</code></pre>
+<p>Workflow 文件不是自动加载的——它们通过 Skill 调用链间接使用。Agent 需要调用对应 Skill 才会读取 workflow 内容。</p>
+<h3>14.1.3 功能开发工作流（feature-development.md）</h3>
+<p>这是最完整的 workflow，覆盖从规划到归档的全过程：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart TD
+    S1["阶段 1: 规划<br>planning-with-files"] --&gt; S2["阶段 2: 设计<br>brainstorming → writing-plans"]
+    S2 --&gt; S3["阶段 3: 准备执行<br>plan 写入 task_plan.md"]
+    S3 --&gt; S4["阶段 4: TDD 执行<br>test-driven-development"]
+    S4 --&gt; S5{"测试通过?"}
+    S5 --&gt;|No| S6["阶段 5: 调试<br>systematic-debugging"]
+    S6 --&gt; S4
+    S5 --&gt;|Yes| S7["阶段 6: 验证<br>verification-before-completion"]
+    S7 --&gt; S8["阶段 7: 审查<br>requesting-code-review"]
+    S8 --&gt; S9["阶段 8: 归档<br>更新所有 plan 文件"]
+
+    style S4 fill:#c8e6c9
+    style S6 fill:#ffcdd2
+    style S7 fill:#bbdefb</pre></div><p><strong>27 步详解：</strong></p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>步骤</th>
+<th>使用的 Skill</th>
+<th>产出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. 规划</td>
+<td>1-5</td>
+<td><code>planning-with-files</code></td>
+<td>task_plan.md, findings.md</td>
+</tr>
+<tr>
+<td>2. 设计</td>
+<td>6-9</td>
+<td><code>brainstorming</code> → <code>writing-plans</code></td>
+<td>设计 spec + 分阶段计划</td>
+</tr>
+<tr>
+<td>3. 准备</td>
+<td>10-12</td>
+<td><code>planning-with-files</code></td>
+<td>计划写入 task_plan.md</td>
+</tr>
+<tr>
+<td>4. TDD</td>
+<td>13-17</td>
+<td><code>test-driven-development</code></td>
+<td>测试 + 实现 + 重构</td>
+</tr>
+<tr>
+<td>5. 调试</td>
+<td>18-19</td>
+<td><code>systematic-debugging</code></td>
+<td>bugs.md 记录</td>
+</tr>
+<tr>
+<td>6. 验证</td>
+<td>20-23</td>
+<td><code>verification-before-completion</code></td>
+<td>progress.md 证据</td>
+</tr>
+<tr>
+<td>7. 审查</td>
+<td>24-25</td>
+<td><code>requesting-code-review</code></td>
+<td>代码审查反馈</td>
+</tr>
+<tr>
+<td>8. 归档</td>
+<td>26-27</td>
+<td><code>session-archive</code></td>
+<td>所有文件最终状态</td>
+</tr>
+</tbody></table>
+<h3>14.1.4 Bug 修复工作流（bug-fix.md）</h3>
+<pre><code class="language-markdown"># Bug 修复工作流
+
+## 阶段 1：诊断
+1. 使用 planning-with-files
+2. 恢复 task_plan.md、findings.md、progress.md、bugs.md
+3. 使用 systematic-debugging
+4. 在 bugs.md 中记录症状、可能根因和复现路径
+
+## 阶段 2：复现与修复
+5. 使用 test-driven-development
+6. 先创建或运行一个失败的复现检查
+7. 实现最小修复
+
+## 阶段 3：回归验证
+8. 重新运行目标检查
+9. 运行相关回归检查
+10. 使用 verification-before-completion
+
+## 阶段 4：归档
+11. 在 bugs.md 中更新修复和时间戳
+12. 在 progress.md 中更新修复摘要
+13. 在 task_plan.md 中更新相关任务状态
+</code></pre>
+<h3>14.1.5 规划与调研工作流（plan-and-research.md）</h3>
+<pre><code class="language-markdown"># 规划与调研工作流
+
+## 阶段 1：计划文件
+1. 使用 planning-with-files
+2. 恢复或创建根目录计划文件
+3. 在 task_plan.md 中记录当前问题定义
+
+## 阶段 2：发现
+4. 阅读 requirement.md
+5. 探索本地文件、参考材料和当前约束
+6. 在 findings.md 中记录发现、风险与开放问题
+
+## 阶段 3：设计
+7. 使用 brainstorming
+8. 明确范围、权衡、成功标准和接口边界
+9. 产出设计 spec
+
+## 阶段 4：实施计划
+10. 使用 writing-plans
+11. 将 spec 转为分阶段实现计划
+12. 使用 planning-with-files 写入 task_plan.md
+13. 在 progress.md 中记录下一步动作
+</code></pre>
+<h3>14.1.6 会话归档工作流（session-archive.md）</h3>
+<pre><code class="language-markdown"># 会话归档工作流
+
+## 阶段 1：文档归档
+1. 检查 task_plan.md：已完成 [x]、进行中 [/]、阻塞 [!]
+2. 更新 progress.md：追加本次会话摘要
+3. 如有新发现更新 findings.md
+4. 如有新失败更新 bugs.md
+
+## 阶段 2：验证
+5. 确认最新验证证据已写入 progress.md
+6. 确认下一活动阶段在 task_plan.md 中可见
+7. 确认未解决风险对下一次会话可见
+
+## 阶段 3：交接
+8. 总结本轮完成了什么
+9. 总结还剩下什么
+10. 如需最终集成，按 CLAUDE.md 中 Git 规则处理
+</code></pre>
+<h3>14.1.7 如何创建自定义 Workflow</h3>
+<pre><code class="language-bash"># 1. 创建目录
+mkdir -p .agents/workflows
+
+# 2. 创建 workflow 文件
+cat &gt; .agents/workflows/feature-development.md &lt;&lt; 'EOF'
+# 功能开发工作流
+
+## 阶段 1：规划
+1. 使用 planning-with-files
+2. 恢复或创建计划文件
+...
+
+## 阶段 2：设计
+...
+EOF
+
+# 3. 在 CLAUDE.md 中引用
+echo "## Skill 使用规则" &gt;&gt; CLAUDE.md
+echo "功能开发使用 feature-development workflow" &gt;&gt; CLAUDE.md
+</code></pre>
+<p><strong>Workflow 设计原则：</strong></p>
+<ol>
+<li><strong>每步一个明确动作</strong> — "使用 X skill" 或 "更新 Y 文件"</li>
+<li><strong>有明确的产出</strong> — 每个阶段结束时有可验证的输出</li>
+<li><strong>步骤编号</strong> — 方便 agent 跟踪进度</li>
+<li><strong>引用 Skill 名</strong> — agent 知道何时调用哪个 Skill</li>
+<li><strong>引用文件名</strong> — 明确写入哪个文件</li>
+</ol>
+<hr>
+<h2>14.2 Skill 流水线</h2>
+<p>Skill 是 Claude Code 的<strong>可复用指令模板</strong>。每个 Skill 定义一个特定的工作方法（如 TDD、调试、规划），通过 <code>/skill-name</code> 调用。</p>
+<h3>14.2.1 本项目使用的 Skill 全景</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart LR
+    subgraph "规划阶段"
+        PWF[planning-with-files]
+        BS[brainstorming]
+        WP[writing-plans]
+    end
+    
+    subgraph "执行阶段"
+        TDD[test-driven-development]
+        SD[systematic-debugging]
+    end
+    
+    subgraph "交付阶段"
+        VBC[verification-before-completion]
+        RCR[requesting-code-review]
+        FDB[finishing-a-development-branch]
+    end
+    
+    subgraph "并行/委派"
+        DPA[dispatching-parallel-agents]
+        SDD[subagent-driven-development]
+        EP[executing-plans]
+    end
+    
+    subgraph "Plugin Skill"
+        MS[mem-search]
+        KA[knowledge-agent]
+        SE[smart-explore]
+        CV[caveman]
+    end
+    
+    PWF --&gt; BS --&gt; WP --&gt; TDD --&gt; SD --&gt; VBC --&gt; RCR --&gt; FDB
+    
+    style PWF fill:#e1f5fe
+    style TDD fill:#c8e6c9
+    style VBC fill:#fff9c4
+    style MS fill:#f3e5f5</pre></div><h3>14.2.2 核心 Skill 详解</h3>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>用途</th>
+<th>调用方式</th>
+<th>Workflow 关联</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>planning-with-files</code></td>
+<td>用文件追踪计划进度</td>
+<td><code>/planning-with-files</code></td>
+<td>所有 workflow 的阶段 1</td>
+</tr>
+<tr>
+<td><code>brainstorming</code></td>
+<td>探索方案、产出设计 spec</td>
+<td><code>/brainstorming</code></td>
+<td>feature-development 阶段 2</td>
+</tr>
+<tr>
+<td><code>writing-plans</code></td>
+<td>spec → 分阶段计划</td>
+<td><code>/writing-plans</code></td>
+<td>feature-development 阶段 2</td>
+</tr>
+<tr>
+<td><code>test-driven-development</code></td>
+<td>RED→GREEN→REFACTOR 循环</td>
+<td><code>/test-driven-development</code></td>
+<td>feature-development 阶段 4</td>
+</tr>
+<tr>
+<td><code>systematic-debugging</code></td>
+<td>系统化调试（不盲目重试）</td>
+<td><code>/systematic-debugging</code></td>
+<td>feature-development 阶段 5</td>
+</tr>
+<tr>
+<td><code>verification-before-completion</code></td>
+<td>完成前验证</td>
+<td><code>/verification-before-completion</code></td>
+<td>feature-development 阶段 6</td>
+</tr>
+<tr>
+<td><code>requesting-code-review</code></td>
+<td>请求代码审查</td>
+<td><code>/requesting-code-review</code></td>
+<td>feature-development 阶段 7</td>
+</tr>
+<tr>
+<td><code>dispatching-parallel-agents</code></td>
+<td>并行分发任务给多个 agent</td>
+<td><code>/dispatching-parallel-agents</code></td>
+<td>Teams 并行场景</td>
+</tr>
+<tr>
+<td><code>subagent-driven-development</code></td>
+<td>委派实现给子 agent</td>
+<td><code>/subagent-driven-development</code></td>
+<td>Teams 分工场景</td>
+</tr>
+<tr>
+<td><code>executing-plans</code></td>
+<td>按 plan 文件执行</td>
+<td><code>/executing-plans</code></td>
+<td>已有 plan 的执行</td>
+</tr>
+<tr>
+<td><code>finishing-a-development-branch</code></td>
+<td>完成集成分支</td>
+<td><code>/finishing-a-development-branch</code></td>
+<td>最终合并</td>
+</tr>
+</tbody></table>
+<h3>14.2.3 Skill 的分类来源</h3>
+<pre><code>Skill 来源：
+├── User Skills（~/.claude/skills/）
+│   ├── planning-with-files
+│   ├── brainstorming
+│   ├── writing-plans
+│   ├── test-driven-development
+│   ├── systematic-debugging
+│   ├── verification-before-completion
+│   ├── requesting-code-review
+│   ├── dispatching-parallel-agents
+│   ├── subagent-driven-development
+│   ├── executing-plans
+│   └── finishing-a-development-branch
+│
+└── Plugin Skills
+    ├── caveman（caveman plugin）
+    │   ├── /caveman
+    │   ├── /caveman-commit
+    │   └── /caveman-review
+    └── claude-mem（claude-mem plugin）
+        ├── /mem-search
+        ├── /knowledge-agent
+        └── /smart-explore
+</code></pre>
+<h3>14.2.4 Skill 在 Teams 模式下的限制</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">flowchart TD
+    TL["team-lead 会话"] --&gt;|"✅ 可调用所有 Skill"| SK["Skill 执行"]
+    AG["子 Agent<br>(ui-dev / logic-dev / qa)"] --&gt;|"❌ 建议不调用"| X["权限弹窗 → Agent 停止"]
+    
+    TL --&gt;|"替代方案"| P["在 prompt 中<br>内联 Skill 的规则"]
+    P --&gt; AG2["Agent 直接按规则工作<br>不调用 Skill 工具"]
+    
+    style X fill:#ffcdd2
+    style P fill:#c8e6c9
+    style AG2 fill:#c8e6c9</pre></div><p><strong>为什么子 Agent 不应调用 Skill：</strong></p>
+<ol>
+<li><strong>Skill 是工具调用</strong> — 需要在 settings.json allow 列表中</li>
+<li><strong>Skill 内部有嵌套操作</strong> — bypassPermissions 不覆盖嵌套层</li>
+<li><strong>Skill 执行消耗上下文</strong> — 子 agent 的 200k token 窗口会被 Skill 输出占满</li>
+<li><strong>不必要</strong> — 规划工作在 team-lead 完成，子 agent 只需执行</li>
+</ol>
+<p><strong>替代方案：把 Skill 规则内联到 Agent prompt</strong></p>
+<pre><code class="language-javascript">Agent({
+  name: "logic-dev",
+  prompt: `你是 logic-dev。
+
+// 直接把 TDD 规则写在 prompt 里，替代 /test-driven-development Skill
+// 替代 /systematic-debugging Skill
+工作规则：
+1. 先写失败测试（RED）
+2. 实现最小通过代码（GREEN）
+3. 重构（REFACTOR）
+4. 测试失败时：诊断→修复→重跑，不盲目重试
+5. 最多 5 次自修复，超过后停止
+
+...`
+})
+</code></pre>
+<h3>14.2.5 Skill 与 Workflow 的关系</h3>
+<pre><code>Skill（工具）    →    Workflow（步骤指南）    →    文件（状态持久化）
+
+/brainstorming         feature-development.md       findings.md
+/planning-with-files   的第 6-8 步                  task_plan.md
+                                                  progress.md
+</code></pre>
+<ul>
+<li><strong>Skill</strong> 是可调用的工具（<code>/skill-name</code>），定义<strong>做什么</strong></li>
+<li><strong>Workflow</strong> 是步骤指南（<code>.agents/workflows/*.md</code>），定义<strong>按什么顺序做</strong></li>
+<li><strong>CLAUDE.md</strong> 是项目宪法，定义<strong>规则和边界</strong></li>
+<li><strong>规划文件</strong>（task_plan.md 等）是<strong>持久化状态</strong></li>
+</ul>
+<h3>14.2.6 在 CLAUDE.md 中引用 Skill 和 Workflow</h3>
+<p>CLAUDE.md 中的 <code>Skill 使用规则</code> 章节告诉 agent：</p>
+<ol>
+<li><strong>哪些 Skill 必须用</strong>（<code>planning-with-files</code> 开始复杂任务）</li>
+<li><strong>按什么顺序用</strong>（流水线：brainstorming → writing-plans → TDD → verification）</li>
+<li><strong>哪些不能跳</strong>（设计不跳 brainstorming，完成不跳 verification）</li>
+<li><strong>失败时用什么</strong>（测试失败用 systematic-debugging，不随意重试）</li>
+</ol>
+<p>这套规则确保了即使在 Teams 并行开发中，每个 agent 都遵循统一的工作方法论。</p>
+<hr>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-13/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 13 期 | Phase D: 浏览器集成测试与无障碍 (a11y) 验收</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/claude-teams-tutorial/lesson-15/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 15 期 | 进阶：Plugin Hooks 扩展、性能基准与配置参考</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

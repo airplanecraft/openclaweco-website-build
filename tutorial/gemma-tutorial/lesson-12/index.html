@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 — Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration — AgentUpdate.ai</title><meta name="description" content="第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-12/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-12/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/gemma-tutorial/lesson-12/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-12/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta property="og:description" content="第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/gemma-tutorial/lesson-12/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 — Google Gemma Masterclass: Deployment, Fine-Tuning &#38; Agent Integration — AgentUpdate.ai"><meta name="twitter:description" content="第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/gemma-tutorial/lesson-12/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/gemma-tutorial/lesson-12/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 认识 Gemma：Google 开源模型家族全景 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 本地极速部署：Ollama + Gemma 一键启动 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | Hugging Face Transformers 推理实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Google Cloud Vertex AI 云端部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 多模态能力解锁：图片理解与视觉问答 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | 128K 超长上下文实战：文档分析与代码审查 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-7/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Function Calling 与结构化输出 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | LoRA 微调入门：用 PEFT 定制你的专属 Gemma </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | QLoRA 4-bit 量化微调：消费级显卡也能训 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | JAX/Flax 原生微调（官方推荐路线） </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | 微调效果评估与模型导出 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-12/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | Gemma + LangChain/LlamaIndex：RAG 应用构建 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | Gemma + vLLM：高性能推理服务部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | 终局实战：构建你的私有 AI 助手产品 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/gemma-tutorial/" data-astro-cid-ilhxcym7>Google Gemma Masterclass: Deployment, Fine-Tuning &amp; Agent Integration</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Google Gemma Masterclass: Deployment, Fine-Tuning & Agent Integration","item":"https://www.agentupdate.ai/tutorial/gemma-tutorial/"},{"@type":"ListItem","position":4,"name":"第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 12 期 | Gemma + Hermes Agent：本地开源 Agent 全栈</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><p>好的，作为一名资深技术教育内容作者，我将为您撰写这期关于 Gemma 与 Hermes Agent 的完整 Markdown 教学文章。</p>
+<hr>
+<p>副标题：将微调后的 Gemma 接入 Hermes Agent 作为后端 LLM，实现完全本地化、零 API 费用的 AI Agent 体验。</p>
+<h2>🎯 学习目标</h2>
+<ul>
+<li>理解本地开源 AI Agent 的核心价值、优势及其在实际应用中的潜力。</li>
+<li>掌握 Hermes Agent 框架的基本架构，包括其 LLM 连接器、工具注册与任务编排机制。</li>
+<li>学习如何通过 Ollama 将 Google Gemma 模型部署到本地，并将其无缝集成到 Hermes Agent 作为后端语言模型。</li>
+<li>实践构建一个端到端、完全本地化、零 API 费用的 AI Agent 应用，能够执行多步骤、需要工具协作的任务。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>### 12.1 本地 AI Agent 的崛起与优势</h3>
+<p>随着大型语言模型（LLM）能力的飞速发展，AI Agent 已成为构建智能应用的关键范式。AI Agent 不仅仅是调用 LLM 进行一次性问答，它具备规划、反思、记忆和使用外部工具的能力，以实现更复杂、多步骤的目标。传统上，许多 Agent 框架依赖于云端 LLM 服务（如 OpenAI GPT 系列），这带来了几个挑战：</p>
+<ol>
+<li><strong>API 费用</strong>：每次与云端 LLM 交互都会产生费用，对于高频或大规模应用来说，成本可能迅速累积。</li>
+<li><strong>数据隐私</strong>：敏感数据传输到第三方云服务进行处理，可能面临隐私泄露的风险。</li>
+<li><strong>网络延迟与稳定性</strong>：依赖外部网络服务可能导致不稳定的性能和更高的延迟。</li>
+<li><strong>定制化限制</strong>：虽然可以通过 Prompt Engineering 进行定制，但无法直接控制 LLM 的底层行为或进行深度微调后的本地部署。</li>
+</ol>
+<p><strong>本地 AI Agent</strong> 旨在解决这些问题。通过在本地部署开源 LLM（如 Gemma），并结合本地 Agent 框架，我们可以实现：</p>
+<ul>
+<li><strong>零 API 费用</strong>：一旦模型部署，后续推理不再产生额外费用。</li>
+<li><strong>数据主权与隐私</strong>：所有数据处理均在本地进行，确保数据不离开您的控制环境。</li>
+<li><strong>低延迟与高稳定性</strong>：摆脱网络依赖，提供更快的响应速度和更稳定的服务。</li>
+<li><strong>深度定制化</strong>：能够将经过微调的私有模型接入 Agent，实现特定领域或业务需求的高精度任务。</li>
+</ul>
+<p>本地 AI Agent 的架构通常包含以下核心组件：</p>
+<ul>
+<li><strong>用户接口 (User Interface)</strong>：接收用户指令并展示 Agent 输出。</li>
+<li><strong>Agent 核心 (Agent Core)</strong>：负责任务规划、决策、反思和流程控制。</li>
+<li><strong>LLM 连接器 (LLM Connector)</strong>：与本地部署的 LLM 进行通信的接口。</li>
+<li><strong>本地 LLM (Local LLM)</strong>：在本地运行的大语言模型，负责理解、生成文本和推理。</li>
+<li><strong>工具注册与执行 (Tool Registry &amp; Executor)</strong>：管理可用的外部工具（如计算器、代码解释器、网络搜索、数据库查询等），并根据 Agent 的决策执行相应工具。</li>
+<li><strong>记忆模块 (Memory Module)</strong>：存储 Agent 的历史对话、观察结果和学习到的知识。</li>
+</ul>
+<p>以下是本地 AI Agent 的一个简化交互流程图：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[用户输入] --&gt; B(Agent 核心: 任务规划/决策)
+    B --&gt; C{需要 LLM 协助?}
+    C -- 是 --&gt; D[LLM 连接器]
+    D --&gt; E(本地 Gemma LLM)
+    E --&gt; B
+    C -- 否 --&gt; F{需要外部工具?}
+    F -- 是 --&gt; G[工具执行器]
+    G --&gt; H(外部工具: 搜索/计算/API等)
+    H --&gt; B
+    B --&gt; I(Agent 输出)
+    I --&gt; A</pre></div><h3>### 12.2 Google Gemma：本地大模型基石</h3>
+<p>Google DeepMind 推出的 Gemma 家族是开源 LLM 领域的里程碑。基于 Gemini 技术，Gemma 提供了从 1B 到 27B 等不同规模的模型，支持多模态（在 Gemma 2/3 中），拥有 128K 的超长上下文窗口，并且可以通过 LoRA/QLoRA 等技术进行高效微调。</p>
+<p><strong>为什么选择 Gemma 作为本地 Agent 的 LLM 基石？</strong></p>
+<ul>
+<li><strong>开源与免费</strong>：Gemma 完全开源，可在本地免费部署和使用，非常适合个人开发者和中小型企业。</li>
+<li><strong>性能优异</strong>：尽管是开源模型，Gemma 在多项基准测试中展现出与闭源模型相媲美的性能，尤其在推理、代码生成和多语言支持方面表现出色。</li>
+<li><strong>多模态能力</strong>：Gemma 2/3 版本支持图像-文本多模态，为构建更复杂的 Agent 应用提供了可能。</li>
+<li><strong>易于部署</strong>：Gemma 可通过 Ollama、Hugging Face Transformers 等多种方式轻松在本地部署，降低了技术门槛。</li>
+<li><strong>微调潜力</strong>：Gemma 对 LoRA/QLoRA 微调的良好支持，意味着我们可以训练出高度专业化、针对特定任务优化的 Agent LLM。</li>
+</ul>
+<p>在本期教程中，我们将使用 <a href="https://ollama.ai/">Ollama</a> 作为 Gemma 的本地部署平台。Ollama 简化了在本地运行各种开源模型的流程，提供了一个统一的 API 接口，非常适合与 Agent 框架集成。</p>
+<h3>### 12.3 Hermes Agent：本地 Agent 框架解析</h3>
+<p>Hermes Agent 是一个为本地化、模块化和可扩展性设计的开源 AI Agent 框架（<em>注：本教程中的 Hermes Agent 是一个概念性框架，旨在演示本地 Agent 的集成模式。其设计灵感来源于 LangChain、CrewAI 等主流 Agent 框架，并针对本地 LLM 集成进行了优化。</em>）。它的核心目标是让开发者能够轻松地将本地部署的 LLM（如 Gemma）与自定义工具结合，构建出功能强大的本地 Agent。</p>
+<p><strong>Hermes Agent 的核心组件：</strong></p>
+<ul>
+<li><strong><code>LLMConnector</code> 抽象层</strong>：Hermes Agent 不直接依赖于特定的 LLM 实现，而是通过 <code>LLMConnector</code> 接口与各种 LLM 后端进行通信。这使得我们可以轻松切换不同的本地 LLM（如 Gemma、Llama 3、Mistral 等），甚至是兼容 OpenAI API 的本地服务。</li>
+<li><strong><code>Tool</code> 注册与封装</strong>：Agent 的能力很大程度上取决于其能使用的工具。Hermes Agent 提供了简洁的 <code>Tool</code> 封装机制，允许开发者将任何 Python 函数或外部服务包装成 Agent 可调用的工具。每个工具都包含名称、描述和执行逻辑。</li>
+<li><strong><code>AgentCore</code> 编排引擎</strong>：这是 Agent 的“大脑”，负责：<ul>
+<li><strong>任务规划 (Planning)</strong>：根据用户输入和当前状态，制定实现目标的步骤。</li>
+<li><strong>工具选择 (Tool Selection)</strong>：决定在哪个步骤使用哪个工具。</li>
+<li><strong>推理 (Reasoning)</strong>：利用 LLM 的能力进行逻辑推理、理解上下文。</li>
+<li><strong>反思与纠错 (Reflection &amp; Correction)</strong>：根据工具执行结果调整计划。</li>
+<li><strong>记忆管理 (Memory Management)</strong>：维护对话历史和状态。</li>
+</ul>
+</li>
+<li><strong>Prompt 模板</strong>：Agent 与 LLM 的交互是基于精心设计的 Prompt 模板，通常采用 ReAct (Reasoning and Acting) 或 Chain-of-Thought (CoT) 模式，引导 LLM 思考并决定下一步动作。</li>
+</ul>
+<p>以下是 Hermes Agent 的内部工作流示意图：</p>
+<pre><code>+---------------------+
+|    User Query       |
++---------------------+
+          |
+          v
++---------------------+
+|    Hermes Agent     |
+|   (AgentCore)       |
++---------------------+
+| 1. 构建 LLM Prompt  | &lt;---+ (历史对话/工具描述)
+|    - 任务指令       |
+|    - 可用工具描述   |
+|    - 当前思考/观察  |
++---------------------+
+          |
+          v
++---------------------+
+|    LLM Connector    |
+|  (GemmaOllamaLLM)   |
++---------------------+
+          |
+          v
++---------------------+
+|     Gemma Model     |
+|  (本地 Ollama 服务) |
++---------------------+
+          |
+          v
++---------------------+
+|    LLM 输出解析     |
+| (识别 Thought, Action, Action Input, Final Answer) |
++---------------------+
+          |
+          v
++---------------------+
+| 2. 决策与执行       |
+|    - 若是 Final Answer: 返回结果 |
+|    - 若是 Action:      |
+|      - 查找对应工具   |
+|      - 执行工具       |
+|      - 获取 Observation |
+|      - 更新 Agent 状态 |
++---------------------+
+          |
+          v
++---------------------+
+|    Agent Output     |
++---------------------+
+</code></pre>
+<h3>### 12.4 Gemma + Hermes Agent：全栈集成原理</h3>
+<p>将 Gemma 与 Hermes Agent 集成的关键在于 <code>LLMConnector</code>。Ollama 在本地启动后，会提供一个 RESTful API 接口（默认端口 <code>11434</code>），允许外部程序通过 HTTP 请求与模型进行交互。Hermes Agent 的 <code>GemmaOllamaLLM</code> 连接器就是利用 Python 的 <code>ollama</code> 客户端库（或直接 <code>requests</code> 库）向这个 API 发送请求。</p>
+<p><strong>集成步骤概述：</strong></p>
+<ol>
+<li><strong>Ollama 服务启动</strong>：确保您的机器上安装并运行了 Ollama 服务。</li>
+<li><strong>拉取 Gemma 模型</strong>：使用 <code>ollama pull</code> 命令下载所需的 Gemma 模型。</li>
+<li><strong>Hermes <code>GemmaOllamaLLM</code> 实现</strong>：创建一个 Python 类，封装 <code>ollama.Client</code>，提供一个 <code>generate</code> 方法，接收 Prompt 并返回 Gemma 的响应。</li>
+<li><strong>工具定义</strong>：将 Agent 需要使用的功能（如网络搜索、计算、文件读写等）封装成 <code>Tool</code> 对象，包含名称、详细描述和执行函数。</li>
+<li><strong>Agent 编排</strong>：在 <code>AgentCore</code> 中，将 <code>GemmaOllamaLLM</code> 实例和 <code>Tool</code> 列表传入，并定义 Agent 的 Prompt 模板，使其能够理解何时调用工具、如何解析工具输出，并最终给出答案。</li>
+</ol>
+<p>通过这种方式，Hermes Agent 将 Gemma 作为一个强大的推理引擎，结合外部工具，实现了复杂的任务自动化。整个过程完全在本地完成，确保了数据安全和零成本运行。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>我们将通过一个具体的例子来演示如何搭建一个本地的 Gemma + Hermes Agent。这个 Agent 将具备：</p>
+<ol>
+<li><strong>通用知识问答能力</strong> (由 Gemma 提供)。</li>
+<li><strong>网络搜索能力</strong> (通过 <code>wikipedia</code> 库模拟，实际可替换为 Google Search API 或自定义爬虫)。</li>
+<li><strong>数学计算能力</strong> (通过 Python <code>eval</code> 函数实现)。</li>
+</ol>
+<h3>### 12.4.1 环境准备与 Gemma 本地部署</h3>
+<p>首先，确保您的系统满足运行 Ollama 和 Gemma 的基本要求（足够的 RAM 和 GPU，如果可用）。</p>
+<ol>
+<li><p><strong>安装 Ollama</strong>
+访问 <a href="https://ollama.ai/">Ollama 官方网站</a>，下载并安装适合您操作系统的版本。安装完成后，Ollama 服务会在后台自动运行。</p>
+</li>
+<li><p><strong>拉取 Gemma 模型</strong>
+打开终端或命令行，执行以下命令拉取 Gemma 7B 模型。如果您资源有限，可以选择 <code>gemma:2b</code>。</p>
+<pre><code class="language-bash">ollama pull gemma:7b
+# 或
+# ollama pull gemma:2b
+</code></pre>
+<p>等待模型下载完成。您可以通过 <code>ollama list</code> 查看已下载的模型。</p>
+</li>
+<li><p><strong>验证 Gemma 运行</strong>
+您可以在终端尝试与 Gemma 交互，确保其正常工作：</p>
+<pre><code class="language-bash">ollama run gemma:7b "Hello, Gemma! How are you?"
+</code></pre>
+<p>如果 Gemma 返回了响应，说明本地部署成功。</p>
+</li>
+<li><p><strong>创建项目目录并安装 Python 依赖</strong></p>
+<pre><code class="language-bash">mkdir hermes_gemma_agent
+cd hermes_gemma_agent
+python -m venv venv
+source venv/bin/activate # macOS/Linux
+# 或 venv\Scripts\activate # Windows
+
+pip install ollama wikipedia
+</code></pre>
+<p><code>ollama</code> 库用于与 Ollama 服务通信，<code>wikipedia</code> 库将作为我们的一个外部工具。</p>
+</li>
+</ol>
+<h3>### 12.4.2 Hermes Agent 框架搭建与配置</h3>
+<p>我们将创建几个 Python 文件来构建 Hermes Agent 的核心组件。</p>
+<p><strong>1. <code>llm_connector.py</code>：Gemma LLM 连接器</strong></p>
+<pre><code class="language-python"># llm_connector.py
+import ollama
+import json
+
+class GemmaOllamaLLM:
+    """
+    通过 Ollama 服务连接本地 Gemma 模型的 LLM 连接器。
+    """
+    def __init__(self, model_name: str = "gemma:7b", base_url: str = "http://localhost:11434"):
+        self.model_name = model_name
+        self.client = ollama.Client(host=base_url)
+        print(f"Initialized GemmaOllamaLLM with model: {self.model_name} at {base_url}")
+
+    def generate(self, prompt: str, temperature: float = 0.0, **kwargs) -&gt; str:
+        """
+        向 Gemma 模型发送 Prompt 并获取响应。
+        """
+        try:
+            # 使用 ollama.Client 的 generate 方法
+            # stream=False 表示一次性获取完整响应
+            response = self.client.generate(
+                model=self.model_name,
+                prompt=prompt,
+                stream=False,
+                options={
+                    "temperature": temperature,
+                    "num_gpu": -1 # 尝试使用所有可用GPU加速
+                },
+                **kwargs
+            )
+            return response['response'].strip()
+        except ollama.ResponseError as e:
+            print(f"Ollama Response Error: {e}")
+            return f"Error: Failed to get response from Gemma. {e}"
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            return f"Error: An unexpected error occurred. {e}"
+
+    def __call__(self, prompt: str, temperature: float = 0.0, **kwargs) -&gt; str:
+        return self.generate(prompt, temperature, **kwargs)
+
+if __name__ == "__main__":
+    # 简单的测试
+    gemma_llm = GemmaOllamaLLM(model_name="gemma:2b") # 可以用2b进行快速测试
+    test_prompt = "介绍一下 Python 语言。"
+    print(f"\n--- Testing GemmaOllamaLLM with prompt: '{test_prompt}' ---")
+    response = gemma_llm.generate(test_prompt)
+    print(response)
+
+    test_prompt_2 = "给我讲个笑话。"
+    print(f"\n--- Testing GemmaOllamaLLM with prompt: '{test_prompt_2}' ---")
+    response_2 = gemma_llm(test_prompt_2, temperature=0.0) # 使用 __call__ 方法
+    print(response_2)
+</code></pre>
+<p><strong>2. <code>tools.py</code>：Agent 可用的工具定义</strong></p>
+<pre><code class="language-python"># tools.py
+import wikipedia
+import math
+import re
+
+class Tool:
+    """
+    Agent 可调用的工具的抽象基类。
+    """
+    def __init__(self, name: str, description: str, func):
+        self.name = name
+        self.description = description
+        self.func = func
+
+    def run(self, *args, **kwargs):
+        """执行工具函数并返回结果。"""
+        try:
+            return self.func(*args, **kwargs)
+        except Exception as e:
+            return f"Error executing tool '{self.name}': {e}"
+
+# --- 具体工具实现 ---
+
+def search_wikipedia_func(query: str) -&gt; str:
+    """
+    使用 Wikipedia 进行搜索并返回摘要。
+    输入应为搜索查询字符串。
+    """
+    try:
+        # 尝试获取第一句摘要
+        summary = wikipedia.summary(query, sentences=2)
+        return f"Wikipedia search result for '{query}': {summary}"
+    except wikipedia.exceptions.PageError:
+        return f"No Wikipedia page found for '{query}'."
+    except wikipedia.exceptions.DisambiguationError as e:
+        return f"Wikipedia disambiguation error for '{query}'. Options: {e.options[:3]}..."
+    except Exception as e:
+        return f"An error occurred during Wikipedia search: {e}"
+
+def safe_calculator_func(expression: str) -&gt; str:
+    """
+    执行安全的数学表达式计算。
+    只允许数字、基本运算符、括号和常用数学函数。
+    """
+    # 限制允许的字符和函数，防止任意代码执行
+    allowed_chars = "0123456789.+-*/()% "
+    allowed_funcs = {"abs": abs, "round": round, "max": max, "min": min, "sum": sum,
+                     "sqrt": math.sqrt, "pow": math.pow, "log": math.log, "exp": math.exp}
+
+    # 检查表达式是否只包含允许的字符
+    if not all(c in allowed_chars or c.isalpha() for c in
+</code></pre>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-11/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 11 期 | 微调效果评估与模型导出</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/gemma-tutorial/lesson-13/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 13 期 | Gemma + LangChain/LlamaIndex：RAG 应用构建</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

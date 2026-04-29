@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai</title><meta name="description" content="动手搭建企业级知识库：Docker 部署 Qdrant，使用 n8n 构建自动化的文档加载→分块→嵌入→存储管道。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/17-indexing-pipeline/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/17-indexing-pipeline/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/17-indexing-pipeline/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/17-indexing-pipeline/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta property="og:description" content="动手搭建企业级知识库：Docker 部署 Qdrant，使用 n8n 构建自动化的文档加载→分块→嵌入→存储管道。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/n8n-tutorial/17-indexing-pipeline/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta name="twitter:description" content="动手搭建企业级知识库：Docker 部署 Qdrant，使用 n8n 构建自动化的文档加载→分块→嵌入→存储管道。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/n8n-tutorial/17-indexing-pipeline/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/n8n-tutorial/17-indexing-pipeline/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 n8n 全攻略：从自动化流到多智能体编排 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/01-introduction/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 1 期：为什么是 n8n？2026 自动化与 AI Agent 新纪元 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/02-basic-concepts/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 2 期：基础概念剖析 — 节点、触发器与线缆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/03-docker-deploy/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 3 期：环境部署 — Docker Compose 本地部署与安全配置 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/04-data-heartbeat/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 4 期：数据的心跳 — 深度搞懂 JSON Items 与隐式循环 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/05-webhook-telegram/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 5 期：首个实战流 — Webhook 触发与 Telegram 机器人双向交互 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/06-branching-loops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 6 期：分支与循环控制 — If、Switch 与 Loop 节点大解剖 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/07-data-tables/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 7 期：告别外挂数据库 — 内置 Data Tables 的 CRUD 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/08-http-request/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 8 期：与世界通信 — HTTP Request 节点的认证、轮询与并发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/09-code-node/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 9 期：代码是最终兵器 — Code 节点编写 JS/Python </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/10-utility-nodes/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期：内置工具锦囊 — Merge、Set、Edit Image 节点大串烧 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/11-llm-credentials/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期：唤醒模型 — 配置大模型凭证与基础 LLM 节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/12-chat-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/13-memory/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期：赋予长期记忆 — Window Buffer Memory 与对话状态持久化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/14-agent-tools/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期：赋予数字之手 — 给 Agent 接入 Tools 工具集 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/15-prompt-engineering/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期：意图识别密码 — System Prompt 与 Tool Description 高级调优 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/16-rag-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期：知识即力量 — RAG 架构原理与 Embedding 基础 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/17-indexing-pipeline/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/18-rag-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期：知识变武器 — Vector Store Tool 与 RAG Agent 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/19-advanced-rag/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期：检索精进 — Hybrid Search、Re-Ranking 与多角度检索 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/20-rag-ops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期：知识库运维 — 增量更新、过期清理与检索质量监控 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/21-mcp-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 21 期：无限工具箱 — MCP 协议原理与 n8n 集成架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/22-mcp-client/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 22 期：即插即用 — MCP Client Tool 实战连接 GitHub 与文件系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/23-mcp-server/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 23 期：角色反转 — 把 n8n 工作流暴露为 MCP Server </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/24-mcp-orchestration/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 24 期：MCP 服务编排 — 多 Server 管理、路由与健康检查 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/25-mcp-workspace/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 25 期：MCP 综合实战 — 构建 AI 驱动的全能工作台 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/26-error-handling/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 26 期：永不崩溃 — 错误处理、重试与告警体系 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/27-sub-workflows/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 27 期：模块化构建 — Sub-Workflow 子工作流与 Workflow Tool </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/28-version-control/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 28 期：Git 协作 — 工作流版本控制与多环境部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/29-multi-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 29 期：群体智慧 — 多 Agent 协作与 Supervisor 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/30-grand-finale/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 30 期：大结局 — 企业级 AI Agent 平台全架构参考 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/n8n-tutorial/" data-astro-cid-ilhxcym7>n8n 全攻略：从自动化流到多智能体编排</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"n8n 全攻略：从自动化流到多智能体编排","item":"https://www.agentupdate.ai/tutorial/n8n-tutorial/"},{"@type":"ListItem","position":4,"name":"第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道</h1> <div class="meta" data-astro-cid-vma7orrt> <span data-astro-cid-vma7orrt>⏱ Est. reading time: 11 min</span> <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>本期目标</h2>
+<p>搭建一个完整的文档索引管道，将 PDF/Markdown 文件灌入 Qdrant 向量数据库。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph LR
+    subgraph "输入源"
+        PDF[📄 PDF 文件]
+        MD[📝 Markdown]
+        CSV[📊 CSV]
+    end
+    
+    subgraph "n8n 索引工作流"
+        Load[📥 文件加载] --&gt; Split[✂️ 分块]
+        Split --&gt; Embed[🧮 Embedding]
+        Embed --&gt; Insert[💾 写入 Qdrant]
+    end
+    
+    PDF &amp; MD &amp; CSV --&gt; Load
+    
+    style Insert fill:#22c55e,stroke:#16a34a,color:#fff</pre></div><hr>
+<h2>1. Docker 部署 Qdrant</h2>
+<pre><code class="language-yaml"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 在 n8n 的 docker-compose.yml 中添加 Qdrant 服务
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+services:
+  # ... 已有的 n8n 和 postgres 配置 ...
+
+  # ── Qdrant 向量数据库 ──────────────────────────
+  qdrant:
+    image: qdrant/qdrant:latest      # 官方镜像
+    container_name: n8n_qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"                  # REST API 端口
+      - "6334:6334"                  # gRPC 端口 (高性能)
+    volumes:
+      - qdrant_data:/qdrant/storage  # 持久化向量数据
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    networks:
+      - n8n_network                  # 与 n8n 同一网络
+
+volumes:
+  qdrant_data:                       # Qdrant 数据卷
+  # ... 其他已有卷 ...
+</code></pre>
+<pre><code class="language-bash"># 启动 Qdrant
+docker compose up -d qdrant
+
+# 验证 Qdrant 运行状态
+curl http://localhost:6333/healthz
+# 预期: {"title":"qdrant - vectorass engine","version":"1.x.x"}
+
+# 查看集合列表 (初始为空)
+curl http://localhost:6333/collections
+# 预期: {"result":{"collections":[]},"status":"ok"}
+</code></pre>
+<hr>
+<h2>2. 构建索引工作流</h2>
+<h3>完整工作流拓扑</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph TB
+    Trigger[⚡ Manual Trigger<br>或 Schedule Trigger] --&gt; ReadFiles[📂 Read Binary Files<br>从文件夹批量读取]
+    
+    ReadFiles --&gt; Extract[📄 Extract from File<br>PDF → 纯文本]
+    
+    Extract --&gt; Metadata[⚙️ Set 节点<br>添加元数据]
+    
+    Metadata --&gt; Splitter[✂️ Recursive Character<br>Text Splitter]
+    
+    Splitter --&gt; VectorStore[💾 Qdrant Vector Store<br>模式: Insert]
+    
+    subgraph "嵌入式子节点"
+        VectorStore --&gt; EmbModel[🧮 OpenAI Embeddings<br>text-embedding-3-small]
+    end
+    
+    style VectorStore fill:#22c55e,stroke:#16a34a,color:#fff
+    style EmbModel fill:#8b5cf6,stroke:#7c3aed,color:#fff</pre></div><h3>节点逐一配置</h3>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 节点 1: Read Binary Files — 批量读取文件
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// File Selector: /data/knowledge-base/*.pdf
+// 输出: 每个文件生成一个 Item (包含 binary 数据)
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 节点 2: Extract from File — 提取文本
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Operation: "Extract From File"
+// 输入: binary 数据 (PDF)
+// 输出: { "json": { "text": "提取出的纯文本内容..." } }
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 节点 3: Set 节点 — 添加元数据标签
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 添加字段:
+//   source: {{ $json.fileName }}          // 文档来源文件名
+//   category: "product-docs"              // 文档分类
+//   indexedAt: {{ $now.toISO() }}          // 索引时间
+
+// 为什么加元数据?
+// → 检索时可以按 category 过滤: "只搜索产品文档，不搜索 HR 政策"
+// → 管理时可以按 source 追踪: "哪些文件已索引过"
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 节点 4: Text Splitter — 递归分块
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Chunk Size: 800
+// Chunk Overlap: 200
+// Separator: ["\n\n", "\n", " "]          // 先按双换行，再按单换行，最后按空格
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 节点 5: Qdrant Vector Store — 写入向量
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Mode: Insert Documents
+// Collection Name: "knowledge-base"       // 集合名 (类似数据库表名)
+// Vector Dimension: 1536                  // 与 embedding 模型维度一致！
+// 
+// ⚠️ 集合不存在时 n8n 会自动创建
+// ⚠️ 确保 Vector Dimension 与 Embedding 模型匹配:
+//     text-embedding-3-small → 1536
+//     text-embedding-3-large → 3072
+</code></pre>
+<hr>
+<h2>3. 索引管道的数据流转</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">sequenceDiagram
+    participant File as 📄 退款政策.pdf
+    participant Extract as 📄 Extract
+    participant Split as ✂️ Splitter
+    participant Embed as 🧮 Embedding
+    participant QD as 💾 Qdrant
+    
+    File-&gt;&gt;Extract: 二进制 PDF 数据
+    Extract-&gt;&gt;Extract: PDF → 纯文本 (3000 字)
+    
+    Extract-&gt;&gt;Split: "第一章: 退款条件...第二章: 退款流程..."
+    Split-&gt;&gt;Split: 分成 5 个块 (每块 ~600 字)
+    
+    loop 对每个块
+        Split-&gt;&gt;Embed: 块文本
+        Embed-&gt;&gt;Embed: 调用 OpenAI API
+        Embed--&gt;&gt;QD: 向量 [0.023, -0.147, ...] + 元数据
+    end
+    
+    Note over QD: 存储了 5 条向量记录<br>每条包含: 向量 + 原文 + 元数据</pre></div><hr>
+<h2>4. 验证索引结果</h2>
+<pre><code class="language-bash"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 验证 Qdrant 中的数据
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 查看集合信息 (向量数量、维度等)
+curl http://localhost:6333/collections/knowledge-base
+# {
+#   "result": {
+#     "status": "green",
+#     "vectors_count": 42,          ← 已索引 42 条向量
+#     "points_count": 42,
+#     "config": {
+#       "params": {
+#         "vectors": { "size": 1536 }  ← 向量维度
+#       }
+#     }
+#   }
+# }
+
+# 浏览 Qdrant Dashboard (可视化管理)
+# 打开浏览器: http://localhost:6333/dashboard
+</code></pre>
+<hr>
+<h2>常见问题排查</h2>
+<table>
+<thead>
+<tr>
+<th align="left">问题</th>
+<th align="left">原因</th>
+<th align="left">解决</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">写入时报 "dimension mismatch"</td>
+<td align="left">Embedding 维度 ≠ Collection 配置</td>
+<td align="left">删除集合后重建，确保维度一致</td>
+</tr>
+<tr>
+<td align="left">PDF 提取出的文本是乱码</td>
+<td align="left">PDF 是扫描版（图片）</td>
+<td align="left">需要先 OCR，或使用 Document AI</td>
+</tr>
+<tr>
+<td align="left">索引速度很慢</td>
+<td align="left">文件太大，分块太多</td>
+<td align="left">增大 Chunk Size 或限制文件数量</td>
+</tr>
+<tr>
+<td align="left">元数据未存储</td>
+<td align="left">Set 节点位置错误</td>
+<td align="left">确保元数据在 Text Splitter 之前添加</td>
+</tr>
+</tbody></table>
+<h2>下一步</h2>
+<p>在 Ep 18 中，我们将构建<strong>检索侧工作流</strong>——将 Qdrant 作为 Agent Tool 连接，让 AI Agent 能够实时搜索知识库并生成基于事实的回答。</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/16-rag-fundamentals/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 16 期：知识即力量 — RAG 架构原理与 Embedding 基础</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/18-rag-agent/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 18 期：知识变武器 — Vector Store Tool 与 RAG Agent 实战</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

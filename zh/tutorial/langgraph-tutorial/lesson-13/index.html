@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 13 期 | Human in the Loop (HITL)：审批节点的建立 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai</title><meta name="description" content="第 13 期 | Human in the Loop (HITL)：审批节点的建立"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-13/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-13/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-13/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-13/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 13 期 | Human in the Loop (HITL)：审批节点的建立 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta property="og:description" content="第 13 期 | Human in the Loop (HITL)：审批节点的建立"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-13/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 13 期 | Human in the Loop (HITL)：审批节点的建立 — LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 — AgentUpdate.ai"><meta name="twitter:description" content="第 13 期 | Human in the Loop (HITL)：审批节点的建立"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/langgraph-tutorial/lesson-13/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/langgraph-tutorial/lesson-13/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-01/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-02/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-03/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-04/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-05/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-06/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-07/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-08/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-09/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | 精细流式输出：看着 Graph 怎么把活干完 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 01 期 | 为何需要 LangGraph？链式时代的终结与状态图的崛起 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 11 期 | 并行执行 (Parallel Execution)：分治机制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-13/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 13 期 | Human in the Loop (HITL)：审批节点的建立 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 15 期 | 手动修图：通过 update_state 人工修正 Agent 幻觉 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 16 期 | 多智能体架构探秘：Flat vs Hierarchical </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 17 期 | 主管模式 (Supervisor Agent)：打造统筹中心 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 18 期 | Sub-graphs：将底层 Graph 浓缩为一个普通节点 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 19 期 | 跨 Agent 共享与私有状态墙：信息穿透与隔离 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>21.</span> 第 20 期 | 群组研讨会 (Network of Agents) 模拟实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>22.</span> 第 02 期 | StateGraph 的心脏：剖析全局状态 (Global State) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-21/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>23.</span> 第 21 期 | Async 执行：把阻塞留给昨日 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-22/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>24.</span> 第 22 期 | 观测体系：LangSmith 探针无缝挂载 Graph </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-23/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>25.</span> 第 23 期 | 细粒度 Token 流获取 (stream_mode=&quot;messages&quot;) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-24/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>26.</span> 第 24 期 | 防超时策略：Timeout与大模型降维重试 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>27.</span> 第 25 期 | 长程记忆：在 Graph 中保存长期偏好 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-26/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>28.</span> 第 26 期 | 前端融合：LangGraph 的前后端分离架构规划 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-27/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>29.</span> 第 27 期 | 生产级利器：LangGraph Cloud 初体验 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-28/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>30.</span> 第 28 期 | 复杂数据的提取 (Structured Outputs) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-29/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>31.</span> 第 29 期 | 测试图：我们该怎么自动化验收智能体的表现？ </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>32.</span> 第 03 期 | 业务节点 (Nodes)：Graph 的真正执行者 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-30/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>33.</span> 第 30 期 | 终局项目路演：完备的 AI 创作发行机构 (Capstone) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>34.</span> 第 04 期 | 寻路连线 (Edges) 与终止符 (END) </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>35.</span> 第 05 期 | 初见成效：把「调查-写作」闭环跑起来 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>36.</span> 第 06 期 | 原生大招：利用 ToolNode 无缝接入外部技能 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>37.</span> 第 07 期 | 条件边缘 (Conditional Edges)：工作流的&quot;分叉判决器&quot; </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>38.</span> 第 08 期 | 构建标准的 ReAct Agent 架构 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>39.</span> 第 09 期 | 跳出局部：处理工具节点中的异常态 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/langgraph-tutorial/" data-astro-cid-ilhxcym7>LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 13 期 | Human in the Loop (HITL)：审批节点的建立</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"LangGraph 多智能体专家课：从底层逻辑到复杂工作流的重构","item":"https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/"},{"@type":"ListItem","position":4,"name":"第 13 期 | Human in the Loop (HITL)：审批节点的建立"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 13 期 | Human in the Loop (HITL)：审批节点的建立</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><blockquote>
+<p><strong>本期副标题：主编写好大纲准备动笔前，使用 interrupt_before 等待人类点击"同意"再执行。</strong></p>
+</blockquote>
+<p>各位极客们，欢迎回到《LangGraph 多智能体专家课》。我是你们的老朋友，那个在代码堆里摸爬滚打十年的 AI 架构师。</p>
+<p>在前面的 12 期里，我们的「AI 万能内容创作机构 (AI Content Agency)」已经初具规模。我们有了运筹帷幄的 Planner（策划），有了博览群书的 Researcher（研究员），还有了奋笔疾书的 Writer（主笔）。看着它们在代码里自动流转，你是不是有一种当上赛博资本家的快感？</p>
+<p>但是，现实往往会给你一记响亮的耳光。</p>
+<p>昨天，我的 Planner 脑洞大开，给一篇关于“量子计算”的文章定了一个大纲，里面竟然有一章叫“如何用量子计算炒股并实现财富自由”。然后 Writer 毫不犹豫地顺着这个离谱的大纲写了 3000 字的废话。结果？不仅浪费了大量的 Token（那可都是白花花的银子啊！），还产出了一堆不可用的垃圾。</p>
+<p>这说明什么？<strong>完全脱缰的 AI 是危险的，也是昂贵的。</strong> 在关键的决策节点，我们需要引入人类的智慧来进行把控。这就是我们今天的主题：<strong>Human in the Loop (HITL，人类在环)</strong>。</p>
+<p>今天，我们将为我们的 Agency 引入一位真正的“主编”——也就是屏幕前的你。在 Planner 写好大纲、Writer 准备动笔之前，系统必须停下来，等你大喊一声“准奏”，流程才能继续。</p>
+<hr>
+<h2>🎯 本期学习目标</h2>
+<p>通过本期实战，你将把以下技能收入囊中：</p>
+<ol>
+<li><strong>理解 HITL 的底层逻辑</strong>：为什么图状态（State）的持久化是实现人类在环的先决条件？</li>
+<li><strong>掌握 <code>interrupt_before</code> 的魔法</strong>：如何在 LangGraph 编译阶段精准设置断点，让工作流在悬崖边刹车。</li>
+<li><strong>熟练运用 Thread ID (线程 ID)</strong>：学习如何唤醒一个沉睡（暂停）的图，并让它沿着之前的状态继续狂奔。</li>
+<li><strong>重构 Agency 工作流</strong>：在 Planner 和 Writer 之间建立坚不可摧的“人类审批墙”。</li>
+</ol>
+<hr>
+<h2>📖 原理解析</h2>
+<p>在传统的代码逻辑中，程序要么运行，要么结束。如果你想让程序中途停下来等你，通常只能用 <code>input()</code> 阻塞线程，但这在现代的异步网络服务（比如 Web API）中是绝对行不通的。</p>
+<p>LangGraph 是如何优雅地解决这个问题的呢？答案是：<strong>状态快照 (State Snapshot) + 检查点机制 (Checkpointer)</strong>。</p>
+<p>想象一下你在打单机游戏（比如《黑神话：悟空》）。你打完了第一个 Boss（Planner 生成了大纲），前面就是更难的 Boss（Writer 开始写长文）。为了防止翻车，你会怎么做？<strong>存档（Save Game）！</strong></p>
+<p>LangGraph 的 HITL 就是这个逻辑：</p>
+<ol>
+<li>当图运行到你设置的断点（比如 <code>interrupt_before=["writer"]</code>）时。</li>
+<li>LangGraph 会利用 <code>Checkpointer</code>（比如 <code>MemorySaver</code> 或数据库）把当前的所有状态（State）<strong>拍一张快照并存下来</strong>。</li>
+<li>然后，图的执行<strong>直接结束（挂起）</strong>，释放计算资源。</li>
+<li>等人类在前端 UI 看了大纲，点击了“同意”按钮后。</li>
+<li>我们带着当时的 <code>thread_id</code>（存档槽位）重新调用图，LangGraph 会读取快照，从断点处<strong>无缝恢复执行</strong>。</li>
+</ol>
+<p>老规矩，一图胜千言。来看看我们今天重构后的 Agency 工作流：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">stateDiagram-v2
+    %% 定义样式
+    classDef aiNode fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    classDef humanNode fill:#fff3e0,stroke:#f57c00,stroke-width:2px,stroke-dasharray: 5 5,color:#000
+    classDef stateNode fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#000
+
+    %% 节点定义
+    Start((START))
+    Planner[Planner Agent\n(生成内容大纲)]:::aiNode
+    Checkpoint[(Checkpointer\n保存状态快照)]:::stateNode
+    Human{人类审批\n(HITL)}:::humanNode
+    Writer[Writer Agent\n(根据大纲撰写正文)]:::aiNode
+    End((END))
+
+    %% 流程连接
+    Start --&gt; Planner : 接收用户主题
+    Planner --&gt; Checkpoint : 大纲生成完毕
+    
+    Checkpoint --&gt; Human : interrupt_before='Writer'
+    
+    Human --&gt; Writer : 人类点击"同意"\n(传入 thread_id 继续)
+    Human --&gt; Planner : 人类点击"驳回"\n(修改状态,重新生成)
+    
+    Writer --&gt; End : 文章撰写完毕</pre></div><p>敲黑板！这张图里最核心的不是那几个 Agent，而是那个<strong>虚线框的人类节点和 Checkpointer</strong>。没有 Checkpointer，图就失忆了，你就算同意了，它也不知道之前的大纲是什么。</p>
+<hr>
+<h2>💻 实战代码演练</h2>
+<p>废话不多说，Show me the code。今天我们将用 Python 配合 LangGraph 最新的 API 来实现这个功能。为了让大家看清本质，我将使用 Mock（模拟）的 LLM 调用，把注意力全部集中在<strong>图的控制流</strong>上。</p>
+<blockquote>
+<p><strong>前置准备</strong>：请确保你安装了 <code>langgraph</code>。
+<code>pip install langgraph</code></p>
+</blockquote>
+<h3>1. 定义状态与节点</h3>
+<p>首先，我们定义 Agency 的状态，以及 Planner 和 Writer 两个节点。</p>
+<pre><code class="language-python">import time
+from typing import TypedDict, Optional
+from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import MemorySaver
+
+# ==========================================
+# 1. 定义状态 (State) - 我们的"游戏存档"数据结构
+# ==========================================
+class AgencyState(TypedDict):
+    topic: str              # 用户的初始主题
+    outline: Optional[str]  # Planner 生成的大纲
+    article: Optional[str]  # Writer 生成的正文
+    approval_status: str    # 人类审批状态：'pending', 'approved', 'rejected'
+
+# ==========================================
+# 2. 定义节点 (Nodes) - 我们的打工人
+# ==========================================
+def planner_node(state: AgencyState) -&gt; dict:
+    """
+    Planner 节点：负责根据主题生成大纲
+    [EN] Planner Node: Responsible for generating an outline based on the topic.
+    """
+    print("\n[Planner 👨‍💼] 正在疯狂构思大纲中...")
+    time.sleep(1) # 模拟思考时间
+    
+    topic = state["topic"]
+    # 模拟 LLM 生成的大纲
+    mock_outline = f"""
+    主题：《{topic}》
+    1. 什么是{topic}？
+    2. {topic}的核心原理
+    3. {topic}的未来展望
+    """
+    print("[Planner 👨‍💼] 大纲生成完毕！")
+    
+    # 返回更新的状态
+    return {
+        "outline": mock_outline,
+        "approval_status": "pending" # 设置为待审批
+    }
+
+def writer_node(state: AgencyState) -&gt; dict:
+    """
+    Writer 节点：负责根据大纲撰写正文
+    [EN] Writer Node: Responsible for writing the article based on the outline.
+    """
+    print("\n[Writer ✍️] 收到主编的通过指令，开始根据大纲码字...")
+    time.sleep(1)
+    
+    outline = state["outline"]
+    # 模拟 LLM 根据大纲写文章
+    mock_article = f"这是关于大纲【{outline.strip()}】的详细正文...\n(此处省略一万字)"
+    print("[Writer ✍️] 文章撰写完毕！可以下班了！")
+    
+    return {"article": mock_article}
+</code></pre>
+<h3>2. 构建带断点的计算图</h3>
+<p>这是本期的<strong>高光时刻</strong>。看仔细了，我们是如何把 <code>MemorySaver</code> 和 <code>interrupt_before</code> 结合起来的。</p>
+<pre><code class="language-python"># ==========================================
+# 3. 构建图 (Graph Construction)
+# ==========================================
+builder = StateGraph(AgencyState)
+
+# 添加节点
+builder.add_node("planner", planner_node)
+builder.add_node("writer", writer_node)
+
+# 定义边（工作流走向）
+builder.add_edge(START, "planner")
+builder.add_edge("planner", "writer") # 注意：这里虽然直接连向writer，但我们会在编译时打断它
+builder.add_edge("writer", END)
+
+# 核心步骤 1：实例化一个 Checkpointer (内存版，生产环境可用 PostgresSaver)
+memory = MemorySaver()
+
+# 核心步骤 2：编译图，并设置断点！
+# interrupt_before=["writer"] 意味着：在执行 writer 节点【之前】，暂停图的执行。
+graph = builder.compile(
+    checkpointer=memory, 
+    interrupt_before=["writer"]
+)
+
+print("✅ Agency 工作流编译成功，已开启 HITL 模式。")
+</code></pre>
+<h3>3. 模拟实际运行：从暂停到恢复</h3>
+<p>现在，让我们模拟一个真实的业务场景：用户提交需求 -&gt; 图暂停 -&gt; 终端提示用户确认 -&gt; 用户输入同意 -&gt; 图继续执行。</p>
+<pre><code class="language-python"># ==========================================
+# 4. 模拟运行 (Simulation Loop)
+# ==========================================
+def run_agency():
+    # 必须配置 thread_id，这是图用来识别"存档"的唯一凭证
+    # [EN] thread_id is crucial. It's the unique identifier for the "save slot".
+    thread_config = {"configurable": {"thread_id": "agency_task_001"}}
+    
+    initial_state = {
+        "topic": "LangGraph 多智能体架构",
+        "outline": None,
+        "article": None,
+        "approval_status": "none"
+    }
+
+    print("\n🚀 [系统] 启动 Agency，接收到新任务...")
+    
+    # 第一阶段运行：它会在 writer 节点前自动停下
+    for event in graph.stream(initial_state, config=thread_config):
+        for node_name, node_state in event.items():
+            pass # 节点内部已经打印了信息，这里不做额外处理
+            
+    # 此时，图已经暂停了。我们可以检查图的当前状态
+    current_state = graph.get_state(thread_config)
+    
+    # next 属性会告诉你，如果恢复运行，下一个将要执行的节点是什么
+    # 如果 next 有值，说明图被 interrupt 了
+    if current_state.next:
+        print(f"\n⏸️ [系统] 工作流已暂停。下一个将要执行的节点是: {current_state.next}")
+        print(f"📄 [系统] 当前生成的大纲内容如下：\n{current_state.values.get('outline')}")
+        
+        # 模拟人类审批过程
+        user_input = input("👨‍⚖️ [人类主编] 大纲如上，是否同意让 Writer 开始撰写？(输入 'y' 同意，其他退出): ")
+        
+        if user_input.strip().lower() == 'y':
+            print("\n👨‍⚖️ [人类主编] 审批通过！放行！")
+            
+            # 核心步骤 3：恢复执行！
+            # 传入 None 作为输入状态，表示"不需要修改当前状态，直接顺着往下走"
+            # 必须传入相同的 thread_config 才能找到之前的存档
+            for event in graph.stream(None, config=thread_config):
+                pass
+        else:
+            print("\n👨‍⚖️ [人类主编] 审批驳回！任务终止。")
+    else:
+        print("\n✅ [系统] 任务已全部执行完毕。")
+
+# 运行我们的测试
+if __name__ == "__main__":
+    run_agency()
+</code></pre>
+<h3>运行效果展示</h3>
+<p>当你运行这段代码时，你的终端会发生这样的交互：</p>
+<pre><code class="language-text">✅ Agency 工作流编译成功，已开启 HITL 模式。
+
+🚀 [系统] 启动 Agency，接收到新任务...
+
+[Planner 👨‍💼] 正在疯狂构思大纲中...
+[Planner 👨‍💼] 大纲生成完毕！
+
+⏸️ [系统] 工作流已暂停。下一个将要执行的节点是: ('writer',)
+📄 [系统] 当前生成的大纲内容如下：
+
+    主题：《LangGraph 多智能体架构》
+    1. 什么是LangGraph 多智能体架构？
+    2. LangGraph 多智能体架构的核心原理
+    3. LangGraph 多智能体架构的未来展望
+    
+👨‍⚖️ [人类主编] 大纲如上，是否同意让 Writer 开始撰写？(输入 'y' 同意，其他退出): y
+
+👨‍⚖️ [人类主编] 审批通过！放行！
+
+[Writer ✍️] 收到主编的通过指令，开始根据大纲码字...
+[Writer ✍️] 文章撰写完毕！可以下班了！
+</code></pre>
+<p>看到了吗？<strong>图在 <code>writer</code> 执行前硬生生地刹车了！</strong> 整个上下文（大纲内容）被完美保存在了 <code>thread_id: agency_task_001</code> 中。当你输入 <code>y</code> 并再次调用 <code>stream(None, config)</code> 时，它直接从断点处苏醒，完成了剩下的工作。</p>
+<hr>
+<h2>坑与避坑指南</h2>
+<p>在引入 HITL 时，有很多初学者（甚至一些老鸟）会踩进深坑。作为导师，我必须在这里给你们拉响警报：</p>
+<h3>💣 坑一：忘了加 Checkpointer，图直接"失忆"</h3>
+<p><strong>症状</strong>：设置了 <code>interrupt_before</code>，但是图一跑完第一阶段，你想继续时，它报错说找不到状态，或者从头开始跑。
+<strong>诊断</strong>：你没有在 <code>compile()</code> 里传入 <code>checkpointer</code>。
+<strong>避坑</strong>：HITL <strong>必须</strong>依赖状态持久化。没有 <code>MemorySaver</code>（或 Postgres/Redis Saver），LangGraph 根本不知道图暂停在哪里。记住公式：<strong>HITL = Checkpointer + interrupt_before/after</strong>。</p>
+<h3>💣 坑二：Thread ID 混乱导致"串线"</h3>
+<p><strong>症状</strong>：张三点击了同意，结果李四的文章被发布了。
+<strong>诊断</strong>：在恢复图的时候，传入了错误的 <code>thread_id</code>。
+<strong>避坑</strong>：在实际的 Web 后端开发中（比如使用 FastAPI），你必须将 <code>thread_id</code> 与你的数据库中的 <code>Task ID</code> 或 <code>User ID</code> 强绑定。图挂起时，前端轮询或等待；用户点击按钮后，前端把 <code>Task ID</code> 传回后端，后端拼装成 <code>thread_config</code> 去唤醒图。<strong>永远不要在生产环境写死 thread_id！</strong></p>
+<h3>💣 坑三：传入新的状态覆盖了旧状态，导致逻辑崩盘</h3>
+<p><strong>症状</strong>：恢复图执行时，传入了初始状态，导致已经生成的大纲不见了。
+<strong>诊断</strong>：在第二阶段调用时写成了 <code>graph.stream(initial_state, config)</code>。
+<strong>避坑</strong>：如果你只是想让图<strong>单纯地继续执行</strong>，不要传入任何新状态，传 <code>None</code>！即 <code>graph.stream(None, config)</code>。LangGraph 看到 <code>None</code> 就知道：“哦，老板没新指示，我接着干活就行。”</p>
+<p><em>(进阶剧透：如果你想在暂停期间修改大纲，你可以通过 <code>graph.update_state()</code> 来实现，这个高级操作我们会在下一期“状态的时间旅行”中详细剖析！)</em></p>
+<hr>
+<h2>📝 本期小结</h2>
+<p>今天，我们给狂奔的 AI 加上了缰绳。我们学习了：</p>
+<ol>
+<li><strong>HITL 的本质</strong>：基于 Checkpointer 的状态快照与挂起。</li>
+<li><strong>断点设置</strong>：通过 <code>interrupt_before=["writer"]</code> 建立人类审批墙。</li>
+<li><strong>图的唤醒</strong>：通过相同的 <code>thread_id</code> 和 <code>stream(None)</code> 让工作流继续。</li>
+</ol>
+<p>在我们的 AI Content Agency 中，引入“主编审批”节点是一个质的飞跃。它意味着我们从“盲盒开奖”式的 AI 生成，正式迈向了**“人机协同 (Human-AI Collaboration)”**的工业级工作流。</p>
+<p><strong>课后思考题</strong>：
+如果人类主编看了大纲，觉得不满意，不想直接退出，而是希望<strong>打回给 Planner 重新写</strong>，我们的图和代码应该怎么改？</p>
+<p>发挥你们的极客精神去尝试一下吧！我们第 14 期见，届时我将带你解锁 LangGraph 中最酷炫的功能之一：<strong>图状态的修改与时间旅行 (Time Travel)</strong>。下课！</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-12/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 12 期 | Reducers 的黑魔法：如何安全的增量更新数据</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/langgraph-tutorial/lesson-14/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 14 期 | 时光机！使用 SqliteSaver/MemorySaver 构建 Checkpoints</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

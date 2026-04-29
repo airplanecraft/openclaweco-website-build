@@ -1,0 +1,466 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 18 期 | 生产环境部署：VPS 到 GPU 集群 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="硬核工业部署方案——云服务器选择、集群化编排、企业内网部署并设计对应的高可用应急策略。"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-18/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-18/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-18/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-18/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 18 期 | 生产环境部署：VPS 到 GPU 集群 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="硬核工业部署方案——云服务器选择、集群化编排、企业内网部署并设计对应的高可用应急策略。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-18/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 18 期 | 生产环境部署：VPS 到 GPU 集群 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="硬核工业部署方案——云服务器选择、集群化编排、企业内网部署并设计对应的高可用应急策略。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/hermes-agent-tutorial/lesson-18/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/hermes-agent-tutorial/lesson-18/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 18 期 | 生产环境部署：VPS 到 GPU 集群</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 18 期 | 生产环境部署：VPS 到 GPU 集群"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 18 期 | 生产环境部署：VPS 到 GPU 集群</h1> <div class="meta" data-astro-cid-p7qzptk4>  <span data-astro-cid-p7qzptk4>更新于 2026/4/22</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><p>好的，作为技术教育专家，我将为您撰写这篇关于 Hermes Agent 生产环境部署的深度教程。</p>
+<hr>
+<p><strong>副标题：硬核工业部署方案——云服务器选择、集群化编排、企业内网部署并设计对应的高可用应急策略。</strong></p>
+<p>欢迎来到 Hermes Agent 系列教程的第 18 期。在前面的课程中，我们已经深入探索了 Hermes Agent 的核心功能，从模型配置、技能扩展到记忆系统。现在，是时候将我们的智能体从开发环境推向广阔的生产世界了。本期我们将聚焦于将 Hermes Agent 进行工业级部署，确保其在高并发、高可用的生产环境中稳定、高效地运行。</p>
+<hr>
+<h3>学习目标</h3>
+<p>完成本期课程后，您将能够：</p>
+<ol>
+<li><strong>评估并选择合适的生产部署环境</strong>：从简单的 VPS 到复杂的 GPU 集群，理解不同方案的优劣与适用场景。</li>
+<li><strong>掌握容器化部署</strong>：使用 Docker 和 Docker Compose 将 Hermes Agent 及其依赖打包，实现环境一致性与快速部署。</li>
+<li><strong>实施 Kubernetes 集群化编排</strong>：将 Hermes Agent 部署到 Kubernetes (K8s) 集群，实现自动扩缩容、故障自愈与滚动更新。</li>
+<li><strong>解决企业内网部署的挑战</strong>：了解在隔离网络中部署 Agent 的特殊考量，如代理配置和私有依赖管理。</li>
+<li><strong>设计并实施高可用 (High Availability) 策略</strong>：确保 Agent 服务的健壮性，消除单点故障，并制定基本的灾难恢复计划。</li>
+</ol>
+<h3>核心概念讲解</h3>
+<p>在进入实战之前，我们必须理解几个关键的 DevOps 和 MLOps 概念。这些是构建稳定、可扩展的生产系统的基石。</p>
+<h4>1. 部署环境的选择 (Deployment Environment)</h4>
+<ul>
+<li><strong>VPS (Virtual Private Server)</strong>：最基础的云服务器。它提供了一个独立的、资源受限的虚拟环境。<ul>
+<li><strong>优点</strong>：成本低廉、配置简单、适合个人项目、原型验证或低流量应用。</li>
+<li><strong>缺点</strong>：单点故障 (Single Point of Failure, SPOF)，服务器宕机则服务中断；扩缩容通常需要手动操作且可能导致停机；资源（CPU/RAM/GPU）有限。</li>
+</ul>
+</li>
+<li><strong>专用 GPU 服务器 (Dedicated GPU Server)</strong>：物理服务器或云端高性能实例，配备强大的 GPU。<ul>
+<li><strong>优点</strong>：为本地大模型推理提供极致性能，无虚拟化开销。</li>
+<li><strong>缺点</strong>：成本高昂，运维复杂，资源利用率可能不高（闲置时仍在付费）。</li>
+</ul>
+</li>
+<li><strong>云端 GPU 实例 (Cloud GPU Instances)</strong>：如 AWS EC2 P/G 系列、Google Cloud N1/A2 系列、Azure NC 系列。<ul>
+<li><strong>优点</strong>：按需付费，弹性伸缩，与云生态系统（存储、网络、数据库）深度集成。</li>
+<li><strong>缺点</strong>：配置和管理有一定学习曲线，长期运行成本可能高于专用服务器。</li>
+</ul>
+</li>
+<li><strong>Kubernetes (K8s) Cluster</strong>：容器编排的业界标准。它将一组物理或虚拟机构建成一个统一的资源池，自动化地部署、扩展和管理容器化应用。<ul>
+<li><strong>优点</strong>：高可用性、自动伸缩、故障自愈、滚动更新、声明式配置。是构建大规模、弹性微服务应用的首选。</li>
+<li><strong>缺点</strong>：学习曲线陡峭，集群本身的搭建和维护成本较高。</li>
+</ul>
+</li>
+</ul>
+<h4>2. 容器化与编排 (Containerization &amp; Orchestration)</h4>
+<ul>
+<li><strong>Docker</strong>：一个开源的应用容器引擎。它允许开发者将应用及其所有依赖（库、运行时、系统工具）打包到一个轻量级、可移植的容器 (Container) 中。<ul>
+<li><strong>核心价值</strong>：<strong>"Build once, run anywhere."</strong> 确保了从开发到测试再到生产环境的一致性，彻底解决了“在我机器上能跑”的经典问题。</li>
+</ul>
+</li>
+<li><strong>Kubernetes (K8s)</strong>：源于 Google 的 Borg 系统，K8s 负责自动化管理成百上千个容器的生命周期。<ul>
+<li><strong>核心组件</strong>：<ul>
+<li><code>Pod</code>: K8s 中最小的部署单元，通常包含一个或多个紧密关联的容器。</li>
+<li><code>Deployment</code>: 定义了 Pod 的期望状态（如副本数量、镜像版本），并负责维持这个状态。</li>
+<li><code>Service</code>: 为一组 Pod 提供一个稳定的网络入口（IP 地址和 DNS 名称），实现服务发现和负载均衡。</li>
+<li><code>PersistentVolume (PV)</code> 和 <code>PersistentVolumeClaim (PVC)</code>: 用于管理持久化存储，确保 Pod 重启或迁移后数据不丢失，这对于 Hermes Agent 的 Memory 系统至关重要。</li>
+<li><code>ConfigMap</code> &amp; <code>Secret</code>: 用于将配置和敏感信息（如 API Keys）与应用镜像解耦。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>3. 高可用性 (High Availability, HA)</h4>
+<p>HA 的核心目标是<strong>消除单点故障</strong>，确保系统在部分组件发生故障时仍能持续提供服务。常见策略包括：</p>
+<ul>
+<li><strong>冗余 (Redundancy)</strong>：运行多个应用实例（副本），分布在不同的物理节点或可用区。</li>
+<li><strong>负载均衡 (Load Balancing)</strong>：将流量分发到所有健康的实例上，避免单一实例过载。</li>
+<li><strong>健康检查 (Health Checks)</strong>：定期检查应用实例的健康状况，自动移除或重启有问题的实例。</li>
+<li><strong>数据备份与恢复 (Data Backup &amp; Recovery)</strong>：定期备份持久化数据（如用户画像、记忆数据库），并制定恢复流程。</li>
+</ul>
+<hr>
+<h3>💻 实战演示</h3>
+<p>我们将循序渐进，从最简单的 VPS 部署开始，逐步升级到复杂的 K8s 集群部署。</p>
+<h4>第 1 步：基础部署 - 使用 Docker 和 Docker Compose 在 VPS 上运行</h4>
+<p>这是最快、最直接的生产化方式，适合个人项目或内部小范围使用。</p>
+<p><strong>前提条件：</strong></p>
+<ul>
+<li>一台已安装 Docker 和 Docker Compose 的 VPS。</li>
+<li>Hermes Agent 的项目代码。</li>
+</ul>
+<p><strong>1. 创建 <code>Dockerfile</code></strong></p>
+<p>在 Hermes Agent 项目根目录下创建 <code>Dockerfile</code>，用于构建应用镜像。</p>
+<pre><code class="language-dockerfile"># Dockerfile
+
+# 使用一个包含 Python 和基础构建工具的官方镜像作为基础
+FROM python:3.11-slim-buster AS builder
+
+# 设置工作目录
+WORKDIR /app
+
+# 安装诗歌（Python依赖管理工具）
+RUN pip install poetry
+
+# 复制依赖定义文件
+COPY poetry.lock pyproject.toml ./
+
+# 安装项目依赖，--no-root 表示不安装项目本身，只安装依赖
+# --no-dev 表示不安装开发依赖，减小镜像体积
+RUN poetry config virtualenvs.create false &amp;&amp; \
+    poetry install --no-dev --no-interaction --no-ansi
+
+# --- 正式镜像 ---
+FROM python:3.11-slim-buster
+
+WORKDIR /app
+
+# 从构建阶段复制已安装的依赖
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# 复制应用代码
+COPY . .
+
+# 暴露 Agent 服务的端口（假设为 8000）
+EXPOSE 8000
+
+# 启动应用的命令
+CMD ["python", "main.py"]
+</code></pre>
+<ul>
+<li><strong>说明</strong>：我们使用了多阶段构建 (multi-stage build)。<code>builder</code> 阶段负责安装所有依赖，最终的生产镜像只从 <code>builder</code> 阶段拷贝必要的依赖和应用代码，这可以显著减小最终镜像的体积，提升安全性。</li>
+</ul>
+<p><strong>2. 创建 <code>docker-compose.yml</code></strong></p>
+<p>为了管理 Hermes Agent 及其可能依赖的服务（如 Redis 作为 Memory 后端），我们使用 Docker Compose。</p>
+<pre><code class="language-yaml"># docker-compose.yml
+version: '3.8'
+
+services:
+  hermes-agent:
+    build: .
+    container_name: hermes_agent_prod
+    restart: always
+    ports:
+      - "8000:8000" # 将主机的 8000 端口映射到容器的 8000 端口
+    volumes:
+      - ./config.prod.yaml:/app/config.yaml # 挂载生产环境配置文件
+      - agent_data:/app/data # 挂载数据卷，用于持久化
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY} # 从环境变量读取敏感信息
+      - MEMORY_BACKEND=redis
+      - REDIS_HOST=hermes_redis
+    depends_on:
+      - hermes_redis
+
+  hermes_redis:
+    image: redis:7-alpine
+    container_name: hermes_redis_prod
+    restart: always
+    volumes:
+      - redis_data:/data
+
+volumes:
+  agent_data:
+  redis_data:
+</code></pre>
+<ul>
+<li><strong>说明</strong>：<ul>
+<li><code>restart: always</code> 确保容器在意外退出或服务器重启后能自动重启。</li>
+<li><code>volumes</code> 用于数据持久化。<code>config.prod.yaml</code> 挂载了生产配置文件，<code>agent_data</code> 和 <code>redis_data</code> 是命名卷，用于保存 Agent 的工作数据和 Redis 数据。</li>
+<li><code>environment</code> 用于传递配置，特别是像 <code>OPENAI_API_KEY</code> 这样的敏感信息，推荐使用环境变量或 <code>.env</code> 文件传入，而不是硬编码在配置文件中。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 部署</strong></p>
+<p>在 VPS 上执行以下命令：</p>
+<pre><code class="language-bash"># 创建 .env 文件并填入你的 API Key
+echo "OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxx" &gt; .env
+
+# 构建并启动服务 (后台运行)
+docker-compose up --build -d
+
+# 查看运行状态
+docker-compose ps
+
+# 查看日志
+docker-compose logs -f hermes-agent
+</code></pre>
+<p>至此，你的 Hermes Agent 已经在 VPS 上稳定运行了。但这仍然是一个单点服务。</p>
+<h4>第 2 步：进阶部署 - 迁移到 Kubernetes (K8s) 集群</h4>
+<p>现在，我们将 Agent 部署到 K8s，以获得高可用性和可扩展性。</p>
+<p><strong>前提条件：</strong></p>
+<ul>
+<li>一个可用的 K8s 集群 (可以是云服务商提供的如 GKE, EKS, AKS，或自建的集群)。</li>
+<li><code>kubectl</code> 命令行工具已配置并连接到集群。</li>
+<li>一个容器镜像仓库 (如 Docker Hub, GCR, ECR)，用于存放我们构建的 Hermes Agent 镜像。</li>
+</ul>
+<p><strong>1. 构建并推送镜像</strong></p>
+<pre><code class="language-bash"># 登录你的镜像仓库
+docker login your-registry.io
+
+# 构建镜像并打上标签
+docker build -t your-registry.io/hermes-agent:v1.0.0 .
+
+# 推送镜像
+docker push your-registry.io/hermes-agent:v1.0.0
+</code></pre>
+<p><strong>2. 编写 K8s Manifests (YAML 文件)</strong></p>
+<p>我们将创建几个 YAML 文件来定义部署。</p>
+<p><strong>a. <code>hermes-configmap.yaml</code> - 配置文件</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hermes-agent-config
+data:
+  config.yaml: |
+    # 这里是你的非敏感配置
+    server:
+      host: "0.0.0.0"
+      port: 8000
+    memory:
+      backend: "redis"
+      redis_host: "hermes-redis-service" # 使用 K8s Service 名称
+</code></pre>
+<p><strong>b. <code>hermes-secret.yaml</code> - 敏感信息</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: hermes-agent-secret
+type: Opaque
+stringData:
+  openai-api-key: "sk-xxxxxxxxxxxxxxxxxxxx" # 实际生产中应使用更安全的方式管理 secret
+</code></pre>
+<p><strong>c. <code>hermes-redis-deployment.yaml</code> - Redis 部署</strong></p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermes-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hermes-redis
+  template:
+    metadata:
+      labels:
+        app: hermes-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hermes-redis-service
+spec:
+  selector:
+    app: hermes-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+</code></pre>
+<p><strong>d. <code>hermes-agent-deployment.yaml</code> - Hermes Agent 核心部署</strong></p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermes-agent-deployment
+spec:
+  replicas: 3 # &lt;-- 高可用性的起点：运行 3 个副本
+  selector:
+    matchLabels:
+      app: hermes-agent
+  template:
+    metadata:
+      labels:
+        app: hermes-agent
+    spec:
+      containers:
+      - name: hermes-agent
+        image: your-registry.io/hermes-agent:v1.0.0 # 使用你自己的镜像
+        ports:
+        - containerPort: 8000
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: hermes-agent-secret
+              key: openai-api-key
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config.yaml
+          subPath: config.yaml
+        # --- 健康检查 ---
+        livenessProbe:
+          httpGet:
+            path: /health # 假设你的应用有一个 /health 端点
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: config-volume
+        configMap:
+          name: hermes-agent-config
+</code></pre>
+<p><strong>e. <code>hermes-agent-service.yaml</code> - 对外暴露服务</strong></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: hermes-agent-service
+spec:
+  type: LoadBalancer # &lt;-- 云服务商会自动创建一个负载均衡器
+  selector:
+    app: hermes-agent
+  ports:
+  - protocol: TCP
+    port: 80 # 外部访问的端口
+    targetPort: 8000 # 容器暴露的端口
+</code></pre>
+<p><strong>3. 部署到集群</strong></p>
+<pre><code class="language-bash"># 依次应用所有配置
+kubectl apply -f hermes-configmap.yaml
+kubectl apply -f hermes-secret.yaml
+kubectl apply -f hermes-redis-deployment.yaml
+kubectl apply -f hermes-agent-deployment.yaml
+kubectl apply -f hermes-agent-service.yaml
+
+# 检查部署状态
+kubectl get deployments
+kubectl get pods -o wide
+kubectl get service hermes-agent-service # 获取外部 IP
+</code></pre>
+<p>现在，你的 Hermes Agent 已经以高可用的方式运行在 K8s 集群中了。K8s 会自动处理 Pod 的调度、故障恢复和流量负载均衡。</p>
+<h4>第 3 步：企业级考量 - 内网部署与高可用策略</h4>
+<p><strong>1. 企业内网部署</strong></p>
+<p>在无法访问公网的企业环境中部署时，需要特殊处理：</p>
+<ul>
+<li><strong>网络代理</strong>：如果需要通过 HTTP/HTTPS 代理访问外部 API (如 OpenAI)，需要在 <code>Deployment</code> 的 <code>env</code> 部分设置代理环境变量：<pre><code class="language-yaml">env:
+- name: HTTP_PROXY
+  value: "http://your-proxy.com:port"
+- name: HTTPS_PROXY
+  value: "http://your-proxy.com:port"
+</code></pre>
+</li>
+<li><strong>私有镜像仓库 (Private Registry)</strong>：企业通常使用 Harbor、Nexus 或云厂商提供的私有仓库。你需要先创建 <code>imagePullSecrets</code>，然后在 <code>Deployment</code> 的 <code>spec.template.spec</code> 中引用它，以便 K8s 有权限拉取镜像。</li>
+<li><strong>本地模型与依赖</strong>：如果 Agent 使用本地大模型，你需要将模型文件通过 <code>PersistentVolume</code> 挂载到所有 Pod 中。对于 Python 依赖，可以搭建一个私有的 PyPI 镜像（如 <code>devpi</code>）来管理。</li>
+</ul>
+<p><strong>2. 强化高可用 (HA) 策略</strong></p>
+<ul>
+<li><strong>水平自动扩缩容 (Horizontal Pod Autoscaler, HPA)</strong>：根据 CPU 或内存使用率自动增减 Pod 数量。<pre><code class="language-bash"># 创建 HPA，当 CPU 使用率超过 80% 时自动扩容，最多 10 个 Pod
+kubectl autoscale deployment hermes-agent-deployment --cpu-percent=80 --min=3 --max=10
+</code></pre>
+</li>
+<li><strong>跨可用区部署 (Multi-AZ Deployment)</strong>：在 K8s 集群层面，确保你的 Node 节点分布在云服务商的多个可用区 (Availability Zones)。这可以防止单个数据中心的故障导致整个服务中断。</li>
+<li><strong>数据备份与灾难恢复 (DR)</strong>：<ul>
+<li><strong>数据库备份</strong>：为你的 Redis 或其他持久化存储设置定期快照备份。</li>
+<li><strong>配置备份</strong>：将所有 K8s YAML 文件纳入 Git 版本控制。</li>
+<li><strong>工具</strong>：使用 <a href="https://velero.io/">Velero</a> 等工具可以备份整个 K8s 集群的状态，包括 PV 快照，实现一键式的集群级灾难恢复。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>涉及命令</h3>
+<p><strong>Docker &amp; Docker Compose:</strong></p>
+<ul>
+<li><code>docker-compose up --build -d</code>: 构建镜像并在后台启动所有服务。</li>
+<li><code>docker-compose ps</code>: 查看当前运行的服务状态。</li>
+<li><code>docker-compose logs -f &lt;service_name&gt;</code>: 实时跟踪服务的日志。</li>
+<li><code>docker build -t &lt;tag&gt; .</code>: 构建 Docker 镜像。</li>
+<li><code>docker push &lt;tag&gt;</code>: 推送镜像到仓库。</li>
+</ul>
+<p><strong>Kubernetes (kubectl):</strong></p>
+<ul>
+<li><code>kubectl apply -f &lt;filename.yaml&gt;</code>: 应用或更新一个资源配置。</li>
+<li><code>kubectl get pods</code>: 查看所有 Pod 的状态。</li>
+<li><code>kubectl get deployments</code>: 查看 Deployment 的状态。</li>
+<li><code>kubectl get services</code>: 查看 Service 的状态及外部 IP。</li>
+<li><code>kubectl describe pod &lt;pod_name&gt;</code>: 查看 Pod 的详细信息和事件，用于排错。</li>
+<li><code>kubectl logs -f &lt;pod_name&gt;</code>: 实时跟踪 Pod 的日志。</li>
+<li><code>kubectl scale deployment &lt;name&gt; --replicas=&lt;num&gt;</code>: 手动伸缩 Deployment 的副本数。</li>
+<li><code>kubectl autoscale deployment ...</code>: 创建 Horizontal Pod Autoscaler。</li>
+</ul>
+<hr>
+<h3>要点回顾</h3>
+<ol>
+<li><strong>部署方案是演进的</strong>：从简单的 VPS 开始，随着业务复杂度和流量的增长，逐步迁移到 Docker Compose，最终采用 Kubernetes 实现工业级部署。</li>
+<li><strong>容器化是现代部署的基石</strong>：Docker 保证了环境的一致性和交付的便携性。</li>
+<li><strong>Kubernetes 提供终极弹性与可靠性</strong>：通过 <code>Deployment</code>、<code>Service</code>、<code>Probe</code> 等机制，K8s 实现了应用的自愈、自动伸缩和高可用。</li>
+<li><strong>配置与代码分离</strong>：始终使用 <code>ConfigMap</code>、<code>Secret</code> 或环境变量来管理配置，切勿将敏感信息硬编码在代码或镜像中。</li>
+<li><strong>高可用是一个系统工程</strong>：它不仅是运行多个副本，还包括健康检查、负载均衡、跨区域部署和完善的数据备份恢复策略。</li>
+<li><strong>企业内网部署有其特殊性</strong>：需要重点关注网络、安全和私有依赖管理。</li>
+</ol>
+<p>将 Hermes Agent 从一个本地脚本转变为一个能在全球范围内提供7x24小时不间断服务的智能体，是一次激动人心的工程挑战。希望本期内容能为您铺平这条从开发到生产的道路。</p>
+<hr>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://docs.docker.com/">Docker Official Documentation</a></li>
+<li><a href="https://docs.docker.com/compose/compose-file/">Docker Compose File Reference</a></li>
+<li><a href="https://kubernetes.io/docs/home/">Kubernetes Official Documentation</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/">Kubernetes Concepts Explained</a></li>
+<li><a href="https://velero.io/">Velero - Disaster Recovery for Kubernetes</a></li>
+</ul>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 17 期 | 日志系统与可观测性实践</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 19 期 | 社区生态与 Skill Marketplace 贡献指南</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

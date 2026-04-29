@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀 — Claude-Mem 完全实战指南 — AgentUpdate.ai</title><meta name="description" content="为什么不把所有记忆一次性塞给 Claude？因为 97% 的 Token 都会被浪费。三层检索就是解药。"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/claude-mem-tutorial/lesson-6/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-mem-tutorial/lesson-6/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-mem-tutorial/lesson-6/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-mem-tutorial/lesson-6/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀 — Claude-Mem 完全实战指南 — AgentUpdate.ai"><meta property="og:description" content="为什么不把所有记忆一次性塞给 Claude？因为 97% 的 Token 都会被浪费。三层检索就是解药。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/claude-mem-tutorial/lesson-6/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀 — Claude-Mem 完全实战指南 — AgentUpdate.ai"><meta name="twitter:description" content="为什么不把所有记忆一次性塞给 Claude？因为 97% 的 Token 都会被浪费。三层检索就是解药。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Bw16G0oc.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/tutorial/claude-mem-tutorial/lesson-6/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> <span class="nav-desktop-only"> <a href="/tutorial/claude-mem-tutorial/lesson-6/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news/">新闻</a> <a href="/zh/product/">产品</a> <a href="/zh/skills/">技能市场</a> <a href="/zh/plugins/">插件</a> <a href="/zh/releases/">产品更新</a> <a href="/zh/tags/">标签</a> <a href="/zh/tutorial/">教程</a> <a href="/zh/simulators/">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-p7qzptk4> <div class="container dual-layout" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-p7qzptk4> <div class="sidebar-content" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/" class="series-title" data-astro-cid-p7qzptk4>
+📚 Claude-Mem 完全实战指南 </a> <ul class="nav-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-1/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>1.</span> 第 1 期：为什么你的 AI 助手需要「记忆」？ </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-2/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>2.</span> 第 2 期：安装 Claude-Mem — 从零到跑通的完整指南 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-3/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>3.</span> 第 3 期：解剖 Claude-Mem 的「大脑」— 数据存储架构全解 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-4/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>4.</span> 第 4 期：生命周期钩子 — Claude-Mem 如何「偷偷记笔记」 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-5/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>5.</span> 第 5 期：Worker Service — Claude-Mem 的心脏 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-6/" class="nav-link active" data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>6.</span> 第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-7/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>7.</span> 第 7 期：Skill 1 — Memory Search（记忆搜索） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-8/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>8.</span> 第 8 期：Skill 2 — Smart Explore（智能代码探索） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-9/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>9.</span> 第 9 期：Skill 3 — Knowledge Agent（知识库代理） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-10/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>10.</span> 第 10 期：Skill 4 &amp; 5 — Make Plan + Do（计划与执行） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-11/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>11.</span> 第 11 期：Skill 6 — Timeline Report（历史回顾报告） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-12/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>12.</span> 第 12 期：Skill 7 — Plugin Release（版本管理） </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-13/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>13.</span> 第 13 期：MCP 集成 — 在 Claude Desktop 中搜索开发记忆 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-14/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>14.</span> 第 14 期：高级配置 — 定制你的记忆系统 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-15/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>15.</span> 第 15 期：排障指南 + 最佳实践 + 全书总结 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-16/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>16.</span> 第 16 期：Q&amp;A (一) 架构与数据流深度解惑 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/appendix/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>17.</span> 附录 | 速查手册与配置模板 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-17/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>18.</span> 第 17 期：Q&amp;A (二) 高级 Skills 与 MCP 疑难杂症 </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-18/" class="nav-link " data-astro-cid-p7qzptk4> <span class="index" data-astro-cid-p7qzptk4>19.</span> 第 18 期：Q&amp;A (三) 性能调优、Token 经济学与团队生产 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh/" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/claude-mem-tutorial/" data-astro-cid-ilhxcym7>Claude-Mem 完全实战指南</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh/"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial/"},{"@type":"ListItem","position":3,"name":"Claude-Mem 完全实战指南","item":"https://www.agentupdate.ai/zh/tutorial/claude-mem-tutorial/"},{"@type":"ListItem","position":4,"name":"第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀"}]}</script> <div class="lesson-header" data-astro-cid-p7qzptk4> <h1 data-astro-cid-p7qzptk4>第 6 期：三层渐进式检索 — Claude-Mem 的省钱秘诀</h1> <div class="meta" data-astro-cid-p7qzptk4> <span data-astro-cid-p7qzptk4>⏱ 预计阅读 9 分钟</span> <span data-astro-cid-p7qzptk4>更新于 2026/4/29</span> </div> </div> <div class="markdown-body" data-astro-cid-p7qzptk4><blockquote>
+<p><strong>本期场景</strong>：你的博客项目已经开发了 2 周、10 个会话、200 条 Observations。现在你问 Claude："上次那个登录 Bug 是怎么修的？" 如果把 200 条全部塞给 Claude... 大概要烧掉 10 万个 Token。</p>
+</blockquote>
+<hr>
+<h2>6.1 Token 经济学：为什么「全塞进去」是自杀行为？</h2>
+<p>先算一笔账：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10 个会话 × 20 条 Observations</td>
+<td>200 条</td>
+</tr>
+<tr>
+<td>每条 Observation 平均 500 tokens</td>
+<td>100,000 tokens</td>
+</tr>
+<tr>
+<td>Claude 上下文窗口</td>
+<td>200,000 tokens（上限）</td>
+</tr>
+<tr>
+<td>你实际需要的信息</td>
+<td>可能只有 2-3 条相关的</td>
+</tr>
+</tbody></table>
+<p>如果暴力注入所有 200 条记忆：</p>
+<ul>
+<li>💸 <strong>消耗</strong>: 100K tokens（$0.30-$1.50/次）</li>
+<li>🐌 <strong>速度</strong>: 填充上下文需要很长时间</li>
+<li>🤯 <strong>质量</strong>: 大量无关信息会干扰 Claude 的判断（"上下文中毒"）</li>
+</ul>
+<blockquote>
+<p>Claude-Mem 的解决方案：<strong>不要全给它，让它自己来拿需要的部分。</strong></p>
+</blockquote>
+<hr>
+<h2>6.2 三层检索：Progressive Disclosure（渐进披露）</h2>
+<p>Claude-Mem 的核心设计哲学叫 <strong>Progressive Disclosure</strong> —— 分层递进地披露信息。Claude 先拿到一个轻量的目录索引，找到感兴趣的条目后，再去获取详情。</p>
+<h3>Layer 1: <code>search</code> → 轻量索引</h3>
+<p><strong>消耗</strong>: ~50-100 tokens/条</p>
+<p>返回的信息极其精简：只有 ID、标题、类型、时间。就像一本书的目录。</p>
+<pre><code class="language-json">// search(query="登录 Bug", type="bugfix", limit=10)
+[
+  { "id": 42, "title": "修复 JWT 刷新逻辑", "type": "bugfix", "date": "2026-04-18" },
+  { "id": 67, "title": "修复登录 API 422 错误", "type": "bugfix", "date": "2026-04-20" },
+  { "id": 89, "title": "修复 OAuth 回调 URL", "type": "bugfix", "date": "2026-04-21" }
+]
+</code></pre>
+<h3>Layer 2: <code>timeline</code> → 时间线上下文</h3>
+<p><strong>消耗</strong>: ~100-200 tokens/条</p>
+<p>Claude 看完索引后，对 #67 感兴趣。通过 timeline 获取它前后的关联事件，理解因果链。</p>
+<pre><code class="language-json">// timeline(observation_id=67)
+[
+  { "id": 65, "title": "读取 auth.ts 文件", "type": "discovery", "time": "10:31" },
+  { "id": 66, "title": "发现缺少请求体验证", "type": "discovery", "time": "10:33" },
+  { "id": 67, "title": "修复登录 API 422 错误", "type": "bugfix", "time": "10:35" },
+  { "id": 68, "title": "添加输入验证测试", "type": "feature", "time": "10:38" }
+]
+</code></pre>
+<h3>Layer 3: <code>get_observations</code> → 完整详情</h3>
+<p><strong>消耗</strong>: ~500-1,000 tokens/条</p>
+<p>只对筛选后的 ID 获取全部内容。这一步最"贵"，但因为已经精准过滤，只取 2-3 条。</p>
+<pre><code class="language-json">// get_observations(ids=[66, 67])
+[
+  {
+    "id": 66,
+    "title": "发现缺少请求体验证",
+    "narrative": "开发者在检查 src/api/auth/login.ts 时发现...",
+    "facts": ["login 路由未检查空请求体", "导致 Prisma 抛出 422"],
+    "files_read": ["src/api/auth/login.ts"]
+  },
+  {
+    "id": 67,
+    "title": "修复登录 API 422 错误",
+    "narrative": "在路由处理函数开头添加了 zod 验证...",
+    "facts": ["使用 zod 进行输入验证", "验证失败返回 400"],
+    "files_modified": ["src/api/auth/login.ts"]
+  }
+]
+</code></pre>
+<hr>
+<h2>6.3 省费对比</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph LR
+    subgraph "暴力方式"
+        A1["200 条 Observations<br>全部注入 Claude"] --&gt; A2["100,000 tokens<br>💸💸💸"]
+    end
+
+    subgraph "三层渐进式检索"
+        B1["Layer 1: search<br>返回 10 条索引"] --&gt; B2["~700 tokens"]
+        B2 --&gt; B3["Layer 2: timeline<br>查看 #67 的前后文"] --&gt; B4["+400 tokens"]
+        B4 --&gt; B5["Layer 3: get_observations<br>获取 2 条详情"] --&gt; B6["+1,500 tokens"]
+    end
+
+    A2 --&gt; C["总计: 100,000 tokens"]
+    B6 --&gt; D["总计: 2,600 tokens"]
+
+    style A2 fill:#ef4444,color:#fff
+    style D fill:#10b981,color:#fff</pre></div><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>Token 消耗</th>
+<th>成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>暴力全塞</td>
+<td>~100,000</td>
+<td>$0.30-$1.50</td>
+</tr>
+<tr>
+<td>三层检索</td>
+<td>~2,600</td>
+<td>$0.01</td>
+</tr>
+<tr>
+<td><strong>节省比例</strong></td>
+<td><strong>~97%</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6.4 Claude 是如何自动执行三层检索的？</h2>
+<p>你不需要手动告诉 Claude "先搜索、再看时间线、再取详情"。Claude-Mem 的 MCP 工具设计天然引导 Claude 这样做：</p>
+<ol>
+<li>Claude 收到你的问题 → "上次那个登录 Bug 怎么修的？"</li>
+<li>Claude 看到自己有 <code>search</code>、<code>timeline</code>、<code>get_observations</code> 三个工具可用</li>
+<li>Claude 的推理过程（自动发生）：</li>
+</ol>
+<pre><code>思考：用户问的是一个特定的历史 Bug 修复。
+我应该先搜索相关的记忆。
+
+行动：search(query="登录 Bug", type="bugfix")
+结果：找到 3 条匹配，id #67 最相关。
+
+思考：我需要了解这个 Bug 修复的上下文。
+行动：timeline(observation_id=67)
+结果：看到了问题的发现过程和修复步骤。
+
+思考：我需要 #66 和 #67 的完整详情来给用户准确答案。
+行动：get_observations(ids=[66, 67])
+结果：获得了完整的 narrative 和 facts。
+
+回复用户：上次登录 Bug 的根因是...修复方案是...
+</code></pre>
+<p><strong>这个三步漏斗是自动发生的。</strong> Claude-Mem 的工具名和描述经过精心设计，让 Claude 自然而然地选择正确的调用顺序。</p>
+<hr>
+<h2>6.5 SessionStart 时的自动注入</h2>
+<p>除了主动搜索，Claude-Mem 在每次会话开始时也使用渐进式策略自动注入上下文：</p>
+<ul>
+<li>注入最近 N 个会话的 <strong>Summaries</strong>（轻量，每条 ~200 tokens）</li>
+<li>注入最近的 <strong>next_steps</strong>（告诉 Claude 上次没做完什么）</li>
+<li><strong>不注入</strong>所有历史 Observations 的完整内容</li>
+</ul>
+<p>可以在 <code>settings.json</code> 中配置注入的上下文量：</p>
+<pre><code class="language-json">{
+  "CONTEXT_OBSERVATION_LIMIT": 50,
+  "CONTEXT_SESSION_LIMIT": 10
+}
+</code></pre>
+<hr>
+<h2>实操练习</h2>
+<ol>
+<li>在博客项目中累积至少 2-3 个会话</li>
+<li>在新会话中问 Claude 一个关于历史操作的问题</li>
+<li>观察 Claude 的工具调用过程 —— 它应该会先 <code>search</code>，再 <code>get_observations</code></li>
+<li>在 Web UI 中找到对应的 Observations，对比 Claude 给你的回答和原始记录</li>
+</ol>
+<hr>
+<h2>下期预告</h2>
+<p>三层检索只解决了「怎么省 Token」的问题。但具体到实际使用，你需要掌握搜索的高级技巧 —— 按类型、按文件、按时间过滤。下一期深入 Memory Search Skill。</p>
+<p>➡️ <a href="/tutorial/claude-mem-tutorial/lesson-7">第 7 期：Skill 1 — Memory Search 记忆搜索</a></p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-p7qzptk4> <div class="nav-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-5/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>← 上一课</span> <span class="title" data-astro-cid-p7qzptk4>第 5 期：Worker Service — Claude-Mem 的心脏</span> </a> </div> <div class="nav-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-mem-tutorial/lesson-7/" class="nav-btn" data-astro-cid-p7qzptk4> <span class="label" data-astro-cid-p7qzptk4>下一课 →</span> <span class="title" data-astro-cid-p7qzptk4>第 7 期：Skill 1 — Memory Search（记忆搜索）</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

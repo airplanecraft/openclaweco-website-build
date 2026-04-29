@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 9 期：代码是最终兵器 — Code 节点编写 JS/Python — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai</title><meta name="description" content="掌握 n8n Code 节点的完整实战技巧：运行模式、内置变量、跨节点引用、异步操作与 Python 模式。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/09-code-node/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/09-code-node/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/n8n-tutorial/09-code-node/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/n8n-tutorial/09-code-node/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 9 期：代码是最终兵器 — Code 节点编写 JS/Python — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta property="og:description" content="掌握 n8n Code 节点的完整实战技巧：运行模式、内置变量、跨节点引用、异步操作与 Python 模式。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/n8n-tutorial/09-code-node/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 9 期：代码是最终兵器 — Code 节点编写 JS/Python — n8n 全攻略：从自动化流到多智能体编排 — AgentUpdate.ai"><meta name="twitter:description" content="掌握 n8n Code 节点的完整实战技巧：运行模式、内置变量、跨节点引用、异步操作与 Python 模式。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/n8n-tutorial/09-code-node/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/n8n-tutorial/09-code-node/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 n8n 全攻略：从自动化流到多智能体编排 </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/01-introduction/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 1 期：为什么是 n8n？2026 自动化与 AI Agent 新纪元 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/02-basic-concepts/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 2 期：基础概念剖析 — 节点、触发器与线缆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/03-docker-deploy/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 3 期：环境部署 — Docker Compose 本地部署与安全配置 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/04-data-heartbeat/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 4 期：数据的心跳 — 深度搞懂 JSON Items 与隐式循环 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/05-webhook-telegram/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 5 期：首个实战流 — Webhook 触发与 Telegram 机器人双向交互 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/06-branching-loops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 6 期：分支与循环控制 — If、Switch 与 Loop 节点大解剖 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/07-data-tables/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 7 期：告别外挂数据库 — 内置 Data Tables 的 CRUD 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/08-http-request/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 8 期：与世界通信 — HTTP Request 节点的认证、轮询与并发 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/09-code-node/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 9 期：代码是最终兵器 — Code 节点编写 JS/Python </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/10-utility-nodes/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期：内置工具锦囊 — Merge、Set、Edit Image 节点大串烧 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/11-llm-credentials/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期：唤醒模型 — 配置大模型凭证与基础 LLM 节点 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/12-chat-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期：专属对话机器人诞生 — Chat Trigger 与 AI Agent 节点详解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/13-memory/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期：赋予长期记忆 — Window Buffer Memory 与对话状态持久化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/14-agent-tools/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期：赋予数字之手 — 给 Agent 接入 Tools 工具集 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/15-prompt-engineering/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期：意图识别密码 — System Prompt 与 Tool Description 高级调优 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/16-rag-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期：知识即力量 — RAG 架构原理与 Embedding 基础 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/17-indexing-pipeline/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期：灌注知识 — Qdrant 向量数据库部署与文档索引管道 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/18-rag-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期：知识变武器 — Vector Store Tool 与 RAG Agent 实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/19-advanced-rag/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期：检索精进 — Hybrid Search、Re-Ranking 与多角度检索 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/20-rag-ops/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期：知识库运维 — 增量更新、过期清理与检索质量监控 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/21-mcp-fundamentals/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>21.</span> 第 21 期：无限工具箱 — MCP 协议原理与 n8n 集成架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/22-mcp-client/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>22.</span> 第 22 期：即插即用 — MCP Client Tool 实战连接 GitHub 与文件系统 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/23-mcp-server/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>23.</span> 第 23 期：角色反转 — 把 n8n 工作流暴露为 MCP Server </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/24-mcp-orchestration/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>24.</span> 第 24 期：MCP 服务编排 — 多 Server 管理、路由与健康检查 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/25-mcp-workspace/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>25.</span> 第 25 期：MCP 综合实战 — 构建 AI 驱动的全能工作台 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/26-error-handling/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>26.</span> 第 26 期：永不崩溃 — 错误处理、重试与告警体系 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/27-sub-workflows/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>27.</span> 第 27 期：模块化构建 — Sub-Workflow 子工作流与 Workflow Tool </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/28-version-control/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>28.</span> 第 28 期：Git 协作 — 工作流版本控制与多环境部署 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/29-multi-agent/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>29.</span> 第 29 期：群体智慧 — 多 Agent 协作与 Supervisor 架构 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/30-grand-finale/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>30.</span> 第 30 期：大结局 — 企业级 AI Agent 平台全架构参考 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/n8n-tutorial/" data-astro-cid-ilhxcym7>n8n 全攻略：从自动化流到多智能体编排</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 9 期：代码是最终兵器 — Code 节点编写 JS/Python</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"n8n 全攻略：从自动化流到多智能体编排","item":"https://www.agentupdate.ai/tutorial/n8n-tutorial/"},{"@type":"ListItem","position":4,"name":"第 9 期：代码是最终兵器 — Code 节点编写 JS/Python"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 9 期：代码是最终兵器 — Code 节点编写 JS/Python</h1> <div class="meta" data-astro-cid-vma7orrt> <span data-astro-cid-vma7orrt>⏱ Est. reading time: 14 min</span> <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><h2>Code 节点的定位</h2>
+<p>当可视化节点无法满足你的需求（如复杂的数据结构转换、正则匹配、数学计算等），<strong>Code 节点就是你的最终兜底</strong>。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    subgraph "n8n 处理能力阶梯"
+        L1[🟢 内置节点<br>Set / If / Merge<br>覆盖 70% 场景]
+        L2[🟡 表达式<br>{{ $json.field }}<br>覆盖 20% 场景]
+        L3[🔴 Code 节点<br>JS / Python<br>覆盖剩余 10%]
+    end
+    
+    L1 --&gt; L2 --&gt; L3
+    
+    style L3 fill:#ff6d5b,stroke:#e55a4e,color:#fff</pre></div><hr>
+<h2>1. 两种运行模式</h2>
+<h3>🔄 Run Once for All Items（默认推荐）</h3>
+<p>一次性获取所有 Items，你自己控制遍历逻辑。</p>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 模式: "Run Once for All Items"
+// 特点: $input.all() 返回全部 Items，你自己决定如何处理
+// 适用: 聚合计算、排序、去重、分组等需要看到"全局"的场景
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const allItems = $input.all();  // 获取全部 Items
+
+// 示例: 按价格从高到低排序
+const sorted = allItems.sort((a, b) =&gt; b.json.price - a.json.price);
+
+// 示例: 去重 (按 email 字段)
+const seen = new Set();
+const unique = allItems.filter(item =&gt; {
+  if (seen.has(item.json.email)) return false;  // 已见过，过滤掉
+  seen.add(item.json.email);                     // 标记为已见
+  return true;                                    // 保留
+});
+
+// 必须返回 Item 数组
+return unique;
+</code></pre>
+<h3>🔁 Run Once for Each Item</h3>
+<p>n8n 自动遍历，每个 Item 独立执行一次代码。</p>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 模式: "Run Once for Each Item"
+// 特点: $input.item 是"当前这一个" Item
+// 适用: 对每条数据做独立转换（无需看到其他 Items）
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const item = $input.item;  // 当前正在处理的 Item
+
+// 示例: 手机号脱敏
+const phone = item.json.phone;
+const masked = phone.slice(0, 3) + '****' + phone.slice(-4);
+// 13812345678 → 138****5678
+
+// 返回单个 Item（不是数组！）
+return {
+  json: {
+    ...item.json,              // 保留原有字段
+    maskedPhone: masked,       // 新增脱敏字段
+    processedAt: new Date().toISOString()  // 新增时间戳
+  }
+};
+</code></pre>
+<hr>
+<h2>2. 内置变量与引用</h2>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// n8n Code 节点内置变量速查表
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// 📌 当前节点数据
+$input.all()                    // 所有输入 Items (Run Once for All)
+$input.first()                  // 第一个 Item
+$input.last()                   // 最后一个 Item
+$input.item                     // 当前 Item (Run Once for Each)
+$input.all().length             // Items 总数
+
+// 📌 跨节点引用 (⭐ 极其强大!)
+$('Set').all()                  // 获取 "Set" 节点的全部输出 Items
+$('HTTP Request').first().json  // 获取 "HTTP Request" 节点第一条数据的 JSON
+$('Telegram Trigger').first().json.message.text  // 深度跨节点引用
+
+// 📌 工作流元信息
+$execution.id                   // 当前执行 ID
+$execution.mode                 // "manual" | "trigger"
+$workflow.id                    // 工作流 ID
+$workflow.name                  // 工作流名称
+
+// 📌 时间函数
+$now                            // 当前时间 (Luxon DateTime 对象)
+$now.toISO()                    // "2026-04-09T12:00:00.000+08:00"
+$now.toFormat('yyyy-MM-dd')     // "2026-04-09"
+$today                          // 今天 00:00:00
+
+// 📌 环境变量
+$env.MY_SECRET_KEY              // 读取 n8n 环境变量 (安全!)
+</code></pre>
+<hr>
+<h2>3. 实战案例集</h2>
+<h3>案例 1: CSV 文本解析</h3>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 场景: 将一段 CSV 文本拆解为结构化 Items
+// 输入: { "json": { "csvData": "姓名,年龄,城市\n张三,28,上海\n李四,35,北京" } }
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const csv = $input.first().json.csvData;
+const lines = csv.split('\n');              // 按换行符分割
+const headers = lines[0].split(',');        // 第一行是表头
+
+// 跳过表头，将每行数据转为 Item
+const items = lines.slice(1).map(line =&gt; {
+  const values = line.split(',');
+  const obj = {};
+  headers.forEach((header, index) =&gt; {
+    obj[header.trim()] = values[index]?.trim();  // 对齐表头与值
+  });
+  return { json: obj };
+});
+
+return items;
+// 输出:
+// [
+//   { "json": { "姓名": "张三", "年龄": "28", "城市": "上海" } },
+//   { "json": { "姓名": "李四", "年龄": "35", "城市": "北京" } }
+// ]
+</code></pre>
+<h3>案例 2: 数据分组统计</h3>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 场景: 按城市分组，统计每个城市的订单数与总金额
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const items = $input.all();
+
+// 使用 reduce 做分组聚合
+const grouped = items.reduce((acc, item) =&gt; {
+  const city = item.json.city;
+  if (!acc[city]) {
+    acc[city] = { city, count: 0, totalAmount: 0 };  // 初始化分组
+  }
+  acc[city].count += 1;                               // 计数 +1
+  acc[city].totalAmount += item.json.amount;           // 累加金额
+  return acc;
+}, {});
+
+// 将分组结果转为 Item 数组输出
+return Object.values(grouped).map(group =&gt; ({ json: group }));
+// 输出:
+// [
+//   { "json": { "city": "上海", "count": 15, "totalAmount": 28500 } },
+//   { "json": { "city": "北京", "count": 8,  "totalAmount": 12000 } }
+// ]
+</code></pre>
+<h3>案例 3: 异步操作（使用 await）</h3>
+<pre><code class="language-javascript">// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// n8n Code 节点默认支持 async/await！
+// 场景: 在 Code 节点中直接发起 HTTP 请求 (无需 HTTP Request 节点)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// ⚠️ 注意: n8n Code 节点使用 Node.js 沙箱
+//    内置 fetch API 可直接使用
+
+const response = await fetch('https://api.github.com/repos/n8n-io/n8n');
+const data = await response.json();
+
+return [{
+  json: {
+    repoName: data.full_name,            // "n8n-io/n8n"
+    stars: data.stargazers_count,         // 50000+
+    language: data.language,              // "TypeScript"
+    lastUpdate: data.updated_at
+  }
+}];
+</code></pre>
+<hr>
+<h2>4. Python 模式 (n8n 2.0+)</h2>
+<pre><code class="language-python"># ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# n8n Code 节点 Python 模式
+# 需要在节点设置中将 Language 切换为 "Python"
+# ⚠️ 需要 N8N_RUNNERS_ENABLED=true (Task Runner)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 获取所有输入 Items
+items = _input.all()
+
+# 使用 Python 列表推导式进行数据处理
+result = []
+for item in items:
+    data = item["json"]         # 访问 Item 的 json 字段
+    
+    # 中文姓名 → 拼音 (示例逻辑)
+    processed = {
+        "original": data["name"],
+        "uppercased": data["name"].upper(),
+        "length": len(data["name"]),
+    }
+    result.append({"json": processed})
+
+return result
+</code></pre>
+<hr>
+<h2>安全注意事项</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph TB
+    subgraph "Code 节点安全模型"
+        Code[💻 你的代码]
+        
+        Code --&gt;|"✅ 允许"| Allow1[fetch / HTTP 请求]
+        Code --&gt;|"✅ 允许"| Allow2[JSON 处理]
+        Code --&gt;|"✅ 允许"| Allow3[数学计算]
+        Code --&gt;|"❌ 禁止"| Deny1[访问文件系统 fs]
+        Code --&gt;|"❌ 禁止"| Deny2[require 外部模块]
+        Code --&gt;|"❌ 禁止"| Deny3[子进程 child_process]
+    end
+    
+    Note[🛡️ Task Runner 沙箱<br>N8N_RUNNERS_ENABLED=true]
+    Code -.-&gt; Note
+    
+    style Note fill:#22c55e,stroke:#16a34a,color:#fff</pre></div><blockquote>
+<p>⚠️ <strong>安全提示</strong>: 启用 <code>N8N_RUNNERS_ENABLED=true</code> 后，Code 节点在隔离的 Task Runner 沙箱中执行，无法访问宿主文件系统或执行系统命令，有效防止代码注入攻击。</p>
+</blockquote>
+<h2>下一步</h2>
+<p>在 Ep 10 中，我们将快速串烧 n8n 最实用的内置工具节点——Merge、Set、Edit Image、Date &amp; Time 等，补齐日常开发的最后拼图。</p>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/08-http-request/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 8 期：与世界通信 — HTTP Request 节点的认证、轮询与并发</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/n8n-tutorial/10-utility-nodes/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 10 期：内置工具锦囊 — Merge、Set、Edit Image 节点大串烧</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>

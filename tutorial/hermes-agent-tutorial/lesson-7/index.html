@@ -1,0 +1,510 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 07 期 | Cron 调度与自动化任务编排 — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="使用 hermes cron 设置周期性自动化任务——定时汇报、数据采集、健康检查。深入理解 Agent 作为&#34;永不休息的助手&#34;的运行模式与资源管理。"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-7/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-7/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-7/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-7/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 07 期 | Cron 调度与自动化任务编排 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="使用 hermes cron 设置周期性自动化任务——定时汇报、数据采集、健康检查。深入理解 Agent 作为&#34;永不休息的助手&#34;的运行模式与资源管理。"><meta property="og:image" content="/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-7/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 07 期 | Cron 调度与自动化任务编排 — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="使用 hermes cron 设置周期性自动化任务——定时汇报、数据采集、健康检查。深入理解 Agent 作为&#34;永不休息的助手&#34;的运行模式与资源管理。"><meta name="twitter:image" content="/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":[],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.CmkfqluZ.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_@_@astro.Duf9KNX2.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-7/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> <span class="nav-desktop-only"> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-7/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news/">News</a> <a href="/product/">Products</a> <a href="/skills/">Skills</a> <a href="/plugins/">Plugin</a> <a href="/releases/">Releases</a> <a href="/tags/">Tags</a> <a href="/tutorial/">Tutorials</a> <a href="/simulators/">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page" data-astro-cid-vma7orrt> <div class="container dual-layout" data-astro-cid-vma7orrt> <!-- Sidebar Navigation --> <aside class="sidebar-nav" data-astro-cid-vma7orrt> <div class="sidebar-content" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/" class="series-title" data-astro-cid-vma7orrt>
+📚 Hermes Agent Hands-On Guide </a> <ul class="nav-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-1/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>1.</span> 第 01 期 | 认识 Hermes Agent：架构总览与极速安装 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-2/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>2.</span> 第 02 期 | 模型切换与 Provider 配置实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-3/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>3.</span> 第 03 期 | Skills 系统深度剖析：让 Agent 自我进化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-4/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>4.</span> 第 04 期 | Memory 与用户画像：跨会话的持久记忆 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-5/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>5.</span> 第 05 期 | 消息网关：通过 Telegram/Discord 随时对话 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>6.</span> 第 06 期 | MCP 工具生态：连接外部世界的桥梁 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-7/" class="nav-link active" data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>7.</span> 第 07 期 | Cron 调度与自动化任务编排 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>8.</span> 第 08 期 | Context Files 与工作区感知 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-9/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>9.</span> 第 09 期 | 多轮对话与复杂任务分解 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>10.</span> 第 10 期 | Hermes Agent 的安全模型与权限控制 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>11.</span> 第 11 期 | 自定义 Persona：打造专属领域 Agent </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>12.</span> 第 12 期 | Agent 协作：多 Agent 通信与任务委派 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>13.</span> 第 13 期 | 知识库构建：RAG 与长期文档管理 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>14.</span> 第 14 期 | 代码生成与项目脚手架实战 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>15.</span> 第 15 期 | Agent 驱动的 DevOps：CI/CD 与部署自动化 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-16/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>16.</span> 第 16 期 | 性能调优与 Token 经济学 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>17.</span> 第 17 期 | 日志系统与可观测性实践 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-18/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>18.</span> 第 18 期 | 生产环境部署：VPS 到 GPU 集群 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-19/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>19.</span> 第 19 期 | 社区生态与 Skill Marketplace 贡献指南 </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-20/" class="nav-link " data-astro-cid-vma7orrt> <span class="index" data-astro-cid-vma7orrt>20.</span> 第 20 期 | 未来展望：从个人助手到自治组织 </a> </li> </ul> </div> </aside> <!-- Main Content --> <article class="main-content" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/hermes-agent-tutorial/" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 07 期 | Cron 调度与自动化任务编排</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial/"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/"},{"@type":"ListItem","position":4,"name":"第 07 期 | Cron 调度与自动化任务编排"}]}</script> <div class="lesson-header" data-astro-cid-vma7orrt> <h1 data-astro-cid-vma7orrt>第 07 期 | Cron 调度与自动化任务编排</h1> <div class="meta" data-astro-cid-vma7orrt>  <span data-astro-cid-vma7orrt>Updated on 4/22/2026</span> </div> </div> <div class="markdown-body" data-astro-cid-vma7orrt><p>Hermes Agent 教程系列</p>
+<p>副标题：使用 <code>hermes cron</code> 设置周期性自动化任务——定时汇报、数据采集、健康检查。深入理解 Agent 作为"永不休息的助手"的运行模式与资源管理。</p>
+<hr>
+<h2>🎯 学习目标</h2>
+<ul>
+<li><strong>掌握 Hermes Agent 的 Cron 调度机制</strong>：理解 Agent 如何利用 Cron 实现周期性、智能化的任务执行。</li>
+<li><strong>熟练运用 <code>hermes cron</code> 命令集</strong>：学会添加、列出、编辑、删除、启用和禁用自动化任务。</li>
+<li><strong>设计并编排复杂的自动化工作流</strong>：将 Cron 调度与 Agent 的 Skills（技能）和 Memory（记忆）系统相结合，实现高级自动化场景。</li>
+<li><strong>理解 Agent 自动化任务的运行模式与资源管理</strong>：探讨 Agent 在无人值守状态下如何高效、负责地执行任务。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<p>Hermes Agent 的核心理念之一是成为一个“永不休息的助手”。为了实现这一目标，仅仅能够响应用户指令是不够的，它还需要具备主动执行任务的能力。Cron 调度正是赋予 Agent 这种能力的关键组件，它让 Agent 能够按照预设的时间表，独立地启动思考、执行操作，并将结果反馈给用户或存储起来。</p>
+<h3>7.1 Cron 调度：Agent 的“生物钟”</h3>
+<p>在传统的 Unix-like 系统中，<code>cron</code> 是一个守护进程，用于在预定的时间、日期或间隔执行命令或脚本。它就像一个精密的“生物钟”，确保系统维护任务、数据备份等能够按时自动运行。Hermes Agent 将这一概念提升到了一个新的高度，它不仅仅是执行一条简单的 shell 命令，而是触发 Agent 的一个完整“思考周期”。</p>
+<p>当 Hermes Agent 的 Cron 调度器被触发时，它会：</p>
+<ol>
+<li><strong>唤醒 Agent 核心</strong>：如果 Agent 处于空闲状态，它会被唤醒并加载必要的上下文。</li>
+<li><strong>注入任务指令</strong>：预设的 Prompt（指令）会被作为用户的输入，传递给 Agent 的大语言模型（LLM）。</li>
+<li><strong>智能决策与执行</strong>：LLM 会根据 Prompt、Agent 的 Skills（技能，详见<a href="https://hermes-agent.nousresearch.com/docs/episode-03-skills-system-deep-dive/">第 03 期</a>）和 Memory（记忆，详见<a href="https://hermes-agent.nousresearch.com/docs/episode-04-memory-and-user-persona/">第 04 期</a>）来制定执行计划，调用所需的工具，并生成响应。</li>
+<li><strong>结果处理与反馈</strong>：任务执行的结果可以被记录到 Agent 的 Memory 中，或者通过消息网关（详见<a href="https://hermes-agent.nousresearch.com/docs/episode-05-message-gateways/">第 05 期</a>）发送给用户。</li>
+</ol>
+<p>这种智能化的 Cron 调度，让 Agent 能够：</p>
+<ul>
+<li><strong>定时汇报与总结</strong>：每天早上生成最新的市场分析、项目进度报告或新闻摘要。</li>
+<li><strong>周期性数据采集</strong>：每小时抓取股票价格、天气数据或网站更新，并进行处理。</li>
+<li><strong>系统健康检查与监控</strong>：定时检查服务器状态、服务可用性，并在发现异常时发出警报。</li>
+<li><strong>自动化内容生成</strong>：按计划生成社交媒体帖子、邮件草稿或博客文章。</li>
+</ul>
+<p><strong>Cron 表达式基础</strong></p>
+<p>Cron 任务的调度时间通过 Cron 表达式定义。一个标准的 Cron 表达式由五个字段组成，分别代表：分钟、小时、日期、月份、星期几。</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">允许值</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">分钟</td>
+<td align="left">0-59</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">小时</td>
+<td align="left">0-23</td>
+<td align="left">(0 表示午夜)</td>
+</tr>
+<tr>
+<td align="left">日期</td>
+<td align="left">1-31</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">月份</td>
+<td align="left">1-12</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">星期几</td>
+<td align="left">0-7</td>
+<td align="left">(0 和 7 都表示星期日，1 表示星期一)</td>
+</tr>
+</tbody></table>
+<p><strong>特殊字符：</strong></p>
+<ul>
+<li><code>*</code>：匹配任何值，表示“每”。例如，分钟字段为 <code>*</code> 表示每分钟。</li>
+<li><code>,</code>：列出多个值。例如，<code>1,5</code> 表示第 1 和第 5。</li>
+<li><code>-</code>：指定范围。例如，<code>9-17</code> 表示上午 9 点到下午 5 点。</li>
+<li><code>/</code>：指定增量。例如，<code>*/5</code> 在分钟字段表示每 5 分钟。</li>
+<li><code>?</code>：仅用于日期和星期几字段，表示不指定特定值，常用于避免冲突。</li>
+</ul>
+<p><strong>常见 Cron 表达式示例：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>0 0 * * *</code></td>
+<td align="left">每天午夜 00:00 执行</td>
+</tr>
+<tr>
+<td align="left"><code>0 9 * * *</code></td>
+<td align="left">每天早上 9:00 执行</td>
+</tr>
+<tr>
+<td align="left"><code>*/30 * * * *</code></td>
+<td align="left">每 30 分钟执行一次</td>
+</tr>
+<tr>
+<td align="left"><code>0 0 1 * *</code></td>
+<td align="left">每月 1 号午夜 00:00 执行</td>
+</tr>
+<tr>
+<td align="left"><code>0 12 * * 1-5</code></td>
+<td align="left">每周一到周五中午 12:00 执行</td>
+</tr>
+</tbody></table>
+<p>理解 Cron 表达式是配置自动化任务的基础。Hermes Agent 的 Cron 调度功能，结合其智能决策能力，将传统的定时任务提升到了一个全新的智能自动化水平。</p>
+<h3>7.2 <code>hermes cron</code> 命令详解与任务生命周期</h3>
+<p><code>hermes cron</code> 命令是管理 Hermes Agent 自动化任务的核心工具集。它提供了直观的接口来添加、查看、编辑和删除定时任务。</p>
+<h4>任务管理命令概览</h4>
+<ul>
+<li><strong><code>hermes cron add</code></strong>: 添加新的 Cron 任务。</li>
+<li><strong><code>hermes cron list</code></strong>: 列出所有已配置的 Cron 任务。</li>
+<li><strong><code>hermes cron delete &lt;task_id&gt;</code></strong>: 删除指定的 Cron 任务。</li>
+<li><strong><code>hermes cron enable &lt;task_id&gt;</code></strong>: 启用指定的 Cron 任务。</li>
+<li><strong><code>hermes cron disable &lt;task_id&gt;</code></strong>: 禁用指定的 Cron 任务。</li>
+<li><strong><code>hermes cron edit &lt;task_id&gt;</code></strong>: 编辑指定的 Cron 任务的属性。</li>
+</ul>
+<h4><code>hermes cron add</code> 详细说明</h4>
+<p>这是最常用的命令，用于创建一个新的自动化任务。</p>
+<pre><code class="language-bash">hermes cron add \
+  --name "任务名称" \
+  --schedule "cron_表达式" \
+  --prompt "给 Agent 的指令" \
+  [--system-prompt "可选的系统指令"] \
+  [--model "可选的 LLM 模型名称"]
+</code></pre>
+<ul>
+<li><code>--name</code>: 任务的唯一标识符，便于识别和管理。</li>
+<li><code>--schedule</code>: Cron 表达式，定义任务的执行频率和时间。</li>
+<li><code>--prompt</code>: 这是 Agent 在任务被触发时接收到的核心指令。你需要在这里清晰地描述 Agent 需要完成的任务。</li>
+<li><code>--system-prompt</code> (可选): 允许为该特定 Cron 任务设置一个独立的系统 Prompt，覆盖 Agent 的默认系统 Prompt。这对于需要特定角色或行为的自动化任务非常有用。</li>
+<li><code>--model</code> (可选): 允许为该特定 Cron 任务指定一个 LLM 模型，覆盖 Agent 的默认模型配置。这在某些任务需要特定模型能力（例如，更长的上下文窗口、更强的推理能力）时非常有用。</li>
+</ul>
+<h4>任务的执行流程与状态</h4>
+<p>当一个 Cron 任务被调度执行时，其生命周期大致如下：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[Cron Scheduler Triggered] --&gt; B{Is Task Enabled?};
+    B -- Yes --&gt; C[Hermes Agent Wakes Up];
+    C --&gt; D[Load Task Context &amp; Prompt];
+    D --&gt; E[LLM Processes Prompt &amp; Decides Actions];
+    E --&gt; F{Utilize Skills/Tools?};
+    F -- Yes --&gt; G[Agent Calls External Skills];
+    G --&gt; H[Update Internal State/Memory];
+    H --&gt; I[Generate Final Response/Output];
+    I --&gt; J[Store Task Execution Result];
+    J --&gt; K[Log Event &amp; Go Dormant];
+    B -- No --&gt; K;</pre></div><ol>
+<li><strong>调度器触发</strong>：根据 Cron 表达式，Hermes Agent 的内部调度器会在指定时间点触发任务。</li>
+<li><strong>状态检查</strong>：首先检查任务是否处于启用（Enabled）状态。如果被禁用，任务将被跳过。</li>
+<li><strong>Agent 唤醒与上下文加载</strong>：Agent 核心被激活，加载与该任务相关的任何特定配置（如 <code>--system-prompt</code>, <code>--model</code>）以及其持久化记忆（Memory）。</li>
+<li><strong>Prompt 处理</strong>：<code>--prompt</code> 中定义的指令被送入 LLM。LLM 会根据其知识、Skills 和 Memory 来理解任务意图。</li>
+<li><strong>技能调用与外部交互</strong>：如果任务需要与外部世界交互（如查询天气、发送邮件、执行代码），LLM 会决定调用相应的 Skills（如 <code>web_search</code>、<code>send_email</code> 等）。</li>
+<li><strong>记忆更新</strong>：任务执行过程中产生的任何重要信息或决策，都会被 Agent 记录到其长期记忆中，以便未来的任务或用户查询能够利用。</li>
+<li><strong>生成输出</strong>：Agent 生成任务的最终结果，这可能是一段文本、一个报告摘要，或者一个特定操作的确认。</li>
+<li><strong>结果存储与日志</strong>：任务的执行结果和状态（成功、失败）会被记录下来，供用户通过 <code>hermes logs</code> 或 <code>hermes doctor</code> 等命令查看。</li>
+<li><strong>Agent 再次休眠</strong>：任务完成后，Agent 会释放资源并进入休眠状态，等待下一次触发。</li>
+</ol>
+<p>这种精细的任务生命周期管理，确保了每一个自动化任务都能在 Agent 的完整能力框架下运行，而不仅仅是简单的脚本执行。它让 Agent 能够像一个真正的智能助手一样，理解、执行并学习。</p>
+<h3>7.3 自动化任务编排策略：结合 Skills 与 Memory</h3>
+<p>Hermes Agent 的强大之处在于其模块化和自进化能力。Cron 调度作为触发器，其真正价值在于能够与 Agent 的 Skills（技能）和 Memory（记忆）系统深度集成，从而编排出高度智能和复杂的自动化工作流。</p>
+<h4>1. 编写高效的 Prompt</h4>
+<p>一个好的 Prompt 是自动化任务成功的基石。对于 Cron 任务，Prompt 不仅仅是简单的指令，它更像是一份任务说明书，需要清晰、明确地引导 Agent 完成以下几点：</p>
+<ul>
+<li><strong>明确任务目标</strong>：Agent 最终需要达成什么？例如：“生成每日市场摘要”、“检查系统健康状况”。</li>
+<li><strong>指定信息来源</strong>：如果需要外部信息，Agent 应该从哪里获取？例如：“使用 <code>web_search</code> 技能搜索最新财经新闻”、“从文件系统读取 <code>server_status.log</code>”。</li>
+<li><strong>定义处理逻辑</strong>：Agent 应该如何处理获取到的信息？例如：“筛选出与科技股相关的新闻”、“识别日志中的错误和警告信息”。</li>
+<li><strong>明确输出格式和目的地</strong>：结果应该以什么形式呈现？发送到哪里？例如：“以 Markdown 格式输出摘要，并模拟发送给我”、“如果发现异常，则生成一份详细报告”。</li>
+<li><strong>考虑异常情况</strong>：当遇到问题时，Agent 应该如何响应？例如：“如果无法获取数据，请报告错误并说明原因”。</li>
+</ul>
+<p><strong>示例 Prompt 片段：</strong></p>
+<pre><code>"你是一名专业的金融分析师。请使用你的 `web_search` 技能获取今天最新的全球股市新闻和主要经济指标。然后，根据这些信息，生成一份简洁的每日市场摘要报告，重点关注对科技行业的潜在影响。报告应包含标题、关键要点和简要分析。最后，模拟将这份报告发送给我。"
+</code></pre>
+<p>这个 Prompt 明确了 Agent 的角色、所需技能、处理步骤、输出格式和最终交付方式。</p>
+<h4>2. 与 Skills（技能）的深度集成</h4>
+<p>如<a href="https://hermes-agent.nousresearch.com/docs/episode-03-skills-system-deep-dive/">第 03 期</a>所述，Skills 是 Agent 与外部世界交互的桥梁。Cron 任务可以触发 Agent 使用一个或多个 Skills 来完成复杂操作，从而超越 LLM 自身的知识限制。</p>
+<p><strong>集成场景举例：</strong></p>
+<ul>
+<li><strong>定时数据采集与分析</strong>：<ul>
+<li><strong>Prompt</strong>: "每小时使用 <code>web_search</code> 技能抓取特定网站的最新文章标题，并用 <code>text_summarize</code> 技能对每篇文章生成一个简短概述。将结果汇总成一个列表，并记录到我的 Memory 中。"</li>
+<li><strong>涉及技能</strong>: <code>web_search</code> (网页抓取), <code>text_summarize</code> (文本摘要)。</li>
+</ul>
+</li>
+<li><strong>周期性系统健康检查</strong>：<ul>
+<li><strong>Prompt</strong>: "每天凌晨 3 点，使用 <code>ssh_exec</code> 技能连接到 <code>prod-server-01</code> 并执行 <code>df -h</code> 和 <code>systemctl status nginx</code> 命令。分析输出结果，如果发现磁盘空间低于 10% 或 Nginx 服务未运行，请立即生成一份包含详细信息的告警报告，并记录到 Memory。"</li>
+<li><strong>涉及技能</strong>: <code>ssh_exec</code> (远程命令执行), <code>text_analysis</code> (文本分析，由 LLM 完成)。</li>
+</ul>
+</li>
+<li><strong>自动化内容发布</strong>：<ul>
+<li><strong>Prompt</strong>: "每周一早上 8 点，根据最近一周的科技新闻（从 Memory 获取），生成一篇关于未来科技趋势的短篇博客文章。使用 <code>image_generation</code> 技能为文章生成一张配图。将文章和图片内容整合，并模拟发布到我的博客平台（假设有 <code>blog_post</code> 技能）。"</li>
+<li><strong>涉及技能</strong>: <code>image_generation</code> (图像生成), <code>blog_post</code> (发布文章，可能需要自定义 Skill)。</li>
+</ul>
+</li>
+</ul>
+<p>通过这种方式，Cron 任务不再是被动的定时执行，而是成为一个智能工作流的启动器，驱动 Agent 利用其全部能力来完成任务。</p>
+<h4>3. 利用 Memory（记忆）保持任务上下文与连续性</h4>
+<p><a href="https://hermes-agent.nousresearch.com/docs/episode-04-memory-and-user-persona/">第 04 期</a>详细介绍了 Hermes Agent 的持久化记忆系统。对于自动化任务而言，Memory 至关重要，它赋予了 Agent 跨会话、跨任务的连续性，使得自动化任务能够基于历史信息进行决策和演进。</p>
+<p><strong>利用 Memory 的策略：</strong></p>
+<ul>
+<li><strong>维护任务状态</strong>：将自动化任务的最新状态、上次执行结果、遇到的问题等信息存储在 Memory 中。例如，一个数据采集任务可以记录上次采集到的最新数据 ID，下次启动时从该 ID 继续。</li>
+<li><strong>累积知识与上下文</strong>：Agent 可以将周期性任务中收集到的数据、分析结果等累积到 Memory 中，形成一个逐步增长的知识库。后续的任务可以查询这些历史数据进行更深层次的分析。</li>
+<li><strong>避免重复与优化决策</strong>：通过检查 Memory，Agent 可以避免执行重复的操作，或者根据历史经验调整其行为。例如，如果 Memory 显示某个系统组件已经多次出现故障，Agent 可能会在下次检查时更加关注它，甚至主动建议采取预防措施。</li>
+<li><strong>生成基于历史的报告</strong>：Cron 任务可以被指示“根据过去一周的系统健康检查记录（从 Memory 获取），生成一份趋势分析报告”。</li>
+</ul>
+<p><strong>示例 Prompt 片段与 Memory 交互：</strong></p>
+<pre><code>"你是一名系统管理员助手。每天凌晨 2 点，请检查所有关键服务器的 CPU 使用率和内存占用情况。如果任何服务器的 CPU 使用率连续两次超过 80% 或内存占用超过 90%，请生成一份详细的告警报告，并将其记录到我的 Memory 中。每次检查后，请更新 Memory 中关于服务器健康状况的最新记录。"
+</code></pre>
+<p>在这个例子中，Agent 不仅执行单次检查，它还会利用 Memory 来跟踪历史数据，从而做出更智能的告警决策。</p>
+<h4>资源管理与错误处理</h4>
+<ul>
+<li><strong>资源消耗</strong>：频繁或复杂的 Cron 任务会增加 LLM API 调用量，从而产生费用。同时，频繁的工具调用也会占用系统资源。在设计自动化任务时，需要平衡任务的频率和复杂度与资源消耗。</li>
+<li><strong>错误处理</strong>：虽然 Hermes Agent 能够自我修复和重试，但在自动化任务中，明确的错误报告机制仍然很重要。在 Prompt 中可以加入“如果任务失败或遇到任何错误，请详细说明并通知我”的指令。结合<a href="https://hermes-agent.nousresearch.com/docs/episode-05-message-gateways/">第 05 期</a>的消息网关，Agent 可以在任务失败时通过 Telegram 或 Discord 发送通知。</li>
+</ul>
+<p>通过将 Cron 调度与 Agent 的智能核心、外部技能和持久记忆相结合，Hermes Agent 能够超越简单的定时任务，成为一个真正意义上的“永不休息的智能助手”，为用户提供持续的价值。</p>
+<hr>
+<h2>💻 实战演示</h2>
+<p>在本节中，我们将通过几个实战场景，演示如何使用 <code>hermes cron</code> 命令来配置和管理自动化任务。</p>
+<h3>实战场景一：定时生成并模拟发送每日市场摘要</h3>
+<p>我们将设置一个 Cron 任务，让 Agent 每天早上 9 点自动生成一份基于最新信息的市场摘要。为了简化演示，我们暂时不涉及实际的发送功能（这需要配置消息网关，详见<a href="https://hermes-agent.nousresearch.com/docs/episode-05-message-gateways/">第 05 期</a>），而是让 Agent 将摘要打印到控制台或日志中。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>确认 Hermes Agent 运行正常</strong></p>
+<p>首先，确保您的 Hermes Agent 已经安装并启动。如果您尚未安装，请参考<a href="https://hermes-agent.nousresearch.com/docs/episode-01-introduction-and-quick-install/">第 01 期</a>。</p>
+<pre><code class="language-bash">hermes doctor
+</code></pre>
+<p>预期输出应显示 Agent 状态良好，模型已配置。</p>
+</li>
+<li><p><strong>添加每日市场摘要 Cron 任务</strong></p>
+<p>我们将添加一个名为 "Daily Market Summary" 的任务，每天早上 9 点触发。Agent 会被指示去搜索最新市场新闻，并生成一份摘要。</p>
+<pre><code class="language-bash">hermes cron add \
+  --name "Daily Market Summary" \
+  --schedule "0 9 * * *" \
+  --prompt "你是一名专业的金融分析师。请使用你的 web_search 技能获取今天最新的全球股市新闻和主要经济指标。然后，根据这些信息，生成一份简洁的每日市场摘要报告，重点关注对科技行业的潜在影响。报告应包含标题、关键要点和简要分析。最后，模拟将这份报告发送给我，请将最终报告内容直接输出。"
+</code></pre>
+<ul>
+<li><code>--name "Daily Market Summary"</code>：任务名称。</li>
+<li><code>--schedule "0 9 * * *"</code>：每天早上 9:00 执行。</li>
+<li><code>--prompt "..."</code>：给 Agent 的具体指令。这里我们明确要求使用 <code>web_search</code> 技能，并指定了输出格式。</li>
+</ul>
+<p>预期输出：</p>
+<pre><code>Cron job 'Daily Market Summary' added successfully with ID: &lt;some-uuid&gt;
+</code></pre>
+<p>请记下 <code>&lt;some-uuid&gt;</code>，这是任务的唯一 ID。</p>
+</li>
+<li><p><strong>查看 Cron 任务列表</strong></p>
+<pre><code class="language-bash">hermes cron list
+</code></pre>
+<p>预期输出（类似）：</p>
+<pre><code>ID                                    Name                   Schedule    Status    Last Run               Next Run
+------------------------------------  ---------------------  ----------  --------  ---------------------  ---------------------
+&lt;some-uuid&gt;                           Daily Market Summary   0 9 * * *   Enabled   Never                  YYYY-MM-DD 09:00:00
+</code></pre>
+<p>您可以看到任务的 ID、名称、调度时间、状态、上次运行时间和下次运行时间。</p>
+</li>
+<li><p><strong>（可选）禁用或删除任务</strong></p>
+<p>如果您想暂时停止任务，可以使用 <code>disable</code> 命令：</p>
+<pre><code class="language-bash">hermes cron disable &lt;some-uuid&gt;
+</code></pre>
+<p>预期输出：</p>
+<pre><code>Cron job &lt;some-uuid&gt; disabled successfully.
+</code></pre>
+<p>再次查看列表，状态将变为 <code>Disabled</code>。</p>
+<pre><code class="language-bash">hermes cron list
+</code></pre>
+<p>输出：</p>
+<pre><code>ID                                    Name                   Schedule    Status     Last Run               Next Run
+------------------------------------  ---------------------  ----------  ---------  ---------------------  ---------------------
+&lt;some-uuid&gt;                           Daily Market Summary   0 9 * * *   Disabled   Never                  YYYY-MM-DD 09:00:00
+</code></pre>
+<p>要重新启用，使用 <code>enable</code> 命令：</p>
+<pre><code class="language-bash">hermes cron enable &lt;some-uuid&gt;
+</code></pre>
+<p>预期输出：</p>
+<pre><code>Cron job &lt;some-uuid&gt; enabled successfully.
+</code></pre>
+<p>完成演示后，为了避免不必要的触发，我们删除此任务：</p>
+<pre><code class="language-bash">hermes cron delete &lt;some-uuid&gt;
+</code></pre>
+<p>预期输出：</p>
+<pre><code>Cron job &lt;some-uuid&gt; deleted successfully.
+</code></pre>
+</li>
+</ol>
+<h3>实战场景二：周期性系统健康检查与异常报告（模拟）</h3>
+<p>在这个场景中，我们将设置一个每小时运行一次的 Cron 任务，模拟 Agent 检查系统健康状况。如果 Agent 在检查中“发现”异常，它将生成一份报告。由于我们没有真实的系统监控 Skill，我们将通过 Prompt 来模拟 Agent 的检查逻辑和结果判断。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><p><strong>添加每小时健康检查 Cron 任务</strong></p>
+<p>我们将创建一个名为 "Hourly System Health Check" 的任务，每小时执行一次。Prompt 将引导 Agent 模拟检查，并根据模拟结果生成报告。</p>
+<pre><code class="language-bash">hermes cron add \
+  --name "Hourly System Health Check" \
+  --schedule "0 * * * *" \
+  --prompt "你是一名系统健康监控助手。每小时，请模拟执行一次系统健康检查。在检查中，假设你发现 'Web Server (Nginx) 服务已停止'。请立即生成一份详细的告警报告，说明问题、可能原因和初步建议。报告应包含标题、发现问题、严重性（高）、可能原因、初步建议。将报告内容直接输出。"
+</code></pre>
+<ul>
+<li><code>--name "Hourly System Health Check"</code>：任务名称。</li>
+<li><code>--schedule "0 * * * *"</code>：每小时的第 0 分钟执行一次。</li>
+<li><code>--prompt "..."</code>：模拟 Agent 发现问题并生成报告。</li>
+</ul>
+<p>预期输出：</p>
+<pre><code>Cron job 'Hourly System Health Check' added successfully with ID: &lt;another-uuid&gt;
+</code></pre>
+<p>记下 <code>&lt;another-uuid&gt;</code>。</p>
+</li>
+<li><p><strong>查看 Cron 任务列表</strong></p>
+<pre><code class="language-bash">hermes cron list
+</code></pre>
+<p>预期输出（类似）：</p>
+<pre><code>ID                                    Name                           Schedule    Status    Last Run               Next Run
+------------------------------------  -----------------------------  ----------  --------  ---------------------  ---------------------
+&lt;another-uuid&gt;                        Hourly System Health Check     0 * * * *   Enabled   Never                  YYYY-MM-DD HH:00:00
+</code></pre>
+</li>
+<li><p><strong>（模拟）观察 Agent 执行任务并输出结果</strong></p>
+<p>由于 Cron 任务是定时触发的，我们无法立即看到输出。但在实际运行时，当达到调度时间点时，Hermes Agent 将被激活，并根据 Prompt 进行思考和生成内容。您可以通过观察 Agent 的运行日志或等待下次触发时间。</p>
+<p>如果 Agent 正常启动并处理了该 Cron 任务，您将在 Agent 的运行日志中看到类似以下内容的输出（这取决于您的 Agent 配置和 LLM 模型行为）：</p>
+<pre><code>[AGENT] Received cron task 'Hourly System Health Check' with prompt: "你是一名系统健康监控助手。每小时，请模拟执行一次系统健康检查。在检查中，假设你发现 'Web Server (Nginx) 服务已停止'。请立即生成一份详细的告警报告，说明问题、可能原因和初步建议。报告应包含标题、发现问题、严重性（高）、可能原因、初步建议。将报告内容直接输出。"
+
+[LLM] Thinking...
+
+[LLM] Tool Call: None (Agent directly generates the report based on the simulated scenario in the prompt)
+
+[AGENT] Output:
+# 系统健康告警报告
+
+**发现问题:** Web Server (Nginx) 服务已停止
+
+**严重性:** 高
+
+**可能原因:**
+*   Nginx 配置文件错误导致启动失败。
+*   服务器资源不足（内存、CPU）。
+*   端口冲突。
+*   系统更新或软件包冲突。
+*   意外的服务崩溃。
+
+**初步建议:**
+1.  **检查 Nginx 服务状态:** 尝试使用 `sudo systemctl status nginx` 命令确认服务状态。
+2.  **查看 Nginx 错误日志:** 检查 `/var/log/nginx/error.log` 文件，查找详细的错误信息。
+3.  **尝试重启服务:** 使用 `sudo systemctl restart nginx` 尝试重启 Nginx 服务。
+4.  **检查系统资源:** 确认服务器的内存和 CPU 使用情况是否正常。
+
+请尽快处理此问题，以恢复网站服务。
+</code></pre>
+<p>这展示了 Agent 如何根据 Cron 任务的 Prompt，结合其智能推理能力，生成一份结构化且有价值的报告。</p>
+</li>
+<li><p><strong>删除任务</strong></p>
+<p>完成演示后，删除此任务：</p>
+<pre><code class="language-bash">hermes cron delete &lt;another-uuid&gt;
+</code></pre>
+<p>预期输出：</p>
+<pre><code>Cron job &lt;another-uuid&gt; deleted successfully.
+</code></pre>
+</li>
+</ol>
+<p>通过这两个实战场景，您应该对如何使用 <code>hermes cron</code> 命令来设置和管理自动化任务有了清晰的理解。结合 Agent 的 Skills 和 Memory，您可以构建出更加强大和智能的自动化工作流。</p>
+<hr>
+<h2>🔧 涉及的命令与工具</h2>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>hermes cron add</code></td>
+<td align="left">添加一个新的 Cron 调度任务。需要指定任务名称、Cron 表达式和给 Agent 的 Prompt。</td>
+<td align="left"><code>hermes cron add --name "Daily Report" --schedule "0 9 * * *" --prompt "Generate a daily summary."</code></td>
+</tr>
+<tr>
+<td align="left"><code>--name</code></td>
+<td align="left">(参数) 任务的名称，用于识别和管理。</td>
+<td align="left"><code>--name "Hourly Check"</code></td>
+</tr>
+<tr>
+<td align="left"><code>--schedule</code></td>
+<td align="left">(参数) Cron 表达式，定义任务的执行时间。</td>
+<td align="left"><code>--schedule "*/15 * * * *"</code> (每 15 分钟)</td>
+</tr>
+<tr>
+<td align="left"><code>--prompt</code></td>
+<td align="left">(参数) Agent 在任务被触发时接收到的指令。</td>
+<td align="left"><code>--prompt "Find latest news about AI and summarize it."</code></td>
+</tr>
+<tr>
+<td align="left"><code>--system-prompt</code></td>
+<td align="left">(参数，可选) 为该特定 Cron 任务设置一个独立的系统 Prompt，覆盖 Agent 的默认系统 Prompt。</td>
+<td align="left"><code>--system-prompt "You are a stoic philosopher."</code></td>
+</tr>
+<tr>
+<td align="left"><code>--model</code></td>
+<td align="left">(参数，可选) 为该特定 Cron 任务指定一个 LLM 模型，覆盖 Agent 的默认模型配置。</td>
+<td align="left"><code>--model "gpt-4-turbo"</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes cron list</code></td>
+<td align="left">列出所有已配置的 Cron 任务，显示它们的 ID、名称、调度、状态、上次运行时间和下次运行时间。</td>
+<td align="left"><code>hermes cron list</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes cron delete</code></td>
+<td align="left">根据任务 ID 删除指定的 Cron 任务。</td>
+<td align="left"><code>hermes cron delete &lt;task_id&gt;</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes cron enable</code></td>
+<td align="left">根据任务 ID 启用（恢复）指定的 Cron 任务。</td>
+<td align="left"><code>hermes cron enable &lt;task_id&gt;</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes cron disable</code></td>
+<td align="left">根据任务 ID 禁用（暂停）指定的 Cron 任务。</td>
+<td align="left"><code>hermes cron disable &lt;task_id&gt;</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes cron edit</code></td>
+<td align="left">根据任务 ID 编辑指定的 Cron 任务的名称、调度或 Prompt。</td>
+<td align="left"><code>hermes cron edit &lt;task_id&gt; --schedule "0 10 * * *" --prompt "Generate a new report."</code></td>
+</tr>
+<tr>
+<td align="left"><code>hermes doctor</code></td>
+<td align="left">检查 Hermes Agent 的整体运行状态，包括是否正在运行、模型配置等，有助于诊断 Cron 任务的运行环境。</td>
+<td align="left"><code>hermes doctor</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ol>
+<li><strong>Hermes Agent 的 Cron 调度是智能自动化的核心</strong>：它允许 Agent 按照预设的时间表，主动触发一个完整的“思考周期”，而不仅仅是执行简单的命令。</li>
+<li><strong><code>hermes cron</code> 命令集提供全面的任务管理</strong>：通过 <code>add</code>, <code>list</code>, <code>delete</code>, <code>enable</code>, <code>disable</code>, <code>edit</code> 等命令，用户可以方便地创建、查看和管理自动化任务。</li>
+<li><strong>Cron 表达式是定义调度时间的基础</strong>：掌握五个字段（分钟、小时、日期、月份、星期几）及特殊字符（<code>*</code>, <code>,</code>, <code>-</code>, <code>/</code>, <code>?</code>）的使用，能够精确控制任务的执行频率。</li>
+<li><strong>自动化任务的强大源于与 Skills 和 Memory 的结合</strong>：精心设计的 Prompt 能够引导 Agent 调用外部 Skills（如 <code>web_search</code>, <code>ssh_exec</code>）获取信息或执行操作，并通过 Memory 维持任务的上下文和连续性，实现高度复杂的智能工作流。</li>
+<li><strong>Agent 作为“永不休息的助手”</strong>：Cron 调度赋予了 Agent 持续运行、无人值守的能力，适用于定时汇报、数据采集、系统健康检查、内容生成等多种自动化场景，极大地提升了工作效率。</li>
+</ol>
+<hr>
+<h2>🔗 参考资料</h2>
+<ul>
+<li><strong>Hermes Agent 官方文档 - Cron 模块</strong>: <a href="https://hermes-agent.nousresearch.com/docs/modules/cron">https://hermes-agent.nousresearch.com/docs/modules/cron</a></li>
+<li><strong>Hermes Agent 官方文档 - Skills 模块</strong>: <a href="https://hermes-agent.nousresearch.com/docs/modules/skills">https://hermes-agent.nousresearch.com/docs/modules/skills</a></li>
+<li><strong>Hermes Agent 官方文档 - Memory 模块</strong>: <a href="https://hermes-agent.nousresearch.com/docs/modules/memory">https://hermes-agent.nousresearch.com/docs/modules/memory</a></li>
+</ul>
+</div> <!-- Bottom Navigation --> <div class="bottom-nav" data-astro-cid-vma7orrt> <div class="nav-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>← Previous</span> <span class="title" data-astro-cid-vma7orrt>第 06 期 | MCP 工具生态：连接外部世界的桥梁</span> </a> </div> <div class="nav-item next" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8/" class="nav-btn" data-astro-cid-vma7orrt> <span class="label" data-astro-cid-vma7orrt>Next →</span> <span class="title" data-astro-cid-vma7orrt>第 08 期 | Context Files 与工作区感知</span> </a> </div> </div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+// Mobile sidebar toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.querySelector('.sidebar-nav');
+  if (!sidebar || window.innerWidth > 900) return;
+  
+  const seriesTitle = sidebar.querySelector('.series-title');
+  if (!seriesTitle) return;
+  
+  // Add toggle indicator
+  const indicator = document.createElement('span');
+  indicator.textContent = ' ▼';
+  indicator.style.cssText = 'font-size:12px; opacity:0.5; transition:transform 0.3s';
+  seriesTitle.appendChild(indicator);
+  
+  seriesTitle.addEventListener('click', function(e) {
+    e.preventDefault();
+    sidebar.classList.toggle('expanded');
+    indicator.textContent = sidebar.classList.contains('expanded') ? ' ▲' : ' ▼';
+  });
+});
+</script>
