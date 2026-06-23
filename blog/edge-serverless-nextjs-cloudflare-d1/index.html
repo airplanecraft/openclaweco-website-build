@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers — AgentUpdate.ai</title><meta name="description" content="How a travel app runs fully on the edge with Next.js 15, Cloudflare Pages, D1 and Workers: static/dynamic boundary, edge caching, i18n."><meta name="keywords" content="1000usdinchina.com开发总结(2)-边缘 Serverless:Next.js 15 + Cloudflare Pages、D1、Workers, 1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers, nextjs, cloudflare, d1, 边缘, 架构"><link rel="canonical" href="https://www.agentupdate.ai/blog/edge-serverless-nextjs-cloudflare-d1/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/edge-serverless-nextjs-cloudflare-d1/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/edge-serverless-nextjs-cloudflare-d1/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/edge-serverless-nextjs-cloudflare-d1/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers — AgentUpdate.ai"><meta property="og:description" content="How a travel app runs fully on the edge with Next.js 15, Cloudflare Pages, D1 and Workers: static/dynamic boundary, edge caching, i18n."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/edge-architecture-cover.png"><meta property="og:url" content="https://www.agentupdate.ai/blog/edge-serverless-nextjs-cloudflare-d1/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers — AgentUpdate.ai"><meta name="twitter:description" content="How a travel app runs fully on the edge with Next.js 15, Cloudflare Pages, D1 and Workers: static/dynamic boundary, edge caching, i18n."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/edge-architecture-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 & Workers","description":"How a travel app runs fully on the edge with Next.js 15, Cloudflare Pages, D1 and Workers: static/dynamic boundary, edge caching, i18n.","image":"/images/blog/edge-architecture-cover.png","datePublished":"2026-06-23T02:42:05.875Z","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/blog/edge-serverless-nextjs-cloudflare-d1"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/edge-serverless-nextjs-cloudflare-d1/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/edge-serverless-nextjs-cloudflare-d1/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 & Workers"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>June 23, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By Eric</span>  <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>10 Min Read</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/nextjs" class="tag" data-astro-cid-4sn4zg3r>#nextjs</a><span class="tag" data-astro-cid-4sn4zg3r>#cloudflare</span><span class="tag" data-astro-cid-4sn4zg3r>#d1</span><span class="tag" data-astro-cid-4sn4zg3r>#边缘</span><span class="tag" data-astro-cid-4sn4zg3r>#架构</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/edge-architecture-cover.png" alt="1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of contents</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#why-the-edge" data-astro-cid-4sn4zg3r>Why the edge</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#the-static-vs-dynamic-boundary" data-astro-cid-4sn4zg3r>The static vs. dynamic boundary</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#d1-at-the-edge-opennext" data-astro-cid-4sn4zg3r>D1 at the edge + OpenNext</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#i18n-currency-coupled-to-language" data-astro-cid-4sn4zg3r>i18n: currency coupled to language</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#the-caching-bug-worth-your-time" data-astro-cid-4sn4zg3r>The caching bug worth your time</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#key-takeaways" data-astro-cid-4sn4zg3r>Key takeaways</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#faq" data-astro-cid-4sn4zg3r>FAQ</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p><a href="https://1000usdinchina.com">1000usdinchina.com</a> has <strong>no traditional backend and no
+always-on server</strong>. It runs entirely on Cloudflare&#39;s edge: <strong>Next.js 15</strong> rendered through
+Cloudflare Pages, <strong>D1</strong> (SQLite at the edge) for dynamic data, and <strong>Workers</strong> for compute.
+This post explains the architecture — and the one production cache bug that taught me how
+Next.js and Cloudflare actually negotiate caching.</p>
+<p>This is post 2 of the <a href="/blog/china-travel-budget-100-cities/">series</a> on building the app.</p>
+<h2 id="table-of-contents">Table of contents</h2><ul>
+<li><a href="#why-edge">Why the edge</a></li>
+<li><a href="#boundary">The static vs. dynamic boundary</a></li>
+<li><a href="#d1-opennext">D1 at the edge + OpenNext</a></li>
+<li><a href="#i18n">i18n: currency coupled to language</a></li>
+<li><a href="#cache-bug">The caching bug worth your time</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ul>
+<p><a id="why-edge"></a></p>
+<h2 id="why-the-edge">Why the edge</h2><p>Three reasons drove the <strong>Next.js + Cloudflare</strong> choice:</p>
+<ul>
+<li><strong>Cost.</strong> No server to keep warm. A solo project with 100 cities of content can&#39;t carry a
+fleet of VMs. Edge functions bill per request and idle at $0.</li>
+<li><strong>Latency.</strong> Content renders close to the user, worldwide. A traveler in São Paulo and one
+in Seoul both get sub-100ms responses.</li>
+<li><strong>Scale-to-zero and scale-up are free.</strong> No traffic, no cost; a Reddit spike, no paging.</li>
+</ul>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">sequenceDiagram
+    participant U as Browser
+    participant E as Cloudflare Edge (PoP)
+    participant W as Worker (Next.js / OpenNext)
+    participant D as D1 (SQLite)
+    U->>E: GET /en/routes/beijing-shanghai
+    E-->>U: cache HIT (static / cached) — returns instantly
+    Note over E,W: on MISS ↓
+    E->>W: invoke render
+    W->>D: SELECT route, cities, prices
+    D-->>W: rows
+    W-->>E: HTML
+    E-->>U: HTML (+ cache per rules)</pre></div><p><a id="boundary"></a></p>
+<h2 id="the-static-vs-dynamic-boundary">The static vs. dynamic boundary</h2><p>The single most important architectural decision was <strong>what renders statically vs. what
+hits the database</strong>. The rule:</p>
+<table>
+<thead>
+<tr>
+<th>Renders statically (SSG)</th>
+<th>Renders dynamically (D1)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Attractions, hotels, high-speed-rail, city reference data</td>
+<td><code>/routes/*</code> (trip routes)</td>
+</tr>
+<tr>
+<td>Anything from the ETL pipeline</td>
+<td><code>/cases/*</code> (saved/generated trips)</td>
+</tr>
+</tbody></table>
+<p>ETL-produced reference data almost never changes between deploys, so it&#39;s baked into static
+pages at build time — hundreds of pre-rendered routes that serve from cache. Genuinely
+dynamic content (a user&#39;s route, a generated case) queries D1 on demand.</p>
+<p>This boundary is deliberate and was pushed back on more than once (&quot;why not make routes
+static too?&quot;). The answer: routes are combinatorial and user-driven; pre-rendering every
+permutation is wasteful, and D1 at the edge is fast enough that on-demand wins.</p>
+<p><a id="d1-opennext"></a></p>
+<h2 id="d1-at-the-edge-opennext">D1 at the edge + OpenNext</h2><p>Next.js doesn&#39;t natively target Cloudflare&#39;s runtime, so the app builds through <strong>OpenNext</strong>,
+which adapts the Next.js output to Workers. D1 is bound to the Worker and queried with plain
+SQL:</p>
+<div class="code-wrapper"><pre><code class="language-ts">// Edge route handler — Web APIs only, no Node built-ins (fs/path/crypto.randomBytes)
+export const runtime = &quot;edge&quot;;
+
+export async function getRoute(env: Env, slug: string) {
+  const { results } = await env.DB
+    .prepare(&quot;SELECT * FROM routes WHERE slug = ?1&quot;)
+    .bind(slug)
+    .all();
+  return results;
+}
+</code></pre>
+</div><p>A hard constraint of the edge runtime: <strong>no Node-only APIs</strong>. No <code>fs</code>, no <code>path</code>, no
+<code>crypto.randomBytes</code>. Everything is Web Crypto, Workers KV, or D1. This shapes how you write
+every utility — and it&#39;s enforced, not optional.</p>
+<p><a id="i18n"></a></p>
+<h2 id="i18n-currency-coupled-to-language">i18n: currency coupled to language</h2><p>A travel budget tool is useless if it shows the wrong currency. So language and currency are
+<strong>hard-coupled</strong>: choosing a language <em>is</em> choosing a currency.</p>
+<div class="code-wrapper"><pre><code class="language-ts">const LOCALE_CURRENCY = {
+  en: &quot;USD&quot;, ja: &quot;JPY&quot;, ko: &quot;KRW&quot;, ru: &quot;RUB&quot;, // ...
+} as const;
+
+// Zero-decimal currencies (JPY, KRW, VND, IDR) MUST round to whole units.
+function formatPrice(amountCny: number, locale: Locale): string {
+  const currency = LOCALE_CURRENCY[locale];
+  const value = convert(amountCny, currency);
+  const fractionDigits = ZERO_DECIMAL.has(currency) ? 0 : 2;
+  return new Intl.NumberFormat(locale, {
+    style: &quot;currency&quot;, currency,
+    minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits,
+  }).format(value);
+}
+</code></pre>
+</div><p>Get the zero-decimal handling wrong and Japanese users see &quot;¥1,234.56&quot; — instantly
+untrustworthy. Currency correctness is a feature, not a formatting afterthought.</p>
+<p><a id="cache-bug"></a></p>
+<h2 id="the-caching-bug-worth-your-time">The caching bug worth your time</h2><p>I shipped middleware that set <code>Cache-Control: public, s-maxage=86400</code> on <code>/routes</code> pages,
+expecting Cloudflare to cache them at the edge. It didn&#39;t. <code>curl -I</code> showed
+<code>private, no-store, max-age=0</code> and no <code>cf-cache-status</code>.</p>
+<p>The lesson: <strong>Next.js automatically marks dynamic SSR pages (those that query D1) as
+<code>no-store</code> at the rendering layer, which overrides any <code>Cache-Control</code> you set in
+middleware.</strong> Cloudflare respects the origin&#39;s <code>no-store</code> and refuses to cache — exactly as
+designed.</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart TD
+    A[Middleware sets s-maxage=86400] --> B[Next.js render layer]
+    B -->|overrides with no-store| C[Origin response: no-store]
+    C --> D{Cloudflare}
+    D -->|respects origin| E[NOT cached]
+    F[Cloudflare Cache Rule: Override origin Edge TTL] -.->|the only fix| D
+    D -->|with rule| G[Cached at edge ✓]</pre></div><p>The only way to cache a dynamic SSR page that Next.js marks <code>no-store</code> is a <strong>Cloudflare
+Cache Rule with &quot;Override origin&quot; Edge TTL</strong> — set at the platform level, not in code.
+Middleware cache headers become dead code in this scenario. Knowing <em>where</em> the caching
+decision actually lives saved hours of guessing.</p>
+<h2 id="key-takeaways">Key takeaways</h2><ul>
+<li>Edge serverless (Next.js + Cloudflare Pages/D1/Workers) gives a solo project near-zero
+fixed cost and global low latency.</li>
+<li>Draw a deliberate static/dynamic boundary: bake reference data, query only the truly
+dynamic parts from D1.</li>
+<li>The edge runtime forbids Node APIs — design for Web Crypto / KV / D1 from day one.</li>
+<li>Next.js <code>no-store</code> overrides middleware caching; only a Cloudflare Cache Rule can cache
+dynamic SSR pages.</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="faq">FAQ</h2><p><strong>Can Next.js 15 run on Cloudflare Pages?</strong>
+Yes — via OpenNext, which adapts the Next.js build to the Workers runtime, with D1 and KV
+bound to the Worker.</p>
+<p><strong>Why use D1 instead of a hosted Postgres?</strong>
+D1 is SQLite at the edge, co-located with the Worker, with no connection pool to manage and
+no idle cost — a good fit for a serverless, scale-to-zero app.</p>
+<p><strong>Why doesn&#39;t middleware <code>Cache-Control</code> cache my dynamic pages?</strong>
+Next.js sets <code>no-store</code> on dynamic SSR pages at render time, overriding middleware. Use a
+Cloudflare Cache Rule with &quot;Override origin&quot; Edge TTL instead.</p>
+<hr>
+<p><em>Next → <a href="/blog/travel-data-etl-compliant-json/">Turning 4.5 GB of raw travel data into clean, compliant city JSON</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Edge Serverless: Next.js 15 + Cloudflare Pages, D1 & Workers",
+  "image": "https://www.agentupdate.ai/blog/images/edge-architecture-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-22",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/en/edge-serverless-nextjs-cloudflare-d1",
+  "about": ["Next.js", "Cloudflare D1", "edge computing", "OpenNext"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Can Next.js 15 run on Cloudflare Pages?","acceptedAnswer":{"@type":"Answer","text":"Yes, via OpenNext, which adapts the Next.js build to the Workers runtime with D1 and KV bound to the Worker."}},
+    {"@type":"Question","name":"Why use D1 instead of a hosted Postgres?","acceptedAnswer":{"@type":"Answer","text":"D1 is SQLite at the edge, co-located with the Worker, with no connection pool and no idle cost, a good fit for a serverless scale-to-zero app."}},
+    {"@type":"Question","name":"Why doesn't middleware Cache-Control cache dynamic pages?","acceptedAnswer":{"@type":"Answer","text":"Next.js sets no-store on dynamic SSR pages at render time, overriding middleware. Use a Cloudflare Cache Rule with Override origin Edge TTL instead."}}
+  ]
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="table-of-contents" data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of contents</a> </li><li class="toc-item " data-slug="why-the-edge" data-astro-cid-4sn4zg3r> <a href="#why-the-edge" data-astro-cid-4sn4zg3r>Why the edge</a> </li><li class="toc-item " data-slug="the-static-vs-dynamic-boundary" data-astro-cid-4sn4zg3r> <a href="#the-static-vs-dynamic-boundary" data-astro-cid-4sn4zg3r>The static vs. dynamic boundary</a> </li><li class="toc-item " data-slug="d1-at-the-edge-opennext" data-astro-cid-4sn4zg3r> <a href="#d1-at-the-edge-opennext" data-astro-cid-4sn4zg3r>D1 at the edge + OpenNext</a> </li><li class="toc-item " data-slug="i18n-currency-coupled-to-language" data-astro-cid-4sn4zg3r> <a href="#i18n-currency-coupled-to-language" data-astro-cid-4sn4zg3r>i18n: currency coupled to language</a> </li><li class="toc-item " data-slug="the-caching-bug-worth-your-time" data-astro-cid-4sn4zg3r> <a href="#the-caching-bug-worth-your-time" data-astro-cid-4sn4zg3r>The caching bug worth your time</a> </li><li class="toc-item " data-slug="key-takeaways" data-astro-cid-4sn4zg3r> <a href="#key-takeaways" data-astro-cid-4sn4zg3r>Key takeaways</a> </li><li class="toc-item " data-slug="faq" data-astro-cid-4sn4zg3r> <a href="#faq" data-astro-cid-4sn4zg3r>FAQ</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/china-travel-budget-100-cities" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/china-travel-budget-cover.png" alt="1000usdinchina.com Dev Retrospective (1) - China Travel Budget Estimator: 100 Cities, Built Solo" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/china-travel-budget-100-cities" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (1) - China Travel Budget Estimator: 100 Cities, Built Solo</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>How much does a trip to China cost? A free China travel budget estimator covering 100 cities, built solo with an AI coding agent.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 23, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/seo-geo-optimization-claude-code-guide" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/seo-geo-optimization.png" alt="From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/seo-geo-optimization-claude-code-guide" data-astro-cid-4sn4zg3r>From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A detailed, step-by-step case study showing how we utilized Claude Code&#39;s seo-audit-full and geo-content-optimizer skills to automate technical SEO audits and GEO optimization for AgentUpdate.ai, with before-and-after code and score comparisons for each step.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 23, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate Team</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>
