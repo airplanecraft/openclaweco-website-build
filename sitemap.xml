@@ -121,6 +121,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/news/openai-patch-the-planet-open-source-security</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/openai-patch-the-planet-open-source-security</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/news/openai-compatible-gateway-for-aws-bedrock</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -1093,18 +1105,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/four-lines-to-fix-claude-analysis-hallucinations</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/four-lines-to-fix-claude-analysis-hallucinations</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/xiaomi-mimo-code-claude-code-endurance-gap</loc>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -1112,6 +1112,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/xiaomi-mimo-code-claude-code-endurance-gap</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/four-lines-to-fix-claude-analysis-hallucinations</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/four-lines-to-fix-claude-analysis-hallucinations</loc>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -2953,30 +2965,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/geneb-genomic-models-benchmark</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/geneb-genomic-models-benchmark</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/dynamic-infilling-anchors-diffusion-llms</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/dynamic-infilling-anchors-diffusion-llms</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/segtreemem-temporal-order-agentic-memory</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -2996,6 +2984,30 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/dllg-dynamic-logit-level-gating-llm-experts</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/dynamic-infilling-anchors-diffusion-llms</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/dynamic-infilling-anchors-diffusion-llms</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/geneb-genomic-models-benchmark</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/geneb-genomic-models-benchmark</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -3481,18 +3493,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/how-google-used-gemini-to-build-io-2026</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/how-google-used-gemini-to-build-io-2026</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/windborne-weathermesh-6-outperforms-ecmwf</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
@@ -3500,6 +3500,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/windborne-weathermesh-6-outperforms-ecmwf</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/how-google-used-gemini-to-build-io-2026</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/how-google-used-gemini-to-build-io-2026</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -5677,18 +5689,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/spotify-studio-notebooklm-competitor-personal-podcast</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/spotify-studio-notebooklm-competitor-personal-podcast</loc>
-    <lastmod>2026-05-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/spotify-ai-podcasts-briefing-qa</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -5696,6 +5696,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/spotify-ai-podcasts-briefing-qa</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/spotify-studio-notebooklm-competitor-personal-podcast</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/spotify-studio-notebooklm-competitor-personal-podcast</loc>
     <lastmod>2026-05-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -6097,18 +6109,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/llm-mathematical-reasoning-survey-benchmarks-architectures</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -6116,6 +6116,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/llm-mathematical-reasoning-survey-benchmarks-architectures</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -7801,6 +7813,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/news/genai-edge-tpu-gnss-compressed-sensing</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/genai-edge-tpu-gnss-compressed-sensing</loc>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/news/metacognitive-harness-llm-test-time-scaling</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -7820,18 +7844,6 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/xai-statistical-analysis-uav-intrusion-detection</loc>
-    <lastmod>2026-05-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/genai-edge-tpu-gnss-compressed-sensing</loc>
-    <lastmod>2026-05-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/genai-edge-tpu-gnss-compressed-sensing</loc>
     <lastmod>2026-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -8917,6 +8929,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/news/anthropic-claude-for-legal-mcp-connectors-launch</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/anthropic-claude-for-legal-mcp-connectors-launch</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/news/google-android-create-my-widget-gemini-ai</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -8936,18 +8960,6 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/google-gboard-rambler-gemini-dictation-ai</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/anthropic-claude-for-legal-mcp-connectors-launch</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/anthropic-claude-for-legal-mcp-connectors-launch</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -9121,13 +9133,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/llm-agents-tool-necessity-hidden-states</loc>
+    <loc>https://www.agentupdate.ai/news/quantifying-user-simulator-utility-llm-assistants</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/news/llm-agents-tool-necessity-hidden-states</loc>
+    <loc>https://www.agentupdate.ai/zh/news/quantifying-user-simulator-utility-llm-assistants</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -9157,13 +9169,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/quantifying-user-simulator-utility-llm-assistants</loc>
+    <loc>https://www.agentupdate.ai/news/llm-agents-tool-necessity-hidden-states</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/news/quantifying-user-simulator-utility-llm-assistants</loc>
+    <loc>https://www.agentupdate.ai/zh/news/llm-agents-tool-necessity-hidden-states</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -9997,37 +10009,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/xai-evaluation-cards-standardizing-metrics</loc>
+    <loc>https://www.agentupdate.ai/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/news/xai-evaluation-cards-standardizing-metrics</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/intermediate-representations-ai-image-detection</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/intermediate-representations-ai-image-detection</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/code-broker-multi-agent-code-quality-assessment</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/code-broker-multi-agent-code-quality-assessment</loc>
+    <loc>https://www.agentupdate.ai/zh/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -10040,6 +10028,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/dfpo-scaling-value-modeling-llm-post-training</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/code-broker-multi-agent-code-quality-assessment</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/code-broker-multi-agent-code-quality-assessment</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -10069,6 +10069,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/news/supernodes-halos-llm-ffn-pruning</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/supernodes-halos-llm-ffn-pruning</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/news/river-llm-kv-share-early-exit-inference-speedup</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -10076,18 +10088,6 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/river-llm-kv-share-early-exit-inference-speedup</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -10105,13 +10105,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/supernodes-halos-llm-ffn-pruning</loc>
+    <loc>https://www.agentupdate.ai/news/xai-evaluation-cards-standardizing-metrics</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/news/supernodes-halos-llm-ffn-pruning</loc>
+    <loc>https://www.agentupdate.ai/zh/news/xai-evaluation-cards-standardizing-metrics</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/intermediate-representations-ai-image-detection</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/intermediate-representations-ai-image-detection</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -11809,18 +11821,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/spin-sparse-attention-hierarchical-memory-llm-serving</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/spin-sparse-attention-hierarchical-memory-llm-serving</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/linkedin-hltm-hierarchical-long-term-semantic-memory-llm-agents</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -11828,6 +11828,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/linkedin-hltm-hierarchical-long-term-semantic-memory-llm-agents</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/spin-sparse-attention-hierarchical-memory-llm-serving</loc>
+    <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/spin-sparse-attention-hierarchical-memory-llm-serving</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14077,37 +14089,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/geoskill-vlm-skill-conditioned-geolocation-framework</loc>
+    <loc>https://www.agentupdate.ai/news/efficient-temporal-grounding-video-llms</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/news/geoskill-vlm-skill-conditioned-geolocation-framework</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/structured-uncertainty-llm-agents-tool-calling</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/structured-uncertainty-llm-agents-tool-calling</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/many-tier-instruction-hierarchy-llm-agents</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/many-tier-instruction-hierarchy-llm-agents</loc>
+    <loc>https://www.agentupdate.ai/zh/news/efficient-temporal-grounding-video-llms</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14137,13 +14125,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/efficient-temporal-grounding-video-llms</loc>
+    <loc>https://www.agentupdate.ai/news/geoskill-vlm-skill-conditioned-geolocation-framework</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/news/efficient-temporal-grounding-video-llms</loc>
+    <loc>https://www.agentupdate.ai/zh/news/geoskill-vlm-skill-conditioned-geolocation-framework</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14156,6 +14144,30 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/cross-modal-knowledge-distillation-spatial-transcriptomics-histology</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/many-tier-instruction-hierarchy-llm-agents</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/many-tier-instruction-hierarchy-llm-agents</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/structured-uncertainty-llm-agents-tool-calling</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/structured-uncertainty-llm-agents-tool-calling</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -15337,30 +15349,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/news/lumivideo-ai-agent-video-color-grading</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/news/lumivideo-ai-agent-video-color-grading</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/news/playgen-mog-multi-agent-trajectory-prediction</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -15368,6 +15356,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/playgen-mog-multi-agent-trajectory-prediction</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -15392,6 +15392,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/news/efficient-causal-graph-discovery-llms-bfs</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/news/lumivideo-ai-agent-video-color-grading</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/news/lumivideo-ai-agent-video-color-grading</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -30181,18 +30193,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/tags/mcp</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/tags/mcp</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/tags/openai</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -30200,6 +30200,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/tags/openai</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/tags/mcp</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/tags/mcp</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
