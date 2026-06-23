@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品） — AgentUpdate.ai</title><meta name="description" content="谷歌强推 Antigravity CLI 替代 Gemini CLI，底层用 Go 重构，速度起飞且支持多智能体并发。本文用大白话带你拆解它的核心功能、安装迁移步骤，并重点拔掉代理网络失效、反人类登录交互等深坑，帮你无痛上手这款 AI 编程新利器。"><meta name="keywords" content="谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）, Google Antigravity CLI Review and Troubleshooting Guide: The Gemini CLI Successor, Antigravity CLI, AI编程, Gemini, 多智能体, 踩坑指南"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/google-antigravity-cli-review-and-troubleshooting/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/google-antigravity-cli-review-and-troubleshooting/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/google-antigravity-cli-review-and-troubleshooting/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/google-antigravity-cli-review-and-troubleshooting/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品） — AgentUpdate.ai"><meta property="og:description" content="谷歌强推 Antigravity CLI 替代 Gemini CLI，底层用 Go 重构，速度起飞且支持多智能体并发。本文用大白话带你拆解它的核心功能、安装迁移步骤，并重点拔掉代理网络失效、反人类登录交互等深坑，帮你无痛上手这款 AI 编程新利器。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-99f013f1.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/google-antigravity-cli-review-and-troubleshooting/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品） — AgentUpdate.ai"><meta name="twitter:description" content="谷歌强推 Antigravity CLI 替代 Gemini CLI，底层用 Go 重构，速度起飞且支持多智能体并发。本文用大白话带你拆解它的核心功能、安装迁移步骤，并重点拔掉代理网络失效、反人类登录交互等深坑，帮你无痛上手这款 AI 编程新利器。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-99f013f1.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）","description":"谷歌强推 Antigravity CLI 替代 Gemini CLI，底层用 Go 重构，速度起飞且支持多智能体并发。本文用大白话带你拆解它的核心功能、安装迁移步骤，并重点拔掉代理网络失效、反人类登录交互等深坑，帮你无痛上手这款 AI 编程新利器。","image":"/images/blog/ai-cover-99f013f1.jpg","datePublished":"2026-05-23T00:44:33.347Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/google-antigravity-cli-review-and-troubleshooting"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/google-antigravity-cli-review-and-troubleshooting/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/google-antigravity-cli-review-and-troubleshooting/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年5月23日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric w</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#Antigravity CLI</span><span class="tag" data-astro-cid-w5q62dq7>#AI编程</span><a href="/zh/tags/gemini" class="tag" data-astro-cid-w5q62dq7>#Gemini</a><span class="tag" data-astro-cid-w5q62dq7>#多智能体</span><span class="tag" data-astro-cid-w5q62dq7>#踩坑指南</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-99f013f1.jpg" alt="谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-突发gemini-cli-强制退役谷歌掏出了新武器" data-astro-cid-w5q62dq7>🚨 突发：Gemini CLI 强制退役，谷歌掏出了新武器</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-什么是-antigravity-cli它解决了什么痛点" data-astro-cid-w5q62dq7>🤔 什么是 Antigravity CLI？它解决了什么痛点？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#这次升级到底牛在哪" data-astro-cid-w5q62dq7>这次升级到底牛在哪？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-一看就懂的多智能体架构图" data-astro-cid-w5q62dq7>⚙️ 一看就懂的多智能体架构图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-安装迁移与极速上手" data-astro-cid-w5q62dq7>🛠️ 安装、迁移与极速上手</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-安装-antigravity-cli" data-astro-cid-w5q62dq7>1. 安装 Antigravity CLI</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-从老版本无缝迁移" data-astro-cid-w5q62dq7>2. 从老版本无缝迁移</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#3-启动你的第一个多智能体工作流" data-astro-cid-w5q62dq7>3. 启动你的第一个多智能体工作流</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-避坑指南这些反人类的设计差点把我逼疯" data-astro-cid-w5q62dq7>💣 避坑指南：这些反人类的设计差点把我逼疯</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#坑位一终端代理失效连不上网最坑的一集" data-astro-cid-w5q62dq7>坑位一：终端代理失效，连不上网（最坑的一集）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#坑位二反人类的登录交互" data-astro-cid-w5q62dq7>坑位二：反人类的登录交互</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#坑位三肌肉记忆的挑战-ctrlc-失效" data-astro-cid-w5q62dq7>坑位三：肌肉记忆的挑战 (Ctrl+C 失效)</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-其他差异化亮点不仅会写代码还能原生画图" data-astro-cid-w5q62dq7>🎨 其他差异化亮点：不仅会写代码，还能原生画图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-总结提炼-写在最后" data-astro-cid-w5q62dq7>💡 总结提炼 / 写在最后</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><h2 id="-突发gemini-cli-强制退役谷歌掏出了新武器">🚨 突发：Gemini CLI 强制退役，谷歌掏出了新武器</h2><p>就在刚结束的 Google I/O 2026 大会上，谷歌扔出了一个让很多开发者半夜惊醒的重磅炸弹：<strong>2026年6月18日起，老牌的 Gemini CLI 将彻底停止服务</strong>。取而代之的，是一个叫做 <strong>Antigravity CLI</strong> 的全新命令行工具。</p>
+<p>大白话来说，如果你以前习惯在终端黑框框里敲命令让 Gemini 帮你写代码，那么下个月开始，那套老工具就彻底瘫痪了。你必须强制搬家到这个名叫 Antigravity（意为“反重力”）的新平台。</p>
+<p>作为在代码堆里摸爬滚打了 10 年的老兵，我第一时间去体验了这把“新武器”。这玩意儿到底是个换皮的玩具，还是真能帮我们提效的神器？它跟目前市面上的老大哥 Claude Code 相比咋样？今天咱们就用最接地气的大白话，把它的安装、核心能力、以及那些让人抓狂的“坑点”一次性给你盘明白。</p>
+<hr>
+<h2 id="-什么是-antigravity-cli它解决了什么痛点">🤔 什么是 Antigravity CLI？它解决了什么痛点？</h2><p>为了照顾刚入门的兄弟，咱们先解释下概念。CLI 就是 <strong>命令行界面 (Command Line Interface)</strong>，也就是程序员平时敲敲打打的那个黑底白字的终端窗口。而 Antigravity CLI 是一款 <strong>终端优先 (Terminal-First)</strong> 的 AI 编程智能体 (Agent) 工具。</p>
+<p>以前我们用 AI 写代码，是典型的“问答模式”：你在网页端问，AI 给你一段代码，你再手动复制粘贴到你的项目里。这就导致摩擦力极大，而且 AI 根本不知道你本地项目长啥样。</p>
+<p>Antigravity CLI 解决的核心痛点就是：<strong>让 AI 像一个真实的同事一样，直接“住进”你的项目文件夹里</strong>。你只需要一句话授权，它就能自己去读文件、改代码、运行测试命令、看报错日志，甚至自己去修复 bug。这就叫 <strong>智能体工作流 (Agentic Workflow)</strong>。</p>
+<h3 id="这次升级到底牛在哪">这次升级到底牛在哪？</h3><ol>
+<li><strong>底盘换了，速度碾压</strong>：以前的 Gemini CLI 是用 Node.js 写的，跑起来有点笨重。这次 Antigravity CLI 直接用 <strong>Go 语言 (Golang)</strong> 彻底重写。Go 语言天生支持高并发，编译出来就是一个极小的二进制文件。实测启动速度不到 1 秒，代码分析响应在 50-200 毫秒之间，比老版快了 5 到 10 倍！</li>
+<li><strong>多智能体并发 (Multi-Agent Orchestration)</strong>：这是最大的亮点。老工具只能单线程干活。现在，你可以同时拉起好几个子智能体 (Subagents) 帮你干活。比如一个去查文档，一个去写 UI，一个在后台跑测试，互相不耽误。</li>
+<li><strong>终于能用 Claude 模型了</strong>：以前谷歌很封闭，只让用自家的 Gemini。现在 Antigravity CLI 把后端打通了，除了默认快且便宜的 <strong>Gemini 3.5 Flash</strong>，你居然可以在里面直接调用 Anthropic 家的 <strong>Claude Opus 4.6</strong> 和 <strong>Claude 3.5 Sonnet</strong>！这对很多实战派程序员来说，绝对是个巨大的好消息。</li>
+</ol>
+<hr>
+<h2 id="-一看就懂的多智能体架构图">⚙️ 一看就懂的多智能体架构图</h2><p>为了让你直观理解老版工具和新版 Antigravity CLI 在干活机制上的区别，我画了一张架构对比图：</p>
+<p>mermaid
+sequenceDiagram
+    participant User as 程序员 (你)
+    participant OldCLI as 老版 Gemini CLI (单线程)
+    participant NewCLI as Antigravity CLI (多智能体)
+    participant Sub1 as 子智能体 1 (写前端)
+    participant Sub2 as 子智能体 2 (写后端)</p>
+<div class="code-wrapper"><pre><code>%% 老版单线程模式
+rect rgb(200, 220, 240)
+Note over User, OldCLI: ⛔ 以前的单线程模式 (同步阻塞)
+User-&gt;&gt;OldCLI: 帮我写个全栈系统
+activate OldCLI
+OldCLI--&gt;&gt;OldCLI: 吭哧吭哧写前端...
+OldCLI--&gt;&gt;OldCLI: 吭哧吭哧写后端...
+OldCLI--&gt;&gt;User: 终于写完了 (期间你的终端被锁死，啥也干不了)
+deactivate OldCLI
+end
+
+%% 新版多智能体异步模式
+rect rgb(220, 240, 200)
+Note over User, Sub2: ✅ 现在的 Antigravity 异步工作流 (Async Workflow)
+User-&gt;&gt;NewCLI: 启动 2 个智能体，帮我写全栈系统
+activate NewCLI
+NewCLI-&gt;&gt;Sub1: 你去写 React 前端
+NewCLI-&gt;&gt;Sub2: 你去写 Go 后端
+deactivate NewCLI
+
+activate Sub1
+activate Sub2
+Sub1--&gt;&gt;Sub1: 后台异步写代码中...
+Sub2--&gt;&gt;Sub2: 后台异步写代码中...
+
+Note over User, NewCLI: 这期间你的终端是自由的，你可以去干别的！
+
+Sub1--&gt;&gt;User: 前端完工！弹出快捷键 (Ctrl+K) 请你审批
+deactivate Sub1
+Sub2--&gt;&gt;User: 后端完工！生成交付物 (Artifacts) 供你审查
+deactivate Sub2
+end
+</code></pre>
+</div><hr>
+<h2 id="-安装迁移与极速上手">🛠️ 安装、迁移与极速上手</h2><p>别怕麻烦，安装和迁移其实就几行命令的事儿。下面是手把手的保姆级教程。</p>
+<h3 id="1-安装-antigravity-cli">1. 安装 Antigravity CLI</h3><p>只要你是 macOS 或者 Linux 系统，直接打开终端，复制下面这行代码跑一下就行：</p>
+<p>bash</p>
+<h1 id="使用-curl-工具从谷歌官网静默下载-fssl-安装脚本并直接交给-bash-执行">使用 curl 工具从谷歌官网静默下载 (-fsSL) 安装脚本，并直接交给 bash 执行。</h1><h1 id="这里的管道符-的作用是把前面下载的内容直接作为后面-bash-命令的输入">这里的管道符 '|' 的作用是把前面下载的内容直接作为后面 bash 命令的输入。</h1><p>curl -fsSL <a href="https://antigravity.google/cli/install.sh">https://antigravity.google/cli/install.sh</a> | bash</p>
+<p><em>(注：Windows 用户如果在 PowerShell 下，可以使用 <code>irm https://antigravity.google/cli/install.ps1 | iex</code>，但据部分群友反馈 Windows 下环境报错较多，建议先在 WSL 环境下折腾。)</em></p>
+<h3 id="2-从老版本无缝迁移">2. 从老版本无缝迁移</h3><p>装好之后，怎么把以前在 Gemini CLI 里攒下的自定义快捷指令 (Alias) 和配置搬过来呢？</p>
+<p>bash</p>
+<h1 id="启动终端命令行输入-agy-就是启动-antigravity-cli">启动终端命令行，输入 agy 就是启动 Antigravity CLI</h1><p>agy migrate from-gemini --import-history --import-aliases</p>
+<h1 id="参数解释">参数解释：</h1><h1 id="migrate-from-gemini-告诉工具我要从老版本搬家">migrate from-gemini: 告诉工具我要从老版本搬家</h1><h1 id="-import-history-把我以前的聊天历史记录导过来">--import-history: 把我以前的聊天历史记录导过来</h1><h1 id="-import-aliases-把我以前自定义的快捷命令统统搬运过来">--import-aliases: 把我以前自定义的快捷命令统统搬运过来</h1><h3 id="3-启动你的第一个多智能体工作流">3. 启动你的第一个多智能体工作流</h3><p>配置完之后，咱们就可以让它干活了。比如你想让它帮你重构一个项目：</p>
+<p>bash</p>
+<h1 id="创建一个名为-frontend-expert-的前端专家智能体">创建一个名为 frontend-expert 的前端专家智能体</h1><p>agy agent create --name &quot;frontend-expert&quot; --role &quot;React specialist&quot;</p>
+<h1 id="创建一个后端专家智能体">创建一个后端专家智能体</h1><p>agy agent create --name &quot;backend-expert&quot; --role &quot;Go microservices&quot;</p>
+<h1 id="并行跑任务让它俩一起去构建一个-todo-app">并行跑任务：让它俩一起去构建一个 todo app</h1><p>agy workflow run &quot;build a full-stack todo app&quot; --agents frontend-expert,backend-expert</p>
+<hr>
+<h2 id="-避坑指南这些反人类的设计差点把我逼疯">💣 避坑指南：这些反人类的设计差点把我逼疯</h2><p>说实话，Antigravity CLI 在模型能力和多智能体并行上确实惊艳（我用它跑一个高难度的医疗影像 3D 渲染测试，它配合 Gemini 3.5 Flash 居然 4 分 25 秒零报错通关，破了历史纪录）。</p>
+<p>但是！谷歌这帮工程师在基础的交互体验上，简直留下了几个逆天的“巨坑”。我在这里给大家提前排雷。</p>
+<h3 id="坑位一终端代理失效连不上网最坑的一集">坑位一：终端代理失效，连不上网（最坑的一集）</h3><p><strong>症状</strong>：你在终端里明明敲了 <code>export https_proxy=...</code> 挂了代理，但一让 agy 读代码，它就直接甩脸报错：<code>Agent execution terminated due to error</code>（智能体执行因错误终止）。鉴权完全过不去，模型列表也拉不出来。</p>
+<p><strong>底层真凶</strong>：Antigravity CLI 底层大量使用了 <strong>gRPC 通信协议</strong>（一种高性能的远程数据传输协议）。Go 语言编译的后台守护进程，<strong>会直接无视你当前 Shell 里的临时环境变量</strong>，它会选择“裸连”直撞防火墙。</p>
+<p><strong>🎯 破局大招</strong>：抛弃在终端里手动配 <code>export</code> 的幻想。直接打开你的代理客户端（如 Clash、Surge 等），<strong>开启 TUN 模式（增强模式/虚拟网卡模式）</strong>。这会在你电脑底层接管所有网络流量，不管 agy 怎么悄悄发请求，都会被强行塞进代理隧道。开启后，鉴权秒过，极其丝滑。</p>
+<h3 id="坑位二反人类的登录交互">坑位二：反人类的登录交互</h3><p><strong>症状</strong>：第一次输入 <code>agy</code> 回车后，它不会像其他现代工具那样自动拉起浏览器，而是要在终端里显示一串授权链接让你复制。</p>
+<p><strong>底层真凶</strong>：UI 焦点设计缺陷。授权链接和粘贴验证码的输入框，居然<strong>不在你当前屏幕的可视范围内</strong>！</p>
+<p><strong>🎯 破局大招</strong>：当你发现屏幕卡死在 <code>Signing in...</code> 或者回车没反应时，<strong>请务必疯狂按下 <code>Shift + 下方向键 (Down)</code></strong>。你会发现原来提示内容和输入框藏在下面！在 iTerm2 等终端里，记得提前开启“允许终端访问剪贴板”的权限。</p>
+<h3 id="坑位三肌肉记忆的挑战-ctrlc-失效">坑位三：肌肉记忆的挑战 (Ctrl+C 失效)</h3><p><strong>症状</strong>：平时我们在终端里跑程序，遇到卡死或者想强行退出，脑子不用动就会按 <code>Ctrl + C</code>。但在 Antigravity 里，按烂了都没用。</p>
+<p><strong>🎯 破局大招</strong>：必须按下 <strong><code>Ctrl + D</code></strong> 才能强行杀死当前任务或退出终端。这点非常反直觉，需要大家重新适应一下肌肉记忆。</p>
+<hr>
+<h2 id="-其他差异化亮点不仅会写代码还能原生画图">🎨 其他差异化亮点：不仅会写代码，还能原生画图</h2><p>除了上面提到的多智能体，Antigravity 还有一个独门绝技：<strong>原生图像生成</strong>。</p>
+<p>由于它内置了谷歌自家的 Nano Banana Pro 2 代模型，你可以直接在终端里让它出图。比如你说：“根据我现在的代码逻辑，给我画一张系统架构图”，它能直接调用底层工具画出来，而不是凭空乱编。这对于独立开发者做演示、写 Readme 文档来说，堪称神器。</p>
+<p>另外，它在终端沙箱 (Terminal Sandbox) 上也做得很好。它给智能体本地跑命令加了一层操作系统级别的隔离（比如 macOS 用的 sandbox-exec）。这能防止 AI 发疯误删你的核心文件，或者偷偷往外发乱七八糟的网络请求，安全性拉满。</p>
+<hr>
+<h2 id="-总结提炼-写在最后">💡 总结提炼 / 写在最后</h2><p>总的来说，Antigravity CLI 绝不是一个简单的“换皮”产品，它是谷歌在 AI 编程领域从“你问我答”向“你授权我干活”迈出的巨大一步。</p>
+<p><strong>给你的实战建议：</strong></p>
+<ol>
+<li><strong>不要犹豫，赶紧迁移</strong>：6 月 18 日老版本就停服了。现在的 Antigravity CLI 免费且支持 Sonnet 4.6 和 Opus 4.6，光冲着这个白嫖前沿模型的机会，也值得立刻装一个,以前的Gemini CLI不支持</li>
+<li><strong>转变你的工作思维</strong>：未来的程序员，手写代码的能力会被弱化。你要把自己当成一个 <strong>“技术包工头”</strong>。你要练的本事是：如何把一个大任务拆解清楚？如何给 AI 设定明确的边界？如何快速 Review (审查) AI 写的代码？</li>
+<li><strong>防爆指南</strong>：让 AI 动手大改代码之前，<strong>一定要先 <code>git commit</code> 保存当前状态</strong>！CLI 工具权限很大，每次让它干活前，确保你的代码随时可以回滚。</li>
+</ol>
+<p>工具在变，但用工具创造价值的核心逻辑永远不变。如果你还没试过，今晚就搞个 TUN 模式，装上 Antigravity 体验一把什么叫“代码起飞”的感觉吧！</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="-突发gemini-cli-强制退役谷歌掏出了新武器" data-astro-cid-w5q62dq7> <a href="#-突发gemini-cli-强制退役谷歌掏出了新武器" data-astro-cid-w5q62dq7>🚨 突发：Gemini CLI 强制退役，谷歌掏出了新武器</a> </li><li class="toc-item " data-slug="-什么是-antigravity-cli它解决了什么痛点" data-astro-cid-w5q62dq7> <a href="#-什么是-antigravity-cli它解决了什么痛点" data-astro-cid-w5q62dq7>🤔 什么是 Antigravity CLI？它解决了什么痛点？</a> </li><li class="toc-item h3-nav" data-slug="这次升级到底牛在哪" data-astro-cid-w5q62dq7> <a href="#这次升级到底牛在哪" data-astro-cid-w5q62dq7>这次升级到底牛在哪？</a> </li><li class="toc-item " data-slug="-一看就懂的多智能体架构图" data-astro-cid-w5q62dq7> <a href="#-一看就懂的多智能体架构图" data-astro-cid-w5q62dq7>⚙️ 一看就懂的多智能体架构图</a> </li><li class="toc-item " data-slug="-安装迁移与极速上手" data-astro-cid-w5q62dq7> <a href="#-安装迁移与极速上手" data-astro-cid-w5q62dq7>🛠️ 安装、迁移与极速上手</a> </li><li class="toc-item h3-nav" data-slug="1-安装-antigravity-cli" data-astro-cid-w5q62dq7> <a href="#1-安装-antigravity-cli" data-astro-cid-w5q62dq7>1. 安装 Antigravity CLI</a> </li><li class="toc-item h3-nav" data-slug="2-从老版本无缝迁移" data-astro-cid-w5q62dq7> <a href="#2-从老版本无缝迁移" data-astro-cid-w5q62dq7>2. 从老版本无缝迁移</a> </li><li class="toc-item h3-nav" data-slug="3-启动你的第一个多智能体工作流" data-astro-cid-w5q62dq7> <a href="#3-启动你的第一个多智能体工作流" data-astro-cid-w5q62dq7>3. 启动你的第一个多智能体工作流</a> </li><li class="toc-item " data-slug="-避坑指南这些反人类的设计差点把我逼疯" data-astro-cid-w5q62dq7> <a href="#-避坑指南这些反人类的设计差点把我逼疯" data-astro-cid-w5q62dq7>💣 避坑指南：这些反人类的设计差点把我逼疯</a> </li><li class="toc-item h3-nav" data-slug="坑位一终端代理失效连不上网最坑的一集" data-astro-cid-w5q62dq7> <a href="#坑位一终端代理失效连不上网最坑的一集" data-astro-cid-w5q62dq7>坑位一：终端代理失效，连不上网（最坑的一集）</a> </li><li class="toc-item h3-nav" data-slug="坑位二反人类的登录交互" data-astro-cid-w5q62dq7> <a href="#坑位二反人类的登录交互" data-astro-cid-w5q62dq7>坑位二：反人类的登录交互</a> </li><li class="toc-item h3-nav" data-slug="坑位三肌肉记忆的挑战-ctrlc-失效" data-astro-cid-w5q62dq7> <a href="#坑位三肌肉记忆的挑战-ctrlc-失效" data-astro-cid-w5q62dq7>坑位三：肌肉记忆的挑战 (Ctrl+C 失效)</a> </li><li class="toc-item " data-slug="-其他差异化亮点不仅会写代码还能原生画图" data-astro-cid-w5q62dq7> <a href="#-其他差异化亮点不仅会写代码还能原生画图" data-astro-cid-w5q62dq7>🎨 其他差异化亮点：不仅会写代码，还能原生画图</a> </li><li class="toc-item " data-slug="-总结提炼-写在最后" data-astro-cid-w5q62dq7> <a href="#-总结提炼-写在最后" data-astro-cid-w5q62dq7>💡 总结提炼 / 写在最后</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-gemini-spark-ai-agent-deep-dive" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-d65c443d.jpg" alt="谷歌自己的龙虾Gemini Spark:真正替你上班的24小时虚拟员工" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-gemini-spark-ai-agent-deep-dive" data-astro-cid-w5q62dq7>谷歌自己的龙虾Gemini Spark:真正替你上班的24小时虚拟员工</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>AI终于从“陪聊”进化到了“替你打工”。本文用大白话带你拆解谷歌在2026年I/O大会抛出的王炸——Gemini Spark。它不仅能在云端24小时干活，还能跨应用帮你回邮件、做排期、整理报表。看完这篇，搞懂AI智能体（Agent）的底层逻辑与实操避坑指南。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月22日</span> <span data-astro-cid-w5q62dq7>作者: Eric W</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-io-antigravity-2-coding-agent-platform" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-6f64d6c5.jpg" alt="Google I/O 震撼发布 Antigravity 2.0：从臃肿 IDE 到 Agent-First 平台的全面重构与避坑指南" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-io-antigravity-2-coding-agent-platform" data-astro-cid-w5q62dq7>Google I/O 震撼发布 Antigravity 2.0：从臃肿 IDE 到 Agent-First 平台的全面重构与避坑指南</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>Antigravity 2.0 彻底抛弃传统 IDE 架构，转型为 Agent-First 开发平台。本文深度解析其 Dynamic Subagents、CLI 替代方案、全新定价策略，并直击工作流丢失、UI 混乱等开发者痛点。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月22日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\)）)([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

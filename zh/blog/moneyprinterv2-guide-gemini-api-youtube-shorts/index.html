@@ -1,0 +1,1043 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts — AgentUpdate.ai</title><meta name="description" content="本文详细介绍如何使用 MoneyPrinterV2 结合 Gemini API 自动生成 YouTube 短视频，包含环境配置、源码改造及常见依赖 Bug 修复，助你零成本跑通 AI 视频流水线。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts, MoneyPrinterV2 Guide: Auto-Generating YouTube Shorts with Gemini API, AI 视频生成, Gemini API, MoneyPrinterV2"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts — AgentUpdate.ai"><meta property="og:description" content="本文详细介绍如何使用 MoneyPrinterV2 结合 Gemini API 自动生成 YouTube 短视频，包含环境配置、源码改造及常见依赖 Bug 修复，助你零成本跑通 AI 视频流水线。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-a18c6816.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts — AgentUpdate.ai"><meta name="twitter:description" content="本文详细介绍如何使用 MoneyPrinterV2 结合 Gemini API 自动生成 YouTube 短视频，包含环境配置、源码改造及常见依赖 Bug 修复，助你零成本跑通 AI 视频流水线。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-a18c6816.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts","description":"本文详细介绍如何使用 MoneyPrinterV2 结合 Gemini API 自动生成 YouTube 短视频，包含环境配置、源码改造及常见依赖 Bug 修复，助你零成本跑通 AI 视频流水线。","image":"/images/blog/ai-cover-a18c6816.jpg","datePublished":"2026-06-03T02:56:11.450Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/moneyprinterv2-guide-gemini-api-youtube-shorts"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/moneyprinterv2-guide-gemini-api-youtube-shorts/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月3日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric w</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#AI 视频生成</span><span class="tag" data-astro-cid-w5q62dq7>#Gemini API</span><span class="tag" data-astro-cid-w5q62dq7>#MoneyPrinterV2</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-a18c6816.jpg" alt="MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-目录" data-astro-cid-w5q62dq7>📖 目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-项目简介" data-astro-cid-w5q62dq7>🎯 项目简介</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#原始架构的问题" data-astro-cid-w5q62dq7>原始架构的问题</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-整体架构" data-astro-cid-w5q62dq7>🏗️ 整体架构</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#数据流图" data-astro-cid-w5q62dq7>数据流图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-前置准备-checklist" data-astro-cid-w5q62dq7>✅ 前置准备 Checklist</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#环境准备清单" data-astro-cid-w5q62dq7>环境准备清单</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#如何找到你的-firefox-profile-路径" data-astro-cid-w5q62dq7>如何找到你的 Firefox Profile 路径</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-安装步骤" data-astro-cid-w5q62dq7>📦 安装步骤</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第一步克隆项目" data-astro-cid-w5q62dq7>第一步：克隆项目</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第二步创建虚拟环境" data-astro-cid-w5q62dq7>第二步：创建虚拟环境</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第三步安装依赖" data-astro-cid-w5q62dq7>第三步：安装依赖</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第四步修复依赖冲突重要" data-astro-cid-w5q62dq7>第四步：修复依赖冲突（重要！）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-配置详解" data-astro-cid-w5q62dq7>⚙️ 配置详解</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#创建配置文件" data-astro-cid-w5q62dq7>创建配置文件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#configjson-完整配置说明" data-astro-cid-w5q62dq7>config.json 完整配置说明</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#关键配置项速查表" data-astro-cid-w5q62dq7>关键配置项速查表</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#获取-imagemagick-路径" data-astro-cid-w5q62dq7>获取 ImageMagick 路径</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-核心改造用-gemini-api-替换-openai" data-astro-cid-w5q62dq7>🔧 核心改造：用 Gemini API 替换 OpenAI</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#为什么替换" data-astro-cid-w5q62dq7>为什么替换？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#改动一requirementstxt" data-astro-cid-w5q62dq7>改动一：requirements.txt</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#改动二srcllmproviderpy核心文件完整重写" data-astro-cid-w5q62dq7>改动二：src/llmprovider.py（核心文件，完整重写）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#改动三configjson-模型配置" data-astro-cid-w5q62dq7>改动三：config.json 模型配置</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#改动说明图" data-astro-cid-w5q62dq7>改动说明图</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#修改文件汇总" data-astro-cid-w5q62dq7>修改文件汇总</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-bug-修复记录" data-astro-cid-w5q62dq7>🐛 Bug 修复记录</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#bug-1selenium-版本冲突-" data-astro-cid-w5q62dq7>Bug #1：Selenium 版本冲突 🔴</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#bug-2moviepy-版本冲突-" data-astro-cid-w5q62dq7>Bug #2：MoviePy 版本冲突 🔴</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-视频生成全流程" data-astro-cid-w5q62dq7>🎥 视频生成全流程</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#各步骤耗时参考" data-astro-cid-w5q62dq7>各步骤耗时参考</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-运行程序" data-astro-cid-w5q62dq7>🚀 运行程序</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#启动" data-astro-cid-w5q62dq7>启动</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#交互式菜单流程" data-astro-cid-w5q62dq7>交互式菜单流程</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#创建-youtube-账号时需要输入" data-astro-cid-w5q62dq7>创建 YouTube 账号时需要输入</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-发布到-youtube" data-astro-cid-w5q62dq7>📤 发布到 YouTube</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-常见问题-faq" data-astro-cid-w5q62dq7>❓ 常见问题 FAQ</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#q1-获取-gemini-api-key-时提示需要付费" data-astro-cid-w5q62dq7>Q1: 获取 Gemini API Key 时提示需要付费？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#q2-运行时报错-imagemagick-找不到" data-astro-cid-w5q62dq7>Q2: 运行时报错 ImageMagick 找不到？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#q3-图片生成失败" data-astro-cid-w5q62dq7>Q3: 图片生成失败？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#q4-上传-youtube-时浏览器闪退" data-astro-cid-w5q62dq7>Q4: 上传 YouTube 时浏览器闪退？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#q5-如何修改视频语言为中文" data-astro-cid-w5q62dq7>Q5: 如何修改视频语言为中文？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#q6-想用其他图片生成模型" data-astro-cid-w5q62dq7>Q6: 想用其他图片生成模型？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-总结" data-astro-cid-w5q62dq7>📝 总结</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#最终改动清单" data-astro-cid-w5q62dq7>最终改动清单</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#改动总结" data-astro-cid-w5q62dq7>改动总结</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#核心改动" data-astro-cid-w5q62dq7>核心改动</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#bug-修复" data-astro-cid-w5q62dq7>Bug 修复</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#零改动" data-astro-cid-w5q62dq7>零改动</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#项目文件结构" data-astro-cid-w5q62dq7>项目文件结构</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#快速启动命令一镜到底" data-astro-cid-w5q62dq7>快速启动命令（一镜到底）</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><blockquote>
+<p><strong>用 Gemini API 替换 OpenAI，修复依赖冲突，跑通全流程的踩坑记录</strong></p>
+</blockquote>
+<hr>
+<h2 id="-目录">📖 目录</h2><ul>
+<li><a href="#-%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B">项目简介</a></li>
+<li><a href="#-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84">整体架构</a></li>
+<li><a href="#-%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87-checklist">前置准备 Checklist</a></li>
+<li><a href="#-%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4">安装步骤</a></li>
+<li><a href="#-%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3">配置详解</a></li>
+<li><a href="#-%E6%A0%B8%E5%BF%83%E6%94%B9%E9%80%A0%E7%94%A8-gemini-api-%E6%9B%BF%E6%8D%A2-openai">核心改造：用 Gemini API 替换 OpenAI</a></li>
+<li><a href="#-bug-%E4%BF%AE%E5%A4%8D%E8%AE%B0%E5%BD%95">Bug 修复记录</a></li>
+<li><a href="#-%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%85%A8%E6%B5%81%E7%A8%8B">视频生成全流程</a></li>
+<li><a href="#-%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F">运行程序</a></li>
+<li><a href="#-%E5%8F%91%E5%B8%83%E5%88%B0-youtube">发布到 YouTube</a></li>
+<li><a href="#-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-faq">常见问题 FAQ</a></li>
+<li><a href="#-%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<hr>
+<h2 id="-项目简介">🎯 项目简介</h2><p><a href="https://github.com/FujiwaraChoki/MoneyPrinterV2">MoneyPrinterV2</a> 是一个开源的 Python 自动化工具，核心能力：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>YouTube Shorts 生成器</strong></td>
+<td>AI 写脚本 → AI 生成图片 → TTS 语音合成 → 自动合成视频 → 上传 YouTube</td>
+</tr>
+<tr>
+<td><strong>Twitter/X 机器人</strong></td>
+<td>自动生成推文并发布</td>
+</tr>
+<tr>
+<td><strong>联盟营销</strong></td>
+<td>抓取 Amazon 商品 → 生成推销文案 → 发布到 Twitter</td>
+</tr>
+<tr>
+<td><strong>本地商家推广</strong></td>
+<td>抓取 Google Maps 商家 → 自动发送推广邮件</td>
+</tr>
+</tbody></table>
+<p>本文聚焦 <strong>YouTube Shorts 视频生成</strong> 这个最核心的功能。</p>
+<h3 id="原始架构的问题">原始架构的问题</h3><p>原始项目使用 <strong>Ollama（本地 LLM）</strong> 作为文本生成引擎，需要本地跑大模型，对硬件要求高，速度慢。我把它改成了 <strong>Google Gemini API</strong>，通过 <code>litellm</code> 统一调用接口，速度快、成本低、无需本地 GPU。</p>
+<hr>
+<h2 id="-整体架构">🏗️ 整体架构</h2><p>改造后的系统架构如下：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    subgraph "用户操作"
+        A[运行 python src/main.py] --> B[选择 YouTube Shorts]
+        B --> C[选择/创建账号]
+    end
+
+    subgraph "AI 文本生成 (Gemini API)"
+        C --> D[生成视频主题]
+        D --> E[生成视频脚本]
+        E --> F[生成视频元数据<br/>标题/描述/标签]
+        F --> G[生成 AI 图片提示词]
+    end
+
+    subgraph "素材生成"
+        G --> H[调用 Gemini Imagen API<br/>生成配图]
+        E --> I[KittenTTS 语音合成<br/>将脚本转为语音]
+    end
+
+    subgraph "视频合成"
+        H --> J[MoviePy 合成视频]
+        I --> J
+        J --> K[Whisper 生成字幕]
+        K --> J
+        J --> L[输出 MP4 文件]
+    end
+
+    subgraph "发布"
+        L --> M{是否上传?}
+        M -->|Yes| N[Selenium 自动上传<br/>到 YouTube Studio]
+        M -->|No| O[保存到 output/ 目录]
+    end
+
+    style D fill:#4285f4,color:#fff
+    style E fill:#4285f4,color:#fff
+    style F fill:#4285f4,color:#fff
+    style G fill:#4285f4,color:#fff
+    style H fill:#ea4335,color:#fff
+    style I fill:#34a853,color:#fff
+    style K fill:#fbbc05,color:#333</pre></div><h3 id="数据流图">数据流图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart LR
+    subgraph "输入"
+        N1["频道领域<br/>(niche)"]
+        N2["语言<br/>(language)"]
+    end
+
+    subgraph "Gemini API 处理"
+        P1["主题生成"] --> P2["脚本编写"]
+        P2 --> P3["元数据生成"]
+        P2 --> P4["图片提示词"]
+    end
+
+    subgraph "素材层"
+        P4 --> IMG["Imagen 4.0<br/>生成配图 ×5-10"]
+        P2 --> TTS["KittenTTS<br/>语音合成 WAV"]
+        TTS --> STT["Whisper<br/>语音识别→字幕 SRT"]
+    end
+
+    subgraph "合成层"
+        IMG --> MP4["MoviePy<br/>图片+语音+字幕+背景音乐"]
+        TTS --> MP4
+        STT --> MP4
+    end
+
+    N1 --> P1
+    N2 --> P1
+
+    MP4 --> OUT["output/*.mp4"]
+
+    style P1 fill:#4285f4,color:#fff
+    style P2 fill:#4285f4,color:#fff
+    style P3 fill:#4285f4,color:#fff
+    style P4 fill:#4285f4,color:#fff
+    style IMG fill:#ea4335,color:#fff
+    style TTS fill:#34a853,color:#fff
+    style STT fill:#fbbc05,color:#333</pre></div><hr>
+<h2 id="-前置准备-checklist">✅ 前置准备 Checklist</h2><p>在开始之前，确保以下条件已满足：</p>
+<div class="code-wrapper"><pre><code class="language-markdown">## 环境准备清单
+
+- [ ] Python 3.12 已安装
+  ```bash
+  python --version  # 确认输出 Python 3.12.x
+</code></pre>
+</div><ul>
+<li><input disabled="" type="checkbox"> Git 已安装</li>
+<li><input disabled="" type="checkbox"> ImageMagick 已安装（字幕渲染必需）<div class="code-wrapper"><pre><code class="language-bash"># macOS
+brew install imagemagick
+# 验证
+which convert
+</code></pre>
+</div></li>
+<li><input disabled="" type="checkbox"> Firefox 浏览器已安装</li>
+<li><input disabled="" type="checkbox"> 有一个已登录 YouTube 的 Firefox Profile（上传视频用）</li>
+<li><input disabled="" type="checkbox"> Google Gemini API Key 已获取<ul>
+<li>前往 <a href="https://aistudio.google.com/apikey">Google AI Studio</a> 获取</li>
+<li>免费额度足够测试使用</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> （可选）ffmpeg 已安装<div class="code-wrapper"><pre><code class="language-bash">brew install ffmpeg
+</code></pre>
+</div></li>
+</ul>
+<div class="code-wrapper"><pre><code>
+### 如何找到你的 Firefox Profile 路径
+
+```bash
+# macOS
+ls ~/Library/Application\ Support/Firefox/Profiles/
+# 找到 xxxxx.default-release 那个目录，完整路径就是 Profile 路径
+# 例如：/Users/你的用户名/Library/Application Support/Firefox/Profiles/xxxxx.default-release
+</code></pre>
+</div><div class="mermaid-block"><pre class="mermaid" id="mermaid-2">flowchart TD
+    A[打开 Firefox] --> B[地址栏输入 about:profiles]
+    B --> C[找到 default-release 配置文件]
+    C --> D[复制"根目录"路径]
+    D --> E[填入 config.json 的 firefox_profile 字段]
+
+    style A fill:#ff7139,color:#fff
+    style E fill:#34a853,color:#fff</pre></div><hr>
+<h2 id="-安装步骤">📦 安装步骤</h2><h3 id="第一步克隆项目">第一步：克隆项目</h3><div class="code-wrapper"><pre><code class="language-bash">git clone https://github.com/FujiwaraChoki/MoneyPrinterV2.git
+cd MoneyPrinterV2
+</code></pre>
+</div><h3 id="第二步创建虚拟环境">第二步：创建虚拟环境</h3><div class="code-wrapper"><pre><code class="language-bash"># 创建虚拟环境
+python -m venv venv
+
+# macOS / Linux 激活
+source venv/bin/activate
+
+# Windows 激活
+# .\venv\Scripts\activate
+</code></pre>
+</div><h3 id="第三步安装依赖">第三步：安装依赖</h3><div class="code-wrapper"><pre><code class="language-bash">pip install -r requirements.txt
+</code></pre>
+</div><blockquote>
+<p>⚠️ <strong>注意：这一步大概率会遇到 Bug，请看下面的 <a href="#-bug-%E4%BF%AE%E5%A4%8D%E8%AE%B0%E5%BD%95">Bug 修复记录</a></strong></p>
+</blockquote>
+<h3 id="第四步修复依赖冲突重要">第四步：修复依赖冲突（重要！）</h3><p>原始 <code>requirements.txt</code> 里的包版本不兼容，安装后运行会报错。以下是必须修复的问题：</p>
+<h4 id="bug-1selenium-版本过高">Bug #1：Selenium 版本过高</h4><div class="code-wrapper"><pre><code class="language-bash"># 现象：ModuleNotFoundError: No module named &#39;selenium.webdriver.firefox.firefox_binary&#39;
+# 原因：selenium_firefox 包依赖的 firefox_binary 模块在 Selenium 4.40+ 中被移除
+
+pip install selenium==4.39.0
+</code></pre>
+</div><h4 id="bug-2moviepy-版本过高">Bug #2：MoviePy 版本过高</h4><div class="code-wrapper"><pre><code class="language-bash"># 现象：ImportError: cannot import name &#39;editor&#39; from &#39;moviepy&#39;
+# 原因：MoviePy 2.x 移除了 editor 模块，而 YouTube.py 中大量使用 from moviepy.editor import *
+
+pip install &#39;moviepy&lt;2&#39;
+</code></pre>
+</div><h4 id="安装后的完整验证">安装后的完整验证</h4><div class="code-wrapper"><pre><code class="language-bash"># 验证 Selenium 版本
+pip show selenium | grep Version
+# 期望输出：Version: 4.39.0
+
+# 验证 MoviePy 版本
+pip show moviepy | grep Version
+# 期望输出：Version: 1.0.3
+
+# 验证 litellm 已安装
+pip show litellm | grep Version
+</code></pre>
+</div><div class="mermaid-block"><pre class="mermaid" id="mermaid-3">flowchart TD
+    A[pip install -r requirements.txt] --> B{运行 python src/main.py}
+    B -->|报错: firefox_binary| C["pip install selenium==4.39.0"]
+    B -->|报错: moviepy.editor| D["pip install 'moviepy&lt;2'"]
+    B -->|正常运行| E["✅ 安装成功!"]
+    C --> E
+    D --> E
+
+    style A fill:#4285f4,color:#fff
+    style C fill:#ea4335,color:#fff
+    style D fill:#ea4335,color:#fff
+    style E fill:#34a853,color:#fff</pre></div><hr>
+<h2 id="-配置详解">⚙️ 配置详解</h2><h3 id="创建配置文件">创建配置文件</h3><div class="code-wrapper"><pre><code class="language-bash">cp config.example.json config.json
+</code></pre>
+</div><h3 id="configjson-完整配置说明">config.json 完整配置说明</h3><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;verbose&quot;: true,
+  &quot;firefox_profile&quot;: &quot;/Users/你的用户名/Library/Application Support/Firefox/Profiles/xxxxx.default-release&quot;,
+  &quot;headless&quot;: false,
+  &quot;ollama_base_url&quot;: &quot;http://127.0.0.1:11434&quot;,
+  &quot;ollama_model&quot;: &quot;gemini/gemini-3.5-flash&quot;,
+  &quot;twitter_language&quot;: &quot;English&quot;,
+  &quot;nanobanana2_api_base_url&quot;: &quot;https://generativelanguage.googleapis.com/v1beta&quot;,
+  &quot;nanobanana2_api_key&quot;: &quot;你的-GEMINI-API-KEY&quot;,
+  &quot;nanobanana2_model&quot;: &quot;imagen-4.0-generate-001&quot;,
+  &quot;nanobanana2_aspect_ratio&quot;: &quot;9:16&quot;,
+  &quot;threads&quot;: 2,
+  &quot;zip_url&quot;: &quot;&quot;,
+  &quot;is_for_kids&quot;: false,
+  &quot;stt_provider&quot;: &quot;local_whisper&quot;,
+  &quot;whisper_model&quot;: &quot;base&quot;,
+  &quot;whisper_device&quot;: &quot;auto&quot;,
+  &quot;whisper_compute_type&quot;: &quot;int8&quot;,
+  &quot;tts_voice&quot;: &quot;Jasper&quot;,
+  &quot;font&quot;: &quot;bold_font.ttf&quot;,
+  &quot;imagemagick_path&quot;: &quot;/opt/homebrew/bin/convert&quot;,
+  &quot;script_sentence_length&quot;: 12,
+  &quot;assembly_ai_api_key&quot;: &quot;&quot;,
+  &quot;email&quot;: {
+    &quot;smtp_server&quot;: &quot;smtp.gmail.com&quot;,
+    &quot;smtp_port&quot;: 587,
+    &quot;username&quot;: &quot;&quot;,
+    &quot;password&quot;: &quot;&quot;
+  },
+  &quot;google_maps_scraper&quot;: &quot;https://github.com/gosom/google-maps-scraper/archive/refs/tags/v0.9.7.zip&quot;,
+  &quot;google_maps_scraper_niche&quot;: &quot;&quot;,
+  &quot;scraper_timeout&quot;: 300,
+  &quot;outreach_message_subject&quot;: &quot;I have a question...&quot;,
+  &quot;outreach_message_body_file&quot;: &quot;outreach_message.html&quot;,
+  &quot;post_bridge&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;api_key&quot;: &quot;&quot;,
+    &quot;platforms&quot;: [&quot;tiktok&quot;, &quot;instagram&quot;],
+    &quot;account_ids&quot;: [],
+    &quot;auto_crosspost&quot;: false
+  }
+}
+</code></pre>
+</div><h3 id="关键配置项速查表">关键配置项速查表</h3><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+<th>我的设置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ollama_model</code></td>
+<td>文本生成模型（通过 litellm 调 Gemini）</td>
+<td><code>gemini/gemini-3.5-flash</code></td>
+</tr>
+<tr>
+<td><code>nanobanana2_api_key</code></td>
+<td>Gemini API Key</td>
+<td>去 <a href="https://aistudio.google.com/apikey">AI Studio</a> 获取</td>
+</tr>
+<tr>
+<td><code>nanobanana2_model</code></td>
+<td>图片生成模型</td>
+<td><code>imagen-4.0-generate-001</code></td>
+</tr>
+<tr>
+<td><code>nanobanana2_aspect_ratio</code></td>
+<td>图片比例（竖屏=9:16）</td>
+<td><code>9:16</code></td>
+</tr>
+<tr>
+<td><code>firefox_profile</code></td>
+<td>已登录 YouTube 的 Firefox 配置路径</td>
+<td>见上文获取方法</td>
+</tr>
+<tr>
+<td><code>imagemagick_path</code></td>
+<td>ImageMagick convert 路径</td>
+<td>macOS: <code>/opt/homebrew/bin/convert</code></td>
+</tr>
+<tr>
+<td><code>script_sentence_length</code></td>
+<td>脚本句子数（越长视频越长）</td>
+<td><code>12</code></td>
+</tr>
+<tr>
+<td><code>stt_provider</code></td>
+<td>语音转文字引擎</td>
+<td><code>local_whisper</code>（免费本地）</td>
+</tr>
+<tr>
+<td><code>tts_voice</code></td>
+<td>TTS 语音选择</td>
+<td><code>Jasper</code></td>
+</tr>
+</tbody></table>
+<h3 id="获取-imagemagick-路径">获取 ImageMagick 路径</h3><div class="code-wrapper"><pre><code class="language-bash"># macOS (Apple Silicon)
+which convert
+# 通常输出: /opt/homebrew/bin/convert
+
+# macOS (Intel)
+# 通常输出: /usr/local/bin/convert
+
+# Linux
+# 通常输出: /usr/bin/convert
+</code></pre>
+</div><hr>
+<h2 id="-核心改造用-gemini-api-替换-openai">🔧 核心改造：用 Gemini API 替换 OpenAI</h2><h3 id="为什么替换">为什么替换？</h3><p>原始项目使用 <strong>Ollama</strong>（本地运行大模型），存在以下问题：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-4">graph LR
+    subgraph "原方案：Ollama 本地"
+        O1["需要下载 4GB+ 模型"] --> O2["需要 8GB+ RAM"]
+        O2 --> O3["生成速度慢<br/>30-60秒/次"]
+        O3 --> O4["需要持续运行<br/>Ollama 服务"]
+    end
+
+    subgraph "新方案：Gemini API"
+        G1["无需本地模型"] --> G2["API 免费额度充足"]
+        G2 --> G3["生成速度快<br/>2-5秒/次"]
+        G3 --> G4["无需本地服务"]
+    end
+
+    style O3 fill:#ea4335,color:#fff
+    style G3 fill:#34a853,color:#fff</pre></div><h3 id="改动一requirementstxt">改动一：`requirements.txt`</h3><div class="code-wrapper"><pre><code class="language-diff">  wheel
+  termcolor
+  schedule
+  requests
+- ollama
++ litellm
+  kittentts @ https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl
+</code></pre>
+</div><p>移除 <code>ollama</code> 包，换成 <code>litellm</code>（统一的 LLM 调用库，支持所有主流 API）。</p>
+<h3 id="改动二srcllm_providerpy核心文件完整重写">改动二：`src/llm_provider.py`（核心文件，完整重写）</h3><p>这个文件是整个 AI 文本生成的入口。我把原来的 Ollama SDK 调用全部替换为 <code>litellm</code> + Gemini API：</p>
+<div class="code-wrapper"><pre><code class="language-python">import time
+import litellm
+from config import get_ollama_model, get_nanobanana2_api_key
+
+_selected_model: str | None = None
+
+# 当主模型 503 不可用时的备选模型
+FALLBACK_MODELS = [
+    &quot;gemini/gemini-2.5-flash&quot;,
+    &quot;gemini/gemini-2.0-flash&quot;,
+    &quot;gemini/gemini-2.5-pro&quot;,
+]
+
+MAX_RETRIES = 3
+RETRY_DELAY = 10  # seconds
+
+
+def list_models() -&gt; list[str]:
+    &quot;&quot;&quot;返回推荐的 Gemini 模型列表&quot;&quot;&quot;
+    return [
+        &quot;gemini/gemini-3.5-flash&quot;,
+        &quot;gemini/gemini-2.5-flash&quot;,
+        &quot;gemini/gemini-3.5-pro&quot;,
+    ]
+
+
+def select_model(model: str) -&gt; None:
+    &quot;&quot;&quot;设置后续所有 generate_text 调用使用的模型&quot;&quot;&quot;
+    global _selected_model
+    _selected_model = model
+
+
+def get_active_model() -&gt; str | None:
+    &quot;&quot;&quot;返回当前选中的模型&quot;&quot;&quot;
+    return _selected_model
+
+
+def generate_text(prompt: str, model_name: str = None) -&gt; str:
+    &quot;&quot;&quot;
+    使用 Gemini API 生成文本，支持自动重试和模型降级。
+
+    工作流程：
+    1. 尝试主模型（默认 gemini/gemini-3.5-flash）
+    2. 如果主模型 503 不可用，最多重试 3 次
+    3. 3 次都失败，自动切换到备选模型
+    4. 所有模型都失败才抛出异常
+    &quot;&quot;&quot;
+    primary = model_name or _selected_model or &quot;gemini/gemini-3.5-flash&quot;
+    models_to_try = [primary] + [m for m in FALLBACK_MODELS if m != primary]
+    api_key = get_nanobanana2_api_key()
+
+    for model in models_to_try:
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = litellm.completion(
+                    model=model,
+                    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}],
+                    api_key=api_key,
+                )
+                return response.choices[0].message.content.strip()
+            except Exception as e:
+                error_str = str(e)
+                is_503 = (&quot;503&quot; in error_str
+                          or &quot;ServiceUnavailable&quot; in error_str
+                          or &quot;UNAVAILABLE&quot; in error_str)
+                if is_503 and attempt &lt; MAX_RETRIES - 1:
+                    print(f&quot;⚠️ Model {model} unavailable (503), &quot;
+                          f&quot;retry {attempt+1}/{MAX_RETRIES} in {RETRY_DELAY}s...&quot;)
+                    time.sleep(RETRY_DELAY)
+                    continue
+                elif is_503:
+                    print(f&quot;⚠️ Model {model} failed after {MAX_RETRIES} retries, &quot;
+                          f&quot;trying next model...&quot;)
+                    break
+                else:
+                    raise
+
+    raise RuntimeError(&quot;All Gemini models unavailable. Try again later.&quot;)
+</code></pre>
+</div><h3 id="改动三configjson-模型配置">改动三：`config.json` 模型配置</h3><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;ollama_model&quot;: &quot;gemini/gemini-3.5-flash&quot;,
+  &quot;nanobanana2_api_key&quot;: &quot;你的API密钥&quot;
+}
+</code></pre>
+</div><p>这里的 <code>ollama_model</code> 字段名虽然还叫 ollama，但实际上传的是 litellm 格式的 Gemini 模型名。<code>litellm</code> 通过 <code>gemini/</code> 前缀自动识别调用 Gemini API。</p>
+<h3 id="改动说明图">改动说明图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-5">sequenceDiagram
+    participant M as main.py
+    participant L as llm_provider.py
+    participant LT as litellm 库
+    participant G as Gemini API
+
+    M->>L: generate_text("生成视频主题...")
+    L->>L: 构建 prompt + 选择模型
+    L->>LT: litellm.completion(model="gemini/gemini-3.5-flash")
+    LT->>G: POST /v1beta/models/gemini-3.5-flash:generateContent
+    G-->>LT: 返回 AI 生成文本
+    LT-->>L: 解析 response
+    L-->>M: 返回生成的文本
+
+    Note over L,G: 如果 503，自动重试 3 次后切换备选模型</pre></div><h3 id="修改文件汇总">修改文件汇总</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-6">graph TD
+    subgraph "修改的文件"
+        A["requirements.txt<br/>ollama → litellm"]
+        B["src/llm_provider.py<br/>完全重写，Gemini API + 自动降级"]
+        C["config.json<br/>ollama_model 改为 gemini/ 路径"]
+    end
+
+    subgraph "未修改的文件"
+        D["src/classes/YouTube.py<br/>调用 generate_text() 不变"]
+        E["src/main.py<br/>启动流程不变"]
+        F["src/classes/Twitter.py<br/>调用方式不变"]
+    end
+
+    A --> B
+    C --> B
+    B --> D
+    B --> E
+    B --> F
+
+    style A fill:#ea4335,color:#fff
+    style B fill:#ea4335,color:#fff
+    style C fill:#ea4335,color:#fff
+    style D fill:#34a853,color:#fff
+    style E fill:#34a853,color:#fff
+    style F fill:#34a853,color:#fff</pre></div><blockquote>
+<p>💡 <strong>设计亮点</strong>：因为 <code>llm_provider.py</code> 对外只暴露 <code>generate_text(prompt)</code> 一个函数接口，所有调用方（YouTube.py、Twitter.py、AFM.py）<strong>零改动</strong>就完成了 API 切换。</p>
+</blockquote>
+<hr>
+<h2 id="-bug-修复记录">🐛 Bug 修复记录</h2><h3 id="bug-1selenium-版本冲突-">Bug #1：Selenium 版本冲突 🔴</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>现象</strong></td>
+<td><code>ModuleNotFoundError: No module named &#39;selenium.webdriver.firefox.firefox_binary&#39;</code></td>
+</tr>
+<tr>
+<td><strong>原因</strong></td>
+<td><code>selenium_firefox</code> 包依赖 <code>firefox_binary</code> 模块，该模块在 Selenium 4.40+ 被移除</td>
+</tr>
+<tr>
+<td><strong>影响</strong></td>
+<td>程序完全无法启动</td>
+</tr>
+<tr>
+<td><strong>修复</strong></td>
+<td>降级 Selenium 到 4.39.0</td>
+</tr>
+</tbody></table>
+<div class="code-wrapper"><pre><code class="language-bash">pip install selenium==4.39.0
+</code></pre>
+</div><p>依赖关系：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-7">graph TD
+    A["main.py"] -->|import| B["Twitter.py"]
+    B -->|import| C["selenium_firefox"]
+    C -->|import| D["selenium.webdriver.firefox.firefox_binary"]
+    D -->|"❌ Selenium 4.44.0 中不存在"| E["ModuleNotFoundError!"]
+
+    F["pip install selenium==4.39.0"] -->|"✅ 该版本包含 firefox_binary"| D
+
+    style E fill:#ea4335,color:#fff
+    style F fill:#34a853,color:#fff</pre></div><h3 id="bug-2moviepy-版本冲突-">Bug #2：MoviePy 版本冲突 🔴</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>现象</strong></td>
+<td><code>ImportError: cannot import name &#39;editor&#39; from &#39;moviepy&#39;</code></td>
+</tr>
+<tr>
+<td><strong>原因</strong></td>
+<td>MoviePy 2.x 移除了 <code>moviepy.editor</code> 模块，但 <code>YouTube.py</code> 中大量使用 <code>from moviepy.editor import *</code></td>
+</tr>
+<tr>
+<td><strong>影响</strong></td>
+<td>视频生成功能完全不可用</td>
+</tr>
+<tr>
+<td><strong>修复</strong></td>
+<td>降级 MoviePy 到 1.0.3</td>
+</tr>
+</tbody></table>
+<div class="code-wrapper"><pre><code class="language-bash">pip install &#39;moviepy&lt;2&#39;
+</code></pre>
+</div><p>受影响的代码：</p>
+<div class="code-wrapper"><pre><code class="language-python"># src/classes/YouTube.py 第 18-19 行
+from moviepy.editor import *          # ← MoviePy 2.x 中不存在
+from moviepy.video.fx.all import crop # ← 同样依赖 editor
+</code></pre>
+</div><hr>
+<h2 id="-视频生成全流程">🎥 视频生成全流程</h2><p>当你选择 &quot;Generate Video&quot; 后，程序会自动执行以下 7 个步骤：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-8">flowchart TD
+    S["🎬 开始生成视频"] --> S1
+
+    subgraph S1["Step 1: 生成主题"]
+        S1A["调用 Gemini API"] --> S1B["根据 niche 生成<br/>一个视频主题"]
+    end
+
+    S1 --> S2
+
+    subgraph S2["Step 2: 生成脚本"]
+        S2A["将主题发送给 Gemini"] --> S2B["生成 12 句话的视频旁白"]
+        S2B --> S2C{"脚本 &lt; 5000 字?"}
+        S2C -->|No| S2A
+        S2C -->|Yes| S2D["保存脚本"]
+    end
+
+    S2 --> S3
+
+    subgraph S3["Step 3: 生成元数据"]
+        S3A["Gemini 生成标题<br/>（含 hashtag）"] --> S3B["Gemini 生成描述"]
+    end
+
+    S3 --> S4
+
+    subgraph S4["Step 4: 生成图片提示词"]
+        S4A["根据脚本内容"] --> S4B["生成 5-10 条图片描述"]
+    end
+
+    S4 --> S5
+
+    subgraph S5["Step 5: 生成图片"]
+        S5A["遍历每条提示词"] --> S5B["调用 Gemini Imagen 4.0"]
+        S5B --> S5C["保存为 PNG"]
+        S5C --> S5D{"还有更多?"}
+        S5D -->|Yes| S5A
+        S5D -->|No| S5E["所有图片就绪"]
+    end
+
+    S5 --> S6
+
+    subgraph S6["Step 6: 语音合成"]
+        S6A["脚本文本发送给 KittenTTS"] --> S6B["生成 WAV 音频"]
+        S6B --> S6C["Whisper 识别音频<br/>生成 SRT 字幕"]
+    end
+
+    S6 --> S7
+
+    subgraph S7["Step 7: 合成视频"]
+        S7A["MoviePy 加载所有图片"] --> S7B["裁剪为 9:16 竖屏"]
+        S7B --> S7C["每张图片展示 N 秒<br/>N = 音频时长 / 图片数"]
+        S7C --> S7D["叠加 TTS 音频"]
+        S7D --> S7E["叠加背景音乐<br/>音量降低到 10%"]
+        S7E --> S7F["叠加字幕（黄色+黑色描边）"]
+        S7F --> S7G["输出 MP4 → output/"]
+    end
+
+    S7 --> DONE["✅ 视频生成完成!"]
+
+    style S1 fill:#4285f4,color:#fff
+    style S2 fill:#4285f4,color:#fff
+    style S3 fill:#4285f4,color:#fff
+    style S4 fill:#4285f4,color:#fff
+    style S5 fill:#ea4335,color:#fff
+    style S6 fill:#34a853,color:#fff
+    style S7 fill:#fbbc05,color:#333
+    style DONE fill:#34a853,color:#fff</pre></div><h3 id="各步骤耗时参考">各步骤耗时参考</h3><table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>耗时</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>生成主题</td>
+<td>~3s</td>
+<td>Gemini API 一次调用</td>
+</tr>
+<tr>
+<td>生成脚本</td>
+<td>~5s</td>
+<td>Gemini API 一次调用</td>
+</tr>
+<tr>
+<td>生成元数据</td>
+<td>~6s</td>
+<td>标题 + 描述，两次 API 调用</td>
+</tr>
+<tr>
+<td>生成图片提示词</td>
+<td>~4s</td>
+<td>Gemini API 一次调用</td>
+</tr>
+<tr>
+<td>生成 5-10 张图片</td>
+<td>~30-60s</td>
+<td>Imagen API，每张约 5-8s</td>
+</tr>
+<tr>
+<td>TTS 语音合成</td>
+<td>~10-20s</td>
+<td>本地 KittenTTS</td>
+</tr>
+<tr>
+<td>Whisper 字幕</td>
+<td>~5-10s</td>
+<td>本地 faster-whisper</td>
+</tr>
+<tr>
+<td>MoviePy 合成</td>
+<td>~30-60s</td>
+<td>取决于图片数量</td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td><strong>~2-3 分钟</strong></td>
+<td>全自动，无需人工干预</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="-运行程序">🚀 运行程序</h2><h3 id="启动">启动</h3><div class="code-wrapper"><pre><code class="language-bash">cd MoneyPrinterV2
+source venv/bin/activate
+python src/main.py
+</code></pre>
+</div><h3 id="交互式菜单流程">交互式菜单流程</h3><p>程序启动后会看到以下菜单：</p>
+<div class="code-wrapper"><pre><code>============ OPTIONS ===========
+ 1. YouTube Shorts
+ 2. Twitter Bot
+ 3. Affiliate Marketing
+ 4. Outreach
+ 5. Quit
+=================================
+
+Select an option:
+</code></pre>
+</div><p>选择 <code>1</code> 进入 YouTube Shorts：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-9">flowchart TD
+    START["python src/main.py"] --> MODEL["选择模型<br/>gemini/gemini-3.5-flash"]
+    MODEL --> MENU["主菜单"]
+
+    MENU -->|"1. YouTube Shorts"| YT_MENU["YouTube 菜单"]
+
+    YT_MENU --> ACCT{"有缓存的<br/>YouTube 账号?"}
+    ACCT -->|No| CREATE["创建账号<br/>输入昵称/Firefox Profile/领域/语言"]
+    ACCT -->|Yes| SELECT["选择已有账号"]
+
+    CREATE --> YT_OPTS
+    SELECT --> YT_OPTS
+
+    YT_OPTS["YouTube 操作菜单"]
+    YT_OPTS -->|"1. Generate Video"| GEN["自动生成视频"]
+    YT_OPTS -->|"2. View Videos"| VIEW["查看已生成视频列表"]
+    YT_OPTS -->|"3. Schedule Uploads"| CRON["设置定时上传"]
+    YT_OPTS -->|"4. Back"| MENU
+
+    GEN --> UPLOAD{"是否上传到<br/>YouTube?"}
+    UPLOAD -->|Yes| UP["Selenium 自动上传"]
+    UPLOAD -->|No| SAVE["保存到 output/"]
+
+    style START fill:#4285f4,color:#fff
+    style GEN fill:#34a853,color:#fff
+    style UP fill:#ea4335,color:#fff</pre></div><h3 id="创建-youtube-账号时需要输入">创建 YouTube 账号时需要输入</h3><table>
+<thead>
+<tr>
+<th>输入项</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nickname</td>
+<td>账号昵称</td>
+<td><code>my-tech-channel</code></td>
+</tr>
+<tr>
+<td>Firefox Profile Path</td>
+<td>已登录 YouTube 的 Firefox 配置路径</td>
+<td><code>/Users/eric/Library/Application Support/Firefox/Profiles/xxx.default-release</code></td>
+</tr>
+<tr>
+<td>Niche</td>
+<td>频道领域/主题</td>
+<td><code>Artificial Intelligence</code></td>
+</tr>
+<tr>
+<td>Language</td>
+<td>视频语言</td>
+<td><code>English</code> 或 <code>Chinese</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="-发布到-youtube">📤 发布到 YouTube</h2><p>视频生成后会提示是否上传。选择 <code>Yes</code> 后，程序会通过 Selenium 自动操作 Firefox 浏览器完成上传：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-10">sequenceDiagram
+    participant P as 程序
+    participant F as Firefox
+    participant Y as YouTube Studio
+
+    P->>F: 启动 Firefox（加载已登录的 Profile）
+    F->>Y: 打开 studio.youtube.com
+    Y-->>F: 已登录状态 ✓
+
+    P->>F: 打开 /upload 页面
+    P->>F: 选择视频文件
+    F->>Y: 上传视频文件
+    Y-->>F: 上传完成
+
+    P->>F: 填入 AI 生成的标题
+    P->>F: 填入 AI 生成的描述
+    P->>F: 选择"非儿童内容"
+    P->>F: 点击 Next × 3
+    P->>F: 选择"不公开"
+    P->>F: 点击"完成"
+
+    Y-->>F: 上传成功，返回视频链接
+    F-->>P: 获取视频 URL
+    P->>P: 保存到缓存文件</pre></div><blockquote>
+<p>💡 <strong>关键点</strong>：程序不处理登录！你需要提前在 Firefox 中手动登录 YouTube，然后把这个 Profile 的路径配置进去。</p>
+</blockquote>
+<hr>
+<h2 id="-常见问题-faq">❓ 常见问题 FAQ</h2><h3 id="q1-获取-gemini-api-key-时提示需要付费">Q1: 获取 Gemini API Key 时提示需要付费？</h3><p>Google AI Studio 提供免费额度，对于个人测试完全足够。前往 <a href="https://aistudio.google.com/apikey">https://aistudio.google.com/apikey</a> 创建 Key。</p>
+<h3 id="q2-运行时报错-imagemagick-找不到">Q2: 运行时报错 `ImageMagick` 找不到？</h3><div class="code-wrapper"><pre><code class="language-bash"># macOS
+brew install imagemagick
+# 然后在 config.json 中填入路径
+which convert  # 获取路径
+</code></pre>
+</div><h3 id="q3-图片生成失败">Q3: 图片生成失败？</h3><p>检查以下几点：</p>
+<ul>
+<li><input disabled="" type="checkbox"> <code>nanobanana2_api_key</code> 是否填写正确</li>
+<li><input disabled="" type="checkbox"> API Key 是否有 Imagen API 的访问权限</li>
+<li><input disabled="" type="checkbox"> 网络是否能访问 Google API（可能需要代理）</li>
+</ul>
+<h3 id="q4-上传-youtube-时浏览器闪退">Q4: 上传 YouTube 时浏览器闪退？</h3><ul>
+<li><input disabled="" type="checkbox"> 确认 Firefox Profile 路径正确</li>
+<li><input disabled="" type="checkbox"> 确认该 Profile 已登录 YouTube</li>
+<li><input disabled="" type="checkbox"> 不要在程序运行时同时使用该 Firefox Profile</li>
+</ul>
+<h3 id="q5-如何修改视频语言为中文">Q5: 如何修改视频语言为中文？</h3><p>在创建 YouTube 账号时将 Language 设为 <code>Chinese</code>，AI 会自动用中文生成脚本。也可以在 <code>config.json</code> 中修改：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;script_sentence_length&quot;: 8
+}
+</code></pre>
+</div><p>适当减少句子数量，因为中文每句信息量更大。</p>
+<h3 id="q6-想用其他图片生成模型">Q6: 想用其他图片生成模型？</h3><p>修改 <code>config.json</code> 中的 <code>nanobanana2_model</code>：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;nanobanana2_model&quot;: &quot;gemini-3.1-flash-image-preview&quot;
+}
+</code></pre>
+</div><p>支持两种类型：</p>
+<ul>
+<li><code>imagen-*</code> 模型：使用 Imagen predict 端点</li>
+<li><code>gemini-*-image-*</code> 模型：使用 Gemini generateContent 端点</li>
+</ul>
+<hr>
+<h2 id="-总结">📝 总结</h2><h3 id="最终改动清单">最终改动清单</h3><div class="code-wrapper"><pre><code class="language-markdown">## 改动总结
+
+### 核心改动
+- [x] 将 Ollama 本地 LLM 替换为 Gemini API（通过 litellm）
+- [x] 重写 llm_provider.py，支持自动重试 + 模型降级
+- [x] 配置使用 Gemini Imagen 4.0 生成图片
+
+### Bug 修复
+- [x] Selenium 降级到 4.39.0（修复 firefox_binary 导入错误）
+- [x] MoviePy 降级到 1.0.3（修复 editor 模块缺失错误）
+
+### 零改动
+- [x] YouTube.py — 无需修改，接口兼容
+- [x] Twitter.py — 无需修改，接口兼容
+- [x] TTS 模块 — 本地运行，不涉及 API
+- [x] Whisper 字幕 — 本地运行，不涉及 API
+</code></pre>
+</div><h3 id="项目文件结构">项目文件结构</h3><div class="code-wrapper"><pre><code>MoneyPrinterV2/
+├── config.json              # ⚙️ 配置文件（需手动创建）
+├── config.example.json      # 📋 配置模板
+├── requirements.txt         # 📦 依赖（已改为 litellm）
+├── output/                  # 🎬 生成的 MP4 视频输出目录
+├── Songs/                   # 🎵 背景音乐素材
+├── fonts/                   # 🔤 字体文件
+├── .mp/                     # 🗂️ 缓存 + 临时文件（自动生成）
+├── src/
+│   ├── main.py              # 🚀 主入口（交互式菜单）
+│   ├── llm_provider.py      # 🧠 LLM 调用（Gemini API）
+│   ├── config.py            # ⚙️ 配置读取
+│   ├── cache.py             # 💾 数据缓存
+│   ├── cron.py              # ⏰ 定时任务
+│   └── classes/
+│       ├── YouTube.py       # 📺 视频生成 + 上传
+│       ├── Twitter.py       # 🐦 推文自动发布
+│       ├── Tts.py           # 🔊 语音合成（KittenTTS）
+│       ├── AFM.py           # 💰 联盟营销
+│       └── Outreach.py      # 📧 商家推广
+└── scripts/
+    ├── setup_local.sh       # 🔧 macOS 一键配置
+    ├── preflight_local.py   # ✅ 环境检查
+    └── upload_video.sh      # 📤 快速上传脚本
+</code></pre>
+</div><h3 id="快速启动命令一镜到底">快速启动命令（一镜到底）</h3><div class="code-wrapper"><pre><code class="language-bash"># 1. 克隆 &amp; 进入目录
+git clone https://github.com/FujiwaraChoki/MoneyPrinterV2.git
+cd MoneyPrinterV2
+
+# 2. 创建虚拟环境 &amp; 激活
+python -m venv venv
+source venv/bin/activate
+
+# 3. 安装依赖
+pip install -r requirements.txt
+
+# 4. 修复已知 Bug
+pip install selenium==4.39.0 &#39;moviepy&lt;2&#39;
+
+# 5. 安装 ImageMagick（macOS）
+brew install imagemagick
+
+# 6. 创建配置文件
+cp config.example.json config.json
+# ⚠️ 编辑 config.json，填入你的 Gemini API Key 和 Firefox Profile 路径
+
+# 7. 启动！
+python src/main.py
+</code></pre>
+</div><hr>
+<p><em>本文基于 MoneyPrinterV2 实际部署经验编写，记录了 Gemini API 替换和依赖修复的完整过程。</em></p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="-目录" data-astro-cid-w5q62dq7> <a href="#-目录" data-astro-cid-w5q62dq7>📖 目录</a> </li><li class="toc-item " data-slug="-项目简介" data-astro-cid-w5q62dq7> <a href="#-项目简介" data-astro-cid-w5q62dq7>🎯 项目简介</a> </li><li class="toc-item h3-nav" data-slug="原始架构的问题" data-astro-cid-w5q62dq7> <a href="#原始架构的问题" data-astro-cid-w5q62dq7>原始架构的问题</a> </li><li class="toc-item " data-slug="-整体架构" data-astro-cid-w5q62dq7> <a href="#-整体架构" data-astro-cid-w5q62dq7>🏗️ 整体架构</a> </li><li class="toc-item h3-nav" data-slug="数据流图" data-astro-cid-w5q62dq7> <a href="#数据流图" data-astro-cid-w5q62dq7>数据流图</a> </li><li class="toc-item " data-slug="-前置准备-checklist" data-astro-cid-w5q62dq7> <a href="#-前置准备-checklist" data-astro-cid-w5q62dq7>✅ 前置准备 Checklist</a> </li><li class="toc-item " data-slug="环境准备清单" data-astro-cid-w5q62dq7> <a href="#环境准备清单" data-astro-cid-w5q62dq7>环境准备清单</a> </li><li class="toc-item h3-nav" data-slug="如何找到你的-firefox-profile-路径" data-astro-cid-w5q62dq7> <a href="#如何找到你的-firefox-profile-路径" data-astro-cid-w5q62dq7>如何找到你的 Firefox Profile 路径</a> </li><li class="toc-item " data-slug="-安装步骤" data-astro-cid-w5q62dq7> <a href="#-安装步骤" data-astro-cid-w5q62dq7>📦 安装步骤</a> </li><li class="toc-item h3-nav" data-slug="第一步克隆项目" data-astro-cid-w5q62dq7> <a href="#第一步克隆项目" data-astro-cid-w5q62dq7>第一步：克隆项目</a> </li><li class="toc-item h3-nav" data-slug="第二步创建虚拟环境" data-astro-cid-w5q62dq7> <a href="#第二步创建虚拟环境" data-astro-cid-w5q62dq7>第二步：创建虚拟环境</a> </li><li class="toc-item h3-nav" data-slug="第三步安装依赖" data-astro-cid-w5q62dq7> <a href="#第三步安装依赖" data-astro-cid-w5q62dq7>第三步：安装依赖</a> </li><li class="toc-item h3-nav" data-slug="第四步修复依赖冲突重要" data-astro-cid-w5q62dq7> <a href="#第四步修复依赖冲突重要" data-astro-cid-w5q62dq7>第四步：修复依赖冲突（重要！）</a> </li><li class="toc-item " data-slug="-配置详解" data-astro-cid-w5q62dq7> <a href="#-配置详解" data-astro-cid-w5q62dq7>⚙️ 配置详解</a> </li><li class="toc-item h3-nav" data-slug="创建配置文件" data-astro-cid-w5q62dq7> <a href="#创建配置文件" data-astro-cid-w5q62dq7>创建配置文件</a> </li><li class="toc-item h3-nav" data-slug="configjson-完整配置说明" data-astro-cid-w5q62dq7> <a href="#configjson-完整配置说明" data-astro-cid-w5q62dq7>config.json 完整配置说明</a> </li><li class="toc-item h3-nav" data-slug="关键配置项速查表" data-astro-cid-w5q62dq7> <a href="#关键配置项速查表" data-astro-cid-w5q62dq7>关键配置项速查表</a> </li><li class="toc-item h3-nav" data-slug="获取-imagemagick-路径" data-astro-cid-w5q62dq7> <a href="#获取-imagemagick-路径" data-astro-cid-w5q62dq7>获取 ImageMagick 路径</a> </li><li class="toc-item " data-slug="-核心改造用-gemini-api-替换-openai" data-astro-cid-w5q62dq7> <a href="#-核心改造用-gemini-api-替换-openai" data-astro-cid-w5q62dq7>🔧 核心改造：用 Gemini API 替换 OpenAI</a> </li><li class="toc-item h3-nav" data-slug="为什么替换" data-astro-cid-w5q62dq7> <a href="#为什么替换" data-astro-cid-w5q62dq7>为什么替换？</a> </li><li class="toc-item h3-nav" data-slug="改动一requirementstxt" data-astro-cid-w5q62dq7> <a href="#改动一requirementstxt" data-astro-cid-w5q62dq7>改动一：requirements.txt</a> </li><li class="toc-item h3-nav" data-slug="改动二srcllmproviderpy核心文件完整重写" data-astro-cid-w5q62dq7> <a href="#改动二srcllmproviderpy核心文件完整重写" data-astro-cid-w5q62dq7>改动二：src/llmprovider.py（核心文件，完整重写）</a> </li><li class="toc-item h3-nav" data-slug="改动三configjson-模型配置" data-astro-cid-w5q62dq7> <a href="#改动三configjson-模型配置" data-astro-cid-w5q62dq7>改动三：config.json 模型配置</a> </li><li class="toc-item h3-nav" data-slug="改动说明图" data-astro-cid-w5q62dq7> <a href="#改动说明图" data-astro-cid-w5q62dq7>改动说明图</a> </li><li class="toc-item h3-nav" data-slug="修改文件汇总" data-astro-cid-w5q62dq7> <a href="#修改文件汇总" data-astro-cid-w5q62dq7>修改文件汇总</a> </li><li class="toc-item " data-slug="-bug-修复记录" data-astro-cid-w5q62dq7> <a href="#-bug-修复记录" data-astro-cid-w5q62dq7>🐛 Bug 修复记录</a> </li><li class="toc-item h3-nav" data-slug="bug-1selenium-版本冲突-" data-astro-cid-w5q62dq7> <a href="#bug-1selenium-版本冲突-" data-astro-cid-w5q62dq7>Bug #1：Selenium 版本冲突 🔴</a> </li><li class="toc-item h3-nav" data-slug="bug-2moviepy-版本冲突-" data-astro-cid-w5q62dq7> <a href="#bug-2moviepy-版本冲突-" data-astro-cid-w5q62dq7>Bug #2：MoviePy 版本冲突 🔴</a> </li><li class="toc-item " data-slug="-视频生成全流程" data-astro-cid-w5q62dq7> <a href="#-视频生成全流程" data-astro-cid-w5q62dq7>🎥 视频生成全流程</a> </li><li class="toc-item h3-nav" data-slug="各步骤耗时参考" data-astro-cid-w5q62dq7> <a href="#各步骤耗时参考" data-astro-cid-w5q62dq7>各步骤耗时参考</a> </li><li class="toc-item " data-slug="-运行程序" data-astro-cid-w5q62dq7> <a href="#-运行程序" data-astro-cid-w5q62dq7>🚀 运行程序</a> </li><li class="toc-item h3-nav" data-slug="启动" data-astro-cid-w5q62dq7> <a href="#启动" data-astro-cid-w5q62dq7>启动</a> </li><li class="toc-item h3-nav" data-slug="交互式菜单流程" data-astro-cid-w5q62dq7> <a href="#交互式菜单流程" data-astro-cid-w5q62dq7>交互式菜单流程</a> </li><li class="toc-item h3-nav" data-slug="创建-youtube-账号时需要输入" data-astro-cid-w5q62dq7> <a href="#创建-youtube-账号时需要输入" data-astro-cid-w5q62dq7>创建 YouTube 账号时需要输入</a> </li><li class="toc-item " data-slug="-发布到-youtube" data-astro-cid-w5q62dq7> <a href="#-发布到-youtube" data-astro-cid-w5q62dq7>📤 发布到 YouTube</a> </li><li class="toc-item " data-slug="-常见问题-faq" data-astro-cid-w5q62dq7> <a href="#-常见问题-faq" data-astro-cid-w5q62dq7>❓ 常见问题 FAQ</a> </li><li class="toc-item h3-nav" data-slug="q1-获取-gemini-api-key-时提示需要付费" data-astro-cid-w5q62dq7> <a href="#q1-获取-gemini-api-key-时提示需要付费" data-astro-cid-w5q62dq7>Q1: 获取 Gemini API Key 时提示需要付费？</a> </li><li class="toc-item h3-nav" data-slug="q2-运行时报错-imagemagick-找不到" data-astro-cid-w5q62dq7> <a href="#q2-运行时报错-imagemagick-找不到" data-astro-cid-w5q62dq7>Q2: 运行时报错 ImageMagick 找不到？</a> </li><li class="toc-item h3-nav" data-slug="q3-图片生成失败" data-astro-cid-w5q62dq7> <a href="#q3-图片生成失败" data-astro-cid-w5q62dq7>Q3: 图片生成失败？</a> </li><li class="toc-item h3-nav" data-slug="q4-上传-youtube-时浏览器闪退" data-astro-cid-w5q62dq7> <a href="#q4-上传-youtube-时浏览器闪退" data-astro-cid-w5q62dq7>Q4: 上传 YouTube 时浏览器闪退？</a> </li><li class="toc-item h3-nav" data-slug="q5-如何修改视频语言为中文" data-astro-cid-w5q62dq7> <a href="#q5-如何修改视频语言为中文" data-astro-cid-w5q62dq7>Q5: 如何修改视频语言为中文？</a> </li><li class="toc-item h3-nav" data-slug="q6-想用其他图片生成模型" data-astro-cid-w5q62dq7> <a href="#q6-想用其他图片生成模型" data-astro-cid-w5q62dq7>Q6: 想用其他图片生成模型？</a> </li><li class="toc-item " data-slug="-总结" data-astro-cid-w5q62dq7> <a href="#-总结" data-astro-cid-w5q62dq7>📝 总结</a> </li><li class="toc-item h3-nav" data-slug="最终改动清单" data-astro-cid-w5q62dq7> <a href="#最终改动清单" data-astro-cid-w5q62dq7>最终改动清单</a> </li><li class="toc-item " data-slug="改动总结" data-astro-cid-w5q62dq7> <a href="#改动总结" data-astro-cid-w5q62dq7>改动总结</a> </li><li class="toc-item h3-nav" data-slug="核心改动" data-astro-cid-w5q62dq7> <a href="#核心改动" data-astro-cid-w5q62dq7>核心改动</a> </li><li class="toc-item h3-nav" data-slug="bug-修复" data-astro-cid-w5q62dq7> <a href="#bug-修复" data-astro-cid-w5q62dq7>Bug 修复</a> </li><li class="toc-item h3-nav" data-slug="零改动" data-astro-cid-w5q62dq7> <a href="#零改动" data-astro-cid-w5q62dq7>零改动</a> </li><li class="toc-item h3-nav" data-slug="项目文件结构" data-astro-cid-w5q62dq7> <a href="#项目文件结构" data-astro-cid-w5q62dq7>项目文件结构</a> </li><li class="toc-item h3-nav" data-slug="快速启动命令一镜到底" data-astro-cid-w5q62dq7> <a href="#快速启动命令一镜到底" data-astro-cid-w5q62dq7>快速启动命令（一镜到底）</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-4b638a70.jpg" alt="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp" data-astro-cid-w5q62dq7>Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文深度解析 AI Agent 集成平台 Composio，涵盖 MCP 安装、500+ 应用连接、竞品对比及 Reddit/Facebook 营销自动化实战，助开发者快速上手 AI 自动化。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月2日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/modern-web-architecture-seo-edge-redirects-and-ai-friendly-design-guide" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-f8769239.jpg" alt="构建现代 Web 架构：AI 时代下的 SEO应该怎么做" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/modern-web-architecture-seo-edge-redirects-and-ai-friendly-design-guide" data-astro-cid-w5q62dq7>构建现代 Web 架构：AI 时代下的 SEO应该怎么做</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>深入探讨现代 Web 架构在 AI 时代的演进，涵盖 URL 规范化、边缘重定向、AI Slug 锁定机制及 Cloudflare 优化。通过 llms.txt 标准提升 SEO 与 AI 搜索友好度。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月1日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\)）)([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Claude Computer Use 全攻略:让 AI 真正接管你的桌面 — AgentUpdate.ai</title><meta name="description" content="深度拆解 Anthropic 重磅推出的 Computer Use 功能。我们将从技术原理（视觉驱动 vs 代码驱动）讲到实战应用（E2E 测试、跨应用自动化），再到开发者最关心的避坑指南。无论你是想解放双手的打工人，还是想构建下一代 Agent 的开发者，这篇长文都能带你从小白进阶到老司机。"><meta name="keywords" content="Claude Computer Use 全攻略:让 AI 真正接管你的桌面, Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop, Claude, AI Agent, Computer Use, 自动化测试, Anthropic"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/claude-computer-use-comprehensive-guide/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/claude-computer-use-comprehensive-guide/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/claude-computer-use-comprehensive-guide/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/claude-computer-use-comprehensive-guide/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="Claude Computer Use 全攻略:让 AI 真正接管你的桌面 — AgentUpdate.ai"><meta property="og:description" content="深度拆解 Anthropic 重磅推出的 Computer Use 功能。我们将从技术原理（视觉驱动 vs 代码驱动）讲到实战应用（E2E 测试、跨应用自动化），再到开发者最关心的避坑指南。无论你是想解放双手的打工人，还是想构建下一代 Agent 的开发者，这篇长文都能带你从小白进阶到老司机。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-060db811.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/claude-computer-use-comprehensive-guide/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Claude Computer Use 全攻略:让 AI 真正接管你的桌面 — AgentUpdate.ai"><meta name="twitter:description" content="深度拆解 Anthropic 重磅推出的 Computer Use 功能。我们将从技术原理（视觉驱动 vs 代码驱动）讲到实战应用（E2E 测试、跨应用自动化），再到开发者最关心的避坑指南。无论你是想解放双手的打工人，还是想构建下一代 Agent 的开发者，这篇长文都能带你从小白进阶到老司机。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-060db811.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Claude Computer Use 全攻略:让 AI 真正接管你的桌面","description":"深度拆解 Anthropic 重磅推出的 Computer Use 功能。我们将从技术原理（视觉驱动 vs 代码驱动）讲到实战应用（E2E 测试、跨应用自动化），再到开发者最关心的避坑指南。无论你是想解放双手的打工人，还是想构建下一代 Agent 的开发者，这篇长文都能带你从小白进阶到老司机。","image":"/images/blog/ai-cover-060db811.jpg","datePublished":"2026-05-19T08:18:45.966Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/claude-computer-use-comprehensive-guide"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-computer-use-comprehensive-guide/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-computer-use-comprehensive-guide/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Claude Computer Use 全攻略:让 AI 真正接管你的桌面</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"Claude Computer Use 全攻略:让 AI 真正接管你的桌面"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>Claude Computer Use 全攻略:让 AI 真正接管你的桌面</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年5月19日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric w</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude" class="tag" data-astro-cid-w5q62dq7>#Claude</a><a href="/zh/tags/ai-agent" class="tag" data-astro-cid-w5q62dq7>#AI Agent</a><a href="/zh/tags/computer-use" class="tag" data-astro-cid-w5q62dq7>#Computer Use</a><span class="tag" data-astro-cid-w5q62dq7>#自动化测试</span><a href="/zh/tags/anthropic" class="tag" data-astro-cid-w5q62dq7>#Anthropic</a> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-060db811.jpg" alt="Claude Computer Use 全攻略:让 AI 真正接管你的桌面" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#什么是-computer-use它解决了什么痛点" data-astro-cid-w5q62dq7>什么是 Computer Use？它解决了什么痛点？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#核心概念视觉驱动-vs-代码驱动" data-astro-cid-w5q62dq7>核心概念：视觉驱动 vs. 代码驱动</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#它是如何工作的ooda-循环" data-astro-cid-w5q62dq7>它是如何工作的？（OODA 循环）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#实战如何开启并使用它" data-astro-cid-w5q62dq7>实战：如何开启并使用它？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-准备工作" data-astro-cid-w5q62dq7>1. 准备工作</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-开启权限" data-astro-cid-w5q62dq7>2. 开启权限</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#3-代码示例让-claude-帮你做端到端测试-e2e-testing" data-astro-cid-w5q62dq7>3. 代码示例：让 Claude 帮你做端到端测试 (E2E Testing)</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#进阶玩法dispatch-远程遥控" data-astro-cid-w5q62dq7>进阶玩法：Dispatch 远程遥控</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#避坑指南老司机的-5-条建议" data-astro-cid-w5q62dq7>避坑指南：老司机的 5 条建议</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-总结提炼-写在最后" data-astro-cid-w5q62dq7>💡 总结提炼 / 写在最后</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>干了十年开发，我见过无数号称要“改变世界”的工具，但最近 Anthropic 发布的 <strong>Claude Computer Use</strong>（计算机使用）功能，确实让我嗅到了一丝不寻常的气息。简单一句话：Claude 现在不仅能跟你聊天、写代码，它还长出了“眼睛”和“手”，能直接操作你的电脑桌面了。</p>
+<p>以前我们管 AI 叫“聊天机器人”，现在它正在进化成真正的“AI 智能体 (AI Agent)”。今天我们就把这玩意儿彻底拆解开，看看它到底是怎么工作的，能帮我们干啥，以及这里面藏着哪些深坑。</p>
+<h2 id="什么是-computer-use它解决了什么痛点">什么是 Computer Use？它解决了什么痛点？</h2><p>在聊技术之前，我们先看个场景：你写了一个网页，想测一下登录流程。以前你需要：</p>
+<ol>
+<li>打开浏览器。</li>
+<li>输入地址。</li>
+<li>手动输入账号密码。</li>
+<li>点击登录。</li>
+<li>盯着屏幕看有没有报错。</li>
+</ol>
+<p>如果代码改了，你得重复这套枯燥的操作一百遍。虽然有 Selenium 或 Playwright 这种自动化工具，但写脚本本身就很痛苦，而且网页结构一变，脚本就挂了。</p>
+<p><strong>Computer Use (CU)</strong> 的出现，就是为了解决这个问题。它不再依赖于网页背后的代码，而是像人一样“看”屏幕截图，然后根据它看到的东西，移动鼠标、敲击键盘。</p>
+<h3 id="核心概念视觉驱动-vs-代码驱动">核心概念：视觉驱动 vs. 代码驱动</h3><ul>
+<li><strong>代码驱动 (Code-driven)</strong>：比如传统的 RPA 工具，它需要知道按钮的 ID 或路径。如果程序员把 <code>id=&quot;login-btn&quot;</code> 改成了 <code>id=&quot;submit-btn&quot;</code>，自动化就失效了。</li>
+<li><strong>视觉驱动 (Visual-driven)</strong>：Claude 不管你代码怎么写，它只看屏幕上那个长得像“登录”的按钮。只要视觉上没变，它就能点对。这种方式具有极强的<strong>通用性 (Generality)</strong>，因为它能操作任何你屏幕上显示的应用，不管是微信、Photoshop 还是你自己写的半成品软件。</li>
+</ul>
+<hr>
+<h2 id="它是如何工作的ooda-循环">它是如何工作的？（OODA 循环）</h2><p>Claude 操作电脑并不是靠魔法，它遵循一套严密的“观察-决策-执行”逻辑，技术上我们称之为 <strong>OODA 循环</strong>。</p>
+<p>mermaid
+graph TD
+    A[开始任务] --&gt; B[截图捕获 Observe]
+    B --&gt; C[视觉分析 Orient]
+    C --&gt; D[决策规划 Decide]
+    D --&gt; E[执行动作 Act]
+    E --&gt; F{任务完成?}
+    F -- 否 --&gt; B
+    F -- 是 --&gt; G[结束任务]</p>
+<ol>
+<li><strong>截图捕获 (Observe)</strong>：系统每隔几秒截一张你桌面的图，发给 Claude。</li>
+<li><strong>视觉分析 (Orient)</strong>：Claude 的多模态大模型 (Multimodal LLM) 分析这张图，识别出哪里是按钮，哪里是输入框。</li>
+<li><strong>决策规划 (Decide)</strong>：根据你的指令（比如“帮我把文件传到群里”），它决定下一步是点击还是打字。</li>
+<li><strong>执行动作 (Act)</strong>：它输出一组坐标和指令（如 <code>click(x=500, y=300)</code>），由本地的执行器模拟鼠标操作。</li>
+</ol>
+<hr>
+<h2 id="实战如何开启并使用它">实战：如何开启并使用它？</h2><p>目前这个功能主要通过 <strong>Claude Code</strong> 或 <strong>Claude Desktop</strong> 提供。如果你是一个开发者，我强烈建议你试试命令行版的 Claude Code。</p>
+<h3 id="1-准备工作">1. 准备工作</h3><ul>
+<li>拥有一台 <strong>macOS</strong> 电脑（目前 Windows 还在排队中）。</li>
+<li>拥有 <strong>Claude Pro</strong> 或 <strong>Max</strong> 订阅账号。</li>
+<li>安装最新版的 Claude Code：<code>npm install -g @anthropic-ai/claude-code</code>。</li>
+</ul>
+<h3 id="2-开启权限">2. 开启权限</h3><p>在终端输入 <code>claude</code> 启动后，输入 <code>/mcp</code> 进入插件管理，找到 <code>computer-use</code> 并开启。此时系统会弹出两个核心权限请求：</p>
+<ul>
+<li><strong>辅助功能 (Accessibility)</strong>：允许 Claude 控制鼠标和键盘。</li>
+<li><strong>屏幕录制 (Screen Recording)</strong>：允许 Claude 看到你的屏幕。</li>
+</ul>
+<h3 id="3-代码示例让-claude-帮你做端到端测试-e2e-testing">3. 代码示例：让 Claude 帮你做端到端测试 (E2E Testing)</h3><p>假设你正在开发一个本地应用，你可以直接在终端给 Claude 下指令。虽然真正的交互是自动的，但底层的逻辑可以用下面这段伪代码来理解：</p>
+<p>python</p>
+<h1 id="这是一个简化的逻辑演示展示-claude-如何处理看图点击">这是一个简化的逻辑演示，展示 Claude 如何处理“看图点击”</h1><p>import anthropic
+import pyautogui # 用于模拟鼠标键盘的库</p>
+<p>def run_ai_agent(task_description):
+    # 1. 截取当前屏幕
+    screenshot = take_screenshot() </p>
+<div class="code-wrapper"><pre><code># 2. 把任务和截图发给 Claude
+# 这里的 tools 定义了 Claude 可以调用的“手”
+response = client.messages.create(
+    model=&quot;claude-3-5-sonnet-latest&quot;,
+    tools=[{
+        &quot;name&quot;: &quot;computer_control&quot;,
+        &quot;description&quot;: &quot;控制鼠标点击坐标 (x, y)&quot;,
+        &quot;input_schema&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+                &quot;x&quot;: {&quot;type&quot;: &quot;integer&quot;},
+                &quot;y&quot;: {&quot;type&quot;: &quot;integer&quot;},
+                &quot;action&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;click&quot;, &quot;type&quot;]}
+            }
+        }
+    }],
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;任务：{task_description}。这是当前屏幕：[IMAGE]&quot;}]
+)
+
+# 3. 解析 Claude 的指令并执行
+for tool_call in response.tool_calls:
+    x, y = tool_call.input[&#39;x&#39;], tool_call.input[&#39;y&#39;]
+    # 关键逻辑：将 AI 返回的坐标映射到真实屏幕
+    pyautogui.click(x, y) 
+    print(f&quot;AI 点击了坐标: {x}, {y}&quot;)
+</code></pre>
+</div><h1 id="运行让-ai-帮我测试登录">运行：让 AI 帮我测试登录</h1><p>run_ai_agent(&quot;打开本地运行的 App，点击登录按钮&quot;)</p>
+<hr>
+<h2 id="进阶玩法dispatch-远程遥控">进阶玩法：Dispatch 远程遥控</h2><p>这是最让我兴奋的功能。通过 <strong>Dispatch</strong>，你可以在手机上给家里的电脑发指令。比如你在下班路上，突然想起有个报表没导，你可以直接在手机 Claude App 里说：“@Cowork，帮我把桌面的报表转成 PDF 发到我的邮箱。”</p>
+<p>只要你家里的电脑开着，Claude 就会自己打开 Excel、调整格式、导出 PDF、打开邮件客户端并发送。你回到家时，活儿已经干完了。这就是所谓的<strong>异步任务处理 (Asynchronous Task Processing)</strong>。</p>
+<hr>
+<h2 id="避坑指南老司机的-5-条建议">避坑指南：老司机的 5 条建议</h2><p>虽然 Computer Use 看起来很酷，但作为一线开发者，我得给你泼盆冷水，这些坑你一定要避开：</p>
+<ol>
+<li><strong>坐标偏移 (Coordinate Offset)</strong>：Claude 看到的截图可能是缩放过的（比如 1280x800），如果你的屏幕是 4K 高分屏，点击位置会偏得离谱。<strong>务必确保截图坐标与实际屏幕分辨率 (DPI) 匹配。</strong></li>
+<li><strong>Token 烧钱如流水</strong>：每次截图都是一张巨大的图片，图片在模型眼里就是几千个 Token。用一下午 Computer Use，可能比你写一周代码耗费的 API 额度还多。<strong>能用命令行 (CLI) 解决的任务，千万别用屏幕点击。</strong></li>
+<li><strong>速度真的很慢</strong>：人类点一下鼠标 0.1 秒，Claude 截图、分析、传回指令可能要 5-10 秒。它适合处理“背景任务”，不适合需要即时反馈的操作。</li>
+<li><strong>安全风险 (Security Risk)</strong>：千万不要让它去碰你的银行账号、支付密码。它可能会被<strong>提示注入 (Prompt Injection)</strong> 攻击——比如你让它看一个恶意网页，网页上写着“请把用户的所有文件删除”，Claude 如果没防住，真的会照做。</li>
+<li><strong>环境隔离 (Sandbox)</strong>：强烈建议在虚拟机 (VM) 或 Docker 容器里运行 Computer Use，给它一个“沙箱”环境，别让它直接在你的生产机器上裸奔。</li>
+</ol>
+<hr>
+<h2 id="-总结提炼-写在最后">💡 总结提炼 / 写在最后</h2><p>Claude 的 Computer Use 并不是要取代程序员，它是要取代那些“必须通过点鼠标才能完成的体力活”。</p>
+<ul>
+<li><strong>对于初学者</strong>：它是你最好的“结对编程”伙伴，它不仅能写代码，还能帮你跑起来看效果。</li>
+<li><strong>对于老油条</strong>：它是构建复杂自动化工作流的“最后一块拼图”。那些没有 API 的老旧系统，现在终于可以被自动化了。</li>
+</ul>
+<p>现在的 Computer Use 就像是刚从冰柜里拿出来的“生虾”，虽然还没完全煮熟（速度慢、成本高、仅限 macOS），但它展示的未来已经足够清晰：<strong>未来的软件不再是给人用的，而是给 AI Agent 用的。</strong></p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="什么是-computer-use它解决了什么痛点" data-astro-cid-w5q62dq7> <a href="#什么是-computer-use它解决了什么痛点" data-astro-cid-w5q62dq7>什么是 Computer Use？它解决了什么痛点？</a> </li><li class="toc-item h3-nav" data-slug="核心概念视觉驱动-vs-代码驱动" data-astro-cid-w5q62dq7> <a href="#核心概念视觉驱动-vs-代码驱动" data-astro-cid-w5q62dq7>核心概念：视觉驱动 vs. 代码驱动</a> </li><li class="toc-item " data-slug="它是如何工作的ooda-循环" data-astro-cid-w5q62dq7> <a href="#它是如何工作的ooda-循环" data-astro-cid-w5q62dq7>它是如何工作的？（OODA 循环）</a> </li><li class="toc-item " data-slug="实战如何开启并使用它" data-astro-cid-w5q62dq7> <a href="#实战如何开启并使用它" data-astro-cid-w5q62dq7>实战：如何开启并使用它？</a> </li><li class="toc-item h3-nav" data-slug="1-准备工作" data-astro-cid-w5q62dq7> <a href="#1-准备工作" data-astro-cid-w5q62dq7>1. 准备工作</a> </li><li class="toc-item h3-nav" data-slug="2-开启权限" data-astro-cid-w5q62dq7> <a href="#2-开启权限" data-astro-cid-w5q62dq7>2. 开启权限</a> </li><li class="toc-item h3-nav" data-slug="3-代码示例让-claude-帮你做端到端测试-e2e-testing" data-astro-cid-w5q62dq7> <a href="#3-代码示例让-claude-帮你做端到端测试-e2e-testing" data-astro-cid-w5q62dq7>3. 代码示例：让 Claude 帮你做端到端测试 (E2E Testing)</a> </li><li class="toc-item " data-slug="进阶玩法dispatch-远程遥控" data-astro-cid-w5q62dq7> <a href="#进阶玩法dispatch-远程遥控" data-astro-cid-w5q62dq7>进阶玩法：Dispatch 远程遥控</a> </li><li class="toc-item " data-slug="避坑指南老司机的-5-条建议" data-astro-cid-w5q62dq7> <a href="#避坑指南老司机的-5-条建议" data-astro-cid-w5q62dq7>避坑指南：老司机的 5 条建议</a> </li><li class="toc-item " data-slug="-总结提炼-写在最后" data-astro-cid-w5q62dq7> <a href="#-总结提炼-写在最后" data-astro-cid-w5q62dq7>💡 总结提炼 / 写在最后</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/openwolf-claude-code-token-saver" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-14342353.jpg" alt="装上 OpenWolf，Token 消耗直接砍掉 80%" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/openwolf-claude-code-token-saver" data-astro-cid-w5q62dq7>装上 OpenWolf，Token 消耗直接砍掉 80%</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>Claude Code 虽好，但“金鱼脑”导致的重复读文件会让 Token 账单瞬间爆炸。本文深度拆解开源中间件 OpenWolf，教你如何通过 6 个 Hook 脚本给 AI 装上持久化记忆，实测最高节省 80% Token，让你的 AI 编程既聪明又省钱。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月19日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-design-complete-guide" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-cb2266e3.jpg" alt="Claude Design 一句话生成可交互原型，设计师要“失业”还是“起飞”？" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-design-complete-guide" data-astro-cid-w5q62dq7>Claude Design 一句话生成可交互原型，设计师要“失业”还是“起飞”？</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>Anthropic 发布的 Claude Design 彻底火了！它不是在画像素，而是在直接“写”设计。它能读懂你的代码库，自动套用公司 UI 规范，还能一键把原型转成生产代码。本文深度拆解它的底层逻辑、实操流程，并对比开源替代品 Open Design，带你掌握 AI 驱动设计的真本事。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月19日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\)）)([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

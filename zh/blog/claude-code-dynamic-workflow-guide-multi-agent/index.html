@@ -1,0 +1,975 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Claude Code Dynamic Workflow 上手指南:多 Agent 编排 — AgentUpdate.ai</title><meta name="description" content="本文详解 Claude Code 的 Dynamic Workflow 功能，教你如何用 JS 脚本编排多个 AI Agent。涵盖核心 API、并行与流水线模式及数学解题实战，助你实现高效的多智能体协作。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="Claude Code Dynamic Workflow 上手指南:多 Agent 编排, Claude Code Dynamic Workflow Guide: Multi-Agent Orchestration with JavaScript, Claude Code, Dynamic Workflow, AI Agent, JavaScript, LLM Orchestration"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflow-guide-multi-agent/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/claude-code-dynamic-workflow-guide-multi-agent/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflow-guide-multi-agent/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/claude-code-dynamic-workflow-guide-multi-agent/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="Claude Code Dynamic Workflow 上手指南:多 Agent 编排 — AgentUpdate.ai"><meta property="og:description" content="本文详解 Claude Code 的 Dynamic Workflow 功能，教你如何用 JS 脚本编排多个 AI Agent。涵盖核心 API、并行与流水线模式及数学解题实战，助你实现高效的多智能体协作。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-36da4f6d.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflow-guide-multi-agent/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Claude Code Dynamic Workflow 上手指南:多 Agent 编排 — AgentUpdate.ai"><meta name="twitter:description" content="本文详解 Claude Code 的 Dynamic Workflow 功能，教你如何用 JS 脚本编排多个 AI Agent。涵盖核心 API、并行与流水线模式及数学解题实战，助你实现高效的多智能体协作。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-36da4f6d.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Claude Code Dynamic Workflow 上手指南:多 Agent 编排","description":"本文详解 Claude Code 的 Dynamic Workflow 功能，教你如何用 JS 脚本编排多个 AI Agent。涵盖核心 API、并行与流水线模式及数学解题实战，助你实现高效的多智能体协作。","image":"/images/blog/ai-cover-36da4f6d.jpg","datePublished":"2026-05-29T14:14:59.991Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflow-guide-multi-agent"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-code-dynamic-workflow-guide-multi-agent/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-code-dynamic-workflow-guide-multi-agent/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Claude Code Dynamic Workflow 上手指南:多 Agent 编排</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"Claude Code Dynamic Workflow 上手指南:多 Agent 编排"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>Claude Code Dynamic Workflow 上手指南:多 Agent 编排</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年5月29日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric w</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude-code" class="tag" data-astro-cid-w5q62dq7>#Claude Code</a><span class="tag" data-astro-cid-w5q62dq7>#Dynamic Workflow</span><a href="/zh/tags/ai-agent" class="tag" data-astro-cid-w5q62dq7>#AI Agent</a><a href="/zh/tags/javascript" class="tag" data-astro-cid-w5q62dq7>#JavaScript</a><span class="tag" data-astro-cid-w5q62dq7>#LLM Orchestration</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-36da4f6d.jpg" alt="Claude Code Dynamic Workflow 上手指南:多 Agent 编排" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#1-什么是-dynamic-workflow" data-astro-cid-w5q62dq7>1. 什么是 Dynamic Workflow</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#适用场景" data-astro-cid-w5q62dq7>适用场景</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#2-核心概念速览" data-astro-cid-w5q62dq7>2. 核心概念速览</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#执行模型" data-astro-cid-w5q62dq7>执行模型</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#3-目录结构" data-astro-cid-w5q62dq7>3. 目录结构</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#workflow-文件结构" data-astro-cid-w5q62dq7>Workflow 文件结构</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#4-第一个-workflowhello-world" data-astro-cid-w5q62dq7>4. 第一个 Workflow：Hello World</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#最简版本" data-astro-cid-w5q62dq7>最简版本</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#带参数版本" data-astro-cid-w5q62dq7>带参数版本</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#5-内置-api-详解" data-astro-cid-w5q62dq7>5. 内置 API 详解</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#51-agent-生成子-agent" data-astro-cid-w5q62dq7>5.1 agent() — 生成子 agent</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#52-pipeline-串行流水线" data-astro-cid-w5q62dq7>5.2 pipeline() — 串行流水线</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#53-parallel-并行屏障" data-astro-cid-w5q62dq7>5.3 parallel() — 并行屏障</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#54-phase-和-log" data-astro-cid-w5q62dq7>5.4 phase() 和 log()</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#6-实战数学题-pipeline" data-astro-cid-w5q62dq7>6. 实战：数学题 Pipeline</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#架构图" data-astro-cid-w5q62dq7>架构图</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#数据流详解" data-astro-cid-w5q62dq7>数据流详解</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#实际-prompt-示例模板替换后" data-astro-cid-w5q62dq7>实际 Prompt 示例（模板替换后）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#完整代码" data-astro-cid-w5q62dq7>完整代码</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#调用方式" data-astro-cid-w5q62dq7>调用方式</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#为什么题目写在-prompt-里" data-astro-cid-w5q62dq7>为什么题目写在 prompt 里？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#7-在-workflow-内定义-agent" data-astro-cid-w5q62dq7>7. 在 Workflow 内定义 Agent</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#prompt-模板模式推荐" data-astro-cid-w5q62dq7>Prompt 模板模式（推荐）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#使用replace-填充数据" data-astro-cid-w5q62dq7>使用：.replace() 填充数据</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#三种-agent-定义方式对比" data-astro-cid-w5q62dq7>三种 Agent 定义方式对比</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#8-限制与踩坑" data-astro-cid-w5q62dq7>8. ⚠️ 限制与踩坑</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#已知限制" data-astro-cid-w5q62dq7>已知限制</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#agenttype-支持列表内置" data-astro-cid-w5q62dq7>agentType 支持列表（内置）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#9-架构对比" data-astro-cid-w5q62dq7>9. 架构对比</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#workflow-vs-直接用-agent-tool" data-astro-cid-w5q62dq7>Workflow vs 直接用 Agent Tool</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#pipeline-vs-parallel-选择" data-astro-cid-w5q62dq7>pipeline vs parallel 选择</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#10-总结" data-astro-cid-w5q62dq7>10. 总结</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#核心要点" data-astro-cid-w5q62dq7>核心要点</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#推荐模板" data-astro-cid-w5q62dq7>推荐模板</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#进一步学习" data-astro-cid-w5q62dq7>进一步学习</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><blockquote>
+<p>基于真实实践总结，面向初学者的完整教学指南</p>
+</blockquote>
+<hr>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-dynamic-workflow">1. 什么是 Dynamic Workflow</a></li>
+<li><a href="#2-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E9%80%9F%E8%A7%88">2. 核心概念速览</a></li>
+<li><a href="#3-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84">3. 目录结构</a></li>
+<li><a href="#4-%E7%AC%AC%E4%B8%80%E4%B8%AA-workflowhello-world">4. 第一个 Workflow：Hello World</a></li>
+<li><a href="#5-%E5%86%85%E7%BD%AE-api-%E8%AF%A6%E8%A7%A3">5. 内置 API 详解</a></li>
+<li><a href="#6-%E5%AE%9E%E6%88%98%E6%95%B0%E5%AD%A6%E9%A2%98-pipeline">6. 实战：数学题 Pipeline</a></li>
+<li><a href="#7-%E5%9C%A8-workflow-%E5%86%85%E5%AE%9A%E4%B9%89-agent">7. 在 Workflow 内定义 Agent</a></li>
+<li><a href="#8-%EF%B8%8F-%E9%99%90%E5%88%B6%E4%B8%8E%E8%B8%A9%E5%9D%91">8. ⚠️ 限制与踩坑</a></li>
+<li><a href="#9-%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94">9. 架构对比</a></li>
+<li><a href="#10-%E6%80%BB%E7%BB%93">10. 总结</a></li>
+</ul>
+<hr>
+<h2 id="1-什么是-dynamic-workflow">1. 什么是 Dynamic Workflow</h2><p>Dynamic Workflow 是 Claude Code v2.1.154+ 引入的多 agent 编排引擎。你写一段 JavaScript 脚本，它按你的逻辑自动 spawn 多个子 agent，并行或串行执行任务，最终汇总结果。</p>
+<p><strong>一句话：用代码控制多个 AI agent 协作干活。</strong></p>
+<h3 id="适用场景">适用场景</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>批量处理</td>
+<td>8道数学题并行解</td>
+</tr>
+<tr>
+<td>流水线</td>
+<td>解题 → 验证 → 打分</td>
+</tr>
+<tr>
+<td>大规模审查</td>
+<td>100个文件并行 review</td>
+</tr>
+<tr>
+<td>多视角分析</td>
+<td>同一问题从安全/性能/可读性角度分别评估</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-核心概念速览">2. 核心概念速览</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>meta</strong></td>
+<td>脚本头部声明，定义名称、描述、阶段</td>
+</tr>
+<tr>
+<td><strong>agent()</strong></td>
+<td>spawn 一个子 agent，返回结果</td>
+</tr>
+<tr>
+<td><strong>pipeline()</strong></td>
+<td>串行流水线：每项数据依次通过多个阶段</td>
+</tr>
+<tr>
+<td><strong>parallel()</strong></td>
+<td>并行执行：多个任务同时跑</td>
+</tr>
+<tr>
+<td><strong>phase()</strong></td>
+<td>声明当前阶段（用于 UI 进度展示）</td>
+</tr>
+<tr>
+<td><strong>log()</strong></td>
+<td>输出日志到用户界面</td>
+</tr>
+<tr>
+<td><strong>args</strong></td>
+<td>外部传入的参数</td>
+</tr>
+<tr>
+<td><strong>budget</strong></td>
+<td>当前 turn 的 token 预算控制</td>
+</tr>
+</tbody></table>
+<h3 id="执行模型">执行模型</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[用户触发 Workflow] --> B[解析 meta]
+    B --> C{编排逻辑}
+    C -->|串行| D[pipeline: item → stage1 → stage2 → stage3]
+    C -->|并行| E[parallel: task1 | task2 | task3 同时跑]
+    C -->|混合| F[parallel + pipeline 嵌套]
+    D --> G[汇总返回结果]
+    E --> G
+    F --> G</pre></div><hr>
+<h2 id="3-目录结构">3. 目录结构</h2><div class="code-wrapper"><pre><code>.claude/
+├── workflows/              # Workflow 脚本存放目录
+│   └── math-problems.js    # 一个 workflow = 一个 .js 文件
+├── agents/                 # 自定义 agent 定义（⚠️ workflow 无法引用）
+│   ├── math-solver.md      # 仅用于主会话自动路由
+│   └── math-verifier.md
+└── settings.json           # 项目配置
+</code></pre>
+</div><h3 id="workflow-文件结构">Workflow 文件结构</h3><p>每个 <code>.js</code> 文件固定格式：</p>
+<div class="code-wrapper"><pre><code class="language-javascript">export const meta = {
+  name: &#39;my-workflow&#39;,           // 必填：唯一标识
+  description: &#39;一句话描述&#39;,      // 必填：说明用途
+  phases: [                      // 可选：定义阶段（UI 展示用）
+    { title: &#39;Analyze&#39; },
+    { title: &#39;Execute&#39; },
+  ],
+}
+
+// ... 你的编排逻辑
+// 用 agent() / pipeline() / parallel() 编排
+// 最后 return 结果
+</code></pre>
+</div><hr>
+<h2 id="4-第一个-workflowhello-world">4. 第一个 Workflow：Hello World</h2><h3 id="最简版本">最简版本</h3><div class="code-wrapper"><pre><code class="language-javascript">export const meta = {
+  name: &#39;hello&#39;,
+  description: &#39;最简单的 workflow&#39;,
+  phases: [{ title: &#39;Greet&#39; }],
+}
+
+const result = await agent(&#39;说一句 hello world&#39;, { phase: &#39;Greet&#39; })
+return result
+</code></pre>
+</div><h3 id="带参数版本">带参数版本</h3><div class="code-wrapper"><pre><code class="language-javascript">export const meta = {
+  name: &#39;hello-name&#39;,
+  description: &#39;打招呼&#39;,
+}
+
+// args 由外部传入
+const name = (args &amp;&amp; args.name) || &#39;World&#39;
+const result = await agent(`对 ${name} 说你好，介绍自己`)
+return result
+</code></pre>
+</div><p><strong>⚠️ 重要：</strong> 通过 <code>name</code> 引用 workflow 时 <code>args</code> 可能不传递！建议总是提供默认值，或使用内联 <code>script</code> 调用。</p>
+<hr>
+<h2 id="5-内置-api-详解">5. 内置 API 详解</h2><h3 id="51-agent-生成子-agent">5.1 agent() — 生成子 agent</h3><div class="code-wrapper"><pre><code class="language-javascript">// 基础用法
+const result = await agent(&#39;你的提示词&#39;)
+
+// 完整参数
+const result = await agent(&#39;你的提示词&#39;, {
+  label: &#39;显示名称&#39;,           // UI 中显示的标签
+  phase: &#39;Solve&#39;,             // 归属阶段
+  schema: {                   // 强制结构化输出（JSON Schema）
+    type: &#39;object&#39;,
+    properties: {
+      answer: { type: &#39;string&#39; },
+      confidence: { type: &#39;number&#39; }
+    }
+  },
+  model: &#39;sonnet&#39;,            // 可选模型覆盖
+  agentType: &#39;Explore&#39;,       // ⚠️ 仅支持内置类型，不支持自定义
+})
+</code></pre>
+</div><h3 id="52-pipeline-串行流水线">5.2 pipeline() — 串行流水线</h3><p>数据依次通过每个阶段，前一个阶段的输出是下一个阶段的输入：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph LR
+    A[数据项] -->|stage1| B[中间结果1]
+    B -->|stage2| C[中间结果2]
+    C -->|stage3| D[最终结果]
+
+    style A fill:#e1f5fe
+    style D fill:#c8e6c9</pre></div><div class="code-wrapper"><pre><code class="language-javascript">const results = await pipeline(
+  [&#39;题1&#39;, &#39;题2&#39;, &#39;题3&#39;],         // 数据数组
+  (item) =&gt; agent(`处理: ${item}`),     // stage 1
+  (prev, item) =&gt; agent(`审核: ${prev}`), // stage 2
+)
+
+// results[0] = stage2(题1) 的结果
+// results[1] = stage2(题2) 的结果
+// 每个数据项独立走完整个 pipeline，不同项之间并行
+</code></pre>
+</div><p><strong>关键特性：</strong> pipeline 内部每项数据独立流转，item A 在 stage 3 时 item B 可能还在 stage 1。总耗时 = 最慢的单项链路，而非所有阶段之和。</p>
+<h3 id="53-parallel-并行屏障">5.3 parallel() — 并行屏障</h3><p>所有任务同时开始，全部完成后才返回：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph TD
+    A[parallel 启动] --> B[Task 1]
+    A --> C[Task 2]
+    A --> D[Task 3]
+    B --> E[汇总结果]
+    C --> E
+    D --> E
+
+    style A fill:#fff9c4
+    style E fill:#c8e6c9</pre></div><div class="code-wrapper"><pre><code class="language-javascript">const results = await parallel([
+  () =&gt; agent(&#39;分析前端代码&#39;),
+  () =&gt; agent(&#39;分析后端代码&#39;),
+  () =&gt; agent(&#39;分析数据库&#39;),
+])
+
+// results = [前端分析, 后端分析, 数据库分析]
+// 任一失败返回 null，用 .filter(Boolean) 过滤
+</code></pre>
+</div><h3 id="54-phase-和-log">5.4 phase() 和 log()</h3><div class="code-wrapper"><pre><code class="language-javascript">phase(&#39;Review&#39;)          // 切换到 Review 阶段（UI 进度条分组）
+log(&#39;已处理 3/10 个文件&#39;)  // 输出进度信息
+</code></pre>
+</div><hr>
+<h2 id="6-实战数学题-pipeline">6. 实战：数学题 Pipeline</h2><blockquote>
+<p><strong>设计原则：题目直接写在 prompt 里。</strong> 每组题目作为一个整体，通过 prompt 模板传入 agent，初学者一眼就能看清分组结构和数据流转。</p>
+</blockquote>
+<h3 id="架构图">架构图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph TD
+    subgraph "题目分组（直接写在 prompt）"
+        G1["第一组（基础计算）<br/>12×15, √144+3², 2^10, ..."]
+        G2["第二组（进阶题目）<br/>100!末尾0, sin30°×cos60°, ..."]
+    end
+
+    subgraph "Pipeline 流水线（每组整体处理）"
+        S1["🧮 Solve<br/>整组题目写在 prompt"]
+        V1["✅ Verify<br/>题目+解答写在 prompt"]
+        SC1["📊 Score<br/>题目+验证结果写在 prompt"]
+        S1 --> V1 --> SC1
+    end
+
+    G1 -->|"prompt 含组1题目"| S1
+    G2 -->|"prompt 含组2题目"| S1
+
+    SC1 --> R["按组汇总结果"]
+
+    style G1 fill:#e3f2fd
+    style G2 fill:#fce4ec
+    style S1 fill:#bbdefb
+    style V1 fill:#c8e6c9
+    style SC1 fill:#fff9c4
+    style R fill:#f8bbd0</pre></div><h3 id="数据流详解">数据流详解</h3><div class="code-wrapper"><pre><code>每组的数据流（以第一组为例）：
+
+┌─────────────────────────────────────────────────┐
+│ Stage 1: Solver                                 │
+│ prompt = SOLVER_PROMPT + 组1全部题目             │
+│ output = 5道题的详细解答                         │
+└──────────────────────┬──────────────────────────┘
+                       │ solution (上一阶段输出)
+┌──────────────────────▼──────────────────────────┐
+│ Stage 2: Verifier                               │
+│ prompt = VERIFIER_PROMPT + 组1题目 + solution   │
+│ output = 逐题验证结果（✅/❌）                   │
+└──────────────────────┬──────────────────────────┘
+                       │ verification (上一阶段输出)
+┌──────────────────────▼──────────────────────────┐
+│ Stage 3: Scorer                                 │
+│ prompt = SCORER_PROMPT + 组1题目 + verification │
+│ output = 每道题的分数和评语                      │
+└─────────────────────────────────────────────────┘
+</code></pre>
+</div><h3 id="实际-prompt-示例模板替换后">实际 Prompt 示例（模板替换后）</h3><p>下面展示 <code>.replace(&#39;{problems_block}&#39;, ...)</code> 执行后，<strong>真正发给 agent 的完整 prompt</strong>。</p>
+<h4 id="stage-1-solver-收到的-prompt第一组">Stage 1 — Solver 收到的 prompt（第一组）</h4><div class="code-wrapper"><pre><code class="language-text">你是一位数学解题专家。请逐一解答以下数学题。
+
+1. 12 × 15 = ?
+2. √144 + 3² = ?
+3. 2^10 = ?
+4. 1 + 2 + 3 + ... + 100 = ?
+5. 1/2 + 1/3 + 1/6 = ?
+
+输出格式（每道题）：
+- 题目：{原题}
+- 解题过程：{逐步推导}
+- 答案：{最终结果}
+</code></pre>
+</div><h4 id="stage-1-solver-收到的-prompt第二组">Stage 1 — Solver 收到的 prompt（第二组）</h4><div class="code-wrapper"><pre><code class="language-text">你是一位数学解题专家。请逐一解答以下数学题。
+
+6. 100! 末尾有多少个 0？
+7. sin30° × cos60° = ?
+8. log₂1024 = ?
+9. 一个圆的周长是 31.4cm，求面积（π≈3.14）
+10. 解方程：2x + 5 = 17
+
+输出格式（每道题）：
+- 题目：{原题}
+- 解题过程：{逐步推导}
+- 答案：{最终结果}
+</code></pre>
+</div><h4 id="stage-2-verifier-收到的-prompt第一组含解答">Stage 2 — Verifier 收到的 prompt（第一组，含解答）</h4><div class="code-wrapper"><pre><code class="language-text">你是一位数学验证专家。独立重新解题，对比下面的解答。
+
+1. 12 × 15 = ?
+2. √144 + 3² = ?
+3. 2^10 = ?
+4. 1 + 2 + 3 + ... + 100 = ?
+5. 1/2 + 1/3 + 1/6 = ?
+
+=== 待验证的解答 ===
+[Solver 的完整输出会插入这里]
+
+=== 要求 ===
+- 独立计算，不可信任给出的解答
+- 逐步对比，标注对错
+- 有错误则精确指出位置
+
+输出格式：
+- 判定：✅ 正确 / ❌ 错误
+- 验证过程：{独立推导}
+- 错误原因：{如有}
+</code></pre>
+</div><h4 id="stage-3-scorer-收到的-prompt第一组含验证结果">Stage 3 — Scorer 收到的 prompt（第一组，含验证结果）</h4><div class="code-wrapper"><pre><code class="language-text">你是数学评分专家。综合解题和验证结果打分。
+
+1. 12 × 15 = ?
+2. √144 + 3² = ?
+3. 2^10 = ?
+4. 1 + 2 + 3 + ... + 100 = ?
+5. 1/2 + 1/3 + 1/6 = ?
+
+=== 验证结果 ===
+[Verifier 的完整输出会插入这里]
+
+评分：10=完美 | 7-9=正确可改进 | 4-6=部分正确 | 0-3=错误
+
+输出格式：
+- 分数：{0-10}
+- 评语：{一句话}
+</code></pre>
+</div><blockquote>
+<p><strong>关键点：</strong> <code>{problems_block}</code> 在每个阶段都被同一组题目替换，<code>{solution}</code> / <code>{verification}</code> 被上一阶段的输出替换。每个 agent 都能看到完整上下文，不需要猜测题目是什么。</p>
+</blockquote>
+<h3 id="完整代码">完整代码</h3><div class="code-wrapper"><pre><code class="language-javascript">export const meta = {
+  name: &#39;math-problems&#39;,
+  description: &#39;数学题 workflow — 题目按组写入 prompt，3阶段 pipeline（解题→验证→评分）&#39;,
+  phases: [
+    { title: &#39;Solve&#39;, detail: &#39;每组并行解题&#39; },
+    { title: &#39;Verify&#39;, detail: &#39;独立验证每组解答&#39; },
+    { title: &#39;Score&#39;, detail: &#39;综合评分&#39; },
+  ],
+}
+
+// ─── Prompt 模板（顶部定义，一目了然）──────────────
+// {problems_block}  → 该组所有题目
+// {solution}        → Solver 的输出
+// {verification}    → Verifier 的输出
+
+const SOLVER_PROMPT = `你是一位数学解题专家。请逐一解答以下数学题。
+
+{problems_block}
+
+输出格式（每道题）：
+- 题目：{原题}
+- 解题过程：{逐步推导}
+- 答案：{最终结果}`
+
+const VERIFIER_PROMPT = `你是一位数学验证专家。独立重新解题，对比下面的解答。
+
+{problems_block}
+
+=== 待验证的解答 ===
+{solution}
+
+=== 要求 ===
+- 独立计算，不可信任给出的解答
+- 逐步对比，标注对错
+- 有错误则精确指出位置
+
+输出格式：
+- 判定：✅ 正确 / ❌ 错误
+- 验证过程：{独立推导}
+- 错误原因：{如有}`
+
+const SCORER_PROMPT = `你是数学评分专家。综合解题和验证结果打分。
+
+{problems_block}
+
+=== 验证结果 ===
+{verification}
+
+评分：10=完美 | 7-9=正确可改进 | 4-6=部分正确 | 0-3=错误
+
+输出格式：
+- 分数：{0-10}
+- 评语：{一句话}`
+
+// ─── 题目分组（直接写在这里，初学者直接改）──────────
+const DEFAULT_GROUPS = [
+  {
+    name: &#39;第一组（基础计算）&#39;,
+    problems: [
+      &#39;1. 12 × 15 = ?&#39;,
+      &#39;2. √144 + 3² = ?&#39;,
+      &#39;3. 2^10 = ?&#39;,
+      &#39;4. 1 + 2 + 3 + ... + 100 = ?&#39;,
+      &#39;5. 1/2 + 1/3 + 1/6 = ?&#39;,
+    ],
+  },
+  {
+    name: &#39;第二组（进阶题目）&#39;,
+    problems: [
+      &#39;6. 100! 末尾有多少个 0？&#39;,
+      &#39;7. sin30° × cos60° = ?&#39;,
+      &#39;8. log₂1024 = ?&#39;,
+      &#39;9. 一个圆的周长是 31.4cm，求面积（π≈3.14）&#39;,
+      &#39;10. 解方程：2x + 5 = 17&#39;,
+    ],
+  },
+]
+
+// ─── 主流程 ─────────────────────────────────────────
+const groups = (args &amp;&amp; args.groups &amp;&amp; args.groups.length)
+  ? args.groups
+  : DEFAULT_GROUPS
+
+log(`共 ${groups.reduce((n, g) =&gt; n + g.problems.length, 0)} 道题，${groups.length} 组`)
+groups.forEach((g) =&gt; log(`  ${g.name}: ${g.problems.join(&#39;, &#39;)}`))
+
+// 每组并行跑 pipeline，题目直接写在 prompt 里
+const results = await parallel(
+  groups.map((group) =&gt; () =&gt; {
+    const problemsBlock = group.problems.join(&#39;\n&#39;)
+    return pipeline(
+      [group],  // 整组作为一个单元
+      // Stage 1: 解题
+      (grp) =&gt; agent(
+        SOLVER_PROMPT.replace(&#39;{problems_block}&#39;, grp.problems.join(&#39;\n&#39;)),
+        { label: `${grp.name}-解题`, phase: &#39;Solve&#39; }
+      ),
+      // Stage 2: 验证
+      (solution, grp) =&gt; agent(
+        VERIFIER_PROMPT
+          .replace(&#39;{problems_block}&#39;, grp.problems.join(&#39;\n&#39;))
+          .replace(&#39;{solution}&#39;, solution),
+        { label: `${grp.name}-验证`, phase: &#39;Verify&#39; }
+      ),
+      // Stage 3: 评分
+      (verification, grp) =&gt; agent(
+        SCORER_PROMPT
+          .replace(&#39;{problems_block}&#39;, grp.problems.join(&#39;\n&#39;))
+          .replace(&#39;{verification}&#39;, verification),
+        { label: `${grp.name}-评分`, phase: &#39;Score&#39; }
+      ),
+    )
+  })
+)
+
+// 按组返回
+const output = {}
+groups.forEach((g, i) =&gt; output[g.name] = results[i][0])
+return output
+</code></pre>
+</div><h3 id="调用方式">调用方式</h3><blockquote>
+<p><strong>在 Claude Code 里直接说&quot;跑 workflow math-problems&quot;就行。</strong> Claude 会调用 <code>Workflow</code> 工具执行。</p>
+</blockquote>
+<h4 id="方式1使用默认题目10题2组">方式1：使用默认题目（10题2组）</h4><p>直接让 Claude 跑：</p>
+<div class="code-wrapper"><pre><code>跑 workflow math-problems
+</code></pre>
+</div><p>Claude 执行：</p>
+<div class="code-wrapper"><pre><code class="language-javascript">Workflow({ name: &#39;math-problems&#39; })
+</code></pre>
+</div><h4 id="方式2自定义题目分组通过-args-传入">方式2：自定义题目分组（通过 args 传入）</h4><p>告诉 Claude 具体的题目和分组：</p>
+<div class="code-wrapper"><pre><code>跑 workflow math-problems，8道题分4组：
+12×15, √144+3², 2^10, 100!末尾几个0,
+1+2+...+100, sin30°×cos60°, log₂1024, 1/2+1/3+1/6
+</code></pre>
+</div><p>Claude 执行：</p>
+<div class="code-wrapper"><pre><code class="language-javascript">Workflow({
+  name: &#39;math-problems&#39;,
+  args: {
+    groups: [
+      { name: &#39;组1&#39;, problems: [&#39;1. 12×15&#39;, &#39;2. √144+3²&#39;] },
+      { name: &#39;组2&#39;, problems: [&#39;3. 2^10&#39;, &#39;4. 100!末尾几个0&#39;] },
+      { name: &#39;组3&#39;, problems: [&#39;5. 1+2+...+100&#39;, &#39;6. sin30°×cos60°&#39;] },
+      { name: &#39;组4&#39;, problems: [&#39;7. log₂1024&#39;, &#39;8. 1/2+1/3+1/6&#39;] },
+    ]
+  }
+})
+</code></pre>
+</div><h4 id="方式3自定义分组任意题目">方式3：自定义分组（任意题目）</h4><div class="code-wrapper"><pre><code>跑 workflow math-problems，分2组：
+几何题：求半径5的圆面积、求边长3的正方体体积
+代数题：解方程 x²-4=0、求 3x+2=14 的 x
+</code></pre>
+</div><p>Claude 执行：</p>
+<div class="code-wrapper"><pre><code class="language-javascript">Workflow({
+  name: &#39;math-problems&#39;,
+  args: {
+    groups: [
+      { name: &#39;几何题&#39;, problems: [&#39;求半径5的圆面积&#39;, &#39;求边长3的正方体体积&#39;] },
+      { name: &#39;代数题&#39;, problems: [&#39;解方程 x²-4=0&#39;, &#39;求 3x+2=14 的 x&#39;] },
+    ]
+  }
+})
+</code></pre>
+</div><blockquote>
+<p><strong>提示：</strong> 用 <code>/workflows</code> 查看实时进度。Workflow 跑完后结果自动返回到对话中。</p>
+</blockquote>
+<h3 id="为什么题目写在-prompt-里">为什么题目写在 prompt 里？</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>初学者体验</th>
+<th>维护性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>动态轮询分组</strong></td>
+<td>看不出哪道题在哪个组，需脑补分组逻辑</td>
+<td>改题需理解 round-robin</td>
+</tr>
+<tr>
+<td><strong>题目写在 prompt（✅ 当前）</strong></td>
+<td>DEFAULT_GROUPS 直接展示分组，改题即改数组</td>
+<td>改题目、改分组直观</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-在-workflow-内定义-agent">7. 在 Workflow 内定义 Agent</h2><p>Workflow 的 <code>agentType</code> <strong>不支持</strong> <code>.claude/agents/</code> 自定义 agent。解决方案：在脚本内用 <strong>Prompt 模板</strong> 定义 agent 角色。</p>
+<h3 id="prompt-模板模式推荐">Prompt 模板模式（推荐）</h3><p>把每个 agent 的完整指令写成<strong>字符串模板</strong>，用 <code>{占位符}</code> 标记数据插入点：</p>
+<div class="code-wrapper"><pre><code class="language-javascript">// ─── Prompt 模板（顶部定义，一眼看清所有 agent） ──────────
+
+const SOLVER_PROMPT = `你是一位数学解题专家。请逐一解答以下数学题。
+
+{problems_block}
+
+输出格式（每道题）：
+- 题目：{原题}
+- 解题过程：{逐步推导}
+- 答案：{最终结果}`
+
+const VERIFIER_PROMPT = `你是一位数学验证专家。独立重新解题，对比下面的解答。
+
+{problems_block}
+
+=== 待验证的解答 ===
+{solution}
+
+=== 要求 ===
+- 独立计算，不可信任给出的解答
+- 逐步对比，标注对错
+
+输出格式：
+- 判定：✅ 正确 / ❌ 错误
+- 错误原因：{如有}`
+
+const SCORER_PROMPT = `你是数学评分专家。综合解题和验证结果打分。
+
+{problems_block}
+
+=== 验证结果 ===
+{verification}
+
+评分：10=完美 | 7-9=正确可改进 | 4-6=部分正确 | 0-3=错误
+
+输出格式：
+- 分数：{0-10}
+- 评语：{一句话}`
+// ─── 模板结束 ─────────────────────────────────────────
+</code></pre>
+</div><h3 id="使用replace-填充数据">使用：`.replace()` 填充数据</h3><div class="code-wrapper"><pre><code class="language-javascript">// pipeline 中用 .replace() 把数据填入模板
+pipeline(
+  [group],  // 整组数据
+  // Stage 1: 解题
+  (grp) =&gt; agent(
+    SOLVER_PROMPT.replace(&#39;{problems_block}&#39;, grp.problems.join(&#39;\n&#39;)),
+    { label: `${grp.name}-解题`, phase: &#39;Solve&#39; }
+  ),
+  // Stage 2: 验证（solution 是上一阶段输出）
+  (solution, grp) =&gt; agent(
+    VERIFIER_PROMPT
+      .replace(&#39;{problems_block}&#39;, grp.problems.join(&#39;\n&#39;))
+      .replace(&#39;{solution}&#39;, solution),
+    { label: `${grp.name}-验证`, phase: &#39;Verify&#39; }
+  ),
+  // Stage 3: 评分（verification 是上一阶段输出）
+  (verification, grp) =&gt; agent(
+    SCORER_PROMPT
+      .replace(&#39;{problems_block}&#39;, grp.problems.join(&#39;\n&#39;))
+      .replace(&#39;{verification}&#39;, verification),
+    { label: `${grp.name}-评分`, phase: &#39;Score&#39; }
+  ),
+)
+</code></pre>
+</div><h3 id="三种-agent-定义方式对比">三种 Agent 定义方式对比</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Prompt 模板（✅ 推荐）</strong></td>
+<td>指令和数据分离清晰，<code>.replace()</code> 一看就懂</td>
+<td>多阶段时模板较长</td>
+<td>≥2 阶段的 pipeline</td>
+</tr>
+<tr>
+<td><strong>Agent 对象 + buildPrompt()</strong></td>
+<td>封装好，可复用</td>
+<td>需理解 <code>this</code> 绑定</td>
+<td>多处复用同一 agent</td>
+</tr>
+<tr>
+<td><strong>字符串内联</strong></td>
+<td>最简单</td>
+<td>prompt 和逻辑混杂</td>
+<td>单阶段、demo</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>建议：</strong> 初学者用 Prompt 模板模式。模板在文件顶部，一眼看清所有 agent 角色和数据流向。</p>
+</blockquote>
+<hr>
+<h2 id="8-限制与踩坑">8. ⚠️ 限制与踩坑</h2><h3 id="已知限制">已知限制</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>说明</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>自定义 agent 不可用</strong></td>
+<td><code>agentType</code> 只支持内置类型，<code>.claude/agents/</code> 定义的被忽略</td>
+<td>脚本内定义 Agent 对象</td>
+</tr>
+<tr>
+<td><strong>args 可能丢失</strong></td>
+<td>通过 <code>name</code> 引用 workflow 时 <code>args</code> 可能为 <code>undefined</code></td>
+<td>内联 script 或提供默认值</td>
+</tr>
+<tr>
+<td><strong>不支持 TypeScript</strong></td>
+<td>脚本是纯 JS，类型注解会报错</td>
+<td>用纯 JS，注释代替类型</td>
+</tr>
+<tr>
+<td><strong>无 Date/Math.random</strong></td>
+<td><code>Date.now()</code>、<code>Math.random()</code> 等不可用（影响缓存）</td>
+<td>通过 <code>args</code> 传入时间戳</td>
+</tr>
+<tr>
+<td><strong>并发上限</strong></td>
+<td>同时运行 agent 数 ≈ <code>min(16, CPU核心-2)</code></td>
+<td>自动排队，无需处理</td>
+</tr>
+<tr>
+<td><strong>总量上限</strong></td>
+<td>单次 workflow 最多 1000 个 agent</td>
+<td>合理分组</td>
+</tr>
+<tr>
+<td><strong>7天自动过期</strong></td>
+<td>循环任务 7 天后自动停止</td>
+<td>需要时重新创建</td>
+</tr>
+</tbody></table>
+<h3 id="agenttype-支持列表内置">agentType 支持列表（内置）</h3><div class="code-wrapper"><pre><code>claude, claude-code-guide, Explore, general-purpose, Plan
+gsd-*, glm-plan-usage:usage-query-agent, statusline-setup
+</code></pre>
+</div><blockquote>
+<p>❌ 不支持：<code>.claude/agents/</code> 里的自定义名称</p>
+</blockquote>
+<hr>
+<h2 id="9-架构对比">9. 架构对比</h2><h3 id="workflow-vs-直接用-agent-tool">Workflow vs 直接用 Agent Tool</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-4">graph TB
+    subgraph "Workflow 方式"
+        W1[JS 脚本控制流] --> W2[agent]
+        W1 --> W3[agent]
+        W1 --> W4[agent]
+        W2 --> W5[pipeline/parallel 编排]
+        W3 --> W5
+        W4 --> W5
+        W5 --> W6[结构化返回]
+    end
+
+    subgraph "Agent Tool 方式"
+        A1[主会话 prompt] --> A2[Agent subagent_type]
+        A1 --> A3[Agent subagent_type]
+        A2 --> A4[手动汇总]
+        A3 --> A4
+    end
+
+    style W1 fill:#bbdefb
+    style A1 fill:#fff9c4</pre></div><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Workflow</th>
+<th>Agent Tool</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>编排方式</strong></td>
+<td>JS 代码控制流</td>
+<td>Prompt 驱动</td>
+</tr>
+<tr>
+<td><strong>并行能力</strong></td>
+<td><code>parallel()</code> 原生支持</td>
+<td>需手动 spawn 多个</td>
+</tr>
+<tr>
+<td><strong>流水线</strong></td>
+<td><code>pipeline()</code> 一行搞定</td>
+<td>需手动串联</td>
+</tr>
+<tr>
+<td><strong>自定义 agent</strong></td>
+<td>❌ 仅内置类型</td>
+<td>✅ <code>subagent_type</code> 支持自定义</td>
+</tr>
+<tr>
+<td><strong>args 传递</strong></td>
+<td>⚠️ <code>name</code> 引用时可能丢失</td>
+<td>✅ 通过 prompt 传递</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>批量、多阶段、结构化</td>
+<td>灵活、少量 agent</td>
+</tr>
+<tr>
+<td><strong>复杂度</strong></td>
+<td>需写 JS 脚本</td>
+<td>简单 prompt</td>
+</tr>
+</tbody></table>
+<h3 id="pipeline-vs-parallel-选择">pipeline vs parallel 选择</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-5">graph LR
+    Q{数据项之间<br/>有依赖吗？} -->|是| P[用 pipeline]
+    Q -->|否| PR[用 parallel]
+    Q{需要所有结果<br/>一起处理吗？} -->|是| PR
+    Q -->|否| P
+
+    style Q fill:#fff9c4</pre></div><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>何时用</th>
+<th>类比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>pipeline</strong></td>
+<td>每项数据要经过多个阶段，项与项独立</td>
+<td>工厂流水线</td>
+</tr>
+<tr>
+<td><strong>parallel</strong></td>
+<td>多个任务同时跑，全部完成后汇总</td>
+<td>并行工程师团队</td>
+</tr>
+<tr>
+<td><strong>pipeline + parallel</strong></td>
+<td>分组并行，组内流水线</td>
+<td>多条流水线同时开工</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="10-总结">10. 总结</h2><h3 id="核心要点">核心要点</h3><ol>
+<li><strong>Dynamic Workflow = JS 脚本编排多 agent</strong></li>
+<li><strong>三大原语：</strong> <code>agent()</code>、<code>pipeline()</code>、<code>parallel()</code></li>
+<li><strong>自定义 agent 要定义在脚本内</strong>，不能引用 <code>.claude/agents/</code></li>
+<li><strong>args 传参不稳定</strong>，提供默认值或用内联 script</li>
+<li><strong>脚本是纯 JS</strong>，不支持 TS 语法、<code>Date.now()</code>、<code>Math.random()</code></li>
+</ol>
+<h3 id="推荐模板">推荐模板</h3><div class="code-wrapper"><pre><code class="language-javascript">export const meta = {
+  name: &#39;my-workflow&#39;,
+  description: &#39;描述&#39;,
+  phases: [{ title: &#39;Phase1&#39; }, { title: &#39;Phase2&#39; }],
+}
+
+// 1. Prompt 模板（顶部定义，{占位符} 标记数据位置）
+const AGENT_PROMPT = `你是一位专家。
+
+{data_block}
+
+请按要求处理以上数据。`
+
+// 2. 数据分组（直接定义，初学者一眼看懂）
+const DEFAULT_GROUPS = [
+  { name: &#39;组A&#39;, items: [&#39;数据1&#39;, &#39;数据2&#39;] },
+  { name: &#39;组B&#39;, items: [&#39;数据3&#39;, &#39;数据4&#39;] },
+]
+
+const groups = (args &amp;&amp; args.groups) || DEFAULT_GROUPS
+
+// 3. 编排：每组并行，组内 pipeline
+const results = await parallel(
+  groups.map(group =&gt; () =&gt; pipeline(
+    [group],
+    (grp) =&gt; agent(
+      AGENT_PROMPT.replace(&#39;{data_block}&#39;, grp.items.join(&#39;\n&#39;)),
+      { label: `${grp.name}-阶段1`, phase: &#39;Phase1&#39; }
+    ),
+    (prev, grp) =&gt; agent(
+      &#39;基于结果进一步处理:\n&#39; + prev,
+      { label: `${grp.name}-阶段2`, phase: &#39;Phase2&#39; }
+    ),
+  ))
+)
+
+// 4. 按组返回
+const output = {}
+groups.forEach((g, i) =&gt; output[g.name] = results[i][0])
+return output
+</code></pre>
+</div><h3 id="进一步学习">进一步学习</h3><p><strong>官方文档：</strong></p>
+<ul>
+<li><a href="https://code.claude.com/docs/en/workflows">Dynamic Workflows 官方文档</a> — 编排子 agent 的完整参考，涵盖运行、保存、管理、限制</li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents">官方文档 — Custom Subagents</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code/skills">官方文档 — Skills</a></li>
+</ul>
+<p><strong>社区资源：</strong></p>
+<ul>
+<li><a href="https://github.com/VoltAgent/awesome-claude-code-subagents">社区 — Awesome Claude Code Subagents</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>📝 本指南基于 Claude Code Dynamic Workflow 实践总结，所有代码均经过实际运行验证。官方文档参考：<a href="https://code.claude.com/docs/en/workflows">Dynamic Workflows</a>。</p>
+</blockquote>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="1-什么是-dynamic-workflow" data-astro-cid-w5q62dq7> <a href="#1-什么是-dynamic-workflow" data-astro-cid-w5q62dq7>1. 什么是 Dynamic Workflow</a> </li><li class="toc-item h3-nav" data-slug="适用场景" data-astro-cid-w5q62dq7> <a href="#适用场景" data-astro-cid-w5q62dq7>适用场景</a> </li><li class="toc-item " data-slug="2-核心概念速览" data-astro-cid-w5q62dq7> <a href="#2-核心概念速览" data-astro-cid-w5q62dq7>2. 核心概念速览</a> </li><li class="toc-item h3-nav" data-slug="执行模型" data-astro-cid-w5q62dq7> <a href="#执行模型" data-astro-cid-w5q62dq7>执行模型</a> </li><li class="toc-item " data-slug="3-目录结构" data-astro-cid-w5q62dq7> <a href="#3-目录结构" data-astro-cid-w5q62dq7>3. 目录结构</a> </li><li class="toc-item h3-nav" data-slug="workflow-文件结构" data-astro-cid-w5q62dq7> <a href="#workflow-文件结构" data-astro-cid-w5q62dq7>Workflow 文件结构</a> </li><li class="toc-item " data-slug="4-第一个-workflowhello-world" data-astro-cid-w5q62dq7> <a href="#4-第一个-workflowhello-world" data-astro-cid-w5q62dq7>4. 第一个 Workflow：Hello World</a> </li><li class="toc-item h3-nav" data-slug="最简版本" data-astro-cid-w5q62dq7> <a href="#最简版本" data-astro-cid-w5q62dq7>最简版本</a> </li><li class="toc-item h3-nav" data-slug="带参数版本" data-astro-cid-w5q62dq7> <a href="#带参数版本" data-astro-cid-w5q62dq7>带参数版本</a> </li><li class="toc-item " data-slug="5-内置-api-详解" data-astro-cid-w5q62dq7> <a href="#5-内置-api-详解" data-astro-cid-w5q62dq7>5. 内置 API 详解</a> </li><li class="toc-item h3-nav" data-slug="51-agent-生成子-agent" data-astro-cid-w5q62dq7> <a href="#51-agent-生成子-agent" data-astro-cid-w5q62dq7>5.1 agent() — 生成子 agent</a> </li><li class="toc-item h3-nav" data-slug="52-pipeline-串行流水线" data-astro-cid-w5q62dq7> <a href="#52-pipeline-串行流水线" data-astro-cid-w5q62dq7>5.2 pipeline() — 串行流水线</a> </li><li class="toc-item h3-nav" data-slug="53-parallel-并行屏障" data-astro-cid-w5q62dq7> <a href="#53-parallel-并行屏障" data-astro-cid-w5q62dq7>5.3 parallel() — 并行屏障</a> </li><li class="toc-item h3-nav" data-slug="54-phase-和-log" data-astro-cid-w5q62dq7> <a href="#54-phase-和-log" data-astro-cid-w5q62dq7>5.4 phase() 和 log()</a> </li><li class="toc-item " data-slug="6-实战数学题-pipeline" data-astro-cid-w5q62dq7> <a href="#6-实战数学题-pipeline" data-astro-cid-w5q62dq7>6. 实战：数学题 Pipeline</a> </li><li class="toc-item h3-nav" data-slug="架构图" data-astro-cid-w5q62dq7> <a href="#架构图" data-astro-cid-w5q62dq7>架构图</a> </li><li class="toc-item h3-nav" data-slug="数据流详解" data-astro-cid-w5q62dq7> <a href="#数据流详解" data-astro-cid-w5q62dq7>数据流详解</a> </li><li class="toc-item h3-nav" data-slug="实际-prompt-示例模板替换后" data-astro-cid-w5q62dq7> <a href="#实际-prompt-示例模板替换后" data-astro-cid-w5q62dq7>实际 Prompt 示例（模板替换后）</a> </li><li class="toc-item h3-nav" data-slug="完整代码" data-astro-cid-w5q62dq7> <a href="#完整代码" data-astro-cid-w5q62dq7>完整代码</a> </li><li class="toc-item h3-nav" data-slug="调用方式" data-astro-cid-w5q62dq7> <a href="#调用方式" data-astro-cid-w5q62dq7>调用方式</a> </li><li class="toc-item h3-nav" data-slug="为什么题目写在-prompt-里" data-astro-cid-w5q62dq7> <a href="#为什么题目写在-prompt-里" data-astro-cid-w5q62dq7>为什么题目写在 prompt 里？</a> </li><li class="toc-item " data-slug="7-在-workflow-内定义-agent" data-astro-cid-w5q62dq7> <a href="#7-在-workflow-内定义-agent" data-astro-cid-w5q62dq7>7. 在 Workflow 内定义 Agent</a> </li><li class="toc-item h3-nav" data-slug="prompt-模板模式推荐" data-astro-cid-w5q62dq7> <a href="#prompt-模板模式推荐" data-astro-cid-w5q62dq7>Prompt 模板模式（推荐）</a> </li><li class="toc-item h3-nav" data-slug="使用replace-填充数据" data-astro-cid-w5q62dq7> <a href="#使用replace-填充数据" data-astro-cid-w5q62dq7>使用：.replace() 填充数据</a> </li><li class="toc-item h3-nav" data-slug="三种-agent-定义方式对比" data-astro-cid-w5q62dq7> <a href="#三种-agent-定义方式对比" data-astro-cid-w5q62dq7>三种 Agent 定义方式对比</a> </li><li class="toc-item " data-slug="8-限制与踩坑" data-astro-cid-w5q62dq7> <a href="#8-限制与踩坑" data-astro-cid-w5q62dq7>8. ⚠️ 限制与踩坑</a> </li><li class="toc-item h3-nav" data-slug="已知限制" data-astro-cid-w5q62dq7> <a href="#已知限制" data-astro-cid-w5q62dq7>已知限制</a> </li><li class="toc-item h3-nav" data-slug="agenttype-支持列表内置" data-astro-cid-w5q62dq7> <a href="#agenttype-支持列表内置" data-astro-cid-w5q62dq7>agentType 支持列表（内置）</a> </li><li class="toc-item " data-slug="9-架构对比" data-astro-cid-w5q62dq7> <a href="#9-架构对比" data-astro-cid-w5q62dq7>9. 架构对比</a> </li><li class="toc-item h3-nav" data-slug="workflow-vs-直接用-agent-tool" data-astro-cid-w5q62dq7> <a href="#workflow-vs-直接用-agent-tool" data-astro-cid-w5q62dq7>Workflow vs 直接用 Agent Tool</a> </li><li class="toc-item h3-nav" data-slug="pipeline-vs-parallel-选择" data-astro-cid-w5q62dq7> <a href="#pipeline-vs-parallel-选择" data-astro-cid-w5q62dq7>pipeline vs parallel 选择</a> </li><li class="toc-item " data-slug="10-总结" data-astro-cid-w5q62dq7> <a href="#10-总结" data-astro-cid-w5q62dq7>10. 总结</a> </li><li class="toc-item h3-nav" data-slug="核心要点" data-astro-cid-w5q62dq7> <a href="#核心要点" data-astro-cid-w5q62dq7>核心要点</a> </li><li class="toc-item h3-nav" data-slug="推荐模板" data-astro-cid-w5q62dq7> <a href="#推荐模板" data-astro-cid-w5q62dq7>推荐模板</a> </li><li class="toc-item h3-nav" data-slug="进一步学习" data-astro-cid-w5q62dq7> <a href="#进一步学习" data-astro-cid-w5q62dq7>进一步学习</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-opus-4-8-dynamic-workflows-release" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-da86fc87.jpg" alt="Claude Opus 4.8 发布总结" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-opus-4-8-dynamic-workflows-release" data-astro-cid-w5q62dq7>Claude Opus 4.8 发布总结</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>Anthropic 突发发布 Claude Opus 4.8！距离上代仅41天，这次它不仅加了便宜3倍的快速模式，还推出了能自动拆解任务、自己跑几天的「动态工作流」。它变得更诚实了，遇到不会的代码不再瞎编。一文带你大白话看懂这次硬核更新！</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月29日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/antigravity-cli-deep-dive-agent-first-tool-evolution" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-3d3ac4c2.jpg" alt="深度体验 Antigravity CLI 总结" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/antigravity-cli-deep-dive-agent-first-tool-evolution" data-astro-cid-w5q62dq7>深度体验 Antigravity CLI 总结</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文深度评测了 Antigravity CLI 的实战表现，分析其 Agent-First 设计、高性能模型支持及性价比优势，同时指出了剪贴板支持缺失和交互繁琐等待优化点。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月27日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\)）)([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

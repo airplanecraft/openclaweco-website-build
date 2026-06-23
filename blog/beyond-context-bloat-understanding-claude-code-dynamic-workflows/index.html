@@ -1,0 +1,699 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Beyond Context Bloat: Understanding Claude Code Dynamic Workflows — AgentUpdate.ai</title><meta name="description" content="Explore how Claude Code uses Dynamic Workflows to solve context contamination. This article breaks down parallel and serial modes, explaining how the..."><meta name="keywords" content="起底 Claude Code Dynamic workflow工作流的上下文管理艺术, Beyond Context Bloat: Understanding Claude Code Dynamic Workflows, Claude Code, AI Agent, 上下文管理, Anthropic, 动态工作流"><link rel="canonical" href="https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Beyond Context Bloat: Understanding Claude Code Dynamic Workflows — AgentUpdate.ai"><meta property="og:description" content="Explore how Claude Code uses Dynamic Workflows to solve context contamination. This article breaks down parallel and serial modes, explaining how the..."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4a464ce6.jpg"><meta property="og:url" content="https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Beyond Context Bloat: Understanding Claude Code Dynamic Workflows — AgentUpdate.ai"><meta name="twitter:description" content="Explore how Claude Code uses Dynamic Workflows to solve context contamination. This article breaks down parallel and serial modes, explaining how the..."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4a464ce6.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Beyond Context Bloat: Understanding Claude Code Dynamic Workflows","description":"Explore how Claude Code uses Dynamic Workflows to solve context contamination. This article breaks down parallel and serial modes, explaining how the 'Fork-Drop-Fan-In' process keeps the main session clean by returning only Git Diffs instead of verbose logs.","image":"/images/blog/ai-cover-4a464ce6.jpg","datePublished":"2026-06-04T10:15:51.947Z","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Beyond Context Bloat: Understanding Claude Code Dynamic Workflows</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Beyond Context Bloat: Understanding Claude Code Dynamic Workflows"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Beyond Context Bloat: Understanding Claude Code Dynamic Workflows</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>June 4, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By AgentUpdate</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/claude-code" class="tag" data-astro-cid-4sn4zg3r>#Claude Code</a><a href="/tags/ai-agent" class="tag" data-astro-cid-4sn4zg3r>#AI Agent</a><span class="tag" data-astro-cid-4sn4zg3r>#上下文管理</span><a href="/tags/anthropic" class="tag" data-astro-cid-4sn4zg3r>#Anthropic</a><span class="tag" data-astro-cid-4sn4zg3r>#动态工作流</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/ai-cover-4a464ce6.jpg" alt="Beyond Context Bloat: Understanding Claude Code Dynamic Workflows" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of Contents</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#1-the-root-cause-why-does-ai-get-dumber-over-time" data-astro-cid-4sn4zg3r>1. The Root Cause: Why Does AI Get Dumber Over Time?</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#2-traditional-subagent-model-a-snowballing-context-disaster" data-astro-cid-4sn4zg3r>2. Traditional Subagent Model: A Snowballing Context Disaster</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#workflow-of-the-traditional-model" data-astro-cid-4sn4zg3r>Workflow of the Traditional Model</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#mermaid-architecture-diagram" data-astro-cid-4sn4zg3r>Mermaid Architecture Diagram</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#3-dynamic-workflows-a-relay-race-of-stateless-threads" data-astro-cid-4sn4zg3r>3. Dynamic Workflows: A &quot;Relay Race&quot; of Stateless Threads</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#the-core-three-step-method-fork-drop-fan-in" data-astro-cid-4sn4zg3r>The Core Three-Step Method: Fork → Drop → Fan-In</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#mermaid-architecture-diagram" data-astro-cid-4sn4zg3r>Mermaid Architecture Diagram</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#4-fan-out-pattern-multi-threading-in-parallel" data-astro-cid-4sn4zg3r>4. Fan-Out Pattern: Multi-Threading in Parallel</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#scenario-modifying-3-unrelated-files-simultaneously" data-astro-cid-4sn4zg3r>Scenario: Modifying 3 unrelated files simultaneously</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#mermaid-fan-out-diagram" data-astro-cid-4sn4zg3r>Mermaid Fan-Out Diagram</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#5-pipeline-pattern-incremental-relay-race" data-astro-cid-4sn4zg3r>5. Pipeline Pattern: Incremental Relay Race</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#scenario-modify-code-write-tests-code-review" data-astro-cid-4sn4zg3r>Scenario: Modify Code → Write Tests → Code Review</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#ascii-flowchart" data-astro-cid-4sn4zg3r>ASCII Flowchart</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#mermaid-pipeline-diagram" data-astro-cid-4sn4zg3r>Mermaid Pipeline Diagram</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#mathematical-formulas-for-context-passing" data-astro-cid-4sn4zg3r>Mathematical Formulas for Context Passing</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#6-practical-code-what-does-a-dynamic-workflow-look-like" data-astro-cid-4sn4zg3r>6. Practical Code: What Does a Dynamic Workflow Look Like?</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#example-workflow-script-for-modifying-multiple-files-in-parallel" data-astro-cid-4sn4zg3r>Example: Workflow Script for Modifying Multiple Files in Parallel</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#key-points-of-context-management-in-the-code" data-astro-cid-4sn4zg3r>Key Points of Context Management in the Code</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#7-classic-patterns-quick-reference" data-astro-cid-4sn4zg3r>7. Classic Patterns Quick Reference</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#pattern-overview" data-astro-cid-4sn4zg3r>Pattern Overview</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#mermaid-pattern-overview-diagram" data-astro-cid-4sn4zg3r>Mermaid Pattern Overview Diagram</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#practical-trigger-methods" data-astro-cid-4sn4zg3r>Practical Trigger Methods</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#8-core-comparison-old-vs-new-architecture" data-astro-cid-4sn4zg3r>8. Core Comparison: Old vs. New Architecture</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#comparison-table" data-astro-cid-4sn4zg3r>Comparison Table</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#context-volume-comparison-same-task" data-astro-cid-4sn4zg3r>Context Volume Comparison (Same Task)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#9-ultimate-takeaways" data-astro-cid-4sn4zg3r>9. Ultimate Takeaways</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#practical-advice-for-claude-code-users" data-astro-cid-4sn4zg3r>Practical Advice for Claude Code Users</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#further-reading" data-astro-cid-4sn4zg3r>Further Reading</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><blockquote>
+<p>An In-Depth Illustrated Guide for Claude Code Users and Beginners</p>
+</blockquote>
+<p>Have you ever experienced this: you ask an AI Agent to help refactor code, and at first, it is incredibly smart. However, as the rounds of bug fixing increase and the error logs pile up, the AI suddenly starts to lose its train of thought—forgetting the original request or even hallucinating?</p>
+<p>In the AI field, this has a specific name: <strong>Context Contamination</strong>.</p>
+<p>To solve this industry-wide fatal flaw, Anthropic introduced the <strong>Dynamic Workflows</strong> architecture in Claude Code. In this article, we will thoroughly deconstruct how it overthrows the traditional Subagent model through the art of &quot;disposable&quot; context management, using plain English, architecture diagrams, code, and ASCII art.</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2><ul>
+<li><a href="#1-the-root-cause-why-does-ai-get-dumber-over-time">1. The Root Cause: Why Does AI Get Dumber Over Time?</a></li>
+<li><a href="#2-traditional-subagent-model-a-snowballing-context-disaster">2. Traditional Subagent Model: A Snowballing Context Disaster</a></li>
+<li><a href="#3-dynamic-workflows-a-relay-race-of-stateless-threads">3. Dynamic Workflows: A &quot;Relay Race&quot; of Stateless Threads</a></li>
+<li><a href="#4-fan-out-pattern-multi-threading-in-parallel">4. Fan-Out Pattern: Multi-Threading in Parallel</a></li>
+<li><a href="#5-pipeline-pattern-incremental-relay-race">5. Pipeline Pattern: Incremental Relay Race</a></li>
+<li><a href="#6-practical-code-what-does-a-dynamic-workflow-look-like">6. Practical Code: What Does a Dynamic Workflow Look Like?</a></li>
+<li><a href="#7-classic-patterns-quick-reference">7. Classic Patterns Quick Reference</a></li>
+<li><a href="#8-core-comparison-old-vs-new-architecture">8. Core Comparison: Old vs. New Architecture</a></li>
+<li><a href="#9-ultimate-takeaways">9. Ultimate Takeaways</a></li>
+</ul>
+<hr>
+<h2 id="1-the-root-cause-why-does-ai-get-dumber-over-time">1. The Root Cause: Why Does AI Get Dumber Over Time?</h2><p>The working mechanism of Large Language Models (LLMs) can be simply understood as: <strong>you stuff all the chat history into a &quot;window,&quot; and the model answers your questions based on the contents of that window.</strong></p>
+<p>But this window has a size limit. When 80% of the window is filled with error logs, deprecated code, and repetitive trial-and-error processes, the model will exhibit:</p>
+<table>
+<thead>
+<tr>
+<th>Failure Mode</th>
+<th>Plain English Explanation</th>
+<th>Real-World Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Agentic Laziness</strong></td>
+<td>Quits halfway saying &quot;I&#39;m done&quot;</td>
+<td>Out of 50 security checks, it only completes 35 before calling it a day.</td>
+</tr>
+<tr>
+<td><strong>Self-preferential Bias</strong></td>
+<td>Thinks whatever it writes is correct</td>
+<td>Reviews its own code and always finds it &quot;looks good.&quot;</td>
+</tr>
+<tr>
+<td><strong>Goal Drift</strong></td>
+<td>Forgets the original objective</td>
+<td>While fixing a bug, it starts refactoring unrelated code.</td>
+</tr>
+<tr>
+<td><strong>Lost in the Middle</strong></td>
+<td>Attention overwhelmed by garbage info</td>
+<td>Forgets the 3rd requirement because 200 lines of logs are sandwiched in between.</td>
+</tr>
+</tbody></table>
+<p><strong>In short</strong>: The context window is like your desktop; the more garbage files there are, the harder it is to find what truly matters.</p>
+<hr>
+<h2 id="2-traditional-subagent-model-a-snowballing-context-disaster">2. Traditional Subagent Model: A Snowballing Context Disaster</h2><p>In the past, when the Main Agent encountered complex tasks, it would summon Subagents to do the work. The problem lies in the <strong>wrap-up method</strong>:</p>
+<h3 id="workflow-of-the-traditional-model">Workflow of the Traditional Model</h3><div class="code-wrapper"><pre><code>┌─────────────────────────────────────────────────────────┐
+│        Main Session Context (Increasingly Bloated)      │
+│                                                         │
+│  User Query                                             │
+│  ├─ Main Agent spawns instructions → Subagent           │
+│  │   ├─ Subagent reads 10 files                         │
+│  │   ├─ Compilation fails 5 times × 60 lines of logs    │
+│  │   ├─ Runs tests 3 times × 40 lines of output         │
+│  │   └─ Finally fixed!                                  │
+│  │                                                      │
+│  ◄── 💥 Subagent finishes, 180+ lines of garbage stuffed back │
+│  │                                                      │
+│  ├─ Main Agent spawns another Subagent                  │
+│  │   ├─ Another 100+ lines of logs...                   │
+│  │   └─ All stuffed back again...                       │
+│  │                                                      │
+│  ⚠️ Context snowballs, growing larger, and the main     │
+│     model&#39;s intelligence plummets                       │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+</div><h3 id="mermaid-architecture-diagram">Mermaid Architecture Diagram</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    User([User Query]) --> Main[Main Agent]
+
+    subgraph ctx["Main Session Context Bloat"]
+        Main -- "1. Spawn Instructions" --> Sub[Subagent]
+        Sub -- "2. Read Files / Errors / Run Tests" --> Sub
+        Sub -- "3. 💥 All logs stuffed back into main session" --> Main
+    end
+
+    style Main fill:#ffd93d</pre></div><p><strong>Consequence</strong>: The main session becomes a dumping ground. Modifying 2-3 files is manageable, but modifying 10 files blows up the context.</p>
+<hr>
+<h2 id="3-dynamic-workflows-a-relay-race-of-stateless-threads">3. Dynamic Workflows: A "Relay Race" of Stateless Threads</h2><p>Dynamic Workflows completely restructure the rules of the game. The Main Agent no longer charges to the front lines itself; instead, it upgrades to an <strong>&quot;Orchestrator,&quot;</strong> scheduling everything through a runtime control script (Harness).</p>
+<p>The core philosophy can be summarized in one word: <strong>Disposable</strong>.</p>
+<h3 id="the-core-three-step-method-fork-drop-fan-in">The Core Three-Step Method: Fork → Drop → Fan-In</h3><div class="code-wrapper"><pre><code>                    ┌──────────────────┐
+                    │   100% Clean     │
+                    │   Main Session   │
+                    │                  │
+                    │   Contains only: │
+                    │   · User Req.    │
+                    │   · Final Result │
+                    └────────┬─────────┘
+                             │
+                    ① Dynamically generate control flow
+                             │
+                    ┌────────▼─────────┐
+                    │                  │
+                    │   Harness        │
+                    │ (Runtime Control)│
+                    │                  │
+                    └───┬──────────┬───┘
+                        │          │
+              ② Fork    │          │  ② Fork
+          (Clean Clone) │          │  (Clean Clone)
+                   ┌────▼───┐  ┌───▼────┐
+                   │Subagent│  │Subagent│
+                   │   A    │  │   B    │
+                   │        │  │        │
+                   │Read file│ │Read file│
+                   │ Error! │  │ Error! │
+                   │Fix again│ │Fix again│
+                   │ Fixed! │  │ Fixed! │
+                   └────┬───┘  └───┬────┘
+                        │          │
+              ③ Drop   │          │  ③ Drop
+       (Destroy Garbage)│          │  (Destroy Garbage)
+                   ┌────▼───┐  ┌───▼────┐
+                   │ Return │  │ Return │
+                   │Git Diff│  │Git Diff│
+                   │  Only  │  │  Only  │
+                   └────┬───┘  └───┬────┘
+                        │          │
+                        └────┬─────┘
+                             │
+                    ④ Fan-In Convergence
+                             │
+                    ┌────────▼─────────┐
+                    │Main session gets:│
+                    │ ✅ A&#39;s Git Diff  │
+                    │ ✅ B&#39;s Git Diff  │
+                    │ Garbage logs? No │
+                    └──────────────────┘
+</code></pre>
+</div><h3 id="mermaid-architecture-diagram">Mermaid Architecture Diagram</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph TD
+    User([User Query]) --> Main["🧠 Main Agent Claude Code"]
+
+    subgraph clean["Clean Main Session"]
+        Main
+    end
+
+    Main -- "1. Generate Control Flow" --> Harness["⚙️ Harness Runtime Control"]
+
+    subgraph iso["Isolated Temporary Workspace"]
+        Harness --> SubA["Subagent A"]
+        Harness --> SubB["Subagent B"]
+        SubA -- "Debug/Error/Test Loop" --> SubA
+        SubB -- "Debug/Error/Test Loop" --> SubB
+    end
+
+    SubA -- "2. 🗑️ Destroy Logs, Return Only Git Diff" --> Harness
+    SubB -- "2. 🗑️ Destroy Logs, Return Only Git Diff" --> Harness
+
+    Harness -- "3. Merge Final Results" --> Main
+
+    style Main fill:#4ecdc4,color:#fff
+    style Harness fill:#45b7d1,color:#fff
+    style SubA fill:#96ceb4
+    style SubB fill:#96ceb4</pre></div><p><strong>Key Difference</strong>: Subagents return a <strong>Git Diff (code patch)</strong>, not chat history. It&#39;s like ordering food at a restaurant: the chef might try 5 times in the kitchen, but only the successful dish is served to you; you never see the burnt scraps.</p>
+<hr>
+<h2 id="4-fan-out-pattern-multi-threading-in-parallel">4. Fan-Out Pattern: Multi-Threading in Parallel</h2><p>When multiple tasks are <strong>independent</strong> of each other, Dynamic Workflows will execute them <strong>in parallel</strong>.</p>
+<h3 id="scenario-modifying-3-unrelated-files-simultaneously">Scenario: Modifying 3 unrelated files simultaneously</h3><p>Suppose your project needs modifications in three files: <code>auth.ts</code>, <code>payment.ts</code>, and <code>logger.ts</code>, which are unrelated.</p>
+<h4 id="traditional-model-sequential-context-accumulation">Traditional Model (Sequential, Context Accumulation)</h4><div class="code-wrapper"><pre><code>Time ─────────────────────────────────────────────►
+
+Main Agent: [Modify auth.ts ──── Error logs stuffed back ────] [Modify payment.ts ──── Error logs stuffed back ────] [Modify logger.ts]
+                 │               Context bloats                  │               Context blows up                  │
+                 └── 50 lines of garbage ────────────────────────┘── 50 lines of garbage ──────────────────────────┘
+</code></pre>
+</div><h4 id="dynamic-workflow-parallel-stable-context">Dynamic Workflow (Parallel, Stable Context)</h4><div class="code-wrapper"><pre><code>Time ─────────────────────────────────────────────►
+
+Subagent A: [Modify auth.ts ──── Error ──── Fixed ────] 🗑️ → Return only Diff
+Subagent B: [Modify payment.ts ─ Error ──── Fixed ────] 🗑️ → Return only Diff
+Subagent C: [Modify logger.ts ── Error ──── Fixed ────] 🗑️ → Return only Diff
+            └──────── Simultaneous Parallel Execution ────────┘
+
+Main Session: [Clean] ──────────────────────── [Received 3 Diffs, Merge Complete]
+                                                Context remains clean!
+</code></pre>
+</div><h3 id="mermaid-fan-out-diagram">Mermaid Fan-Out Diagram</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph LR
+    Main["🧠 Main Agent"] -->|"Fan-Out"| Harness["⚙️ Harness"]
+
+    Harness -->|"Fork"| A["🔧 Modify auth.ts"]
+    Harness -->|"Fork"| B["🔧 Modify payment.ts"]
+    Harness -->|"Fork"| C["🔧 Modify logger.ts"]
+
+    A -->|"Drop + Diff"| Harness
+    B -->|"Drop + Diff"| Harness
+    C -->|"Drop + Diff"| Harness
+
+    Harness -->|"Fan-In"| Main
+
+    style A fill:#96ceb4
+    style B fill:#96ceb4
+    style C fill:#96ceb4</pre></div><p><strong>Result</strong>: Parallel execution is 3 times faster than sequential execution, and the main session context only increases by 3 Git Diffs instead of hundreds of lines of garbage logs.</p>
+<hr>
+<h2 id="5-pipeline-pattern-incremental-relay-race">5. Pipeline Pattern: Incremental Relay Race</h2><p>When tasks have <strong>sequential dependencies</strong> (B can only start after A finishes), Dynamic Workflows use an &quot;incremental relay&quot; approach to pass context.</p>
+<h3 id="scenario-modify-code-write-tests-code-review">Scenario: Modify Code → Write Tests → Code Review</h3><p>Suppose you want to perform a complete development flow on <code>auth.ts</code>:</p>
+<ol>
+<li><strong>Agent A</strong>: Refactor the authentication logic in <code>auth.ts</code>.</li>
+<li><strong>Agent B</strong>: Write corresponding unit tests based on A&#39;s modifications.</li>
+<li><strong>Agent C</strong>: Perform a Code Review on A&#39;s code + B&#39;s tests.</li>
+</ol>
+<h3 id="ascii-flowchart">ASCII Flowchart</h3><div class="code-wrapper"><pre><code>┌──────────────┐
+│  Agent A     │    Context = CLAUDE.md + auth.ts + Task Description
+│Refactor Code │
+│              │
+│ · Modify sig.  ×
+│ · Compile err  ×
+│ · Fix again    ×
+│ · Error again  ×
+│ · Finally pass!✓
+│              │
+└──────┬───────┘
+       │ 🗑️ Destroy all error logs
+       │ ✅ Keep only Git Diff
+       ▼
+┌──────────────┐
+│  Agent B     │    Context = CLAUDE.md + A&#39;s Diff + &quot;Write Tests&quot;
+│ Write Tests  │
+│              │    ⚠️ B completely cannot see A&#39;s 4 failures!
+│ · Sees clean │    The world in B&#39;s eyes:
+│   code changes│   &quot;Oh, A changed the function signature to this,
+│ · Writes tests│    so I&#39;ll just write tests based on the new signature.&quot;
+│ · Passes 1st! ✓
+│              │
+└──────┬───────┘
+       │ 🗑️ Destroy intermediate process
+       │ ✅ Keep only test code Diff
+       ▼
+┌──────────────┐
+│  Agent C     │    Context = CLAUDE.md + A&#39;s Diff + B&#39;s Diff + &quot;Review&quot;
+│ Code Review  │
+│              │    ⚠️ C only sees the final product, not the process
+│ · Reviews code│   &quot;This naming is not very standard&quot;
+│ · Reviews test│   &quot;Missing a boundary test here&quot;
+│ · Gives advice│
+│              │
+└──────┬───────┘
+       │ 🗑️ Destroy intermediate process
+       │ ✅ Return only Review Report
+       ▼
+  ┌──────────┐
+  │Main Session│  Only added 3 high-density deliverables in total:
+  │ Receives:  │  · A&#39;s Code Diff
+  │Final Result│  · B&#39;s Test Diff
+  └──────────┘  · C&#39;s Review Report
+</code></pre>
+</div><h3 id="mermaid-pipeline-diagram">Mermaid Pipeline Diagram</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph TD
+    Main["🧠 Main Agent"] -->|"Dispatch Task"| Harness["⚙️ Harness"]
+
+    Harness --> A["Agent A Refactor Code"]
+    A -->|"🗑️ Destroy Logs, Keep Diff"| B["Agent B Write Tests"]
+    B -->|"🗑️ Destroy Logs, Keep Diff"| C["Agent C Code Review"]
+    C -->|"🗑️ Destroy Logs, Keep Report"| Harness
+
+    Harness -->|"Fan-In"| Main
+
+    style A fill:#96ceb4
+    style B fill:#87CEEB
+    style C fill:#DDA0DD</pre></div><h3 id="mathematical-formulas-for-context-passing">Mathematical Formulas for Context Passing</h3><p>At each step, the context received by the next Agent is freshly assembled:</p>
+<p>$$\text{Agent B&#39;s Context} = \underbrace{\text{CLAUDE.md}}<em>{\text{Project Rules}} + \underbrace{A</em>{\text{diff}}}<em>{\text{Previous Step Result}} + \underbrace{\text{B&#39;s Task Description}}</em>{\text{Current Objective}}$$</p>
+<p>$$\text{Agent C&#39;s Context} = \underbrace{\text{CLAUDE.md}}<em>{\text{Project Rules}} + \underbrace{A</em>{\text{diff}} + B_{\text{diff}}}<em>{\text{Previous Two Steps Results}} + \underbrace{\text{C&#39;s Task Description}}</em>{\text{Current Objective}}$$</p>
+<p><strong>Note</strong>: The context at each step is <strong>assembled on demand</strong>, rather than piling up all historical records. This is the essence of the &quot;incremental relay.&quot;</p>
+<hr>
+<h2 id="6-practical-code-what-does-a-dynamic-workflow-look-like">6. Practical Code: What Does a Dynamic Workflow Look Like?</h2><p>Under the hood, a dynamic workflow is simply a JavaScript script. Claude will <strong>automatically generate</strong> this script based on your requirements. You usually don&#39;t need to write it by hand, but understanding its structure helps grasp the underlying principles.</p>
+<h3 id="example-workflow-script-for-modifying-multiple-files-in-parallel">Example: Workflow Script for Modifying Multiple Files in Parallel</h3><div class="code-wrapper"><pre><code class="language-javascript">// Every workflow must start with meta
+export const meta = {
+  name: &#39;rename-user-to-account&#39;,
+  description: &#39;Batch rename User to Account&#39;,
+  phases: [
+    { title: &#39;Find&#39;, detail: &#39;Find all User references&#39; },
+    { title: &#39;Rename&#39;, detail: &#39;Replace file by file&#39; },
+    { title: &#39;Verify&#39;, detail: &#39;Verify correctness of modifications&#39; },
+  ],
+}
+
+// Phase 1: Find all files that need modification
+phase(&#39;Find&#39;)
+const files = await agent(
+  &#39;Search the project for all files containing &quot;User&quot; and return a list of file paths&#39;,
+  {
+    schema: {
+      type: &#39;object&#39;,
+      properties: {
+        files: {
+          type: &#39;array&#39;,
+          items: { type: &#39;string&#39; },
+        },
+      },
+    },
+  }
+)
+
+// Phase 2: pipeline — One Subagent per file, modifying in parallel
+//        Each Subagent gets a clean context, without interfering with others
+phase(&#39;Rename&#39;)
+const results = await pipeline(
+  files,
+  (file) =&gt;
+    agent(`Rename &quot;User&quot; to &quot;Account&quot; in ${file}`, {
+      label: `rename:${file}`,
+      phase: &#39;Rename&#39;,
+      isolation: &#39;worktree&#39;, // Each Subagent modifies in an isolated workspace
+    }),
+  // pipeline allows each file to independently go through the entire process
+  // While file A is in Phase 2, file B might still be in Phase 1
+  // No need to wait for the slowest file; those that finish first proceed to the next step
+)
+
+// Phase 3: Verify — Perform adversarial review on each modification
+phase(&#39;Verify&#39;)
+const verified = await parallel(
+  results
+    .filter(Boolean)
+    .map((r) =&gt; () =&gt;
+      agent(`Check if this renaming missed any User references`, {
+        label: `verify:${r.file}`,
+        phase: &#39;Verify&#39;,
+      })
+    )
+)
+
+// Return final results
+return {
+  totalFiles: files.length,
+  renamed: results.filter(Boolean).length,
+  verified: verified.filter(Boolean).length,
+}
+</code></pre>
+</div><h3 id="key-points-of-context-management-in-the-code">Key Points of Context Management in the Code</h3><div class="code-wrapper"><pre><code class="language-javascript">// Key Point 1: agent() returns structured results, not chat history
+const files = await agent(&#39;Search files&#39;, { schema: FILES_SCHEMA })
+// ^ Returns { files: [&#39;a.ts&#39;, &#39;b.ts&#39;, &#39;c.ts&#39;] }
+// Not &quot;Okay, I searched the files for you and found the following...&quot; + 200 lines of logs
+
+// Key Point 2: isolation: &#39;worktree&#39; ensures parallel modifications do not conflict
+agent(&#39;Modify file&#39;, { isolation: &#39;worktree&#39; })
+// Each Subagent works in an independent git worktree
+// Just like assigning an independent kitchen to each chef
+
+// Key Point 3: pipeline() natively supports sequential passing
+// The output of the previous step automatically becomes the input for the next step
+const results = await pipeline(
+  items,
+  stage1, // stage1(item) → result1
+  stage2, // stage2(result1, item) → result2
+  stage3, // stage3(result2, item) → result3
+)
+</code></pre>
+</div><hr>
+<h2 id="7-classic-patterns-quick-reference">7. Classic Patterns Quick Reference</h2><p>According to the official blog, Dynamic Workflows have several classic patterns, each corresponding to a different context management strategy:</p>
+<h3 id="pattern-overview">Pattern Overview</h3><div class="code-wrapper"><pre><code>┌───────────────────────────────────────────────────────────────┐
+│           Classic Patterns of Dynamic Workflows               │
+├───────────────┬───────────────────────────────────────────────┤
+│               │                                               │
+│  Fan-Out      │  A ──► [Sub1, Sub2, Sub3] ──► Merge           │
+│  Parallel     │  Execute multiple unrelated tasks             │
+│  Distribution │  simultaneously, then aggregate.              │
+│               │  Use Case: Batch file mods, multi-source search│
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Pipeline     │  A ──► B ──► C                                │
+│  Sequential   │  The result of the previous step is the input │
+│  Pipeline     │  for the next.                                │
+│               │  Use Case: Modify Code → Write Tests → Review │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Tournament   │  [Sub1, Sub2, Sub3] ──► Face-off ──► Winner   │
+│               │  Multiple Agents compete on the same task,    │
+│               │  selecting the best outcome.                  │
+│               │  Use Case: Option comparison, naming, design  │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Adversarial  │  A Generates ──► B Adversarially Verifies     │
+│  Verification │  One does the work, the other critiques.      │
+│               │  Use Case: Security review, code review,      │
+│               │  fact-checking.                               │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Loop-Until   │  while (Not Done) { Dispatch Agent to work }  │
+│  Loop Until   │  Unknown number of rounds, runs until stopping│
+│  Complete     │  conditions are met.                          │
+│               │  Use Case: Bug fixing, deep search, root cause│
+│               │                                               │
+└───────────────┴───────────────────────────────────────────────┘
+</code></pre>
+</div><h3 id="mermaid-pattern-overview-diagram">Mermaid Pattern Overview Diagram</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-4">graph TB
+    subgraph fanout["Fan-Out Parallel"]
+        FO_Main["Main"] --> FO_A["A"]
+        FO_Main --> FO_B["B"]
+        FO_Main --> FO_C["C"]
+        FO_A --> FO_Merge["Merge"]
+        FO_B --> FO_Merge
+        FO_C --> FO_Merge
+    end
+
+    subgraph pipeline["Pipeline Sequential"]
+        PL_A["A Modify Code"] --> PL_B["B Write Tests"] --> PL_C["C Review"]
+    end
+
+    subgraph tournament["Tournament"]
+        T_A["Option A"] --> T_J1["Face-off"]
+        T_B["Option B"] --> T_J1
+        T_C["Option C"] --> T_J2["Face-off"]
+        T_J1 --> T_W["🏆 Winner"]
+        T_J2 --> T_W
+    end
+
+    subgraph adversarial["Adversarial"]
+        AV_A["A Generates Option"] --> AV_B["B Verifies/Critiques"]
+        AV_B -->|"Pass"| AV_Done["✅"]
+        AV_B -->|"Reject"| AV_A
+    end</pre></div><h3 id="practical-trigger-methods">Practical Trigger Methods</h3><p>As a Claude Code user, you don&#39;t need to write these patterns manually. Simply describe your requirements in the prompt:</p>
+<div class="code-wrapper"><pre><code class="language-bash"># Trigger parallel modification
+&quot;Use a workflow to rename User to Account&quot;
+
+# Trigger adversarial verification
+&quot;Use a workflow to review this PR, performing adversarial verification on each finding&quot;
+
+# Trigger deep search
+&quot;Use a workflow to search incident reports from the past 6 months and find recurring root causes&quot;
+
+# Trigger tournament
+&quot;Help me name this CLI tool, use a workflow for multi-option competition&quot;
+
+# Universal trigger word
+&quot;ultracode&quot;   # Add this word, and Claude Code will create a workflow
+</code></pre>
+</div><hr>
+<h2 id="8-core-comparison-old-vs-new-architecture">8. Core Comparison: Old vs. New Architecture</h2><h3 id="comparison-table">Comparison Table</h3><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Traditional Subagent Model</th>
+<th>Dynamic Workflow Model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Context Structure</strong></td>
+<td>Vertical Stacking (Snowballing)</td>
+<td>Tree Distribution (Disposable)</td>
+</tr>
+<tr>
+<td><strong>Subagent Return Content</strong></td>
+<td>Full Chat History + Logs</td>
+<td>Only Git Diff / Structured Results</td>
+</tr>
+<tr>
+<td><strong>Trial-and-Error Garbage Logs</strong></td>
+<td>Permanently stuck in the main session</td>
+<td>Deleted from isolation zone after use 🗑️</td>
+</tr>
+<tr>
+<td><strong>Main Model Intelligence</strong></td>
+<td>Decreases as rounds increase</td>
+<td>Consistently maintained at the highest level</td>
+</tr>
+<tr>
+<td><strong>Parallel Capability</strong></td>
+<td>Limited, context cross-contamination</td>
+<td>Natively supported, no interference</td>
+</tr>
+<tr>
+<td><strong>Project Scale Limit</strong></td>
+<td>Blows up at 2-3 files</td>
+<td>Remains stable at 1000 files</td>
+</tr>
+<tr>
+<td><strong>Prevents Laziness</strong></td>
+<td>❌ No guarantee</td>
+<td>✅ Each Subagent has an independent goal</td>
+</tr>
+<tr>
+<td><strong>Prevents Self-preferential Bias</strong></td>
+<td>❌ Verifies itself</td>
+<td>✅ Independent Agent for adversarial verification</td>
+</tr>
+<tr>
+<td><strong>Prevents Goal Drift</strong></td>
+<td>❌ Drifts after context loss</td>
+<td>✅ Each Subagent is task-focused</td>
+</tr>
+</tbody></table>
+<h3 id="context-volume-comparison-same-task">Context Volume Comparison (Same Task)</h3><div class="code-wrapper"><pre><code>Traditional Model Context Changes:
+│
+█ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █  ← Blown up
+│ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │
+│ └─ Subagent 1&#39;s 180 lines of logs ─┘│└─ Subagent 2&#39;s logs ─┘
+│                                     │                        │
+└── User Query ───────────────────────┴────────────────────────┘
+
+Dynamic Workflow Context Changes:
+│
+█ █ █ █ █ █ █ █ ← Consistently stable
+│ │ │ │ │ │ │ │
+│ │ │ └─ Diff 1 (30 lines) ──┘
+│ │ └── Diff 2 (25 lines) ────┘
+│ └── User Query ─────────────┘
+
+Legend: █ = One context token
+</code></pre>
+</div><hr>
+<h2 id="9-ultimate-takeaways">9. Ultimate Takeaways</h2><p>Claude Code&#39;s Dynamic Workflows teach us a profound lesson:</p>
+<blockquote>
+<p><strong>The mark of a truly top-tier AI architecture is not about whose context window can cram in more garbage, but rather who can more elegantly &quot;restrain&quot; and &quot;prune&quot; the context.</strong></p>
+</blockquote>
+<p>By treating Subagents as <strong>&quot;stateless transient threads&quot;</strong>—giving them a clean task, letting them freely trial-and-error in an isolated zone, and having them clean up the scene after finishing, leaving only the code. This art of &quot;letting go&quot; is exactly the necessary path for AI Agents to advance toward enterprise-grade, ultra-large-scale engineering.</p>
+<h3 id="practical-advice-for-claude-code-users">Practical Advice for Claude Code Users</h3><ol>
+<li><strong>Use workflows only for complex tasks</strong>: Simple tasks do not need them, as workflows consume more tokens.</li>
+<li><strong>Trigger with the &quot;ultracode&quot; keyword</strong>: Ensure Claude Code creates a workflow instead of executing directly.</li>
+<li><strong>Combine with <code>/loop</code> for continuous tasks</strong>: Such as continuous monitoring or periodic reviews.</li>
+<li><strong>Combine with <code>/goal</code> to set completion conditions</strong>: Prevent workflows from running infinitely.</li>
+<li><strong>Leverage token budgets</strong>: Specify &quot;use 10k tokens&quot; in the prompt to control consumption.</li>
+</ol>
+<h3 id="further-reading">Further Reading</h3><ul>
+<li>📖 Official Blog: <a href="https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code">A Harness for Every Task: Dynamic Workflows in Claude Code</a></li>
+<li>🛠️ <strong>Save your workflow</strong>: Press <code>s</code> in the workflow menu to save it; files are located at <code>~/.claude/workflows/</code>.</li>
+<li>🔄 <strong>Interruption Recovery</strong>: If a workflow is interrupted (e.g., terminal closed), reopening the session will automatically resume from the breakpoint.</li>
+</ul>
+<hr>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="table-of-contents" data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of Contents</a> </li><li class="toc-item " data-slug="1-the-root-cause-why-does-ai-get-dumber-over-time" data-astro-cid-4sn4zg3r> <a href="#1-the-root-cause-why-does-ai-get-dumber-over-time" data-astro-cid-4sn4zg3r>1. The Root Cause: Why Does AI Get Dumber Over Time?</a> </li><li class="toc-item " data-slug="2-traditional-subagent-model-a-snowballing-context-disaster" data-astro-cid-4sn4zg3r> <a href="#2-traditional-subagent-model-a-snowballing-context-disaster" data-astro-cid-4sn4zg3r>2. Traditional Subagent Model: A Snowballing Context Disaster</a> </li><li class="toc-item h3-nav" data-slug="workflow-of-the-traditional-model" data-astro-cid-4sn4zg3r> <a href="#workflow-of-the-traditional-model" data-astro-cid-4sn4zg3r>Workflow of the Traditional Model</a> </li><li class="toc-item h3-nav" data-slug="mermaid-architecture-diagram" data-astro-cid-4sn4zg3r> <a href="#mermaid-architecture-diagram" data-astro-cid-4sn4zg3r>Mermaid Architecture Diagram</a> </li><li class="toc-item " data-slug="3-dynamic-workflows-a-relay-race-of-stateless-threads" data-astro-cid-4sn4zg3r> <a href="#3-dynamic-workflows-a-relay-race-of-stateless-threads" data-astro-cid-4sn4zg3r>3. Dynamic Workflows: A &quot;Relay Race&quot; of Stateless Threads</a> </li><li class="toc-item h3-nav" data-slug="the-core-three-step-method-fork-drop-fan-in" data-astro-cid-4sn4zg3r> <a href="#the-core-three-step-method-fork-drop-fan-in" data-astro-cid-4sn4zg3r>The Core Three-Step Method: Fork → Drop → Fan-In</a> </li><li class="toc-item h3-nav" data-slug="mermaid-architecture-diagram" data-astro-cid-4sn4zg3r> <a href="#mermaid-architecture-diagram" data-astro-cid-4sn4zg3r>Mermaid Architecture Diagram</a> </li><li class="toc-item " data-slug="4-fan-out-pattern-multi-threading-in-parallel" data-astro-cid-4sn4zg3r> <a href="#4-fan-out-pattern-multi-threading-in-parallel" data-astro-cid-4sn4zg3r>4. Fan-Out Pattern: Multi-Threading in Parallel</a> </li><li class="toc-item h3-nav" data-slug="scenario-modifying-3-unrelated-files-simultaneously" data-astro-cid-4sn4zg3r> <a href="#scenario-modifying-3-unrelated-files-simultaneously" data-astro-cid-4sn4zg3r>Scenario: Modifying 3 unrelated files simultaneously</a> </li><li class="toc-item h3-nav" data-slug="mermaid-fan-out-diagram" data-astro-cid-4sn4zg3r> <a href="#mermaid-fan-out-diagram" data-astro-cid-4sn4zg3r>Mermaid Fan-Out Diagram</a> </li><li class="toc-item " data-slug="5-pipeline-pattern-incremental-relay-race" data-astro-cid-4sn4zg3r> <a href="#5-pipeline-pattern-incremental-relay-race" data-astro-cid-4sn4zg3r>5. Pipeline Pattern: Incremental Relay Race</a> </li><li class="toc-item h3-nav" data-slug="scenario-modify-code-write-tests-code-review" data-astro-cid-4sn4zg3r> <a href="#scenario-modify-code-write-tests-code-review" data-astro-cid-4sn4zg3r>Scenario: Modify Code → Write Tests → Code Review</a> </li><li class="toc-item h3-nav" data-slug="ascii-flowchart" data-astro-cid-4sn4zg3r> <a href="#ascii-flowchart" data-astro-cid-4sn4zg3r>ASCII Flowchart</a> </li><li class="toc-item h3-nav" data-slug="mermaid-pipeline-diagram" data-astro-cid-4sn4zg3r> <a href="#mermaid-pipeline-diagram" data-astro-cid-4sn4zg3r>Mermaid Pipeline Diagram</a> </li><li class="toc-item h3-nav" data-slug="mathematical-formulas-for-context-passing" data-astro-cid-4sn4zg3r> <a href="#mathematical-formulas-for-context-passing" data-astro-cid-4sn4zg3r>Mathematical Formulas for Context Passing</a> </li><li class="toc-item " data-slug="6-practical-code-what-does-a-dynamic-workflow-look-like" data-astro-cid-4sn4zg3r> <a href="#6-practical-code-what-does-a-dynamic-workflow-look-like" data-astro-cid-4sn4zg3r>6. Practical Code: What Does a Dynamic Workflow Look Like?</a> </li><li class="toc-item h3-nav" data-slug="example-workflow-script-for-modifying-multiple-files-in-parallel" data-astro-cid-4sn4zg3r> <a href="#example-workflow-script-for-modifying-multiple-files-in-parallel" data-astro-cid-4sn4zg3r>Example: Workflow Script for Modifying Multiple Files in Parallel</a> </li><li class="toc-item h3-nav" data-slug="key-points-of-context-management-in-the-code" data-astro-cid-4sn4zg3r> <a href="#key-points-of-context-management-in-the-code" data-astro-cid-4sn4zg3r>Key Points of Context Management in the Code</a> </li><li class="toc-item " data-slug="7-classic-patterns-quick-reference" data-astro-cid-4sn4zg3r> <a href="#7-classic-patterns-quick-reference" data-astro-cid-4sn4zg3r>7. Classic Patterns Quick Reference</a> </li><li class="toc-item h3-nav" data-slug="pattern-overview" data-astro-cid-4sn4zg3r> <a href="#pattern-overview" data-astro-cid-4sn4zg3r>Pattern Overview</a> </li><li class="toc-item h3-nav" data-slug="mermaid-pattern-overview-diagram" data-astro-cid-4sn4zg3r> <a href="#mermaid-pattern-overview-diagram" data-astro-cid-4sn4zg3r>Mermaid Pattern Overview Diagram</a> </li><li class="toc-item h3-nav" data-slug="practical-trigger-methods" data-astro-cid-4sn4zg3r> <a href="#practical-trigger-methods" data-astro-cid-4sn4zg3r>Practical Trigger Methods</a> </li><li class="toc-item " data-slug="8-core-comparison-old-vs-new-architecture" data-astro-cid-4sn4zg3r> <a href="#8-core-comparison-old-vs-new-architecture" data-astro-cid-4sn4zg3r>8. Core Comparison: Old vs. New Architecture</a> </li><li class="toc-item h3-nav" data-slug="comparison-table" data-astro-cid-4sn4zg3r> <a href="#comparison-table" data-astro-cid-4sn4zg3r>Comparison Table</a> </li><li class="toc-item h3-nav" data-slug="context-volume-comparison-same-task" data-astro-cid-4sn4zg3r> <a href="#context-volume-comparison-same-task" data-astro-cid-4sn4zg3r>Context Volume Comparison (Same Task)</a> </li><li class="toc-item " data-slug="9-ultimate-takeaways" data-astro-cid-4sn4zg3r> <a href="#9-ultimate-takeaways" data-astro-cid-4sn4zg3r>9. Ultimate Takeaways</a> </li><li class="toc-item h3-nav" data-slug="practical-advice-for-claude-code-users" data-astro-cid-4sn4zg3r> <a href="#practical-advice-for-claude-code-users" data-astro-cid-4sn4zg3r>Practical Advice for Claude Code Users</a> </li><li class="toc-item h3-nav" data-slug="further-reading" data-astro-cid-4sn4zg3r> <a href="#further-reading" data-astro-cid-4sn4zg3r>Further Reading</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/moneyprinterv2-guide-gemini-api-youtube-shorts" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-a18c6816.jpg" alt="MoneyPrinterV2 Guide: Auto-Generating YouTube Shorts with Gemini API" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/moneyprinterv2-guide-gemini-api-youtube-shorts" data-astro-cid-4sn4zg3r>MoneyPrinterV2 Guide: Auto-Generating YouTube Shorts with Gemini API</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A comprehensive guide on using MoneyPrinterV2 with Gemini API to automate YouTube Shorts creation. It covers architecture, configuration, core code modifications, and dependency bug fixes for an AI video pipeline.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 3, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-4b638a70.jpg" alt="Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp" data-astro-cid-4sn4zg3r>Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A comprehensive guide to Composio, an integration layer for AI agents. Learn to set up MCP servers, connect 500+ apps, and implement social media marketing automation on platforms like Reddit and Facebook.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 2, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

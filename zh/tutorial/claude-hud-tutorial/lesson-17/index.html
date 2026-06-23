@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 17 期：Q&amp;A — Cache 机制与 Token 优化 — 📊 Claude HUD 完全教程：18 章从入门到精通 — AgentUpdate.ai</title><meta name="description" content="深入解答 Prompt Cache 的工作原理、5 分钟倒计时的起算点、缓存命中省多少钱、以及保持缓存不过期的技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/claude-hud-tutorial/lesson-17/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-hud-tutorial/lesson-17/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-hud-tutorial/lesson-17/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-hud-tutorial/lesson-17/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 17 期：Q&amp;A — Cache 机制与 Token 优化 — 📊 Claude HUD 完全教程：18 章从入门到精通 — AgentUpdate.ai"><meta property="og:description" content="深入解答 Prompt Cache 的工作原理、5 分钟倒计时的起算点、缓存命中省多少钱、以及保持缓存不过期的技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/claude-hud-tutorial/lesson-17/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 17 期：Q&amp;A — Cache 机制与 Token 优化 — 📊 Claude HUD 完全教程：18 章从入门到精通 — AgentUpdate.ai"><meta name="twitter:description" content="深入解答 Prompt Cache 的工作原理、5 分钟倒计时的起算点、缓存命中省多少钱、以及保持缓存不过期的技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"第 17 期：Q&A — Cache 机制与 Token 优化 — 📊 Claude HUD 完全教程：18 章从入门到精通 — AgentUpdate.ai","description":"深入解答 Prompt Cache 的工作原理、5 分钟倒计时的起算点、缓存命中省多少钱、以及保持缓存不过期的技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。","inLanguage":"zh-CN","url":"https://www.agentupdate.ai/zh/tutorial/claude-hud-tutorial/lesson-17/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/zh/tutorial/claude-hud-tutorial/lesson-17/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.DHQ-IJjR.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-hud-tutorial/lesson-17/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-hud-tutorial/lesson-17/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-p7qzptk4> <div class="container dual-layout-container" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-p7qzptk4> <div class="sidebar-box" data-astro-cid-p7qzptk4> <span class="catalog-header-tag" data-astro-cid-p7qzptk4>课程大纲 // CURRICULUM</span> <a href="/zh/tutorial/claude-hud-tutorial" class="series-title-link" data-astro-cid-p7qzptk4> 📊 CLAUDE HUD 完全教程：18 章从入门到精通 </a> <ul class="nav-lesson-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>01 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 1 期：什么是 Claude HUD</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>02 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 2 期：安装与版本说明</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>03 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 3 期：默认显示 — 你看到什么</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>04 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 4 期：配置与预设</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>05 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 5 期：上下文窗口深度解析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>06 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 6 期：令牌（Tokens）详解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>07 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 7 期：用量限制（Usage Limits）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>08 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 8 期：Git 状态与工具活动</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>09 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 9 期：高级功能</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>10 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 10 期：最佳实践与常见问题</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>11 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 11 期：HUD 数据来源深度解析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>12 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 12 期：排错实战 — Token 明细不显示</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>13 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 13 期：Session 与 Session History</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>14 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 14 期：Memory 系统</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>15 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 15 期：/compact 与 /clear 命令</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>16 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 16 期：Q&amp;A — Session、上下文、Token 基础</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-17" class="lesson-nav-link active" data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>17 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 17 期：Q&amp;A — Cache 机制与 Token 优化</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>18 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 18 期：Q&amp;A — HUD 排错、Memory 与高级话题</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/claude-hud-tutorial" data-astro-cid-ilhxcym7>📊 Claude HUD 完全教程：18 章从入门到精通</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 17 期：Q&amp;A — Cache 机制与 Token 优化</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial"},{"@type":"ListItem","position":3,"name":"📊 Claude HUD 完全教程：18 章从入门到精通","item":"https://www.agentupdate.ai/zh/tutorial/claude-hud-tutorial"},{"@type":"ListItem","position":4,"name":"第 17 期：Q&A — Cache 机制与 Token 优化"}]}</script> <header class="lesson-details-header" data-astro-cid-p7qzptk4> <h1 class="lesson-display-title" data-astro-cid-p7qzptk4>第 17 期：Q&amp;A — Cache 机制与 Token 优化</h1> <div class="lesson-meta-row" data-astro-cid-p7qzptk4>  <span class="meta-item" data-astro-cid-p7qzptk4>4 分钟阅读</span> <span class="meta-separator" data-astro-cid-p7qzptk4>|</span>  <span class="meta-item" data-astro-cid-p7qzptk4>更新于：2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) --> <div class="direct-summary-box" data-astro-cid-p7qzptk4> <div class="summary-box-title" data-astro-cid-p7qzptk4>核心要点总结 // DIRECT SUMMARY</div> <p class="summary-box-text" data-astro-cid-p7qzptk4>深入解答 Prompt Cache 的工作原理、5 分钟倒计时的起算点、缓存命中省多少钱、以及保持缓存不过期的技巧。</p> </div> <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-p7qzptk4><blockquote>
+<p><strong>本期场景</strong>：Cache 是省钱的核心。这 7 个问题帮你彻底搞懂缓存机制。</p>
+</blockquote>
+<hr>
+<h2>Q8：Prompt Cache 跟浏览器缓存一样吗？</h2>
+<p>不一样。浏览器缓存存的是网页资源。Prompt Cache 存的是 <strong>API 请求的前缀匹配结果</strong>。</p>
+<p>原理：如果连续两次 API 请求的<strong>开头部分</strong>完全一样，重复部分直接从缓存读取。省 ~90% 输入费用。</p>
+<p>关键限制：缓存要求<strong>从请求开头开始的连续前缀</strong>完全一致。中间有改动，从改动点开始全部失效。</p>
+<hr>
+<h2>Q9：缓存 5 分钟倒计时从什么时候开始算？</h2>
+<p>从<strong>最近一次 LLM 返回 response 的时间</strong>开始算。即 <code>lastAssistantResponseAt</code>。</p>
+<p>不是你发消息的时间，是 AI 回复完成的那个时间点。5 分钟内再发消息 → cache 命中 → 省 90% 输入费用。</p>
+<hr>
+<h2>Q10：assistant 响应就是 LLM 的 response 吗？</h2>
+<p>对。"assistant" 是 API 消息格式中的角色名：</p>
+<pre><code>[
+  { "role": "user", "content": "你好" },          ← 你的消息
+  { "role": "assistant", "content": "你好！" }    ← LLM 的回复
+]
+</code></pre>
+<hr>
+<h2>Q11：缓存命中省多少钱？</h2>
+<p>以 Opus 模型为例，输入 100K tokens，其中 80K 缓存命中：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>计算</th>
+<th>费用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无缓存</td>
+<td>100K × $3/MTok</td>
+<td>$0.30</td>
+</tr>
+<tr>
+<td>80K 缓存命中</td>
+<td>80K × $0.30/MTok + 20K × $3/MTok</td>
+<td><strong>$0.084</strong></td>
+</tr>
+</tbody></table>
+<p>省了 72%。一个长会话（20 轮），缓存好 vs 缓存差，费用差 3-5 倍。</p>
+<hr>
+<h2>Q12：<code>/clear</code> 后缓存还在吗？</h2>
+<p>不在。<code>/clear</code> 清空所有对话历史，缓存前缀全部变化，无法命中旧缓存。</p>
+<p>第一轮最贵：固定部分全部重新处理。第二轮开始缓存命中恢复正常。</p>
+<hr>
+<h2>Q13：怎么保持缓存不过期？</h2>
+<p>最简单：<strong>在缓存快过期时发一条消息</strong>。任何消息都行。LLM 回复后 5 分钟 TTL 重置。</p>
+<pre><code>Cache TTL: 4m 12s    ← 不急
+Cache TTL: 0m 30s    ← 快过期了！发条消息续命
+Cache TTL: -expired  ← 过期了，下次要重新处理
+</code></pre>
+<hr>
+<h2>Q14：为什么缓存命中率突然下降？</h2>
+<p>三种原因：</p>
+<ol>
+<li><strong>自动压缩触发</strong>（上下文 &gt; 95%）— 前缀变化，缓存失效</li>
+<li><strong><code>/compact</code> 执行</strong> — 同上</li>
+<li><strong>TTL 过期</strong> — 5 分钟没新请求</li>
+</ol>
+<p>前两种是"结构性失效"，无法避免。第三种可以主动续命。</p>
+<hr>
+<blockquote>
+<p><strong>下期预告</strong>：第 18 期最终 Q&amp;A——HUD 排错、Memory 与高级话题。</p>
+</blockquote>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-p7qzptk4> <div class="pag-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-16" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>← 上一课时</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 16 期：Q&amp;A — Session、上下文、Token 基础</span> </a> </div> <div class="pag-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-hud-tutorial/lesson-18" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>下一课时 →</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 18 期：Q&amp;A — HUD 排错、Memory 与高级话题</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-p7qzptk4></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

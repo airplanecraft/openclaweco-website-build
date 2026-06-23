@@ -1,0 +1,18 @@
+# ==========================================
+# AgentUpdate.ai Robots.txt (Open Mode)
+# ==========================================
+# Policy: Allow all crawlers. Cloudflare WAF handles abuse protection.
+# Last updated: 2026-05-15
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /pagefind/
+
+# Resources
+# LLM-friendly content: /llms.txt
+Sitemap: https://www.agentupdate.ai/sitemap.xml
+# RSS: https://www.agentupdate.ai/rss.xml
+# RSS: https://www.agentupdate.ai/zh/rss.xml
+

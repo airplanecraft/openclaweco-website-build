@@ -1,0 +1,970 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP — AgentUpdate.ai</title><meta name="description" content="A comprehensive guide to Composio, an integration layer for AI agents. Learn to set up MCP servers, connect 500+ apps, and implement social media marketing..."><meta name="keywords" content="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南, Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP, Composio, AI Agent, MCP, 自动化, 开发者教程, 营销自动化"><link rel="canonical" href="https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP — AgentUpdate.ai"><meta property="og:description" content="A comprehensive guide to Composio, an integration layer for AI agents. Learn to set up MCP servers, connect 500+ apps, and implement social media marketing..."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4b638a70.jpg"><meta property="og:url" content="https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP — AgentUpdate.ai"><meta name="twitter:description" content="A comprehensive guide to Composio, an integration layer for AI agents. Learn to set up MCP servers, connect 500+ apps, and implement social media marketing..."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4b638a70.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP","description":"A comprehensive guide to Composio, an integration layer for AI agents. Learn to set up MCP servers, connect 500+ apps, and implement social media marketing automation on platforms like Reddit and Facebook.","image":"/images/blog/ai-cover-4b638a70.jpg","datePublished":"2026-06-01T23:44:28.057Z","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>June 2, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By Eric w</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <span class="tag" data-astro-cid-4sn4zg3r>#Composio</span><a href="/tags/ai-agent" class="tag" data-astro-cid-4sn4zg3r>#AI Agent</a><a href="/tags/mcp" class="tag" data-astro-cid-4sn4zg3r>#MCP</a><span class="tag" data-astro-cid-4sn4zg3r>#自动化</span><span class="tag" data-astro-cid-4sn4zg3r>#开发者教程</span><span class="tag" data-astro-cid-4sn4zg3r>#营销自动化</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/ai-cover-4b638a70.jpg" alt="Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of Contents</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#1-what-is-composio" data-astro-cid-4sn4zg3r>1. What is Composio?</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#architecture-overview" data-astro-cid-4sn4zg3r>Architecture Overview</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#2-competitor-comparison-composio-vs-zapier-vs-make" data-astro-cid-4sn4zg3r>2. Competitor Comparison: Composio vs Zapier vs Make</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#3-pricing-plans" data-astro-cid-4sn4zg3r>3. Pricing Plans</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#4-registering-a-composio-account" data-astro-cid-4sn4zg3r>4. Registering a Composio Account</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#41-overall-workflow" data-astro-cid-4sn4zg3r>4.1 Overall Workflow</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#42-registration-steps" data-astro-cid-4sn4zg3r>4.2 Registration Steps</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#5-connecting-apps-on-the-composio-website" data-astro-cid-4sn4zg3r>5. Connecting Apps on the Composio Website</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#51-detailed-connect-workflow" data-astro-cid-4sn4zg3r>5.1 Detailed Connect Workflow</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#52-connect-reddit" data-astro-cid-4sn4zg3r>5.2 Connect Reddit</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#53-connect-facebook" data-astro-cid-4sn4zg3r>5.3 Connect Facebook</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#54-connect-instagram" data-astro-cid-4sn4zg3r>5.4 Connect Instagram</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#55-connect-twitterx" data-astro-cid-4sn4zg3r>5.5 Connect Twitter/X</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#56-connect-tiktok" data-astro-cid-4sn4zg3r>5.6 Connect TikTok</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#57-connect-gmail-google-sheets-and-other-google-apps" data-astro-cid-4sn4zg3r>5.7 Connect Gmail / Google Sheets and other Google Apps</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#58-overview-of-all-connected-apps" data-astro-cid-4sn4zg3r>5.8 Overview of All Connected Apps</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#6-installing-the-mcp-server" data-astro-cid-4sn4zg3r>6. Installing the MCP Server</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#what-is-mcp" data-astro-cid-4sn4zg3r>What is MCP?</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#installation-steps" data-astro-cid-4sn4zg3r>Installation Steps</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#7-practical-exercise-reddit-search-and-posting" data-astro-cid-4sn4zg3r>7. Practical Exercise: Reddit Search and Posting</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#71-searching-for-posts" data-astro-cid-4sn4zg3r>7.1 Searching for Posts</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#72-posting" data-astro-cid-4sn4zg3r>7.2 Posting</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#73-commenting-on-a-post" data-astro-cid-4sn4zg3r>7.3 Commenting on a Post</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#8-practical-exercise-facebook-search-and-posting" data-astro-cid-4sn4zg3r>8. Practical Exercise: Facebook Search and Posting</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#81-searching-facebook-content" data-astro-cid-4sn4zg3r>8.1 Searching Facebook Content</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#82-posting-on-a-facebook-page" data-astro-cid-4sn4zg3r>8.2 Posting on a Facebook Page</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#83-facebook-vs-reddit-capability-comparison" data-astro-cid-4sn4zg3r>8.3 Facebook vs Reddit Capability Comparison</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#9-the-killer-feature-multi-platform-parallel-querying" data-astro-cid-4sn4zg3r>9. The Killer Feature: Multi-Platform Parallel Querying</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#scenario-you-want-to-know-the-popularity-of-discussions-about-china-travel-across-the-entire-web" data-astro-cid-4sn4zg3r>Scenario: You want to know the popularity of discussions about &quot;China travel&quot; across the entire web</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#10-practical-exercise-marketing-automation" data-astro-cid-4sn4zg3r>10. Practical Exercise: Marketing Automation</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#scenario-you-want-to-promote-your-travel-product-in-china-travel-communities" data-astro-cid-4sn4zg3r>Scenario: You want to promote your travel product in China travel communities</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#101-multi-platform-monitoring" data-astro-cid-4sn4zg3r>10.1 Multi-Platform Monitoring</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#102-identify-target-users" data-astro-cid-4sn4zg3r>10.2 Identify Target Users</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#103-precision-engagement-commenting" data-astro-cid-4sn4zg3r>10.3 Precision Engagement (Commenting)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#104-automated-publishing-example" data-astro-cid-4sn4zg3r>10.4 Automated Publishing Example</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#11-common-pitfalls-and-precautions" data-astro-cid-4sn4zg3r>11. Common Pitfalls and Precautions</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-pitfalls-you-must-know" data-astro-cid-4sn4zg3r>🚨 Pitfalls You Must Know</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-efficiency-tips" data-astro-cid-4sn4zg3r>⚡ Efficiency Tips</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#12-conclusion" data-astro-cid-4sn4zg3r>12. Conclusion</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#composios-core-advantages" data-astro-cid-4sn4zg3r>Composio&#39;s Core Advantages</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#quick-start-checklist" data-astro-cid-4sn4zg3r>Quick Start Checklist</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><blockquote>
+<p>A Practical Composio MCP Tutorial for Developers — From Installation to Social Media Marketing Automation</p>
+</blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2><ol>
+<li><a href="#1-what-is-composio">What is Composio?</a></li>
+<li><a href="#2-competitor-comparison-composio-vs-zapier-vs-make">Competitor Comparison: Composio vs Zapier vs Make</a></li>
+<li><a href="#3-pricing-plans">Pricing Plans</a></li>
+<li><a href="#4-registering-a-composio-account">Registering a Composio Account</a></li>
+<li><a href="#5-connecting-apps-on-the-composio-website">Connecting Apps on the Composio Website</a></li>
+<li><a href="#6-installing-the-mcp-server">Installing the MCP Server</a></li>
+<li><a href="#7-practical-exercise-reddit-search-and-posting">Practical Exercise: Reddit Search and Posting</a></li>
+<li><a href="#8-practical-exercise-facebook-search-and-posting">Practical Exercise: Facebook Search and Posting</a></li>
+<li><a href="#9-the-killer-feature-multi-platform-parallel-querying">The Killer Feature: Multi-Platform Parallel Querying</a></li>
+<li><a href="#10-practical-exercise-marketing-automation">Practical Exercise: Marketing Automation</a></li>
+<li><a href="#11-common-pitfalls-and-precautions">Common Pitfalls and Precautions</a></li>
+<li><a href="#12-conclusion">Conclusion</a></li>
+</ol>
+<hr>
+<h2 id="1-what-is-composio">1. What is Composio?</h2><p><strong>Composio</strong> is an application integration platform designed specifically for AI Agents. It provides a unified API/MCP interface that allows your AI assistants (Claude, ChatGPT, Cursor, etc.) to directly operate <strong>500+ third-party applications</strong> — including Reddit, Facebook, Twitter, Instagram, TikTok, Gmail, Google Sheets, GitHub, and more.</p>
+<p><strong>Core Value:</strong> You do not need to write API integration code for each platform yourself. Composio handles OAuth authentication, API invocations, and data format conversions for you. You only need to connect via MCP (Model Context Protocol) to enable the AI to operate these applications directly.</p>
+<h3 id="architecture-overview">Architecture Overview</h3><p>mermaid
+graph LR
+    A[Your AI Assistant<br/>Claude / Cursor / VS Code] --&gt;|MCP Protocol| B[Composio MCP Server]
+    B --&gt; C[Reddit]
+    B --&gt; D[Facebook]
+    B --&gt; E[Twitter/X]
+    B --&gt; F[Instagram]
+    B --&gt; G[TikTok]
+    B --&gt; H[Gmail]
+    B --&gt; I[500+ More Apps]</p>
+<div class="code-wrapper"><pre><code>style A fill:#4A90D9,color:#fff
+style B fill:#FF6B35,color:#fff
+</code></pre>
+</div><p><strong>In a word:</strong> Composio is the &quot;universal remote control&quot; for AI Agents.</p>
+<hr>
+<h2 id="2-competitor-comparison-composio-vs-zapier-vs-make">2. Competitor Comparison: Composio vs Zapier vs Make</h2><blockquote>
+<p>⚠️ <strong>Key Difference:</strong> Zapier and Make are &quot;no-code automation tools&quot; aimed at non-technical users. Composio is an &quot;AI Agent integration layer&quot; aimed at developers.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th><strong>Composio</strong></th>
+<th><strong>Zapier</strong></th>
+<th><strong>Make (Integromat)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Positioning</strong></td>
+<td>AI Agent Integration Platform</td>
+<td>No-code Automation</td>
+<td>Visual Automation</td>
+</tr>
+<tr>
+<td><strong>Target Audience</strong></td>
+<td>Developers / AI Engineers</td>
+<td>Non-technical Users</td>
+<td>Semi-technical Users</td>
+</tr>
+<tr>
+<td><strong>Integration Method</strong></td>
+<td>MCP / SDK / API</td>
+<td>Web UI Drag-and-Drop</td>
+<td>Web UI Visual Workflows</td>
+</tr>
+<tr>
+<td><strong>AI Integration</strong></td>
+<td>✅ Native Support (Direct invocation by Claude/GPT)</td>
+<td>❌ Requires extra configuration</td>
+<td>❌ Requires extra configuration</td>
+</tr>
+<tr>
+<td><strong>Supported Apps</strong></td>
+<td>500+</td>
+<td>7000+</td>
+<td>1500+</td>
+</tr>
+<tr>
+<td><strong>OAuth Management</strong></td>
+<td>✅ Composio manages tokens for you</td>
+<td>✅ Built-in</td>
+<td>✅ Built-in</td>
+</tr>
+<tr>
+<td><strong>Batch Parallel Invocation</strong></td>
+<td>✅ Native Support (Call multiple platforms in one request)</td>
+<td>❌ Serial execution</td>
+<td>⚠️ Requires Iterator module</td>
+</tr>
+<tr>
+<td><strong>Starting Price</strong></td>
+<td>Free 20K calls/month</td>
+<td>$19.99/month</td>
+<td>$10.59/month</td>
+</tr>
+<tr>
+<td><strong>Code Control</strong></td>
+<td>✅ Full code control</td>
+<td>❌ GUI only</td>
+<td>⚠️ Limited custom functions</td>
+</tr>
+<tr>
+<td><strong>MCP Support</strong></td>
+<td>✅ Native</td>
+<td>❌ None</td>
+<td>❌ None</td>
+</tr>
+</tbody></table>
+<p><strong>When to choose Composio:</strong></p>
+<ul>
+<li>You are developing with Claude Code / Cursor / AI Agents.</li>
+<li>You need the AI to directly operate third-party applications.</li>
+<li>You need to <strong>query multiple platforms at once</strong> and aggregate the results.</li>
+<li>You are a developer who prefers to control everything with code.</li>
+</ul>
+<p><strong>When to choose Zapier/Make:</strong></p>
+<ul>
+<li>You do not know how to code and just want simple if-this-then-that workflows.</li>
+<li>You need to connect niche applications (Zapier has the broadest ecosystem).</li>
+<li>Your workflow is fixed and does not require AI participation.</li>
+</ul>
+<hr>
+<h2 id="3-pricing-plans">3. Pricing Plans</h2><p>Composio adopts a pay-per-call billing model, which is highly developer-friendly:</p>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>Monthly Fee</th>
+<th>Monthly Calls</th>
+<th>Overage Rate</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Free</strong></td>
+<td><strong>$0</strong></td>
+<td>20,000 calls</td>
+<td>—</td>
+<td>Community Support</td>
+</tr>
+<tr>
+<td><strong>Starter</strong></td>
+<td><strong>$29/mo</strong></td>
+<td>200,000 calls</td>
+<td>$0.299/1K calls</td>
+<td>Email Support</td>
+</tr>
+<tr>
+<td><strong>Pro</strong></td>
+<td><strong>$229/mo</strong></td>
+<td>2,000,000 calls</td>
+<td>$0.249/1K calls</td>
+<td>Slack Support</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>Custom</td>
+<td>Custom</td>
+<td>Custom</td>
+<td>Dedicated SLA + SOC-2</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 <strong>Advice for developers:</strong> The Free plan&#39;s 20K calls/month is more than enough for personal projects and testing. A typical Reddit search consumes about 1-2 calls, so 20K calls can accomplish a lot.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Note:</strong> Every tool invocation (search, post, fetch comments, etc.) counts as one call. During multi-platform parallel querying, each platform is counted as a separate call.</p>
+</blockquote>
+<hr>
+<h2 id="4-registering-a-composio-account">4. Registering a Composio Account</h2><blockquote>
+<p>⚠️ <strong>This is the first step and cannot be skipped!</strong> You must have a Composio account first to Connect apps, otherwise the MCP will not work properly.</p>
+</blockquote>
+<h3 id="41-overall-workflow">4.1 Overall Workflow</h3><p>mermaid
+flowchart LR
+    A[1️⃣ Register for Composio] --&gt; B[2️⃣ Connect Apps on the Web]
+    B --&gt; C[3️⃣ Install MCP Server]
+    C --&gt; D[4️⃣ Use in Claude Code]</p>
+<div class="code-wrapper"><pre><code>style A fill:#E74C3C,color:#fff
+style B fill:#E67E22,color:#fff
+style C fill:#3498DB,color:#fff
+style D fill:#2ECC71,color:#fff
+</code></pre>
+</div><p><strong>Why register and Connect first?</strong> The MCP Server is merely a &quot;pipeline&quot;; it accesses third-party application APIs through your Composio account. If you haven&#39;t connected Reddit on the Composio website, the MCP will throw an error when calling the Reddit API: <code>No active connection for toolkit: reddit</code>.</p>
+<h3 id="42-registration-steps">4.2 Registration Steps</h3><ol>
+<li><p><strong>Open the Composio official website:</strong> <a href="https://composio.dev">https://composio.dev</a></p>
+</li>
+<li><p><strong>Click &quot;Get Started&quot; or &quot;Sign Up&quot;</strong></p>
+</li>
+<li><p><strong>Choose a registration method:</strong></p>
+<ul>
+<li>Log in with GitHub (Recommended, preferred for developers)</li>
+<li>Log in with Google</li>
+<li>Register with Email + Password</li>
+</ul>
+</li>
+<li><p><strong>After completing registration, enter the Composio Dashboard</strong></p>
+</li>
+</ol>
+<blockquote>
+<p>💡 <strong>No credit card required for the Free plan.</strong> Ready to use upon registration, with 20K calls/month for free.</p>
+</blockquote>
+<hr>
+<h2 id="5-connecting-apps-on-the-composio-website">5. Connecting Apps on the Composio Website</h2><blockquote>
+<p>🔥 <strong>This is the most critical step!</strong> All third-party application OAuth authorizations are completed here. The MCP only &quot;reads&quot; these authorizations and cannot replace this step.</p>
+</blockquote>
+<h3 id="51-detailed-connect-workflow">5.1 Detailed Connect Workflow</h3><p>mermaid
+flowchart TD
+    A[Log in to Composio Dashboard] --&gt; B[Go to Integrations Page]
+    B --&gt; C[Search for the App to Connect]
+    C --&gt; D[Click Connect]
+    D --&gt; E[Redirect to Third-Party OAuth Page]
+    E --&gt; F[Log in and Authorize]
+    F --&gt; G[Auto-redirect back to Composio]
+    G --&gt; H{Status shows Connected?}
+    H --&gt;|Yes| I[✅ Ready for MCP Invocation]
+    H --&gt;|No| J[❌ Retry or Check Account Permissions]
+    J --&gt; D</p>
+<div class="code-wrapper"><pre><code>style A fill:#4A90D9,color:#fff
+style I fill:#2ECC71,color:#fff
+style J fill:#E74C3C,color:#fff
+</code></pre>
+</div><h3 id="52-connect-reddit">5.2 Connect Reddit</h3><p><strong>Steps:</strong></p>
+<ol>
+<li>Log in to the <a href="https://app.composio.dev">Composio Dashboard</a></li>
+<li>Find <strong>Integrations</strong> or <strong>Connected Apps</strong> in the left menu</li>
+<li>Search for <strong>Reddit</strong> and click to enter</li>
+<li>Click the <strong>Connect</strong> button</li>
+<li>The browser will redirect to Reddit&#39;s OAuth authorization page</li>
+<li><strong>Log in to your Reddit account</strong> → Click <strong>Allow</strong></li>
+<li>Auto-redirect back to Composio, and the status will change to <strong>Connected ✅</strong></li>
+</ol>
+<p><strong>What you can do after Reddit authorization:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Tool Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Search Posts</td>
+<td><code>REDDIT_SEARCH_ACROSS_SUBREDDITS</code></td>
+<td>Site-wide search</td>
+</tr>
+<tr>
+<td>Get Hot Posts</td>
+<td><code>REDDIT_GET_R_TOP</code></td>
+<td>Hot posts in a specific Subreddit</td>
+</tr>
+<tr>
+<td>Create Post</td>
+<td><code>REDDIT_CREATE_REDDIT_POST</code></td>
+<td>Post text/link</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td><code>REDDIT_POST_REDDIT_COMMENT</code></td>
+<td>Reply to a post or comment</td>
+</tr>
+<tr>
+<td>View Comments</td>
+<td><code>REDDIT_RETRIEVE_POST_COMMENTS</code></td>
+<td>Get all comments for a post</td>
+</tr>
+<tr>
+<td>View Rules</td>
+<td><code>REDDIT_GET_SUBREDDIT_RULES</code></td>
+<td>Must-check before posting</td>
+</tr>
+</tbody></table>
+<h3 id="53-connect-facebook">5.3 Connect Facebook</h3><p><strong>Steps:</strong></p>
+<ol>
+<li>Search for <strong>Facebook</strong> in the Composio Dashboard</li>
+<li>Click <strong>Connect</strong></li>
+<li>Redirect to the Facebook OAuth page</li>
+<li><strong>Log in to your Facebook account</strong> → Select the <strong>Facebook Page</strong> you want to link → Click <strong>Continue</strong></li>
+<li>Authorize Composio to manage your Page</li>
+<li>Auto-redirect back to Composio, and the status will change to <strong>Connected ✅</strong></li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Key Facebook Precautions:</strong></p>
+<ul>
+<li>Composio&#39;s Facebook integration binds to a <strong>Facebook Page</strong>, not a personal profile.</li>
+<li>If you don&#39;t have a Page, you need to create one on Facebook first.</li>
+<li>Group posts currently <strong>do not support API posting/commenting</strong>; content can only be fetched indirectly via web search.</li>
+<li>Ensure all permissions are checked during authorization (<code>pages_manage_posts</code>, <code>pages_read_engagement</code>, etc.).</li>
+</ul>
+</blockquote>
+<h3 id="54-connect-instagram">5.4 Connect Instagram</h3><p><strong>Steps:</strong></p>
+<ol>
+<li>Search for <strong>Instagram</strong> in the Composio Dashboard</li>
+<li>Click <strong>Connect</strong></li>
+<li>Redirect to the Meta (Facebook) OAuth page (Instagram uses Facebook authentication)</li>
+<li><strong>Select the linked Facebook Page</strong> → Authorize the Instagram Professional account</li>
+<li>Auto-redirect back to Composio, and the status will change to <strong>Connected ✅</strong></li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Instagram Prerequisites:</strong></p>
+<ul>
+<li>Your Instagram must be a <strong>Professional Account</strong> (Business or Creator).</li>
+<li>The Instagram account must be <strong>linked to a Facebook Page</strong>.</li>
+<li>Standard personal accounts cannot use the API.</li>
+</ul>
+</blockquote>
+<p><strong>How to upgrade a personal Instagram to Professional:</strong></p>
+<ol>
+<li>Open the Instagram App → Settings → Account → Switch to Professional Account</li>
+<li>Select Creator or Business</li>
+<li>Link your Facebook Page</li>
+</ol>
+<h3 id="55-connect-twitterx">5.5 Connect Twitter/X</h3><p><strong>Steps:</strong></p>
+<ol>
+<li>Search for <strong>Twitter</strong> in the Composio Dashboard</li>
+<li>Click <strong>Connect</strong></li>
+<li>Redirect to the X (Twitter) OAuth page</li>
+<li><strong>Log in to your Twitter account</strong> → Click <strong>Authorize App</strong></li>
+<li>Auto-redirect back to Composio, and the status will change to <strong>Connected ✅</strong></li>
+</ol>
+<h3 id="56-connect-tiktok">5.6 Connect TikTok</h3><p><strong>Steps:</strong></p>
+<ol>
+<li>Search for <strong>TikTok</strong> in the Composio Dashboard</li>
+<li>Click <strong>Connect</strong></li>
+<li>Redirect to the TikTok OAuth page</li>
+<li><strong>Log in to your TikTok account</strong> → Authorize</li>
+<li>Auto-redirect back to Composio, and the status will change to <strong>Connected ✅</strong></li>
+</ol>
+<h3 id="57-connect-gmail-google-sheets-and-other-google-apps">5.7 Connect Gmail / Google Sheets and other Google Apps</h3><p>Google ecosystem apps share a single Google OAuth:</p>
+<ol>
+<li>Search for <strong>Gmail</strong> or <strong>Google Sheets</strong>, etc.</li>
+<li>Click <strong>Connect</strong></li>
+<li>Redirect to Google OAuth → Select Google account → Authorize</li>
+<li>One authorization works for all Google apps ✅</li>
+</ol>
+<h3 id="58-overview-of-all-connected-apps">5.8 Overview of All Connected Apps</h3><p>After completing the Connect process, you can see all connected apps on the Integrations page of the Composio Dashboard:</p>
+<div class="code-wrapper"><pre><code>✅ Reddit       — ericwhk1205       — Connected
+✅ Facebook     — Wang Jianping     — Connected
+⬜ Instagram   — Not Connected
+⬜ Twitter/X   — Not Connected
+⬜ TikTok      — Not Connected
+✅ Gmail        — eric@gmail.com    — Connected
+</code></pre>
+</div><blockquote>
+<p>💡 <strong>Multi-account Support:</strong> You can connect multiple accounts for the same app. For example, if you connect both a personal Page and a company Page on Facebook, you can specify which one to use via the <code>account</code> parameter during invocation.</p>
+</blockquote>
+<blockquote>
+<p>💡 <strong>Alternative Connect Method (via MCP conversation):</strong> If you haven&#39;t pre-connected on the website, Composio will also pop up an authorization link when you request to operate a platform in a Claude Code conversation. However, it is <strong>highly recommended to Connect all apps on the website first</strong> for a smoother user experience.</p>
+</blockquote>
+<hr>
+<h2 id="6-installing-the-mcp-server">6. Installing the MCP Server</h2><blockquote>
+<p>Prerequisite: You have completed <a href="#4-registering-a-composio-account">Step 4: Registering a Composio Account</a> and <a href="#5-connecting-apps-on-the-composio-website">Step 5: Connecting Apps</a>.</p>
+</blockquote>
+<h3 id="what-is-mcp">What is MCP?</h3><p>MCP (Model Context Protocol) is a standard protocol proposed by Anthropic that allows AI assistants to call external tools through a unified interface. You can think of it as the &quot;USB port&quot; of the AI world — a standard that connects everything.</p>
+<h3 id="installation-steps">Installation Steps</h3><p><strong>Done in one line of command:</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">claude mcp add --scope user --transport http composio https://connect.composio.dev/mcp
+</code></pre>
+</div><p><strong>Parameter Description:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--scope user</code></td>
+<td>Takes effect globally (available for all projects)</td>
+</tr>
+<tr>
+<td><code>--transport http</code></td>
+<td>Uses HTTP transport (SSE protocol)</td>
+</tr>
+<tr>
+<td><code>composio</code></td>
+<td>MCP server name (customizable)</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>Composio&#39;s MCP endpoint</td>
+</tr>
+</tbody></table>
+<p><strong>Verify Installation:</strong></p>
+<p>Type <code>/mcp</code> in Claude Code, and you should see composio appear in the installed list.</p>
+<p>mermaid
+sequenceDiagram
+    participant User as Your Terminal
+    participant Claude as Claude Code
+    participant MCP as Composio MCP Server
+    participant Apps as Connected Apps</p>
+<div class="code-wrapper"><pre><code>User-&gt;&gt;Claude: claude mcp add composio ...
+Claude-&gt;&gt;MCP: Establish SSE Connection
+MCP--&gt;&gt;Claude: Connection Successful ✅
+
+User-&gt;&gt;Claude: &quot;Help me search Reddit for China travel posts&quot;
+Claude-&gt;&gt;MCP: Invoke REDDIT_SEARCH
+MCP-&gt;&gt;Apps: Call API with your authorized Reddit Token
+Apps--&gt;&gt;MCP: Return Post Data
+MCP--&gt;&gt;Claude: Format Results
+Claude--&gt;&gt;User: Display Search Results
+</code></pre>
+</div><blockquote>
+<p>⚠️ <strong>Important Notice:</strong></p>
+<ul>
+<li>You need to <strong>restart Claude Code</strong> after installation for it to take effect.</li>
+<li>If the connection fails, check if your network requires a proxy.</li>
+<li>MCP will not handle OAuth authorization for you — you must Connect the apps on the website or in the conversation first.</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="7-practical-exercise-reddit-search-and-posting">7. Practical Exercise: Reddit Search and Posting</h2><h3 id="71-searching-for-posts">7.1 Searching for Posts</h3><p><strong>Search Prompt:</strong></p>
+<div class="code-wrapper"><pre><code>Help me search for recent hot posts on Reddit about &quot;traveling to China&quot;
+</code></pre>
+</div><p>Claude will invoke the <code>REDDIT_SEARCH_ACROSS_SUBREDDITS</code> tool:</p>
+<p><strong>Actual Invocation Example (You won&#39;t see this, but Claude does it in the background):</strong></p>
+<div class="code-wrapper"><pre><code class="language-json">// Search request
+{
+  &quot;tool_slug&quot;: &quot;REDDIT_SEARCH_ACROSS_SUBREDDITS&quot;,
+  &quot;arguments&quot;: {
+    &quot;search_query&quot;: &quot;travel China tourism&quot;,
+    &quot;sort&quot;: &quot;hot&quot;,
+    &quot;limit&quot;: 25
+  }
+}
+</code></pre>
+</div><p><strong>Example Return Result:</strong></p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;posts&quot;: [
+    {
+      &quot;title&quot;: &quot;Blue Moon Valley, Yulong Snow Mountain, Yunnan&quot;,
+      &quot;score&quot;: 379,
+      &quot;num_comments&quot;: 9,
+      &quot;subreddit&quot;: &quot;travelchina&quot;,
+      &quot;permalink&quot;: &quot;/r/travelchina/comments/xxx/&quot;,
+      &quot;created_utc&quot;: 1780223243
+    },
+    // ... more posts
+  ]
+}
+</code></pre>
+</div><p><strong>Get hot posts from a specific Subreddit:</strong></p>
+<div class="code-wrapper"><pre><code>Show me the top 5 hottest posts today in r/travelchina
+</code></pre>
+</div><p>This will invoke <code>REDDIT_GET_R_TOP</code>:</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;REDDIT_GET_R_TOP&quot;,
+  &quot;arguments&quot;: {
+    &quot;subreddit&quot;: &quot;travelchina&quot;,
+    &quot;t&quot;: &quot;day&quot;,
+    &quot;limit&quot;: 5
+  }
+}
+</code></pre>
+</div><h3 id="72-posting">7.2 Posting</h3><blockquote>
+<p>⚠️ <strong>Posting is a public action!</strong> Once posted, it cannot be easily undone. Claude will confirm the content with you before publishing.</p>
+</blockquote>
+<p><strong>Create a new post:</strong></p>
+<div class="code-wrapper"><pre><code>Create a post in r/test with the title &quot;Test&quot; and the content &quot;This is a test post sent via the Composio API&quot;
+</code></pre>
+</div><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;REDDIT_CREATE_REDDIT_POST&quot;,
+  &quot;arguments&quot;: {
+    &quot;subreddit&quot;: &quot;test&quot;,
+    &quot;title&quot;: &quot;Test&quot;,
+    &quot;kind&quot;: &quot;self&quot;,
+    &quot;text&quot;: &quot;This is a test post sent via the Composio API&quot;
+  }
+}
+</code></pre>
+</div><h3 id="73-commenting-on-a-post">7.3 Commenting on a Post</h3><div class="code-wrapper"><pre><code>Comment on this post: https://www.reddit.com/r/travelchina/comments/xxx/
+Comment content: &quot;Great post! Very helpful.&quot;
+</code></pre>
+</div><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;REDDIT_POST_REDDIT_COMMENT&quot;,
+  &quot;arguments&quot;: {
+    &quot;thing_id&quot;: &quot;t3_xxx&quot;,
+    &quot;text&quot;: &quot;Great post! Very helpful.&quot;
+  }
+}
+</code></pre>
+</div><blockquote>
+<p>⚠️ <strong>thing_id Format:</strong> The <code>t3_</code> prefix indicates replying to a post, while the <code>t1_</code> prefix indicates replying to a comment. Do not mix them up.</p>
+</blockquote>
+<hr>
+<h2 id="8-practical-exercise-facebook-search-and-posting">8. Practical Exercise: Facebook Search and Posting</h2><h3 id="81-searching-facebook-content">8.1 Searching Facebook Content</h3><p>Facebook content cannot be directly searched for posts (due to API limitations), but you can indirectly find public Facebook posts and groups via <strong>web search</strong>:</p>
+<div class="code-wrapper"><pre><code>Search Facebook for popular groups and posts about China travel
+</code></pre>
+</div><p>Claude will use <code>COMPOSIO_SEARCH_WEB</code> to search:</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;COMPOSIO_SEARCH_WEB&quot;,
+  &quot;arguments&quot;: {
+    &quot;query&quot;: &quot;site:facebook.com China travel groups posts 2026&quot;
+  }
+}
+</code></pre>
+</div><p><strong>The return results include:</strong></p>
+<ul>
+<li>Group links (e.g., facebook.com/groups/travelchina3/)</li>
+<li>Public post links</li>
+<li>Post titles and summaries</li>
+</ul>
+<h3 id="82-posting-on-a-facebook-page">8.2 Posting on a Facebook Page</h3><blockquote>
+<p>⚠️ <strong>Important Limitation:</strong> Composio&#39;s Facebook integration only supports <strong>Pages</strong>, not personal profiles or groups. If you want to post in a group, you need to do it manually.</p>
+</blockquote>
+<p><strong>Post on a Page:</strong></p>
+<div class="code-wrapper"><pre><code>Publish a post about China travel on my Facebook Page
+</code></pre>
+</div><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;FACEBOOK_CREATE_POST&quot;,
+  &quot;arguments&quot;: {
+    &quot;page_id&quot;: &quot;Your Page ID&quot;,
+    &quot;message&quot;: &quot;🇨🇳 China Travel Tips: Highly recommend using Alipay, Amap, and 12306 for buying train tickets!&quot;
+  }
+}
+</code></pre>
+</div><h3 id="83-facebook-vs-reddit-capability-comparison">8.3 Facebook vs Reddit Capability Comparison</h3><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Reddit</th>
+<th>Facebook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Search Posts</td>
+<td>✅ Fully Supported</td>
+<td>⚠️ Only accessible indirectly via web search</td>
+</tr>
+<tr>
+<td>Post</td>
+<td>✅ Supported</td>
+<td>⚠️ Only supports Pages, not groups</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td>✅ Supported</td>
+<td>⚠️ Only supports Page posts</td>
+</tr>
+<tr>
+<td>Read Content</td>
+<td>✅ Fully Supported</td>
+<td>⚠️ Limited</td>
+</tr>
+<tr>
+<td>Fetch Comments</td>
+<td>✅ Supported</td>
+<td>⚠️ Requires Page permissions</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-the-killer-feature-multi-platform-parallel-querying">9. The Killer Feature: Multi-Platform Parallel Querying</h2><blockquote>
+<p>🔥 <strong>This is one of Composio&#39;s most powerful features — querying multiple platforms simultaneously with a single request.</strong></p>
+</blockquote>
+<h3 id="scenario-you-want-to-know-the-popularity-of-discussions-about-china-travel-across-the-entire-web">Scenario: You want to know the popularity of discussions about "China travel" across the entire web</h3><p><strong>Without Composio:</strong> Open Reddit, Facebook, and Twitter separately and search one by one.</p>
+<p><strong>With Composio:</strong> Done in one sentence.</p>
+<div class="code-wrapper"><pre><code>Help me search &quot;travel to China&quot; across multiple platforms including Reddit, Facebook web, and Twitter for the latest hot content
+</code></pre>
+</div><p>Claude will <strong>invoke multiple tools in parallel</strong>:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">sequenceDiagram
+    participant User as You
+    participant Claude as Claude + Composio
+    participant R as Reddit API
+    participant F as Web Search (Facebook)
+    participant T as Twitter API
+
+    User->>Claude: Search "travel to China" across multiple platforms
+
+    par Parallel Execution
+        Claude->>R: REDDIT_SEARCH_ACROSS_SUBREDDITS
+        Claude->>F: COMPOSIO_SEARCH_WEB (site:facebook.com)
+        Claude->>T: TWITTER_RECENT_SEARCH
+    end
+
+    R-->>Claude: Reddit Post List
+    F-->>Claude: Facebook Groups/Posts
+    T-->>Claude: Twitter Tweets
+
+    Claude->>Claude: Deduplicate + Sort + Aggregate
+    Claude-->>User: Unified Result List ✅</pre></div><p><strong>Actual Code Invocation:</strong></p>
+<div class="code-wrapper"><pre><code class="language-json">// COMPOSIO_MULTI_EXECUTE_TOOL — Parallel invocation in one request
+{
+  &quot;tools&quot;: [
+    {
+      &quot;tool_slug&quot;: &quot;REDDIT_SEARCH_ACROSS_SUBREDDITS&quot;,
+      &quot;arguments&quot;: {
+        &quot;search_query&quot;: &quot;travel China tourism&quot;,
+        &quot;sort&quot;: &quot;hot&quot;,
+        &quot;limit&quot;: 10
+      }
+    },
+    {
+      &quot;tool_slug&quot;: &quot;COMPOSIO_SEARCH_WEB&quot;,
+      &quot;arguments&quot;: {
+        &quot;query&quot;: &quot;site:facebook.com China travel groups 2026&quot;
+      }
+    },
+    {
+      &quot;tool_slug&quot;: &quot;TWITTER_RECENT_SEARCH&quot;,
+      &quot;arguments&quot;: {
+        &quot;query&quot;: &quot;China travel tips&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+</div><p><strong>The results you get:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Platform</th>
+<th>Title</th>
+<th>Score</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Reddit</td>
+<td>Blue Moon Valley, Yulong Snow Mountain, Yunnan</td>
+<td>379⬆</td>
+<td>reddit.com/r/travelchina/...</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Reddit</td>
+<td>How to eat like Jensen Huang in Beijing Hutongs</td>
+<td>79⬆</td>
+<td>reddit.com/r/travelchina/...</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Facebook</td>
+<td>🇨🇳 TRAVEL in CHINA Group Discussion</td>
+<td>—</td>
+<td>facebook.com/groups/travelchina3/...</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Twitter</td>
+<td>#ChinaTravel tips thread</td>
+<td>1.2K❤</td>
+<td>x.com/user/status/...</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Reddit</td>
+<td>How to order food in China when there are only QR code menus</td>
+<td>23⬆</td>
+<td>reddit.com/r/chinatravel/...</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 <strong>Marketing Value:</strong> A single query allows you to grasp the discussion trends across the web, which is 10 times more efficient than manual platform-by-platform searching.</p>
+</blockquote>
+<hr>
+<h2 id="10-practical-exercise-marketing-automation">10. Practical Exercise: Marketing Automation</h2><h3 id="scenario-you-want-to-promote-your-travel-product-in-china-travel-communities">Scenario: You want to promote your travel product in China travel communities</h3><p><strong>Complete Marketing Workflow:</strong></p>
+<p>mermaid
+flowchart TD
+    A[🔍 Step 1: Multi-Platform Monitoring] --&gt; B[📊 Step 2: Analyze Trend Popularity]
+    B --&gt; C[🎯 Step 3: Identify Target Users]
+    C --&gt; D[💬 Step 4: Precision Engagement]
+    D --&gt; E[📈 Step 5: Performance Tracking]</p>
+<div class="code-wrapper"><pre><code>A1[Reddit r/travelchina&lt;br/&gt;r/Chinavisa] --&gt; A
+A2[Facebook China Travel Groups] --&gt; A
+A3[Twitter #ChinaTravel] --&gt; A
+A4[TikTok China Travel Videos] --&gt; A
+
+style A fill:#3498DB,color:#fff
+style B fill:#9B59B6,color:#fff
+style C fill:#E67E22,color:#fff
+style D fill:#2ECC71,color:#fff
+style E fill:#E74C3C,color:#fff
+</code></pre>
+</div><h3 id="101-multi-platform-monitoring">10.1 Multi-Platform Monitoring</h3><div class="code-wrapper"><pre><code>Search Reddit, Facebook, and Twitter for discussions about &quot;China travel guides&quot; over the past 7 days, sorted by popularity
+</code></pre>
+</div><h3 id="102-identify-target-users">10.2 Identify Target Users</h3><div class="code-wrapper"><pre><code>Find recent posts on Reddit from people planning to travel to China, and list the posters&#39; usernames and post links
+</code></pre>
+</div><h3 id="103-precision-engagement-commenting">10.3 Precision Engagement (Commenting)</h3><div class="code-wrapper"><pre><code>Comment on this post: &quot;Recommend downloading Alipay and Amap, which basically cover all payment and navigation needs. Also, the 12306 app can be used to buy train tickets and supports an English interface.&quot;
+</code></pre>
+</div><blockquote>
+<p>⚠️ <strong>Marketing Precautions:</strong></p>
+<ul>
+<li><strong>Do not hard-sell!</strong> Reddit communities strongly dislike ads and you can easily get downvoted or banned.</li>
+<li>Focus on <strong>providing value</strong>: Share real experiences and practical guides.</li>
+<li>Become a familiar face first, then naturally introduce your product.</li>
+<li>Leave at least a few minutes between each action to avoid being flagged as spam.</li>
+</ul>
+</blockquote>
+<h3 id="104-automated-publishing-example">10.4 Automated Publishing Example</h3><p>If you want to schedule content publishing across multiple platforms:</p>
+<div class="code-wrapper"><pre><code class="language-python"># Pseudocode — Demonstrates Composio&#39;s multi-platform publishing capabilities
+# In actual use, this is completed through Claude Code conversations
+
+platforms = {
+    &quot;reddit&quot;: {
+        &quot;tool&quot;: &quot;REDDIT_CREATE_REDDIT_POST&quot;,
+        &quot;subreddit&quot;: &quot;travelchina&quot;,
+        &quot;title&quot;: &quot;My China Travel Tips After 30 Days&quot;,
+        &quot;text&quot;: &quot;Just came back from a 30-day trip across China...&quot;
+    },
+    &quot;facebook&quot;: {
+        &quot;tool&quot;: &quot;FACEBOOK_CREATE_POST&quot;,
+        &quot;page_id&quot;: &quot;your_page_id&quot;,
+        &quot;message&quot;: &quot;🇨🇳 Just came back from 30 days in China...&quot;
+    }
+}
+
+# Composio MULTI_EXECUTE parallel publishing in one go
+</code></pre>
+</div><hr>
+<h2 id="11-common-pitfalls-and-precautions">11. Common Pitfalls and Precautions</h2><h3 id="-pitfalls-you-must-know">🚨 Pitfalls You Must Know</h3><table>
+<thead>
+<tr>
+<th>Pitfall</th>
+<th>Description</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reddit thing_id Prefix</strong></td>
+<td><code>t3_</code> is for posts, <code>t1_</code> is for comments. Mixing them up posts to the wrong place.</td>
+<td>Use <code>t3_xxx</code> to reply to posts, <code>t1_xxx</code> to reply to comments.</td>
+</tr>
+<tr>
+<td><strong>Facebook Only Supports Pages</strong></td>
+<td>API access to groups and personal profiles is restricted.</td>
+<td>Page operations are fine; groups require manual action.</td>
+</tr>
+<tr>
+<td><strong>Reddit Posting Rate Limits</strong></td>
+<td>Continuous posting will trigger a RATELIMIT error.</td>
+<td>Leave a 5-10 minute interval between actions.</td>
+</tr>
+<tr>
+<td><strong>Subreddit Rules</strong></td>
+<td>Some communities mandate flairs; missing them gets posts deleted.</td>
+<td>Use <code>REDDIT_GET_SUBREDDIT_RULES</code> to check rules first.</td>
+</tr>
+<tr>
+<td><strong>OAuth Token Expiration</strong></td>
+<td>Connections may expire after long periods of inactivity.</td>
+<td>Simply click the authorization link again.</td>
+</tr>
+<tr>
+<td><strong>Parallel Invocation Billing</strong></td>
+<td>When querying multiple platforms in parallel, each platform counts as one call.</td>
+<td>The Free plan&#39;s 20K calls are sufficient for daily use.</td>
+</tr>
+<tr>
+<td><strong>Facebook Comment Permissions</strong></td>
+<td>Specific permissions are required to comment on Page posts.</td>
+<td>Ensure Page admin permissions are authorized.</td>
+</tr>
+</tbody></table>
+<h3 id="-efficiency-tips">⚡ Efficiency Tips</h3><ol>
+<li><strong>Use <code>COMPOSIO_SEARCH_WEB</code> for broad searches first, then use platform APIs for precise searches</strong> — This is the most efficient approach.</li>
+<li><strong>Check rules before posting</strong> — <code>REDDIT_GET_SUBREDDIT_RULES</code> can prevent your posts from being deleted.</li>
+<li><strong>Use <code>REDDIT_GET_R_TOP</code> to fetch by time range</strong> — <code>t: &quot;day&quot; / &quot;week&quot; / &quot;month&quot;</code>.</li>
+<li><strong>Multi-account management</strong> — You can connect multiple accounts for the same platform and specify the <code>account</code> parameter during invocation.</li>
+</ol>
+<hr>
+<h2 id="12-conclusion">12. Conclusion</h2><h3 id="composios-core-advantages">Composio's Core Advantages</h3><p>mermaid
+mindmap
+  root((Composio))
+    AI Native
+      MCP Protocol Support
+      Direct Claude/GPT Invocation
+      Natural Language Control
+    Multi-Platform
+      500+ Apps
+      Unified API
+      Parallel Querying
+    Developer Friendly
+      Code Control
+      SDK Support
+      Free 20K Calls
+    Marketing Tool
+      Network-wide Monitoring
+      Automated Publishing
+      Precision Engagement</p>
+<h3 id="quick-start-checklist">Quick Start Checklist</h3><ul>
+<li><input disabled="" type="checkbox"> Register a Composio account: <a href="https://composio.dev">composio.dev</a></li>
+<li><input disabled="" type="checkbox"> Connect the apps you need on the Dashboard (Reddit, Facebook, Instagram...)</li>
+<li><input disabled="" type="checkbox"> Install the MCP Server: <code>claude mcp add --scope user --transport http composio https://connect.composio.dev/mcp</code></li>
+<li><input disabled="" type="checkbox"> Restart Claude Code</li>
+<li><input disabled="" type="checkbox"> Verify connection: Type <code>/mcp</code> to see if composio is in the list</li>
+<li><input disabled="" type="checkbox"> Search test: Search for a topic you are interested in</li>
+<li><input disabled="" type="checkbox"> Post test: Test posting in r/test first</li>
+<li><input disabled="" type="checkbox"> Try multi-platform parallel querying</li>
+<li><input disabled="" type="checkbox"> Start your marketing automation journey 🚀</li>
+</ul>
+<hr>
+<blockquote>
+<p>📝 <strong>Author:</strong> eric<br><strong>Last Updated:</strong> 2026-06-01<br><strong>Composio Official Website:</strong> <a href="https://composio.dev">composio.dev</a><br><strong>Documentation:</strong> <a href="https://docs.composio.dev">docs.composio.dev</a><br><strong>Pricing:</strong> <a href="https://composio.dev/pricing">composio.dev/pricing</a></p>
+</blockquote>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="table-of-contents" data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of Contents</a> </li><li class="toc-item " data-slug="1-what-is-composio" data-astro-cid-4sn4zg3r> <a href="#1-what-is-composio" data-astro-cid-4sn4zg3r>1. What is Composio?</a> </li><li class="toc-item h3-nav" data-slug="architecture-overview" data-astro-cid-4sn4zg3r> <a href="#architecture-overview" data-astro-cid-4sn4zg3r>Architecture Overview</a> </li><li class="toc-item " data-slug="2-competitor-comparison-composio-vs-zapier-vs-make" data-astro-cid-4sn4zg3r> <a href="#2-competitor-comparison-composio-vs-zapier-vs-make" data-astro-cid-4sn4zg3r>2. Competitor Comparison: Composio vs Zapier vs Make</a> </li><li class="toc-item " data-slug="3-pricing-plans" data-astro-cid-4sn4zg3r> <a href="#3-pricing-plans" data-astro-cid-4sn4zg3r>3. Pricing Plans</a> </li><li class="toc-item " data-slug="4-registering-a-composio-account" data-astro-cid-4sn4zg3r> <a href="#4-registering-a-composio-account" data-astro-cid-4sn4zg3r>4. Registering a Composio Account</a> </li><li class="toc-item h3-nav" data-slug="41-overall-workflow" data-astro-cid-4sn4zg3r> <a href="#41-overall-workflow" data-astro-cid-4sn4zg3r>4.1 Overall Workflow</a> </li><li class="toc-item h3-nav" data-slug="42-registration-steps" data-astro-cid-4sn4zg3r> <a href="#42-registration-steps" data-astro-cid-4sn4zg3r>4.2 Registration Steps</a> </li><li class="toc-item " data-slug="5-connecting-apps-on-the-composio-website" data-astro-cid-4sn4zg3r> <a href="#5-connecting-apps-on-the-composio-website" data-astro-cid-4sn4zg3r>5. Connecting Apps on the Composio Website</a> </li><li class="toc-item h3-nav" data-slug="51-detailed-connect-workflow" data-astro-cid-4sn4zg3r> <a href="#51-detailed-connect-workflow" data-astro-cid-4sn4zg3r>5.1 Detailed Connect Workflow</a> </li><li class="toc-item h3-nav" data-slug="52-connect-reddit" data-astro-cid-4sn4zg3r> <a href="#52-connect-reddit" data-astro-cid-4sn4zg3r>5.2 Connect Reddit</a> </li><li class="toc-item h3-nav" data-slug="53-connect-facebook" data-astro-cid-4sn4zg3r> <a href="#53-connect-facebook" data-astro-cid-4sn4zg3r>5.3 Connect Facebook</a> </li><li class="toc-item h3-nav" data-slug="54-connect-instagram" data-astro-cid-4sn4zg3r> <a href="#54-connect-instagram" data-astro-cid-4sn4zg3r>5.4 Connect Instagram</a> </li><li class="toc-item h3-nav" data-slug="55-connect-twitterx" data-astro-cid-4sn4zg3r> <a href="#55-connect-twitterx" data-astro-cid-4sn4zg3r>5.5 Connect Twitter/X</a> </li><li class="toc-item h3-nav" data-slug="56-connect-tiktok" data-astro-cid-4sn4zg3r> <a href="#56-connect-tiktok" data-astro-cid-4sn4zg3r>5.6 Connect TikTok</a> </li><li class="toc-item h3-nav" data-slug="57-connect-gmail-google-sheets-and-other-google-apps" data-astro-cid-4sn4zg3r> <a href="#57-connect-gmail-google-sheets-and-other-google-apps" data-astro-cid-4sn4zg3r>5.7 Connect Gmail / Google Sheets and other Google Apps</a> </li><li class="toc-item h3-nav" data-slug="58-overview-of-all-connected-apps" data-astro-cid-4sn4zg3r> <a href="#58-overview-of-all-connected-apps" data-astro-cid-4sn4zg3r>5.8 Overview of All Connected Apps</a> </li><li class="toc-item " data-slug="6-installing-the-mcp-server" data-astro-cid-4sn4zg3r> <a href="#6-installing-the-mcp-server" data-astro-cid-4sn4zg3r>6. Installing the MCP Server</a> </li><li class="toc-item h3-nav" data-slug="what-is-mcp" data-astro-cid-4sn4zg3r> <a href="#what-is-mcp" data-astro-cid-4sn4zg3r>What is MCP?</a> </li><li class="toc-item h3-nav" data-slug="installation-steps" data-astro-cid-4sn4zg3r> <a href="#installation-steps" data-astro-cid-4sn4zg3r>Installation Steps</a> </li><li class="toc-item " data-slug="7-practical-exercise-reddit-search-and-posting" data-astro-cid-4sn4zg3r> <a href="#7-practical-exercise-reddit-search-and-posting" data-astro-cid-4sn4zg3r>7. Practical Exercise: Reddit Search and Posting</a> </li><li class="toc-item h3-nav" data-slug="71-searching-for-posts" data-astro-cid-4sn4zg3r> <a href="#71-searching-for-posts" data-astro-cid-4sn4zg3r>7.1 Searching for Posts</a> </li><li class="toc-item h3-nav" data-slug="72-posting" data-astro-cid-4sn4zg3r> <a href="#72-posting" data-astro-cid-4sn4zg3r>7.2 Posting</a> </li><li class="toc-item h3-nav" data-slug="73-commenting-on-a-post" data-astro-cid-4sn4zg3r> <a href="#73-commenting-on-a-post" data-astro-cid-4sn4zg3r>7.3 Commenting on a Post</a> </li><li class="toc-item " data-slug="8-practical-exercise-facebook-search-and-posting" data-astro-cid-4sn4zg3r> <a href="#8-practical-exercise-facebook-search-and-posting" data-astro-cid-4sn4zg3r>8. Practical Exercise: Facebook Search and Posting</a> </li><li class="toc-item h3-nav" data-slug="81-searching-facebook-content" data-astro-cid-4sn4zg3r> <a href="#81-searching-facebook-content" data-astro-cid-4sn4zg3r>8.1 Searching Facebook Content</a> </li><li class="toc-item h3-nav" data-slug="82-posting-on-a-facebook-page" data-astro-cid-4sn4zg3r> <a href="#82-posting-on-a-facebook-page" data-astro-cid-4sn4zg3r>8.2 Posting on a Facebook Page</a> </li><li class="toc-item h3-nav" data-slug="83-facebook-vs-reddit-capability-comparison" data-astro-cid-4sn4zg3r> <a href="#83-facebook-vs-reddit-capability-comparison" data-astro-cid-4sn4zg3r>8.3 Facebook vs Reddit Capability Comparison</a> </li><li class="toc-item " data-slug="9-the-killer-feature-multi-platform-parallel-querying" data-astro-cid-4sn4zg3r> <a href="#9-the-killer-feature-multi-platform-parallel-querying" data-astro-cid-4sn4zg3r>9. The Killer Feature: Multi-Platform Parallel Querying</a> </li><li class="toc-item h3-nav" data-slug="scenario-you-want-to-know-the-popularity-of-discussions-about-china-travel-across-the-entire-web" data-astro-cid-4sn4zg3r> <a href="#scenario-you-want-to-know-the-popularity-of-discussions-about-china-travel-across-the-entire-web" data-astro-cid-4sn4zg3r>Scenario: You want to know the popularity of discussions about &quot;China travel&quot; across the entire web</a> </li><li class="toc-item " data-slug="10-practical-exercise-marketing-automation" data-astro-cid-4sn4zg3r> <a href="#10-practical-exercise-marketing-automation" data-astro-cid-4sn4zg3r>10. Practical Exercise: Marketing Automation</a> </li><li class="toc-item h3-nav" data-slug="scenario-you-want-to-promote-your-travel-product-in-china-travel-communities" data-astro-cid-4sn4zg3r> <a href="#scenario-you-want-to-promote-your-travel-product-in-china-travel-communities" data-astro-cid-4sn4zg3r>Scenario: You want to promote your travel product in China travel communities</a> </li><li class="toc-item h3-nav" data-slug="101-multi-platform-monitoring" data-astro-cid-4sn4zg3r> <a href="#101-multi-platform-monitoring" data-astro-cid-4sn4zg3r>10.1 Multi-Platform Monitoring</a> </li><li class="toc-item h3-nav" data-slug="102-identify-target-users" data-astro-cid-4sn4zg3r> <a href="#102-identify-target-users" data-astro-cid-4sn4zg3r>10.2 Identify Target Users</a> </li><li class="toc-item h3-nav" data-slug="103-precision-engagement-commenting" data-astro-cid-4sn4zg3r> <a href="#103-precision-engagement-commenting" data-astro-cid-4sn4zg3r>10.3 Precision Engagement (Commenting)</a> </li><li class="toc-item h3-nav" data-slug="104-automated-publishing-example" data-astro-cid-4sn4zg3r> <a href="#104-automated-publishing-example" data-astro-cid-4sn4zg3r>10.4 Automated Publishing Example</a> </li><li class="toc-item " data-slug="11-common-pitfalls-and-precautions" data-astro-cid-4sn4zg3r> <a href="#11-common-pitfalls-and-precautions" data-astro-cid-4sn4zg3r>11. Common Pitfalls and Precautions</a> </li><li class="toc-item h3-nav" data-slug="-pitfalls-you-must-know" data-astro-cid-4sn4zg3r> <a href="#-pitfalls-you-must-know" data-astro-cid-4sn4zg3r>🚨 Pitfalls You Must Know</a> </li><li class="toc-item h3-nav" data-slug="-efficiency-tips" data-astro-cid-4sn4zg3r> <a href="#-efficiency-tips" data-astro-cid-4sn4zg3r>⚡ Efficiency Tips</a> </li><li class="toc-item " data-slug="12-conclusion" data-astro-cid-4sn4zg3r> <a href="#12-conclusion" data-astro-cid-4sn4zg3r>12. Conclusion</a> </li><li class="toc-item h3-nav" data-slug="composios-core-advantages" data-astro-cid-4sn4zg3r> <a href="#composios-core-advantages" data-astro-cid-4sn4zg3r>Composio&#39;s Core Advantages</a> </li><li class="toc-item h3-nav" data-slug="quick-start-checklist" data-astro-cid-4sn4zg3r> <a href="#quick-start-checklist" data-astro-cid-4sn4zg3r>Quick Start Checklist</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/modern-web-architecture-seo-edge-redirects-and-ai-friendly-design-guide" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-f8769239.jpg" alt="Modern Web Architecture: SEO, Edge Redirects, and AI-Friendly Design Guide" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/modern-web-architecture-seo-edge-redirects-and-ai-friendly-design-guide" data-astro-cid-4sn4zg3r>Modern Web Architecture: SEO, Edge Redirects, and AI-Friendly Design Guide</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A comprehensive guide to modern web architecture in the AI era. Covers URL normalization, edge redirects, AI slug-locking, and Cloudflare optimization. Learn to build resilient systems for both humans and AI agents using best practices and llms.txt standards.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 1, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/claude-code-dynamic-workflows-best-practices" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-ba5ac2a8.jpg" alt="Claude Code Dynamic Workflows: A Deep Dive and Best Practices" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/claude-code-dynamic-workflows-best-practices" data-astro-cid-4sn4zg3r>Claude Code Dynamic Workflows: A Deep Dive and Best Practices</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A comprehensive guide to Claude Code&#39;s Dynamic Workflow, covering trigger mechanisms, terminal configuration, permission allowlists, cost management, and the high-performance Ultracode mode.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 30, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

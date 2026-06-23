@@ -1,0 +1,484 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) — LangChain Masterclass: Zero to Production AI Applications — AgentUpdate.ai</title><meta name="description" content="第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-03/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-03/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langchain-tutorial/lesson-03/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-03/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) — LangChain Masterclass: Zero to Production AI Applications — AgentUpdate.ai"><meta property="og:description" content="第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-03/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) — LangChain Masterclass: Zero to Production AI Applications — AgentUpdate.ai"><meta name="twitter:description" content="第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) — LangChain Masterclass: Zero to Production AI Applications — AgentUpdate.ai","description":"第 03 期 | LCEL 语法精讲：现代化链式编排 (EN) Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-03/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/langchain-tutorial/lesson-03/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langchain-tutorial/lesson-03/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langchain-tutorial/lesson-03/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/langchain-tutorial" class="series-title-link" data-astro-cid-vma7orrt> LANGCHAIN MASTERCLASS: ZERO TO PRODUCTION AI APPLICATIONS </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 01 期 | 课程蓝图与架构设计：构建智能客服该从何入手？ (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 02 期 | 核心三剑客：Models, Prompts 与 Parsers (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-03" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 03 期 | LCEL 语法精讲：现代化链式编排 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 04 期 | 记忆系统：赋予客服机器人的上下文记忆 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 05 期 | 流式输出与可观测性：Callbacks 与打字机效果 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 06 期 | 数据摄入：全面解析 Document Loaders (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 07 期 | 切分艺术：Text Splitters 与上下文保全 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 08 期 | 语意升维：Embedding 向量模型与跨源比对 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 09 期 | 知识底座：构建专属 Chroma/Pinecone 向量数据库 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 10 期 | 检索技巧 (Retrievers)：让知识触手可及 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 11 期 | RAG 架构实战：检索增强生成的完美闭环 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 12 期 | 工具调用 (Tool Calling)：让 LLM 具备行动力 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 13 期 | Routing 路由机制：复杂意图的分发中心 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 14 期 | ReAct 框架解析：思考与行动交替的艺术 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 15 期 | Agent 核心：打造自主决策小助手 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 16 期 | 多 Agent 协作：将任务拆解为工作流 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 17 期 | Agent Executor 与调试：拯救跑偏的 Agent (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 18 期 | SQL 智能问答：自然语言查库秘籍 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 19 期 | 结构化数据输出：用 Pydantic 约束 LLM (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 20 期 | Agent 评测与反馈：LLM-as-a-judge (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>21 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 21 期 | 外部 API 集成：使用 OpenAPI 查询天气与汇率 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>22 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 22 期 | 多模态输入：让客服机器人能够“看”图 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>23 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 23 期 | 长历史上下文优化：Context Window 挤压战 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>24 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 24 期 | LangServe 初探：一键部署你的 LangChain 应用 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-25" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>25 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 25 期 | LangSmith 进阶：Prompt 管理与 A/B 测试 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>26 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 26 期 | 本地模型替身：结合 Ollama 与 Llama3 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>27 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 27 期 | 生产环境排坑：处理超长响应与重试策略 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>28 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 28 期 | 复杂流程编排：深入理解底层数据结构 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>29 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 29 期 | 项目打磨：UI 集成与最终呈现 (EN)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>30 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>第 30 期 | 全栈复盘与未来展望：进军更高阶的 AI 应用 (EN)</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/langchain-tutorial" data-astro-cid-ilhxcym7>LangChain Masterclass: Zero to Production AI Applications</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 03 期 | LCEL 语法精讲：现代化链式编排 (EN)</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"LangChain Masterclass: Zero to Production AI Applications","item":"https://www.agentupdate.ai/tutorial/langchain-tutorial"},{"@type":"ListItem","position":4,"name":"第 03 期 | LCEL 语法精讲：现代化链式编排 (EN)"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>第 03 期 | LCEL 语法精讲：现代化链式编排 (EN)</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>20 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><h2>🎯 Learning Objectives for This Session</h2>
+<p>Hey there, future AI architects! Welcome back to Part 5 of the <em>LangChain Full-Stack Masterclass</em>. Over the past few sessions, we've built a solid foundation, and we've gotten pretty good at stringing together Chains. But have you noticed that while our intelligent support copilot can answer questions, it feels a bit... "rigid"? It can only follow the exact flows we've predefined. The moment it encounters something unexpected, it freezes up.</p>
+<p>It's like handing an intern a highly detailed operations manual. They can follow it to the letter, but if something happens that isn't in the manual, they have to come running to you for help. What we actually want is a "senior intern"—someone who can think for themselves, find the right tools, and solve problems autonomously!</p>
+<p>In this session, we are going to upgrade our support copilot's brain, granting it the power of autonomous decision-making. By the end of this session, you will:</p>
+<ol>
+<li><strong>Master the core components of LangChain Agents:</strong> Completely understand how the trio of <code>Tools</code>, <code>LLM</code>, and <code>AgentExecutor</code> work together.</li>
+<li><strong>Understand how Agents work under the hood:</strong> Gain deep insights into the Agent's "Observe-Think-Act-Reflect" loop, which gives the LLM its intelligent reasoning capabilities.</li>
+<li><strong>Learn to design and integrate custom tools for your support copilot:</strong> Enable your copilot to do more than just answer questions—it will be able to query databases, call APIs, and solve complex problems.</li>
+<li><strong>Build a support Agent capable of autonomous decision-making and problem-solving:</strong> Say goodbye to rigid, fixed workflows and step into the world of truly intelligent applications.</li>
+</ol>
+<p>Ready? Fasten your seatbelts, we're ready for takeoff!</p>
+<h2>📖 Concept Breakdown</h2>
+<h3>Agents: Giving the LLM "Hands" and "Feet"</h3>
+<p>Remember the Chains we discussed earlier? They are powerful and can link different LLM calls and processing steps together. For example, we can create a chain that first summarizes, then translates, and finally generates a response. But the core issue with Chains is: <strong>the workflow is fixed</strong>. It goes exactly where you tell it to go.</p>
+<p>Imagine your support copilot receives this question: "What is the status of my order XYZ123?"</p>
+<p>If you use Chains, you might need to:</p>
+<ol>
+<li>Determine that this is an "order inquiry" intent.</li>
+<li>Extract the order number.</li>
+<li>Call a fixed "order inquiry" API.</li>
+<li>Return the result.</li>
+</ol>
+<p>But what if the user asks: "What are your latest smartphone models? What are their features? Which one should I choose?"
+This might require:</p>
+<ol>
+<li>Determining that this is a "product inquiry" and "recommendation" intent.</li>
+<li>Querying the product database.</li>
+<li>Retrieving product features.</li>
+<li>Making a recommendation based on user preferences (if available).</li>
+</ol>
+<p>See the problem? Different questions require different tools and different resolution paths. If you use Chains, you'd have to pre-build a specific chain for every possible scenario. Not only is this overly complex, but the moment the Chain encounters an unforeseen question, it completely breaks down.</p>
+<p><strong>Agents were created specifically to solve this limitation of Chains.</strong> The core philosophy of an Agent is: <strong>Empower the LLM with autonomous decision-making.</strong> Instead of telling the LLM exactly what to do, you provide the LLM with a set of tools and let it decide <em>when</em> to use them, <em>which</em> ones to use, and <em>how</em> to use them to solve the problem.</p>
+<p>Think of it like giving a task to a senior engineer. They will analyze the task and, based on the situation, choose to use an IDE, a debugger, documentation, or a search engine to get the job done. An Agent is essentially the LLM operating in this "senior engineer" mode.</p>
+<h3>The Three Core Elements of an Agent: Tools, Brain, and Executor</h3>
+<p>The true power of a LangChain Agent lies in how elegantly it combines three core components:</p>
+<ol>
+<li><p><strong>Tools:</strong></p>
+<ul>
+<li><strong>What are they?</strong> These are external functions or data sources that the LLM can call. Imagine these as the LLM's "hands" and "feet," allowing it to interact with the real world.</li>
+<li><strong>Examples:</strong> Search engines, calculators, database query interfaces, API calls (like weather APIs or order tracking APIs), code interpreters, or even custom functions we write to query our internal knowledge base.</li>
+<li><strong>How are they defined?</strong> In LangChain, a <code>Tool</code> typically consists of a <code>name</code>, a <code>description</code> (detailing what the tool is used for), and a <code>func</code> (the actual Python function that executes the logic). The <code>description</code> is absolutely critical because the LLM relies entirely on it to decide whether and how to use the tool.</li>
+</ul>
+</li>
+<li><p><strong>LLM (Large Language Model):</strong></p>
+<ul>
+<li><strong>What is it?</strong> This is the "brain" of the Agent. It handles all the reasoning, decision-making, and planning. It takes the user's request, the descriptions of available tools, and the results of previous steps (Observations), and then thinks about what to do next.</li>
+<li><strong>Functions:</strong><ul>
+<li><strong>Understand the question:</strong> Parse the user's intent.</li>
+<li><strong>Select tools:</strong> Decide which tool to use based on the question and tool descriptions.</li>
+<li><strong>Generate parameters:</strong> Create the correct input parameters for the selected tool.</li>
+<li><strong>Plan steps:</strong> In multi-step reasoning, decide whether to continue using tools or if the final answer has been reached.</li>
+<li><strong>Generate the final answer:</strong> Once the problem is solved, format the result into natural language and return it to the user.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>AgentExecutor:</strong></p>
+<ul>
+<li><strong>What is it?</strong> This is the "executive officer" of the Agent. It coordinates the interaction between the LLM and the Tools. It runs a loop, continuously passing the LLM's output (Actions) to the corresponding tools for execution, and then feeding the tool's output (Observations) back to the LLM, until the LLM provides a final answer.</li>
+<li><strong>The Loop Mechanism:</strong><ul>
+<li>User input -&gt; Received by AgentExecutor.</li>
+<li>AgentExecutor sends the input and the list of tools to the LLM.</li>
+<li>The LLM generates a Thought, then decides on an Action and an Action Input.</li>
+<li>AgentExecutor receives the Action command, finds the corresponding tool, and executes it.</li>
+<li>The tool execution produces an Observation.</li>
+<li>AgentExecutor feeds the Observation back to the LLM.</li>
+<li>The LLM thinks again based on the new Observation, deciding whether to take another action or provide the final answer.</li>
+<li>This loop continues until the LLM outputs a "Final Answer".</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3>The ReAct Framework: The Dance of Reasoning and Acting</h3>
+<p>To truly understand the AgentExecutor's loop mechanism, we have to talk about the <strong>ReAct (Reasoning and Acting)</strong> framework. This is currently one of the most popular and intuitive operational models for Agents.</p>
+<p>The core idea of ReAct is that the LLM alternates between <strong>Reasoning</strong> and <strong>Acting</strong>.</p>
+<ul>
+<li><strong>Reasoning (Thought):</strong> The LLM first "thinks" about the situation. It analyzes the current problem, the information it already has, and the available tools, then plans its next move. This "thought" process is usually printed out, allowing us to see the LLM's internal logic.</li>
+<li><strong>Acting (Action):</strong> After thinking, the LLM decides on a specific "action". This action includes:<ul>
+<li><strong>Action:</strong> The name of the tool to call.</li>
+<li><strong>Action Input:</strong> The parameters to pass to that tool.</li>
+</ul>
+</li>
+</ul>
+<p>Next, the AgentExecutor executes this Action and gets an <strong>Observation</strong>. This Observation is then fed back to the LLM as new information, prompting the next round of Reasoning.</p>
+<p>This process is a lot like a detective solving a case:</p>
+<ol>
+<li><strong>User Question (Observation):</strong> "Who is the killer?"</li>
+<li><strong>Detective's Thought:</strong> "Hmm, I need clues. I can check the crime scene photos or question witnesses."</li>
+<li><strong>Detective's Action:</strong> "Check crime scene photos." (Calls a tool)</li>
+<li><strong>Crime Scene Photos (Observation):</strong> "Found a bloody knife."</li>
+<li><strong>Detective's Thought:</strong> "Are there fingerprints on the knife? I can send it to the lab."</li>
+<li><strong>Detective's Action:</strong> "Send knife to the lab for fingerprinting." (Calls a tool)</li>
+<li><strong>Lab Report (Observation):</strong> "Fingerprints belong to John Doe."</li>
+<li><strong>Detective's Thought:</strong> "Does John Doe have an alibi? I need to question him."</li>
+<li><strong>Detective's Action:</strong> "Question John Doe." (Calls a tool)</li>
+<li><strong>Interrogation Result (Observation):</strong> "John Doe confessed."</li>
+<li><strong>Detective's Thought:</strong> "All clues point to John Doe. I have found the killer."</li>
+<li><strong>Detective's Conclusion (Final Answer):</strong> "The killer is John Doe."</li>
+</ol>
+<p>By alternating between thinking and acting, the ReAct framework enables the LLM to perform multi-step reasoning and dynamically select and use tools, massively enhancing its ability to solve complex problems.</p>
+<h3>Mermaid Diagram: The Agent Workflow</h3>
+<p>Let's use a Mermaid diagram to visualize the Agent's workflow:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[User Input: Question] --&gt; B(AgentExecutor)
+    B --&gt; C{LLM (Agent Brain)}
+    C -- "Thought: Think about next step" --&gt; D1[Action: Tool Name]
+    C -- "Action Input: Tool Parameters" --&gt; D2[Action: Tool Parameters]
+
+    D1 &amp; D2 --&gt; E{Tools (External Toolset)}
+    E -- "Execute Tool" --&gt; F[Observation: Tool Execution Result]
+
+    F --&gt; C
+    C -- "If problem is solved" --&gt; G[Final Answer]
+    G --&gt; B
+    B --&gt; H[User Output: Answer]
+
+    subgraph Internal Agent Loop
+        C -- "Thought, Action, Action Input" --&gt; E
+        E -- "Observation" --&gt; C
+    end</pre></div><p><strong>Diagram Explanation:</strong></p>
+<ul>
+<li><strong>User Input:</strong> The user asks the Agent a question.</li>
+<li><strong>AgentExecutor:</strong> Acts as the chief commander, receiving user input and coordinating the LLM and Tools.</li>
+<li><strong>LLM (Agent Brain):</strong><ul>
+<li>Receives the current context (user question, available tool descriptions, chat history, previous <code>Observations</code>).</li>
+<li>Generates a <code>Thought</code>, deciding what to do next.</li>
+<li>Outputs an <code>Action</code> (the name of the tool to call) and <code>Action Input</code> (the tool's parameters).</li>
+</ul>
+</li>
+<li><strong>Tools (External Toolset):</strong> Contains all the functions or APIs the Agent is allowed to call.</li>
+<li><strong>Execute Tool:</strong> The AgentExecutor takes the LLM's <code>Action</code> and <code>Action Input</code>, finds the matching tool in the <code>Tools</code> list, and runs it.</li>
+<li><strong>Observation (Tool Execution Result):</strong> The result returned after the tool runs, collected by the AgentExecutor.</li>
+<li><strong>Feedback Loop:</strong> The <code>Observation</code> is sent back to the <code>LLM</code> as new context, prompting the LLM to generate its next <code>Thought</code> and <code>Action</code>.</li>
+<li><strong>Final Answer:</strong> When the LLM determines the problem is solved and it can provide a definitive answer, it outputs the <code>Final Answer</code>.</li>
+<li><strong>User Output:</strong> The AgentExecutor returns the <code>Final Answer</code> to the user.</li>
+</ul>
+<p>This loop continues indefinitely until the LLM is confident it has found the final answer to the problem.</p>
+<h2>💻 Practical Code Exercise (Application in the Support Copilot Project)</h2>
+<p>Alright, we've covered the theory thoroughly. Now it's time to bring our intelligent support copilot to life!</p>
+<p><strong>Scenario Setup:</strong> Our support copilot needs to handle several types of customer requests:</p>
+<ol>
+<li><strong>Query Product Catalog:</strong> The user wants to know what products we have or the features of a specific product.</li>
+<li><strong>Check Order Status:</strong> The user provides an order number and wants to know its real-time status.</li>
+<li><strong>Search Knowledge Base:</strong> The user asks a general question (like technical troubleshooting) and needs an answer from the internal knowledge base.</li>
+</ol>
+<p>We will create tools for each of these three scenarios and let the Agent choose which one to use autonomously.</p>
+<pre><code class="language-python">import os
+from dotenv import load_dotenv
+from langchain_openai import OpenAI
+from langchain.agents import AgentExecutor, create_react_agent
+from langchain.tools import Tool
+from langchain import hub # Used to fetch the ReAct prompt template
+from langchain_core.prompts import PromptTemplate
+
+# Load environment variables, ensure your OPENAI_API_KEY is set
+load_dotenv()
+
+# 1. Define the toolset available to our support copilot
+
+# Simulate a product catalog search tool
+def search_product_catalog(query: str) -&gt; str:
+    """Query the product catalog based on product name or keywords, and return product information.
+    Example: 'search phone', 'latest earbuds', 'laptop features'
+    """
+    products_db = {
+        "智能手机": "最新款智能手机，配备A17芯片，120Hz刷新率屏幕，AI拍照功能。",
+        "无线耳机": "高品质无线耳机，支持主动降噪，续航24小时，Type-C充电。",
+        "笔记本电脑": "轻薄高性能笔记本电脑，搭载M3芯片，视网膜显示屏，适合专业人士。",
+        "智能手表": "健康监测智能手表，支持心率、血氧监测，多种运动模式，NFC支付。",
+        "平板电脑": "娱乐学习两用平板电脑，大尺寸屏幕，支持手写笔，视听体验极佳。"
+    }
+    query = query.lower()
+    results = [
+        f"{name}: {desc}"
+        for name, desc in products_db.items()
+        if query in name.lower() or query in desc.lower()
+    ]
+    if results:
+        return "\n".join(results)
+    else:
+        return f"抱歉，未能找到与 '{query}' 相关的产品信息。"
+
+# Simulate an order status checking tool
+def check_order_status(order_id: str) -&gt; str:
+    """Query the current status of an order based on the order ID.
+    The order ID must be a number, for example: '1001', '2003'
+    """
+    order_db = {
+        "1001": "订单1001已发货，预计3天内送达。",
+        "1002": "订单1002正在处理中，预计今天下午打包。",
+        "1003": "订单1003已签收，感谢您的购买。",
+        "2001": "订单2001已取消。",
+        "2002": "订单2002支付失败，请重新尝试。",
+    }
+    if order_id in order_db:
+        return order_db[order_id]
+    else:
+        return f"抱歉，未能找到订单号 '{order_id}' 的信息，请确认订单号是否正确。"
+
+# Simulate a knowledge base search tool
+def search_knowledge_base(query: str) -&gt; str:
+    """Search the internal knowledge base for common questions and solutions.
+    Example: 'how to connect bluetooth earbuds', 'Wi-Fi connection issues', 'what to do if phone freezes'
+    """
+    kb_data = {
+        "如何连接蓝牙耳机": "请打开手机蓝牙，长按耳机电源键进入配对模式，在手机蓝牙设置中选择耳机名称进行连接。",
+        "Wi-Fi连接问题": "尝试重启路由器和手机，检查Wi-Fi密码是否正确，确保信号良好。如果问题依旧，请联系客服。",
+        "手机死机怎么办": "长按电源键10秒强制重启手机。如果频繁死机，建议备份数据后恢复出厂设置。",
+        "退换货政策": "商品在签收后7天内可无理由退货，15天内可换货。请保持商品完好，并联系客服办理。",
+        "发票申请": "购买成功后，可在订单详情页申请电子发票，通常在1-3个工作日内开具。"
+    }
+    query = query.lower()
+    results = [
+        f"问题: {q}\n答案: {a}"
+        for q, a in kb_data.items()
+        if query in q.lower() or query in a.lower()
+    ]
+    if results:
+        return "\n---\n".join(results)
+    else:
+        return f"抱歉，知识库中未能找到与 '{query}' 相关的信息。"
+
+# Wrap these functions into LangChain Tool objects
+tools = [
+    Tool(
+        name="SearchProductCatalog",
+        func=search_product_catalog,
+        description="""
+        Use this when you need to query product information, product features, product recommendations, or anything related to the product catalog.
+        The input should be the product keyword or product type queried by the user.
+        Example: 'latest phone', 'earbud features', 'what laptops do you have'
+        """,
+    ),
+    Tool(
+        name="CheckOrderStatus",
+        func=check_order_status,
+        description="""
+        Use this when you need to check the real-time status of a user's order.
+        The input MUST be the specific order number provided by the user (numbers only).
+        Example: '1001', '2003'
+        """,
+    ),
+    Tool(
+        name="SearchKnowledgeBase",
+        func=search_knowledge_base,
+        description="""
+        Use this when you need to query internal knowledge base information such as general questions, common troubleshooting, terms of service, or user guides.
+        The input should be the specific question or keyword queried by the user.
+        Example: 'how to connect bluetooth', 'Wi-Fi issue', 'return policy'
+        """,
+    ),
+]
+
+# 2. Initialize the LLM (The Agent's Brain)
+# It is recommended to use models like gpt-4 or gpt-3.5-turbo, as they perform better at reasoning
+llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0) # Set temperature to 0 to reduce randomness
+
+# 3. Fetch the ReAct Agent prompt template
+# LangChain Hub provides many preset prompt templates; ReAct is one of them
+# If you want to customize the prompt, you can also create your own PromptTemplate
+prompt = hub.pull("hwchase17/react")
+
+# 4. Create the Agent
+# create_react_agent is a convenience function used to create an Agent based on the ReAct framework
+# It requires an LLM, Tools, and a PromptTemplate
+agent = create_react_agent(llm, tools, prompt)
+
+# 5. Create the AgentExecutor (The Agent's Executive Officer)
+# verbose=True will print out the Agent's thought process (Thought, Action, Observation), which is crucial for debugging!
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
+
+# 6. Run the Agent and watch it make autonomous decisions!
+
+print("--- 场景一：查询产品信息 ---")
+# User asks for product info, Agent should choose the SearchProductCatalog tool
+response = agent_executor.invoke({"input": "你们最新的智能手机型号有哪些特点？"})
+print(f"\n客服助手回答: {response['output']}\n")
+
+print("--- 场景二：查询订单状态 ---")
+# User asks for order status, Agent should choose the CheckOrderStatus tool
+response = agent_executor.invoke({"input": "我的订单号 1002 现在是什么状态？"})
+print(f"\n客服助手回答: {response['output']}\n")
+
+print("--- 场景三：查询知识库 ---")
+# User asks a general question, Agent should choose the SearchKnowledgeBase tool
+response = agent_executor.invoke({"input": "我的手机Wi-Fi连接有问题怎么办？"})
+print(f"\n客服助手回答: {response['output']}\n")
+
+print("--- 场景四：不确定或无工具处理 ---")
+# User asks a question the Agent has no tool for, the Agent should answer directly
+response = agent_executor.invoke({"input": "请帮我写一首关于秋天的诗。"})
+print(f"\n客服助手回答: {response['output']}\n")
+
+print("--- 场景五：多步推理 (如果工具设计允许) ---")
+# This is a more complex example if the Agent can understand and break down tasks.
+# A basic ReAct Agent might not handle complex multi-step reasoning perfectly, but advanced Agents can.
+# Suppose the user asks: "Has my order 1001 shipped? If so, what are your latest earbud recommendations?"
+# A basic ReAct Agent might prioritize one clear tool call or state it can't handle unrelated tasks simultaneously.
+# More advanced Agents (like OpenAI Functions Agent) or planning Agents handle this better.
+# Here we demonstrate a slightly more complex, but still single-tool dominant scenario.
+response = agent_executor.invoke({"input": "我的订单号1003已经签收了，我想了解一下你们的退换货政策。"})
+print(f"\n客服助手回答: {response['output']}\n")
+</code></pre>
+<p><strong>Code Walkthrough:</strong></p>
+<ol>
+<li><strong>Load Environment Variables:</strong> Ensure your <code>OPENAI_API_KEY</code> is configured in your <code>.env</code> file or set directly as an environment variable.</li>
+<li><strong>Define Tools:</strong><ul>
+<li>We created three Python functions: <code>search_product_catalog</code>, <code>check_order_status</code>, and <code>search_knowledge_base</code>. These simulate interactions with external systems (product database, order system, knowledge base).</li>
+<li><strong>Crucial Point:</strong> Each function is wrapped in a <code>langchain.tools.Tool</code> object. The <code>name</code> attribute is the unique identifier, and <code>func</code> is the actual function to execute. <strong>The absolute most important part is the <code>description</code> attribute!</strong> This description is fed directly to the LLM. The LLM relies entirely on this text to understand what the tool does and when to use it. Therefore, the <code>description</code> must be clear, accurate, and include usage examples.</li>
+</ul>
+</li>
+<li><strong>Initialize the LLM:</strong> We use <code>OpenAI(model_name="gpt-3.5-turbo-instruct", temperature=0)</code> as the Agent's brain. Setting <code>temperature=0</code> makes the LLM's output more deterministic and less creative, which is much better for an Agent that needs to make precise decisions.</li>
+<li><strong>Fetch the ReAct Prompt Template:</strong> <code>hub.pull("hwchase17/react")</code> downloads a standard ReAct prompt template from the LangChain Hub. This template instructs the LLM on how to format its <code>Thought</code> and <code>Action</code> outputs.</li>
+<li><strong>Create the Agent:</strong> <code>create_react_agent(llm, tools, prompt)</code> is a factory function that combines the LLM, our list of tools, and the ReAct prompt template to create a ReAct-style Agent object.</li>
+<li><strong>Create the AgentExecutor:</strong> <code>AgentExecutor</code> is the engine that runs the Agent.<ul>
+<li><code>agent=agent</code>: Specifies the Agent to execute.</li>
+<li><code>tools=tools</code>: Passes the tool list again so the executor can actually call them.</li>
+<li><code>verbose=True</code>: <strong>Take note!</strong> This is your ultimate debugging weapon. It prints out every <code>Thought</code>, <code>Action</code>, <code>Action Input</code>, and <code>Observation</code> step by step, giving you a crystal-clear view of the Agent's thought process.</li>
+<li><code>handle_parsing_errors=True</code>: Allows the AgentExecutor to attempt to recover from parsing errors caused by incorrectly formatted LLM outputs, improving robustness.</li>
+</ul>
+</li>
+<li><strong>Run the Agent:</strong> <code>agent_executor.invoke({"input": "..."})</code> kicks off the Agent's reasoning and execution loop. You will see how the Agent autonomously selects the right tool based on your question, executes it, and delivers the final answer.</li>
+</ol>
+<p>By running the code above, you'll clearly see how the Agent autonomously decides which tool to call based on the user's input and ultimately provides an answer. The output generated by <code>verbose=True</code> will give you a highly intuitive understanding of the Agent's internal mechanics.</p>
+<h2>📝 Pitfalls and Best Practices</h2>
+<p>Agents are fantastic, but they aren't magic bullets. You'll inevitably run into a few "gotchas" along the way. As your instructor, it's my duty to warn you about these pitfalls and teach you how to avoid them.</p>
+<h3>1. The Art of Tool Descriptions: The Agent's "Instruction Manual"</h3>
+<ul>
+<li><strong>The Pitfall:</strong> Tool descriptions are vague or don't match the actual functionality. For example, if your <code>check_order_status</code> description just says "check orders" without specifying that the input <em>must</em> be an order number, the LLM might pass it a string like "where is my package", causing the tool call to fail.</li>
+<li><strong>How to Avoid It:</strong><ul>
+<li><strong>Be as rigorous as writing API docs:</strong> Keep it clear, accurate, and concise.</li>
+<li><strong>Specify inputs and outputs:</strong> Explicitly tell the LLM what type and format of input the tool expects, and roughly what it will output.</li>
+<li><strong>Include examples:</strong> Provide one or two concrete examples to guide the LLM on how to use it.</li>
+<li><strong>Differentiate similar tools:</strong> If you have multiple tools with similar functions, highlight their differences in the descriptions so the LLM knows exactly when to pick which.</li>
+</ul>
+</li>
+</ul>
+<h3>2. Token Limits and Context Management: The Agent's "Memory Capacity"</h3>
+<ul>
+<li><strong>The Pitfall:</strong> In every loop, the Agent appends the historical <code>Thought</code>, <code>Action</code>, <code>Action Input</code>, and <code>Observation</code> to the LLM's context. If the Agent goes through many reasoning steps, or if the conversation is long, the context bloats rapidly. It will quickly hit the LLM's token limit, causing reasoning to abort or costs to skyrocket.</li>
+<li><strong>How to Avoid It:</strong><ul>
+<li><strong>Cap the maximum steps (<code>max_iterations</code>):</strong> Set the <code>max_iterations</code> parameter in <code>AgentExecutor</code> to prevent infinite loops or excessive steps.</li>
+<li><strong>Memory Management:</strong> For long conversations, integrate LangChain's <code>Memory</code> modules. For instance, use <code>ConversationBufferMemory</code> to store chat history, or better yet, use <code>ConversationSummaryMemory</code> to summarize past interactions and save tokens.</li>
+<li><strong>Prompt Engineering:</strong> Add instructions in the Agent's prompt to guide the LLM to provide a final answer when appropriate, rather than endlessly trying tools.</li>
+</ul>
+</li>
+</ul>
+<h3>3. Hallucinations and Faulty Reasoning: The Agent's "Imagination"</h3>
+<ul>
+<li><strong>The Pitfall:</strong> The LLM might "hallucinate" non-existent tools, invent incorrect tool parameters, or go down a completely wrong reasoning path. This usually happens when the LLM misunderstands the question or when tool descriptions aren't clear enough.</li>
+<li><strong>How to Avoid It:</strong><ul>
+<li><strong><code>verbose=True</code> is your best friend:</strong> Always keep <code>verbose=True</code> on during development and carefully observe the LLM's <code>Thought</code> process. If its logic seems off, the problem is likely in your Prompt or tool descriptions.</li>
+<li><strong>Improve the Prompt:</strong> Optimize the Agent's Prompt with clear instructions to guide the LLM toward more rigorous thinking. For example, you can ask it to perform a confirmation step before calling a tool: "Which tool should I use, and why?"</li>
+<li><strong>Precision in Tool Descriptions:</strong> Going back to point #1, ensure your tool descriptions are precise enough to leave no room for the LLM's imagination.</li>
+<li><strong>Error Handling:</strong> Implement robust error handling inside your tool functions. Even if the LLM passes bad parameters, the tool should gracefully return an error message (which becomes an Observation) rather than crashing the app. <code>handle_parsing_errors=True</code> also helps catch formatting issues in the LLM's output.</li>
+</ul>
+</li>
+</ul>
+<h3>4. Tool Idempotency and Side Effects: The Agent's "Real-World Impact"</h3>
+<ul>
+<li><strong>The Pitfall:</strong> If your tool modifies external states (e.g., "update order status", "send email") and is not idempotent (meaning repeated calls yield different results), an Agent's mistake or repeated tool calls could cause negative real-world consequences.</li>
+<li><strong>How to Avoid It:</strong><ul>
+<li><strong>Design idempotent tools:</strong> Whenever possible, design your tools so that calling them multiple times produces the same result as calling them once.</li>
+<li><strong>Human-in-the-loop confirmation:</strong> For tools with significant side effects, introduce a user confirmation step before the Agent executes the action, or build a secondary confirmation mechanism inside the tool itself.</li>
+<li><strong>Permissions and Security:</strong> Strictly control the permissions of the tools the Agent can access to prevent it from executing sensitive operations it shouldn't touch.</li>
+</ul>
+</li>
+</ul>
+<h3>5. Performance Optimization: The Agent's "Efficiency"</h3>
+<ul>
+<li><strong>The Pitfall:</strong> Every <code>Thought</code> and <code>Action</code> loop involves a network call to the LLM and a tool execution, which introduces significant latency. If a user's question requires multi-step reasoning, the response time can become painfully slow.</li>
+<li><strong>How to Avoid It:</strong><ul>
+<li><strong>Choose efficient LLMs:</strong> Use models that offer fast response times and lower token consumption.</li>
+<li><strong>Optimize tools:</strong> Ensure your tool functions execute quickly, especially when they involve database queries or external API calls.</li>
+<li><strong>Caching:</strong> Implement caching for tool calls that are frequently requested and whose results don't change often.</li>
+</ul>
+</li>
+</ul>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-02" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>第 02 期 | 核心三剑客：Models, Prompts 与 Parsers (EN)</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/langchain-tutorial/lesson-04" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>第 04 期 | 记忆系统：赋予客服机器人的上下文记忆 (EN)</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

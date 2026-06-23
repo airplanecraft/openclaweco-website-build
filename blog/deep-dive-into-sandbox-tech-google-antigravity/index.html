@@ -1,0 +1,618 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity — AgentUpdate.ai</title><meta name="description" content="This article analyzes the underlying mechanisms and security features of raw host, local, and cloud sandbox modes. It features a Google Antigravity guide on..."><meta name="keywords" content="深入浅出Managed agent,从本地隔离到云端托管 (Google Antigravity  cli 实战指南), Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity, 沙盒技术, Google Antigravity cli, google genapi, 网络安全"><link rel="canonical" href="https://www.agentupdate.ai/blog/deep-dive-into-sandbox-tech-google-antigravity/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/deep-dive-into-sandbox-tech-google-antigravity/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/deep-dive-into-sandbox-tech-google-antigravity/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/deep-dive-into-sandbox-tech-google-antigravity/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity — AgentUpdate.ai"><meta property="og:description" content="This article analyzes the underlying mechanisms and security features of raw host, local, and cloud sandbox modes. It features a Google Antigravity guide on..."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-edfed384.jpg"><meta property="og:url" content="https://www.agentupdate.ai/blog/deep-dive-into-sandbox-tech-google-antigravity/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity — AgentUpdate.ai"><meta name="twitter:description" content="This article analyzes the underlying mechanisms and security features of raw host, local, and cloud sandbox modes. It features a Google Antigravity guide on..."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-edfed384.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity","description":"This article analyzes the underlying mechanisms and security features of raw host, local, and cloud sandbox modes. It features a Google Antigravity guide on using Python scripts for environment probing and Telegram Bot integration within isolated serverless containers.","image":"/images/blog/ai-cover-edfed384.jpg","datePublished":"2026-05-25T01:34:03.394Z","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/blog/deep-dive-into-sandbox-tech-google-antigravity"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/deep-dive-into-sandbox-tech-google-antigravity/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/deep-dive-into-sandbox-tech-google-antigravity/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>May 25, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By Eric w</span>  <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>20 Min Read</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <span class="tag" data-astro-cid-4sn4zg3r>#沙盒技术</span><span class="tag" data-astro-cid-4sn4zg3r>#Google Antigravity cli</span><span class="tag" data-astro-cid-4sn4zg3r>#google genapi</span><span class="tag" data-astro-cid-4sn4zg3r>#网络安全</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/ai-cover-edfed384.jpg" alt="Deep Dive into Sandbox Tech: From Local Isolation to Cloud Hosting with Google Antigravity" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#1-in-depth-analysis-and-comparison-of-three-execution-modes" data-astro-cid-4sn4zg3r>1. In-Depth Analysis and Comparison of Three Execution Modes</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-11-unsandboxed-raw-host-mode" data-astro-cid-4sn4zg3r>🔓 1.1 Unsandboxed / Raw Host Mode</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-12-local-sandbox-mode" data-astro-cid-4sn4zg3r>🛡️ 1.2 Local Sandbox Mode</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-13-cloud-sandbox-mode" data-astro-cid-4sn4zg3r>☁️ 1.3 Cloud Sandbox Mode</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#2-experimental-project-cloud-sandbox-scheduled-telegram-broadcaster-requirements-specification" data-astro-cid-4sn4zg3r>2. Experimental Project: Cloud Sandbox Scheduled Telegram Broadcaster Requirements Specification</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-21-core-project-requirements-and-ultimate-goal" data-astro-cid-4sn4zg3r>🎯 2.1 Core Project Requirements and Ultimate Goal</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-22-core-business-function-breakdown" data-astro-cid-4sn4zg3r>🎯 2.2 Core Business Function Breakdown</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-22-extreme-sandbox-compatibility-and-non-functional-requirements" data-astro-cid-4sn4zg3r>🛡️ 2.2 Extreme Sandbox Compatibility and Non-Functional Requirements</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#3-system-software-and-environmental-topology-architecture-design-system-architecture-topology" data-astro-cid-4sn4zg3r>3. System Software and Environmental Topology Architecture Design (System Architecture &amp; Topology)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-detailed-explanation-of-the-four-layer-architecture" data-astro-cid-4sn4zg3r>📦 Detailed Explanation of the Four-Layer Architecture:</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#4-core-configuration-comparison-of-the-three-modes" data-astro-cid-4sn4zg3r>4. Core Configuration Comparison of the Three Modes</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#41-mode-configuration-comparison-table" data-astro-cid-4sn4zg3r>4.1 Mode Configuration Comparison Table</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#42-configuration-file-examples" data-astro-cid-4sn4zg3r>4.2 Configuration File Examples</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#5-minimalist-high-compatibility-sandbox-execution-code-implementationl-linux-container-ephemeral-isolated-container-and-is-completely-physically-destroyed-after-execution-completes-or-the-ttl-expires" data-astro-cid-4sn4zg3r>5. Minimalist, High-Compatibility Sandbox Execution Code Implementationl Linux Container (ephemeral isolated container), and is completely physically destroyed after execution completes or the TTL expires.</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#2-core-configuration-comparison-of-the-three-modes" data-astro-cid-4sn4zg3r>2. Core Configuration Comparison of the Three Modes</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#21-mode-configuration-comparison-table" data-astro-cid-4sn4zg3r>2.1 Mode Configuration Comparison Table</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#22-configuration-file-examples" data-astro-cid-4sn4zg3r>2.2 Configuration File Examples</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#3-minimalist-high-compatibility-sandbox-execution-code-implementation" data-astro-cid-4sn4zg3r>3. Minimalist, High-Compatibility Sandbox Execution Code Implementation</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-security-credential-configuration-file-env" data-astro-cid-4sn4zg3r>📄 Security Credential Configuration File (.env)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-sandbox-main-program-code-telegramcronsimulatorpy" data-astro-cid-4sn4zg3r>📄 Sandbox Main Program Code (telegramcronsimulator.py)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#4-architecture-configuration-and-execution-flowchart-mermaid" data-astro-cid-4sn4zg3r>4. Architecture Configuration and Execution Flowchart (Mermaid)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#5-practical-execution-case-study-and-tls-handshake-troubleshooting-case-study-ssltls-debugging" data-astro-cid-4sn4zg3r>5. Practical Execution Case Study and TLS Handshake Troubleshooting (Case Study &amp; SSL/TLS Debugging)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-multi-dimensional-deep-analysis-of-execution-results" data-astro-cid-4sn4zg3r>🔍 Multi-Dimensional Deep Analysis of Execution Results</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-the-golden-value-of-the-managed-cloud-sandbox" data-astro-cid-4sn4zg3r>🐳 The Golden Value of the Managed Cloud Sandbox</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#6-managed-sandbox-enterprise-setup-billing-guide" data-astro-cid-4sn4zg3r>6. Managed Sandbox Enterprise Setup &amp; Billing Guide</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#61-detailed-explanation-of-billing-models-how-its-billed" data-astro-cid-4sn4zg3r>6.1 Detailed Explanation of Billing Models (How It&#39;s Billed)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#62-cross-region-creation-and-data-residency-region-based-allocation" data-astro-cid-4sn4zg3r>6.2 Cross-Region Creation and Data Residency (Region-based Allocation)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#63-detailed-dictionary-of-settingsjson-parameters-configuration-spec" data-astro-cid-4sn4zg3r>6.3 Detailed Dictionary of settings.json Parameters (Configuration Spec)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#-7-official-authoritative-resources-and-links-official-references" data-astro-cid-4sn4zg3r>🔗 7. Official Authoritative Resources and Links (Official References)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#8-conclusion" data-astro-cid-4sn4zg3r>8. Conclusion</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p>In the era of modern software development and AI Agent collaborative programming, &quot;Sandbox&quot; technology has become the core cornerstone for protecting developers&#39; host systems, isolating untrusted third-party scripts, and supporting the autonomous execution of Agents.</p>
+<p>This article, combined with practical cases from Google Antigravity, will deeply analyze the underlying execution mechanisms, configuration systems, and Telegram Bot integration code of the <strong>Unsandboxed (Raw Host)</strong>, <strong>Local Sandbox</strong>, and <strong>Cloud Sandbox</strong> modes, deconstructing their core differences through graphical workflows.</p>
+<hr>
+<h2 id="1-in-depth-analysis-and-comparison-of-three-execution-modes">1. In-Depth Analysis and Comparison of Three Execution Modes</h2><h3 id="-11-unsandboxed-raw-host-mode">🔓 1.1 Unsandboxed / Raw Host Mode</h3><ul>
+<li><strong>Definition</strong>: The Agent runs directly within the host machine&#39;s file system and shell under the identity of the currently logged-in user on your physical machine.</li>
+<li><strong>Security</strong>: <strong>Extremely Low</strong>. There is no isolation mechanism. If the Agent executes a malicious script or an accidental deletion command (e.g., <code>rm -rf /</code>), the host system will be immediately corrupted.</li>
+<li><strong>File Access</strong>: Can directly read and write any user files on the host machine (including the local <code>~/.ssh</code> key directory, password databases, etc.).</li>
+<li><strong>Resource Consumption</strong>: Fully consumes the CPU, memory, and battery of the local physical machine.</li>
+</ul>
+<h3 id="-12-local-sandbox-mode">🛡️ 1.2 Local Sandbox Mode</h3><ul>
+<li><strong>Definition</strong>: Utilizes OS kernel-level lightweight virtual isolation technology to &quot;lock down&quot; and control the execution environment.</li>
+<li><strong>Security</strong>: <strong>High</strong>. The Agent is locked within a virtual container and cannot snoop on or tamper with any real system files outside the sandbox.</li>
+<li><strong>Underlying Mechanism</strong>:<ul>
+<li><strong>macOS</strong>: Uses the system kernel&#39;s <code>sandbox-exec</code> for process restriction.</li>
+<li><strong>Linux</strong>: Uses Google&#39;s open-source <code>nsjail</code> (cgroups / namespaces) technology for isolation.</li>
+<li><strong>Windows</strong>: Uses the <code>AppContainer</code> mechanism.</li>
+</ul>
+</li>
+<li><strong>Resource Consumption</strong>: Consumes the computing resources (CPU/memory) of the local physical machine.</li>
+</ul>
+<h3 id="-13-cloud-sandbox-mode">☁️ 1.3 Cloud Sandbox Mode</h3><ul>
+<li><strong>Definition</strong>: The sandbox is fully managed in Google Cloud data centers, physically completely isolated from the developer&#39;s local physical machine.</li>
+<li><strong>Security</strong>: <strong>Extreme (Absolutely Safe)</strong>.</li>
+<li><strong>Underlying Mechanism</strong>: Upon initiating an API call, Google Cloud dynamically provisions (configures and starts) an Ephemeral Linux Container in the cloud within seconds, and <strong>completely physically destroys</strong> it after execution completes or the TTL expires.</li>
+<li><strong>Network and Storage</strong>: Runs by default in Google&#39;s Virtual Private Cloud (VPC), with the egress IP belonging to Google Cloud. State and file persistence across multiple tasks can be achieved via API.</li>
+<li><strong>Resource Consumption</strong>: Consumes zero CPU/memory/battery of the local computer; it utilizes cloud-based Serverless computing power.</li>
+</ul>
+<hr>
+<h2 id="2-experimental-project-cloud-sandbox-scheduled-telegram-broadcaster-requirements-specification">2. Experimental Project: Cloud Sandbox Scheduled Telegram Broadcaster Requirements Specification</h2><h3 id="-21-core-project-requirements-and-ultimate-goal">🎯 2.1 Core Project Requirements and Ultimate Goal</h3><p>The core business requirement of this project is: <strong>To create a secure, isolated sandbox environment and run an automated telemetry program within it as a resident Daemon. The program must automatically capture the sandbox&#39;s current outbound public egress IP, its physical geographic location (country, province, city), and real-time meteorological metrics (weather conditions and temperature) every 10 minutes, and securely push this data to the developer&#39;s personal Telegram Bot for real-time automated broadcasting via a strongly encrypted HTTPS protocol.</strong></p>
+<p>To ensure this goal is achieved with 100% stability in a dynamic and restricted cloud sandbox environment, the program is endowed with the following refined functions and design definitions:</p>
+<h3 id="-22-core-business-function-breakdown">🎯 2.2 Core Business Function Breakdown</h3><ol>
+<li><strong>Self-Probing</strong>:<ul>
+<li>The program must automatically identify which physical Google Cloud data center (city, region, and country) the current sandbox is provisioned in.</li>
+<li>Automatically extract the public egress IP and Internet Service Provider (ISP) information of the current sandbox session for network auditing.</li>
+</ul>
+</li>
+<li><strong>Telemetry Data Collection</strong>:<ul>
+<li>Seamlessly invoke external weather APIs to automatically fetch real-time meteorological metrics (weather conditions, temperature, etc.) based on the sandbox&#39;s current physical IP location.</li>
+</ul>
+</li>
+<li><strong>Telegram Telemetry Push</strong>:<ul>
+<li>Construct a unified data dashboard and automatically push it in a formatted manner to the designated Telegram Bot chat room.</li>
+</ul>
+</li>
+<li><strong>Scheduling Modes</strong>:<ul>
+<li><strong>Single Audit Mode (<code>--once</code>)</strong>: Execute self-probing, collection, and pushing once, then exit immediately, facilitating rapid cold starts or integration into broader automated pipelines.</li>
+<li><strong>Background Daemon Mode (<code>--daemon &lt;seconds&gt;</code>)</strong>: Keep the program resident in the sandbox background, automatically looping the above tasks at specified second intervals (e.g., every 600 seconds / 10 minutes).</li>
+</ul>
+</li>
+</ol>
+<h3 id="-22-extreme-sandbox-compatibility-and-non-functional-requirements">🛡️ 2.2 Extreme Sandbox Compatibility and Non-Functional Requirements</h3><ul>
+<li><strong>Zero External Library Dependencies (Zero-Dependency)</strong>:<ul>
+<li>Cloud sandboxes are often brand-new, highly secure, minimal Linux containers. Pulling third-party libraries (like <code>requests</code>) not only increases network cold-start latency but is also highly likely to be blocked by sandbox network whitelists.</li>
+<li><strong>Requirement</strong>: The code must be written 100% using Python&#39;s built-in standard libraries (only using <code>urllib</code>, <code>json</code>, <code>ssl</code>, etc.) to ensure it works &quot;out-of-the-box&quot; in any ephemeral sandbox spun up in seconds.</li>
+</ul>
+</li>
+<li><strong>Physical Isolation of Key Configurations (Decoupled Credentials)</strong>:<ul>
+<li>Code in the sandbox often needs to be committed to version control systems; confidential information like Bot Tokens must absolutely not be hardcoded.</li>
+<li><strong>Requirement</strong>: Use a standard <code>.env</code> configuration file to host API Keys. Read them via environment variables after development, completely delineating the boundary between code logic and key credentials.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-system-software-and-environmental-topology-architecture-design-system-architecture-topology">3. System Software and Environmental Topology Architecture Design (System Architecture & Topology)</h2><p>To achieve the aforementioned design goals of strong isolation, high availability, and zero dependencies, we have designed the following <strong>layered integration topology architecture</strong> for this Agent application:</p>
+<div class="code-wrapper"><pre><code class="language-text">+-----------------------------------------------------------------------------------+
+|                       Host and Sandbox Physical Execution Boundary                |
+|                                                                                   |
+|  +-----------------------------------------------------------------------------+  |
+|  |             Google Cloud / Local Linux Sandbox (Execution Environment)      |  |
+|  |                                                                             |  |
+|  |    +-------------------------------------------------------------------+    |  |
+|  |    | 1. Configuration Layer                                            |    |  |
+|  |    |    - Map .env file (TELEGRAM_BOT_TOKEN / CHAT_ID)                 |    |  |
+|  |    +------------------+------------------------------------------------+    |  |
+|  |                       | (Read &amp; Inject)                                     |  |
+|  |                       v                                                     |  |
+|  |    +-------------------------------------------------------------------+    |  |
+|  |    | 2. Execution Core                                                 |    |  |
+|  |    |    - Python Daemon Loop Scheduling Engine (while True)            |    |  |
+|  |    |    - Exception and TLS Handshake Failure Capture Filter           |    |  |
+|  |    +------------------+------------------------------------------------+    |  |
+|  |                       | (Trigger Self-Probe)                                |  |
+|  |                       v                                                     |  |
+|  |    +-------------------------------------------------------------------+    |  |
+|  |    | 3. Telemetry Engine                                               |    |  |
+|  |    |    - Pure urllib Interface                                        |    |  |
+|  |    |    - ipinfo.io API (Fetch Egress IP and Location e.g., Toronto)   |    |  |
+|  |    |    - wttr.in Weather API (Fetch Temperature and Weather)          |    |  |
+|  |    +------------------+------------------------------------------------+    |  |
+|  |                       | (Send TLS Handshake Payload)                        |  |
+|  |                       v                                                     |  |
+|  |    +-------------------------------------------------------------------+    |  |
+|  |    | 4. Egress Network Layer                                           |    |  |
+|  |    |    - Sandbox Mesh VPC Virtual NIC (Toronto Egress)                |    |  |
+|  |    +------------------+------------------------------------------------+    |  |
+|  +-----------------------|-----------------------------------------------------+  |
++--------------------------|--------------------------------------------------------+
+                           |
+                           | (SSL / TLS 1.3 Secure Link Traversal)
+                           v
+        +------------------+------------------+
+        | Telegram Cloud Servers (Telegram Bot API) |
+        +------------------+------------------+
+                           |
+                           | (Push Message)
+                           v
+        +------------------+------------------+
+        | User Physical Terminal (Telegram Mobile App) |
+        +-------------------------------------+
+</code></pre>
+</div><h3 id="-detailed-explanation-of-the-four-layer-architecture">📦 Detailed Explanation of the Four-Layer Architecture:</h3><ol>
+<li><strong>Configuration Layer</strong>:
+Responsible for implementing the &quot;decoupled storage&quot; of the application. Upon program startup, a custom <code>load_env()</code> parsing module securely injects the encrypted configuration file from the disk into runtime memory, preventing Token exposure in the event of code leakage.</li>
+<li><strong>Execution Core Layer</strong>:
+The core state machine at runtime. It is responsible for controlling the timer loop and capturing all underlying Alert exceptions during network jitter and SSL/TLS handshakes, ensuring the process does not crash and exit due to an accidental network packet loss or TLS downgrade rejection.</li>
+<li><strong>Telemetry Engine Layer</strong>:
+The technical highlight of the program. It bypasses third-party libraries, directly constructs Raw HTTP Headers in memory, masquerades as <code>curl</code> or a <code>Mozilla</code> browser, fetches geographic and meteorological information respectively, and cleans and reconstructs the returned semi-structured data into Markdown data entities.</li>
+<li><strong>Egress Network and Communication Layer</strong>:
+Relies on the sandbox&#39;s virtual network stack. Combined with Google Cloud / local network drivers, it strongly encrypts data packets via the TLS protocol, ultimately pushing the state to global Telegram servers.</li>
+</ol>
+<hr>
+<h2 id="4-core-configuration-comparison-of-the-three-modes">4. Core Configuration Comparison of the Three Modes</h2><p>In the Antigravity client, the configuration file is located at <code>~/.gemini/antigravity-cli/settings.json</code>. You can switch between different modes through combinations of the following fields:</p>
+<h3 id="41-mode-configuration-comparison-table">4.1 Mode Configuration Comparison Table</h3><table>
+<thead>
+<tr>
+<th align="left">Mode</th>
+<th align="left"><code>enableTerminalSandbox</code></th>
+<th align="left"><code>cloudSandbox</code> Block</th>
+<th align="left">Corresponding Underlying Driver</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Unsandboxed Mode</strong></td>
+<td align="left"><code>false</code></td>
+<td align="left"><em>None</em> or <em>Deleted</em></td>
+<td align="left">Executes commands directly on the physical host machine</td>
+</tr>
+<tr>
+<td align="left"><strong>Local Sandbox Mode</strong></td>
+<td align="left"><code>true</code></td>
+<td align="left"><em>None</em> or <em>Deleted</em></td>
+<td align="left">macOS: <code>sandbox-exec</code><br>Linux: <code>nsjail</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Local Docker Sandbox</strong></td>
+<td align="left"><code>true</code></td>
+<td align="left"><code>&quot;provider&quot;: &quot;docker&quot;</code></td>
+<td align="left">Spins up an ephemeral container in the local Docker engine</td>
+</tr>
+<tr>
+<td align="left"><strong>Cloud Managed Sandbox</strong></td>
+<td align="left"><code>true</code></td>
+<td align="left"><code>&quot;provider&quot;: &quot;google-cloud&quot;</code></td>
+<td align="left">Google Cloud Serverless Ephemeral Linux</td>
+</tr>
+</tbody></table>
+<h3 id="42-configuration-file-examples">4.2 Configuration File Examples</h3><h4 id="-local-sandbox-configuration-settingsjson">📄 Local Sandbox Configuration (`settings.json`)</h4><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;enableTerminalSandbox&quot;: true,
+  &quot;terminalExecutionPolicy&quot;: &quot;proceed-in-sandbox&quot;
+}
+</code></pre>
+</div><h4 id="-cloud-sandbox-configuration-settingsjson">📄 Cloud Sandbox Configuration (`settings.json`)</h4><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;enableTerminalSandbox&quot;: true,
+  &quot;cloudSandbox&quot;: {
+    &quot;provider&quot;: &quot;google-cloud&quot;,
+    &quot;ttlMinutes&quot;: 35,
+    &quot;autoDestroyOnIdle&quot;: true
+  }
+}
+</code></pre>
+</div><hr>
+<h2 id="5-minimalist-high-compatibility-sandbox-execution-code-implementationl-linux-container-ephemeral-isolated-container-and-is-completely-physically-destroyed-after-execution-completes-or-the-ttl-expires">5. Minimalist, High-Compatibility Sandbox Execution Code Implementationl Linux Container (ephemeral isolated container), and is **completely physically destroyed** after execution completes or the TTL expires.</h2><ul>
+<li><strong>Network and Storage</strong>: Runs by default in Google&#39;s Virtual Private Cloud (VPC), with the egress IP belonging to Google Cloud. State and file persistence across multiple tasks can be achieved via API.</li>
+<li><strong>Resource Consumption</strong>: Consumes zero CPU/memory/battery of the local computer; it utilizes cloud-based Serverless computing power.</li>
+</ul>
+<hr>
+<h2 id="2-core-configuration-comparison-of-the-three-modes">2. Core Configuration Comparison of the Three Modes</h2><p>In the Antigravity client, the configuration file is located at <code>~/.gemini/antigravity-cli/settings.json</code>. You can switch between different modes through combinations of the following fields:</p>
+<h3 id="21-mode-configuration-comparison-table">2.1 Mode Configuration Comparison Table</h3><table>
+<thead>
+<tr>
+<th align="left">Mode</th>
+<th align="left"><code>enableTerminalSandbox</code></th>
+<th align="left"><code>cloudSandbox</code> Block</th>
+<th align="left">Corresponding Underlying Driver</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Unsandboxed Mode</strong></td>
+<td align="left"><code>false</code></td>
+<td align="left"><em>None</em> or <em>Deleted</em></td>
+<td align="left">Executes commands directly on the physical host machine</td>
+</tr>
+<tr>
+<td align="left"><strong>Local Sandbox Mode</strong></td>
+<td align="left"><code>true</code></td>
+<td align="left"><em>None</em> or <em>Deleted</em></td>
+<td align="left">macOS: <code>sandbox-exec</code><br>Linux: <code>nsjail</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Local Docker Sandbox</strong></td>
+<td align="left"><code>true</code></td>
+<td align="left"><code>&quot;provider&quot;: &quot;docker&quot;</code></td>
+<td align="left">Spins up an ephemeral container in the local Docker engine</td>
+</tr>
+<tr>
+<td align="left"><strong>Cloud Managed Sandbox</strong></td>
+<td align="left"><code>true</code></td>
+<td align="left"><code>&quot;provider&quot;: &quot;google-cloud&quot;</code></td>
+<td align="left">Google Cloud Serverless Ephemeral Linux</td>
+</tr>
+</tbody></table>
+<h3 id="22-configuration-file-examples">2.2 Configuration File Examples</h3><h4 id="-local-sandbox-configuration-settingsjson">📄 Local Sandbox Configuration (`settings.json`)</h4><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;enableTerminalSandbox&quot;: true,
+  &quot;terminalExecutionPolicy&quot;: &quot;proceed-in-sandbox&quot;
+}
+</code></pre>
+</div><h4 id="-cloud-sandbox-configuration-settingsjson">📄 Cloud Sandbox Configuration (`settings.json`)</h4><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;enableTerminalSandbox&quot;: true,
+  &quot;cloudSandbox&quot;: {
+    &quot;provider&quot;: &quot;google-cloud&quot;,
+    &quot;ttlMinutes&quot;: 30,
+    &quot;autoDestroyOnIdle&quot;: true
+  }
+}
+</code></pre>
+</div><hr>
+<h2 id="3-minimalist-high-compatibility-sandbox-execution-code-implementation">3. Minimalist, High-Compatibility Sandbox Execution Code Implementation</h2><p>To meet the cloud sandbox requirements of <strong>&quot;fast cold start and no redundant dependencies&quot;</strong>, we have written a high-dimensional environment probing and Telegram notification script that relies solely on the Python 3 standard library (without using any <code>pip</code> third-party packages): <code>telegram_cron_simulator.py</code>.</p>
+<h3 id="-security-credential-configuration-file-env">📄 Security Credential Configuration File (`.env`)</h3><div class="code-wrapper"><pre><code class="language-env">TELEGRAM_BOT_TOKEN=8763417888:AAE3U-xxxxxx
+TELEGRAM_CHAT_ID=8250511888
+</code></pre>
+</div><h3 id="-sandbox-main-program-code-telegram_cron_simulatorpy">📄 Sandbox Main Program Code (`telegram_cron_simulator.py`)</h3><div class="code-wrapper"><pre><code class="language-python">#!/usr/bin/env python3
+import os
+import sys
+import time
+import urllib.request
+import urllib.parse
+import json
+from datetime import datetime
+
+def load_env():
+    env_file = &quot;.env&quot;
+    if not os.path.exists(env_file):
+        env_file = os.path.join(os.path.dirname(__file__), &quot;.env&quot;)
+        if not os.path.exists(env_file):
+            return {}
+    config = {}
+    with open(env_file, &quot;r&quot;) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith(&quot;#&quot;):
+                continue
+            if &quot;=&quot; in line:
+                key, val = line.split(&quot;=&quot;, 1)
+                config[key.strip()] = val.strip()
+    return config
+
+def get_sandbox_network_info():
+    &quot;&quot;&quot;Probe the sandbox&#39;s public IP and geographic location via ipinfo.io&quot;&quot;&quot;
+    try:
+        req = urllib.request.Request(&quot;https://ipinfo.io/json&quot;, headers={&#39;User-Agent&#39;: &#39;Mozilla/5.0&#39;})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            data = json.loads(response.read().decode())
+            return {
+                &quot;ip&quot;: data.get(&quot;ip&quot;, &quot;Unknown IP&quot;),
+                &quot;city&quot;: data.get(&quot;city&quot;, &quot;Unknown City&quot;),
+                &quot;region&quot;: data.get(&quot;region&quot;, &quot;Unknown Region&quot;),
+                &quot;country&quot;: data.get(&quot;country&quot;, &quot;Unknown Country&quot;),
+                &quot;org&quot;: data.get(&quot;org&quot;, &quot;Unknown ISP&quot;)
+            }
+    except Exception as e:
+        return {&quot;ip&quot;: &quot;Unknown IP&quot;, &quot;city&quot;: &quot;Unknown City&quot;, &quot;region&quot;: &quot;Unknown Region&quot;, &quot;country&quot;: &quot;Unknown Country&quot;, &quot;org&quot;: str(e)}
+
+def get_weather(city):
+    &quot;&quot;&quot;Probe local real-time weather using wttr.in without an API key&quot;&quot;&quot;
+    if not city or city == &quot;Unknown City&quot;:
+        url = &quot;https://wttr.in?format=%C+%t&quot;
+    else:
+        city_encoded = urllib.parse.quote(city)
+        url = f&quot;https://wttr.in/{city_encoded}?format=%C+%t&quot;
+    try:
+        req = urllib.request.Request(url, headers={&#39;User-Agent&#39;: &#39;curl/7.79.1&#39;})
+        with urllib.request.urlopen(req, timeout=5) as response:
+            return response.read().decode(&#39;utf-8&#39;).strip()
+    except Exception as e:
+        return f&quot;Weather unavailable ({str(e)})&quot;
+
+def send_telegram_message(token, chat_id, message):
+    url = f&quot;https://api.telegram.org/bot{token}/sendMessage&quot;
+    payload = urllib.parse.urlencode({&quot;chat_id&quot;: chat_id, &quot;text&quot;: message, &quot;parse_mode&quot;: &quot;Markdown&quot;}).encode(&quot;utf-8&quot;)
+    req = urllib.request.Request(url, data=payload, headers={&quot;User-Agent&quot;: &quot;Mozilla/5.0&quot;})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            res_data = json.loads(response.read().decode())
+            return res_data.get(&quot;ok&quot;), &quot;Success&quot;
+    except Exception as e:
+        return False, str(e)
+</code></pre>
+</div><hr>
+<h2 id="4-architecture-configuration-and-execution-flowchart-mermaid">4. Architecture Configuration and Execution Flowchart (Mermaid)</h2><p>The flowchart below vividly illustrates how Antigravity, under different configurations, schedules and determines which sandbox environment the Agent commands are executed in, as well as the final communication link of the Telegram Bot:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart TD
+    Start(["Developer enters command agy"]) --> ReadConfig["Read settings.json configuration file"]
+    
+    ReadConfig --> CheckSandboxEnabled{"enableTerminalSandbox == true?"}
+    
+    %% Unsandboxed Route
+    CheckSandboxEnabled -- No --> UnsandboxedRun["Unsandboxed Native Mode (Raw Local)"]
+    UnsandboxedRun --> HostShell["Direct connection to local terminal shell (UID 501 / root)"]
+    HostShell --> LocalWrite["Directly modify local physical hard drive"]
+    
+    %% Sandboxed Route
+    CheckSandboxEnabled -- Yes --> CheckCloudProvider{"Does cloudSandbox block exist?"}
+    
+    %% Local Sandbox Route
+    CheckCloudProvider -- No --> LocalSandboxRun["Local Sandbox Mode (Local Sandbox)"]
+    LocalSandboxRun --> MacSandbox["macOS sandbox-exec isolation mesh"]
+    MacSandbox --> LocalJail["Local hard drive isolation (CWD restriction)"]
+    
+    %% Cloud/Docker Sandbox Route
+    CheckCloudProvider -- Yes --> CheckProvider{"What is the value of provider?"}
+    CheckProvider -- "google-cloud" --> CloudSandboxRun["Cloud Managed Sandbox Mode"]
+    CloudSandboxRun --> GCPContainer["Google Cloud Ephemeral Container"]
+    GCPContainer --> GcpNetwork["GCP VPC network egress (Toronto AS20473)"]
+    
+    CheckProvider -- "docker" --> LocalDockerRun["Local Docker Sandbox Mode"]
+    LocalDockerRun --> LocalDockerContainer["Spin up lightweight local Docker container"]
+    LocalDockerContainer --> LocalDockerNetwork["Share local network"]
+    
+    %% Telegram Event Flow
+    GcpNetwork & LocalJail & LocalDockerNetwork --> ExecApp["Execute telegram_cron_simulator.py"]
+    ExecApp --> ReadEnv["Read .env key configuration file"]
+    ReadEnv --> IpInfoProbe["Call ipinfo.io to fetch sandbox egress IP / geographic location"]
+    IpInfoProbe --> WttrProbe["Call wttr.in to fetch local real-time weather"]
+    WttrProbe --> TelegramApi["Call Telegram API (api.telegram.org)"]
+    TelegramApi --> UserTelegram["User's mobile Telegram App receives beautiful Tick message"]
+
+    style UnsandboxedRun fill:#ff9999,stroke:#ff3333,stroke-width:2px;
+    style LocalSandboxRun fill:#ffff99,stroke:#cccc00,stroke-width:2px;
+    style CloudSandboxRun fill:#99ff99,stroke:#33cc33,stroke-width:2px;
+    style UserTelegram fill:#99ccff,stroke:#3333ff,stroke-width:2px;</pre></div><hr>
+<h2 id="5-practical-execution-case-study-and-tls-handshake-troubleshooting-case-study-ssltls-debugging">5. Practical Execution Case Study and TLS Handshake Troubleshooting (Case Study & SSL/TLS Debugging)</h2><p>In our practical execution, you received the following extremely valuable real execution log on your mobile Telegram:</p>
+<div class="code-wrapper"><pre><code class="language-text">Sandbox Clock Tick #5
+
+📍 Location: Toronto, Ontario
+🌐 Egress IP: 155.138.147.192
+🌤️ Weather: Weather unavailable (&lt;urlopen error [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert protocol version (_ssl.c:1129)&gt;)
+🕒 Current Time: 2026-05-23 13:11:41
+
+🐳 Environment: Sandbox Daemon Active
+</code></pre>
+</div><h3 id="-multi-dimensional-deep-analysis-of-execution-results">🔍 Multi-Dimensional Deep Analysis of Execution Results</h3><h4 id="1-consistency-of-location-and-egress-ip">1) 📍 Consistency of Location and Egress IP</h4><ul>
+<li><strong>Egress IP</strong>: <code>155.138.147.192</code>.</li>
+<li><strong>Geographic Location</strong>: <code>Toronto, Ontario</code> (Toronto, Ontario, Canada).</li>
+<li><strong>Analysis</strong>: This perfectly matches our network probing results. It indicates that all outbound traffic from the Python process running in the sandbox is routed through the Toronto gateway.</li>
+</ul>
+<h4 id="2-classic-failure-analysis-tlsv1_alert_protocol_version-error">2) ❌ Classic Failure Analysis: `TLSV1_ALERT_PROTOCOL_VERSION` Error</h4><p>This is the <strong>most technically significant core highlight</strong> of this experiment.</p>
+<ul>
+<li><strong>Symptom</strong>: An <code>SSL: TLSV1_ALERT_PROTOCOL_VERSION</code> exception was thrown when fetching the weather.</li>
+<li><strong>Root Cause Analysis</strong>:<ul>
+<li>The weather data source <code>wttr.in</code> is hosted behind a modern cloud CDN (like Cloudflare). For security reasons, the CDN <strong>strictly requires clients to use TLS 1.2 or TLS 1.3 protocols</strong> for encrypted handshakes and rejects all older versions of TLS handshakes.</li>
+<li>When our Python script initiated the <code>urlopen</code> request in your <strong>local Mac&#39;s legacy Python/OpenSSL runtime environment</strong>, the local OpenSSL library, due to an older version or incorrect default negotiation strategy, attempted to &quot;knock on the door&quot; using the deprecated <strong>TLS 1.0 or TLS 1.1 protocols</strong>.</li>
+<li>Consequently, Cloudflare triggered a security alert and directly sent a <strong><code>TLSv1 Alert Protocol Version</code></strong> handshake rejection signal to your Python process, causing the network request to abort.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="-the-golden-value-of-the-managed-cloud-sandbox">🐳 The Golden Value of the Managed Cloud Sandbox</h3><p>This TLS error proves with facts exactly <strong>why we need a cloud-managed sandbox</strong>!</p>
+<ol>
+<li><strong>Completely Standardized Environment</strong>:<ul>
+<li><strong>Drawbacks of Local Environments</strong>: The versions of OpenSSL, Python, and system certificate libraries installed on every developer&#39;s Mac/Windows computer vary wildly. This easily leads to the classic &quot;it works on my machine, but fails on yours&quot; environment inconsistency problem (such as this TLS negotiation failure).</li>
+<li><strong>Advantages of Cloud Sandboxes</strong>: The Ephemeral Linux container automatically allocated by Google Cloud is a <strong>highly standardized, pristine environment pre-installed with the latest security patches and OpenSSL 1.1.1+/3.0+ libraries</strong>. When handshaking in the cloud, it defaults to the most secure <strong>TLS 1.3</strong> protocol, <strong>ensuring this type of TLSv1 Alert downgrade protocol error never occurs</strong>.</li>
+</ul>
+</li>
+<li><strong>Maintenance-Free Execution Environment</strong>:<ul>
+<li>Cloud sandboxes free developers from wrestling with complex local commands like <code>brew upgrade openssl</code> or reinstalling Python. All environmental dependencies and protocol negotiations are entirely managed and resolved by the cloud infrastructure.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="6-managed-sandbox-enterprise-setup-billing-guide">6. Managed Sandbox Enterprise Setup & Billing Guide</h2><p>In actual enterprise development or high-throughput Agent automated pipelines, rationally defining, configuring, and managing the cloud computing power and billing of <strong>Gemini Managed Agents</strong> is the core to reducing operational costs and ensuring compliance.</p>
+<h3 id="61-detailed-explanation-of-billing-models-how-its-billed">6.1 Detailed Explanation of Billing Models (How It's Billed)</h3><p>The billing system for Gemini Managed Agents adopts a strict <strong>Pay-as-you-go</strong> and <strong>consumption-based billing</strong> model, primarily consisting of three parts:</p>
+<ol>
+<li><strong>Sandbox Compute Charges</strong>:<ul>
+<li>When the sandbox is in an Active state, billing is based on the consumed <strong>vCPU-hours</strong> and <strong>GiB Memory-hours</strong>.</li>
+<li><strong>Cold Start and Idle Optimization</strong>: Google Cloud provides the <code>autoDestroyOnIdle</code> mechanism. If the Agent task finishes and there is no new interaction within the specified time, the sandbox is <strong>instantaneously physically destroyed</strong>, halting the generation of compute charges.</li>
+</ul>
+</li>
+<li><strong>Model Token Consumption</strong>:<ul>
+<li>The inference cost of the Agent&#39;s core brain is separated from the sandbox compute power, billed independently based on the number of <strong>Input Tokens</strong> and <strong>Output Tokens</strong> of the model (e.g., Gemini 3.5 Flash / Gemini 3.1 Pro).</li>
+</ul>
+</li>
+<li><strong>Add-on Services</strong>:<ul>
+<li><strong>Google Search Grounding</strong>: Each internet search is billed per 1,000 Queries.</li>
+<li><strong>Context Caching</strong>: Provides caching for ultra-long contexts or large codebases, billed per GiB-hour (effectively reducing Token costs for repeated inferences).</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="62-cross-region-creation-and-data-residency-region-based-allocation">6.2 Cross-Region Creation and Data Residency (Region-based Allocation)</h3><p>Considering <strong>Data Residency</strong>, <strong>Latency</strong>, and <strong>Service Availability</strong>, Google Cloud allows developers to specify concrete physical regions to provision cloud sandboxes:</p>
+<ul>
+<li><strong>Data Compliance</strong>: Enterprise customers can mandate that sandboxes must run in <code>europe-west1</code> (Belgium) or <code>asia-northeast1</code> (Tokyo), ensuring sensitive code and interaction data never leave the specified jurisdiction.</li>
+<li><strong>Physical Latency</strong>: Choosing a Region closest to your actual API request source (e.g., if developing locally in Hong Kong, selecting the <code>asia-east1</code> Taiwan node) can minimize the sandbox&#39;s network cold-start time.</li>
+</ul>
+<hr>
+<h3 id="63-detailed-dictionary-of-settingsjson-parameters-configuration-spec">6.3 Detailed Dictionary of `settings.json` Parameters (Configuration Spec)</h3><p>In the Antigravity client, all personalized configurations related to cloud sandboxes, billing, and regions are saved in the <code>cloudSandbox</code> block of <code>~/.gemini/antigravity-cli/settings.json</code>.</p>
+<p>Below is the complete parameter dictionary and their industrial-grade meanings:</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;enableTerminalSandbox&quot;: true, 
+  &quot;cloudSandbox&quot;: {
+    &quot;provider&quot;: &quot;google-cloud&quot;,
+    &quot;model&quot;: &quot;gemini-3.5-flash&quot;,
+    &quot;region&quot;: &quot;us-central1&quot;,
+    &quot;ttlMinutes&quot;: 35,
+    &quot;autoDestroyOnIdle&quot;: true,
+    &quot;billingProjectId&quot;: &quot;gcp-prod-billing-1029&quot;,
+    &quot;networkIsolation&quot;: &quot;isolated-vpc&quot;,
+    &quot;enableInternetAccess&quot;: true
+  }
+}
+</code></pre>
+</div><h4 id="-detailed-explanation-of-core-parameters">🔑 Detailed Explanation of Core Parameters:</h4><ul>
+<li><strong><code>provider</code></strong> <em>(String)</em>: The physical provider of the sandbox. Optional values are <code>&quot;google-cloud&quot;</code> (Google managed cloud sandbox), <code>&quot;docker&quot;</code> (local physical machine container), or <code>&quot;local&quot;</code> (local system-level isolation).</li>
+<li><strong><code>model</code></strong> <em>(String)</em>: The LLM version driving the Managed Agent. The highly cost-effective <code>&quot;gemini-3.5-flash&quot;</code> is recommended; complex architectural tasks can be upgraded to <code>&quot;gemini-3.1-pro&quot;</code>.</li>
+<li><strong><code>region</code></strong> <em>(String)</em>: Specifies the region where the cloud sandbox physical container is created. For example: <code>&quot;us-central1&quot;</code> (US Central), <code>&quot;europe-west3&quot;</code> (Frankfurt), <code>&quot;asia-east1&quot;</code> (Taiwan).</li>
+<li><strong><code>ttlMinutes</code></strong> <em>(Integer)</em>: Forced maximum Time-To-Live (lifecycle upper limit). In minutes. Exceeding this time, regardless of whether the task has finished, the cloud will automatically force physical reclamation to prevent processes from falling into infinite loops and generating astronomical bills.</li>
+<li><strong><code>autoDestroyOnIdle</code></strong> <em>(Boolean)</em>: Idle auto-destroy switch. When set to <code>true</code>, if the Agent has no new interactions within 5 minutes after completing the current task, the cloud sandbox automatically shuts down.</li>
+<li><strong><code>billingProjectId</code></strong> <em>(String)</em>: The bound Google Cloud Project ID. All compute charges, Token fees, and network traffic fees generated in the cloud sandbox are directly deducted from this project&#39;s GCP billing.</li>
+<li><strong><code>networkIsolation</code></strong> <em>(String)</em>: Network isolation mode. <code>&quot;isolated-vpc&quot;</code> means the sandbox is encapsulated within an enterprise-exclusive secure VPC, enabling secure access to enterprise intranet databases; <code>&quot;public-egress&quot;</code> means routing directly through a public egress.</li>
+<li><strong><code>enableInternetAccess</code></strong> <em>(Boolean)</em>: Whether to allow programs inside the sandbox to access the external internet. If handling highly confidential projects, this can be set to <code>false</code>. In this case, Python scripts within the sandbox will be unable to call external APIs like Telegram, entering a state of complete &quot;standalone physical isolation.&quot;</li>
+</ul>
+<hr>
+<h3 id="-7-official-authoritative-resources-and-links-official-references">🔗 7. Official Authoritative Resources and Links (Official References)</h3><p>For in-depth learning and production deployment, please refer to Google&#39;s official authoritative documentation and real-time billing calculators:</p>
+<ul>
+<li>🌐 <strong>Google AI Studio Developer Platform</strong>: <a href="https://aistudio.google.com/">https://aistudio.google.com/</a> <em>(Obtain and manage your API Keys and account quotas)</em></li>
+<li>🌐 <strong>Google Gemini API Official Development Documentation</strong>: <a href="https://ai.google.dev/gemini-api/docs">https://ai.google.dev/gemini-api/docs</a> <em>(Standard guidelines for Managed Agents and interactive APIs)</em></li>
+<li>🌐 <strong>Google Cloud Vertex AI Official Pricing Details Page</strong>: <a href="https://cloud.google.com/vertex-ai/pricing">https://cloud.google.com/vertex-ai/pricing</a> <em>(The most real-time billing standards for vCPU, memory, and LLM Tokens)</em></li>
+<li>🌐 <strong>Google Antigravity Official Portal</strong>: <a href="https://antigravity.google">https://antigravity.google</a> <em>(View system instructions regarding the client, CLI tool <code>agy</code>, and the latest Agent architectures)</em></li>
+</ul>
+<hr>
+<h2 id="8-conclusion">8. Conclusion</h2><ol>
+<li><strong>Unsandboxed Mode</strong> is suitable for quickly running highly trusted lightweight tools, but it hands over all the keys to the system to the AI;</li>
+<li><strong>Local Sandbox Mode</strong> is a highly cost-effective local security lock, achieving free resource usage and real-time feedback without exposing core local privacy data to the AI;</li>
+<li><strong>Cloud Sandbox Mode</strong> is the ultimate cloud-native production environment. It provides physical-level network and system isolation, automatically destroying itself after completing development and scheduled daemon tasks, representing the secure future of AI collaborative development.</li>
+</ol>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="1-in-depth-analysis-and-comparison-of-three-execution-modes" data-astro-cid-4sn4zg3r> <a href="#1-in-depth-analysis-and-comparison-of-three-execution-modes" data-astro-cid-4sn4zg3r>1. In-Depth Analysis and Comparison of Three Execution Modes</a> </li><li class="toc-item h3-nav" data-slug="-11-unsandboxed-raw-host-mode" data-astro-cid-4sn4zg3r> <a href="#-11-unsandboxed-raw-host-mode" data-astro-cid-4sn4zg3r>🔓 1.1 Unsandboxed / Raw Host Mode</a> </li><li class="toc-item h3-nav" data-slug="-12-local-sandbox-mode" data-astro-cid-4sn4zg3r> <a href="#-12-local-sandbox-mode" data-astro-cid-4sn4zg3r>🛡️ 1.2 Local Sandbox Mode</a> </li><li class="toc-item h3-nav" data-slug="-13-cloud-sandbox-mode" data-astro-cid-4sn4zg3r> <a href="#-13-cloud-sandbox-mode" data-astro-cid-4sn4zg3r>☁️ 1.3 Cloud Sandbox Mode</a> </li><li class="toc-item " data-slug="2-experimental-project-cloud-sandbox-scheduled-telegram-broadcaster-requirements-specification" data-astro-cid-4sn4zg3r> <a href="#2-experimental-project-cloud-sandbox-scheduled-telegram-broadcaster-requirements-specification" data-astro-cid-4sn4zg3r>2. Experimental Project: Cloud Sandbox Scheduled Telegram Broadcaster Requirements Specification</a> </li><li class="toc-item h3-nav" data-slug="-21-core-project-requirements-and-ultimate-goal" data-astro-cid-4sn4zg3r> <a href="#-21-core-project-requirements-and-ultimate-goal" data-astro-cid-4sn4zg3r>🎯 2.1 Core Project Requirements and Ultimate Goal</a> </li><li class="toc-item h3-nav" data-slug="-22-core-business-function-breakdown" data-astro-cid-4sn4zg3r> <a href="#-22-core-business-function-breakdown" data-astro-cid-4sn4zg3r>🎯 2.2 Core Business Function Breakdown</a> </li><li class="toc-item h3-nav" data-slug="-22-extreme-sandbox-compatibility-and-non-functional-requirements" data-astro-cid-4sn4zg3r> <a href="#-22-extreme-sandbox-compatibility-and-non-functional-requirements" data-astro-cid-4sn4zg3r>🛡️ 2.2 Extreme Sandbox Compatibility and Non-Functional Requirements</a> </li><li class="toc-item " data-slug="3-system-software-and-environmental-topology-architecture-design-system-architecture-topology" data-astro-cid-4sn4zg3r> <a href="#3-system-software-and-environmental-topology-architecture-design-system-architecture-topology" data-astro-cid-4sn4zg3r>3. System Software and Environmental Topology Architecture Design (System Architecture &amp; Topology)</a> </li><li class="toc-item h3-nav" data-slug="-detailed-explanation-of-the-four-layer-architecture" data-astro-cid-4sn4zg3r> <a href="#-detailed-explanation-of-the-four-layer-architecture" data-astro-cid-4sn4zg3r>📦 Detailed Explanation of the Four-Layer Architecture:</a> </li><li class="toc-item " data-slug="4-core-configuration-comparison-of-the-three-modes" data-astro-cid-4sn4zg3r> <a href="#4-core-configuration-comparison-of-the-three-modes" data-astro-cid-4sn4zg3r>4. Core Configuration Comparison of the Three Modes</a> </li><li class="toc-item h3-nav" data-slug="41-mode-configuration-comparison-table" data-astro-cid-4sn4zg3r> <a href="#41-mode-configuration-comparison-table" data-astro-cid-4sn4zg3r>4.1 Mode Configuration Comparison Table</a> </li><li class="toc-item h3-nav" data-slug="42-configuration-file-examples" data-astro-cid-4sn4zg3r> <a href="#42-configuration-file-examples" data-astro-cid-4sn4zg3r>4.2 Configuration File Examples</a> </li><li class="toc-item " data-slug="5-minimalist-high-compatibility-sandbox-execution-code-implementationl-linux-container-ephemeral-isolated-container-and-is-completely-physically-destroyed-after-execution-completes-or-the-ttl-expires" data-astro-cid-4sn4zg3r> <a href="#5-minimalist-high-compatibility-sandbox-execution-code-implementationl-linux-container-ephemeral-isolated-container-and-is-completely-physically-destroyed-after-execution-completes-or-the-ttl-expires" data-astro-cid-4sn4zg3r>5. Minimalist, High-Compatibility Sandbox Execution Code Implementationl Linux Container (ephemeral isolated container), and is completely physically destroyed after execution completes or the TTL expires.</a> </li><li class="toc-item " data-slug="2-core-configuration-comparison-of-the-three-modes" data-astro-cid-4sn4zg3r> <a href="#2-core-configuration-comparison-of-the-three-modes" data-astro-cid-4sn4zg3r>2. Core Configuration Comparison of the Three Modes</a> </li><li class="toc-item h3-nav" data-slug="21-mode-configuration-comparison-table" data-astro-cid-4sn4zg3r> <a href="#21-mode-configuration-comparison-table" data-astro-cid-4sn4zg3r>2.1 Mode Configuration Comparison Table</a> </li><li class="toc-item h3-nav" data-slug="22-configuration-file-examples" data-astro-cid-4sn4zg3r> <a href="#22-configuration-file-examples" data-astro-cid-4sn4zg3r>2.2 Configuration File Examples</a> </li><li class="toc-item " data-slug="3-minimalist-high-compatibility-sandbox-execution-code-implementation" data-astro-cid-4sn4zg3r> <a href="#3-minimalist-high-compatibility-sandbox-execution-code-implementation" data-astro-cid-4sn4zg3r>3. Minimalist, High-Compatibility Sandbox Execution Code Implementation</a> </li><li class="toc-item h3-nav" data-slug="-security-credential-configuration-file-env" data-astro-cid-4sn4zg3r> <a href="#-security-credential-configuration-file-env" data-astro-cid-4sn4zg3r>📄 Security Credential Configuration File (.env)</a> </li><li class="toc-item h3-nav" data-slug="-sandbox-main-program-code-telegramcronsimulatorpy" data-astro-cid-4sn4zg3r> <a href="#-sandbox-main-program-code-telegramcronsimulatorpy" data-astro-cid-4sn4zg3r>📄 Sandbox Main Program Code (telegramcronsimulator.py)</a> </li><li class="toc-item " data-slug="4-architecture-configuration-and-execution-flowchart-mermaid" data-astro-cid-4sn4zg3r> <a href="#4-architecture-configuration-and-execution-flowchart-mermaid" data-astro-cid-4sn4zg3r>4. Architecture Configuration and Execution Flowchart (Mermaid)</a> </li><li class="toc-item " data-slug="5-practical-execution-case-study-and-tls-handshake-troubleshooting-case-study-ssltls-debugging" data-astro-cid-4sn4zg3r> <a href="#5-practical-execution-case-study-and-tls-handshake-troubleshooting-case-study-ssltls-debugging" data-astro-cid-4sn4zg3r>5. Practical Execution Case Study and TLS Handshake Troubleshooting (Case Study &amp; SSL/TLS Debugging)</a> </li><li class="toc-item h3-nav" data-slug="-multi-dimensional-deep-analysis-of-execution-results" data-astro-cid-4sn4zg3r> <a href="#-multi-dimensional-deep-analysis-of-execution-results" data-astro-cid-4sn4zg3r>🔍 Multi-Dimensional Deep Analysis of Execution Results</a> </li><li class="toc-item h3-nav" data-slug="-the-golden-value-of-the-managed-cloud-sandbox" data-astro-cid-4sn4zg3r> <a href="#-the-golden-value-of-the-managed-cloud-sandbox" data-astro-cid-4sn4zg3r>🐳 The Golden Value of the Managed Cloud Sandbox</a> </li><li class="toc-item " data-slug="6-managed-sandbox-enterprise-setup-billing-guide" data-astro-cid-4sn4zg3r> <a href="#6-managed-sandbox-enterprise-setup-billing-guide" data-astro-cid-4sn4zg3r>6. Managed Sandbox Enterprise Setup &amp; Billing Guide</a> </li><li class="toc-item h3-nav" data-slug="61-detailed-explanation-of-billing-models-how-its-billed" data-astro-cid-4sn4zg3r> <a href="#61-detailed-explanation-of-billing-models-how-its-billed" data-astro-cid-4sn4zg3r>6.1 Detailed Explanation of Billing Models (How It&#39;s Billed)</a> </li><li class="toc-item h3-nav" data-slug="62-cross-region-creation-and-data-residency-region-based-allocation" data-astro-cid-4sn4zg3r> <a href="#62-cross-region-creation-and-data-residency-region-based-allocation" data-astro-cid-4sn4zg3r>6.2 Cross-Region Creation and Data Residency (Region-based Allocation)</a> </li><li class="toc-item h3-nav" data-slug="63-detailed-dictionary-of-settingsjson-parameters-configuration-spec" data-astro-cid-4sn4zg3r> <a href="#63-detailed-dictionary-of-settingsjson-parameters-configuration-spec" data-astro-cid-4sn4zg3r>6.3 Detailed Dictionary of settings.json Parameters (Configuration Spec)</a> </li><li class="toc-item h3-nav" data-slug="-7-official-authoritative-resources-and-links-official-references" data-astro-cid-4sn4zg3r> <a href="#-7-official-authoritative-resources-and-links-official-references" data-astro-cid-4sn4zg3r>🔗 7. Official Authoritative Resources and Links (Official References)</a> </li><li class="toc-item " data-slug="8-conclusion" data-astro-cid-4sn4zg3r> <a href="#8-conclusion" data-astro-cid-4sn4zg3r>8. Conclusion</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/ccstatusline-basics-tutorial" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-80c6bd44.jpg" alt="Complete Guide to ccstatusline: Mastering Claude Code Status Bars" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/ccstatusline-basics-tutorial" data-astro-cid-4sn4zg3r>Complete Guide to ccstatusline: Mastering Claude Code Status Bars</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A progressive tutorial for Claude Code users on ccstatusline, covering installation, TUI configuration, technical principles, Powerline styling, and external data integration for status bar mastery.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 24, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/google-antigravity-cli-review-and-troubleshooting" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-99f013f1.jpg" alt="Google Antigravity CLI Review and Troubleshooting Guide: The Gemini CLI Successor" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/google-antigravity-cli-review-and-troubleshooting" data-astro-cid-4sn4zg3r>Google Antigravity CLI Review and Troubleshooting Guide: The Gemini CLI Successor</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>Google is replacing Gemini CLI with the new Go-based Antigravity CLI. This article provides a hands-on review, migration guide, and troubleshooting tips for network and login issues, helping you master this new multi-agent AI coding tool.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 23, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lesson 8: claude-mem Advanced Skills (Part 1) — Mastering Claude Memory Systems: auto memory &amp; claude-mem Guide — AgentUpdate.ai</title><meta name="description" content="Lesson 8: claude-mem Advanced Skills (Part 1) Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/claude-memory-tutorial/lesson-08/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-memory-tutorial/lesson-08/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-memory-tutorial/lesson-08/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-memory-tutorial/lesson-08/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Lesson 8: claude-mem Advanced Skills (Part 1) — Mastering Claude Memory Systems: auto memory &amp; claude-mem Guide — AgentUpdate.ai"><meta property="og:description" content="Lesson 8: claude-mem Advanced Skills (Part 1) Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/claude-memory-tutorial/lesson-08/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Lesson 8: claude-mem Advanced Skills (Part 1) — Mastering Claude Memory Systems: auto memory &amp; claude-mem Guide — AgentUpdate.ai"><meta name="twitter:description" content="Lesson 8: claude-mem Advanced Skills (Part 1) Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Lesson 8: claude-mem Advanced Skills (Part 1) — Mastering Claude Memory Systems: auto memory & claude-mem Guide — AgentUpdate.ai","description":"Lesson 8: claude-mem Advanced Skills (Part 1) Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/claude-memory-tutorial/lesson-08/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/claude-memory-tutorial/lesson-08/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/claude-memory-tutorial/lesson-08/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/claude-memory-tutorial/lesson-08/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/claude-memory-tutorial" class="series-title-link" data-astro-cid-vma7orrt> MASTERING CLAUDE MEMORY SYSTEMS: AUTO MEMORY &amp; CLAUDE-MEM GUIDE </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 1: Core Concepts and Overview of LLM Memory Systems</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 2: Deep Dive into Claude Code auto memory</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 3: auto memory Configuration and Practical Tips</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 4: claude-mem Plugin Core Features and Positioning</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 5: claude-mem MCP Tools and Querying in Practice</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 6: claude-mem Installation, Initialization, and Directory Structure</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 7: Architecture and Data Flow of claude-mem</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-08" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 8: claude-mem Advanced Skills (Part 1)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 9: claude-mem Advanced Skills (Part 2) and Practical Workflows</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 10: Performance, Cost, and Privacy Compliance</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 11: Synergy Strategies and Content Division</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 12: Advanced Topics and 20 Essential FAQs</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/claude-memory-tutorial" data-astro-cid-ilhxcym7>Mastering Claude Memory Systems: auto memory &amp; claude-mem Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Lesson 8: claude-mem Advanced Skills (Part 1)</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"Mastering Claude Memory Systems: auto memory & claude-mem Guide","item":"https://www.agentupdate.ai/tutorial/claude-memory-tutorial"},{"@type":"ListItem","position":4,"name":"Lesson 8: claude-mem Advanced Skills (Part 1)"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Lesson 8: claude-mem Advanced Skills (Part 1)</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>3 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><p>claude-mem is more than just a recorder; it provides a suite of "Skills" that empower the LLM to handle complex tasks more effectively. This lesson covers the first five core skills.</p>
+<h2>8.1 mem-search (Cross-session Retrieval)</h2>
+<p>The most frequently used skill. Trigger it when you encounter similar problems in a new project.</p>
+<ul>
+<li><strong>Trigger Scenario</strong>: "How did we solve the Redis lock timeout issue before?"</li>
+<li><strong>Action</strong>: Searches across all projects and sessions for relevant <code>bugfix</code> or <code>decision</code> observations.</li>
+</ul>
+<h2>8.2 learn-codebase (Full Codebase Reading)</h2>
+<p>When facing a completely unfamiliar project, use this skill to help the LLM quickly build global understanding.</p>
+<ul>
+<li><strong>Action</strong>: Systematically reads all source files in the entire codebase.</li>
+<li><strong>Effect</strong>: Writes the core logic and structure of the project into the current conversation context.</li>
+</ul>
+<h2>8.3 smart-explore (Intelligent AST Exploration)</h2>
+<p>When there are too many files and full reading consumes too many tokens, the system automatically switches to this mode.</p>
+<ul>
+<li><strong>Action</strong>: Uses Tree-sitter to parse the code AST (Abstract Syntax Tree), reading only function signatures, class definitions, and module structures.</li>
+<li><strong>Benefit</strong>: Significantly saves tokens while maintaining an accurate grasp of the project structure.</li>
+</ul>
+<h2>8.4 make-plan (Multi-phase Planning)</h2>
+<p>The core of the "Plan-First" workflow.</p>
+<ul>
+<li><strong>Trigger Phrase</strong>: "Make an implementation plan for this feature."</li>
+<li><strong>Output</strong>: A structured Markdown document breaking the task into multiple Phases, each with specific operation suggestions and verification criteria.</li>
+</ul>
+<h2>8.5 do (Execute Plan)</h2>
+<p>Used in conjunction with <code>make-plan</code> to achieve automated, phased execution.</p>
+<ul>
+<li><strong>Action</strong>: Dispatches a sub-agent to execute each phase of the plan sequentially.</li>
+<li><strong>Safety</strong>: Verifies each phase upon completion and generates a summary before moving to the next.</li>
+</ul>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-07" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Lesson 7: Architecture and Data Flow of claude-mem</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/claude-memory-tutorial/lesson-09" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Lesson 9: claude-mem Advanced Skills (Part 2) and Practical Workflows</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div> <section class="related-mesh" data-astro-cid-6wyomtiy> <div class="mesh-header" data-astro-cid-6wyomtiy> <h2 data-astro-cid-6wyomtiy>Related Tools &amp; Resources</h2> <div class="mesh-line" data-astro-cid-6wyomtiy></div> </div> <div class="mesh-grid" data-astro-cid-6wyomtiy> <div class="mesh-column" data-astro-cid-6wyomtiy> <h3 data-astro-cid-6wyomtiy>Skill Marketplaces</h3> <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener noreferrer" class="mesh-item" data-astro-cid-6wyomtiy> <div class="item-icon" data-astro-cid-6wyomtiy>M</div> <div class="item-info" data-astro-cid-6wyomtiy> <h4 data-astro-cid-6wyomtiy>Matt Pocock&#39;s AI Skills</h4> <p data-astro-cid-6wyomtiy>A collection of small, adaptable, and composable AI agent skills designed to resolve common development issues, enhance agent-developer collaboration, and improve code quality.</p> </div> </a><a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener noreferrer" class="mesh-item" data-astro-cid-6wyomtiy> <div class="item-icon" data-astro-cid-6wyomtiy>A</div> <div class="item-info" data-astro-cid-6wyomtiy> <h4 data-astro-cid-6wyomtiy>Agent Skills</h4> <p data-astro-cid-6wyomtiy>Production-grade engineering skills for AI coding agents, encoding workflows, quality gates, and best practices for software development.</p> </div> </a><a href="https://github.com/ZhanLinCui/Agent-Skills-Hunter" target="_blank" rel="noopener noreferrer" class="mesh-item" data-astro-cid-6wyomtiy> <div class="item-icon" data-astro-cid-6wyomtiy>A</div> <div class="item-info" data-astro-cid-6wyomtiy> <h4 data-astro-cid-6wyomtiy>Agent Skills Hunter</h4> <p data-astro-cid-6wyomtiy>A collection of high-quality AI agent skills and a CLI manager for Claude, Cursor, and Copilot.</p> </div> </a> </div> <div class="mesh-column" data-astro-cid-6wyomtiy> <h3 data-astro-cid-6wyomtiy>Recommended Plugins</h3> <a href="https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev" target="_blank" rel="noopener noreferrer" class="mesh-item" data-astro-cid-6wyomtiy> <div class="item-icon" data-astro-cid-6wyomtiy>🏗️</div> <div class="item-info" data-astro-cid-6wyomtiy> <h4 data-astro-cid-6wyomtiy>Feature Dev</h4> <p data-astro-cid-6wyomtiy>Comprehensive feature development workflow with a structured 7-phase approach. Agents: code-explorer, code-architect, code-reviewer.</p> </div> </a> </div> </div> </section> </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>
