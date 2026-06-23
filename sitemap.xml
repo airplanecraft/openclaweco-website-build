@@ -30997,6 +30997,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/tags/qwen</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/tags/qwen</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/tags/compute</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -31028,18 +31040,6 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/tags/gpt-5.5</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/tags/qwen</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/tags/qwen</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -31165,6 +31165,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/tags/prompt-engineering</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/tags/prompt-engineering</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/tags/agentic-workflow</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -31273,18 +31285,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/tags/prompt-engineering</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/tags/prompt-engineering</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://www.agentupdate.ai/tags/sam-altman</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -31352,6 +31352,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/tags/reinforcement-learning</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/tags/seo</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/tags/seo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -31436,18 +31448,6 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/tags/semiconductor</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/tags/seo</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/tags/seo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -31616,6 +31616,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/tags/colossus</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/tags/devops</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/tags/devops</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -31885,13 +31897,13 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/tags/devops</loc>
+    <loc>https://www.agentupdate.ai/tags/context-engineering</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/tags/devops</loc>
+    <loc>https://www.agentupdate.ai/zh/tags/context-engineering</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -32089,13 +32101,13 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/tags/context-engineering</loc>
+    <loc>https://www.agentupdate.ai/tags/cloudflare</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.agentupdate.ai/zh/tags/context-engineering</loc>
+    <loc>https://www.agentupdate.ai/zh/tags/cloudflare</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -32564,6 +32576,18 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/tags/chatbot</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/tags/ci-cd</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/tags/ci-cd</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -33083,6 +33107,66 @@
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/blog/interactive-svg-china-map</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/blog/interactive-svg-china-map</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/blog/claude-code-prompt-context-harness-loop-engineering</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/blog/claude-code-prompt-context-harness-loop-engineering</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/blog/llm-trip-planner-free-tier-qwen-workers-ai</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/blog/solo-edge-app-ci-cd-lighthouse-d1-tests</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/blog/multilingual-seo-geo-llms-txt</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/blog/multilingual-seo-geo-llms-txt</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.agentupdate.ai/blog/travel-data-etl-compliant-json</loc>

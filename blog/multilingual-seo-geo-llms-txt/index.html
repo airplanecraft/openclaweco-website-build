@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation — AgentUpdate.ai</title><meta name="description" content="SEO and GEO for a 4-language edge app: hreflang, sitemaps, robots, llms.txt, AI-citation, and the surfaces you must update by hand."><meta name="keywords" content="1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用, 1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation, seo, geo, i18n, llms-txt, hreflang"><link rel="canonical" href="https://www.agentupdate.ai/blog/multilingual-seo-geo-llms-txt/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/multilingual-seo-geo-llms-txt/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/multilingual-seo-geo-llms-txt/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/multilingual-seo-geo-llms-txt/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation — AgentUpdate.ai"><meta property="og:description" content="SEO and GEO for a 4-language edge app: hreflang, sitemaps, robots, llms.txt, AI-citation, and the surfaces you must update by hand."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/seo-geo-cover.png"><meta property="og:url" content="https://www.agentupdate.ai/blog/multilingual-seo-geo-llms-txt/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation — AgentUpdate.ai"><meta name="twitter:description" content="SEO and GEO for a 4-language edge app: hreflang, sitemaps, robots, llms.txt, AI-citation, and the surfaces you must update by hand."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/seo-geo-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com Dev Retrospective (8) - Multilingual SEO & GEO: Sitemaps, llms.txt and AI-Citation","description":"SEO and GEO for a 4-language edge app: hreflang, sitemaps, robots, llms.txt, AI-citation, and the surfaces you must update by hand.","image":"/images/blog/seo-geo-cover.png","datePublished":"2026-06-23T03:38:23.233Z","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/blog/multilingual-seo-geo-llms-txt"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/multilingual-seo-geo-llms-txt/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/multilingual-seo-geo-llms-txt/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com Dev Retrospective (8) - Multilingual SEO & GEO: Sitemaps, llms.txt and AI-Citation"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>June 23, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By Eric</span>  <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>10 Min Read</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/seo" class="tag" data-astro-cid-4sn4zg3r>#seo</a><span class="tag" data-astro-cid-4sn4zg3r>#geo</span><span class="tag" data-astro-cid-4sn4zg3r>#i18n</span><span class="tag" data-astro-cid-4sn4zg3r>#llms-txt</span><span class="tag" data-astro-cid-4sn4zg3r>#hreflang</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/seo-geo-cover.png" alt="1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of contents</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#multilingual-seo-foundations" data-astro-cid-4sn4zg3r>Multilingual SEO foundations</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#sitemap-robots-and-llmstxt" data-astro-cid-4sn4zg3r>sitemap, robots, and llms.txt</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#geo-getting-cited-by-ai-engines" data-astro-cid-4sn4zg3r>GEO: getting cited by AI engines</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#auditing-with-an-seo-skill" data-astro-cid-4sn4zg3r>Auditing with an SEO skill</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#the-hand-maintained-surfaces" data-astro-cid-4sn4zg3r>The hand-maintained surfaces</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#analytics-and-search-console-submission" data-astro-cid-4sn4zg3r>Analytics and search-console submission</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#key-takeaways" data-astro-cid-4sn4zg3r>Key takeaways</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#faq" data-astro-cid-4sn4zg3r>FAQ</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p>The final step before launch wasn&#39;t a feature — it was being <strong>findable</strong>. Not just by Google,
+but by ChatGPT, Perplexity, and AI Overviews. This post covers <strong>multilingual SEO</strong> and <strong>GEO</strong>
+(generative engine optimization) for a four-language edge app: hreflang, sitemaps, robots,
+<strong>llms.txt</strong>, AI-citation readiness, analytics, and the maintenance discipline that keeps it all
+in sync.</p>
+<p>This is post 8 — the finale — of the <a href="/blog/china-travel-budget-100-cities/">series</a>.</p>
+<h2 id="table-of-contents">Table of contents</h2><ul>
+<li><a href="#foundations">Multilingual SEO foundations</a></li>
+<li><a href="#files">sitemap, robots, and llms.txt</a></li>
+<li><a href="#geo">GEO: getting cited by AI engines</a></li>
+<li><a href="#audit">Auditing with an SEO skill</a></li>
+<li><a href="#surfaces">The hand-maintained surfaces</a></li>
+<li><a href="#analytics">Analytics and search-console submission</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ul>
+<p><a id="foundations"></a></p>
+<h2 id="multilingual-seo-foundations">Multilingual SEO foundations</h2><p>Four languages means every page exists in four variants, and search engines need to know
+they&#39;re translations, not duplicates. <strong>hreflang</strong> declares the relationships:</p>
+<div class="code-wrapper"><pre><code class="language-html">&lt;link rel=&quot;alternate&quot; hreflang=&quot;en&quot; href=&quot;https://1000usdinchina.com/en/...&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; hreflang=&quot;ja&quot; href=&quot;https://1000usdinchina.com/ja/...&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; hreflang=&quot;ko&quot; href=&quot;https://1000usdinchina.com/ko/...&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; hreflang=&quot;x-default&quot; href=&quot;https://1000usdinchina.com/en/...&quot; /&gt;
+</code></pre>
+</div><p>The currency coupling from <a href="/blog/edge-serverless-nextjs-cloudflare-d1/">post 2</a> matters here
+too: each localized page shows local currency, which makes the translation genuinely useful to
+that audience — a real signal, not a machine-translated shell.</p>
+<p><a id="files"></a></p>
+<h2 id="sitemap-robots-and-llmstxt">sitemap, robots, and llms.txt</h2><p>Three files tell crawlers what exists and how to read it:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart LR
+    C[Content: 100 cities × 4 langs] --> SM[sitemap.xml]
+    C --> RB[robots.txt]
+    C --> LT[llms.txt + llms-full.txt]
+    SM --> G[Google / Bing]
+    RB --> G
+    LT --> AI[ChatGPT / Perplexity / AI Overviews]</pre></div><ul>
+<li><strong>sitemap.xml</strong> — every route in every language, generated automatically.</li>
+<li><strong>robots.txt</strong> — crawl rules; the middleware allow-lists the right root paths (including the
+search-console verification files).</li>
+<li><strong>llms.txt + llms-full.txt</strong> — a curated, machine-readable summary of the site <em>for AI
+crawlers</em>. <code>llms.txt</code> is the concise index; <code>llms-full.txt</code> is the expanded version. This is
+the GEO equivalent of a sitemap: it tells an LLM what your site is and what&#39;s worth citing.</li>
+</ul>
+<p><a id="geo"></a></p>
+<h2 id="geo-getting-cited-by-ai-engines">GEO: getting cited by AI engines</h2><p>SEO gets you ranked; <strong>GEO gets you quoted.</strong> When someone asks an AI &quot;how much does a week in
+China cost,&quot; you want your numbers to be the cited answer. What helps:</p>
+<ul>
+<li><strong>Structured data</strong> (FAQ, Article schema) so engines can extract clean Q&amp;A pairs — exactly
+what every post in this series ends with.</li>
+<li><strong>Quotable, self-contained statements</strong> — a clear sentence that answers the question without
+needing the surrounding page.</li>
+<li><strong>llms.txt</strong> pointing at the canonical, aggregate facts (the compliant data from
+<a href="/blog/travel-data-etl-compliant-json/">post 3</a>).</li>
+</ul>
+<p>GEO and SEO reinforce each other: clean structure and clear answers rank in Google <em>and</em> get
+cited by AI.</p>
+<p><a id="audit"></a></p>
+<h2 id="auditing-with-an-seo-skill">Auditing with an SEO skill</h2><p>Audits run with an <strong>SEO skill</strong> rather than ad-hoc checks, and two lessons shaped how:</p>
+<ul>
+<li><strong>Fetch raw HTML, not a rendered proxy.</strong> A naive fetch can swallow <code>&lt;head&gt;</code> tags — exactly
+the title, meta, and hreflang you&#39;re auditing. Read the raw HTML so the audit sees what
+crawlers see.</li>
+<li><strong>Measure performance with the project&#39;s own Lighthouse CI</strong> rather than an external API that
+needs a key. The performance gate from
+<a href="/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/">post 7</a> doubles as the SEO performance check.</li>
+</ul>
+<p><a id="surfaces"></a></p>
+<h2 id="the-hand-maintained-surfaces">The hand-maintained surfaces</h2><p>Here&#39;s the maintenance trap. When you add a city or a module, some SEO surfaces update
+automatically and some <strong>must be edited by hand</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Updates automatically</th>
+<th>Must update by hand</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sitemap.xml</td>
+<td>llms.txt / llms-full.txt</td>
+</tr>
+<tr>
+<td>robots.txt</td>
+<td>site-stats / hero counts</td>
+</tr>
+<tr>
+<td>RSS</td>
+<td>the 4 locale copy files (e.g. &quot;100 cities&quot;)</td>
+</tr>
+<tr>
+<td></td>
+<td>meta descriptions</td>
+</tr>
+</tbody></table>
+<p>Miss one and you ship a contradiction — the homepage says &quot;100 cities&quot; in English but a stale
+&quot;67 cities&quot; in Japanese, and a CI surfaces-check catches it red. The discipline: a checklist of
+hand-maintained surfaces that runs every time the city count or module set changes. (This is
+exactly the kind of institutional knowledge that lives in a <a href="/blog/claude-code-prompt-context-harness-loop-engineering/">skill</a>.)</p>
+<p><a id="analytics"></a></p>
+<h2 id="analytics-and-search-console-submission">Analytics and search-console submission</h2><p>The launch checklist closes with measurement and submission:</p>
+<ul>
+<li><strong>Google Analytics 4</strong> via gtag.js, loaded with a <code>lazyOnload</code> strategy so it doesn&#39;t blow
+the Total Blocking Time budget (the GA-vs-TBT fight from post 7).</li>
+<li><strong>Submit to Google Search Console</strong> and <strong>Bing Webmaster Tools</strong>, with the verification files
+allow-listed at the site root so the crawlers can confirm ownership.</li>
+</ul>
+<p>With sitemaps submitted and analytics live, the site is officially findable — and the loop from
+content → sitemap/llms.txt → Google + AI engines is closed.</p>
+<h2 id="key-takeaways">Key takeaways</h2><ul>
+<li>For multilingual SEO, declare translations with hreflang and make each locale genuinely
+useful (local currency), not a machine-translated shell.</li>
+<li>sitemap + robots serve search engines; llms.txt + llms-full.txt serve AI crawlers.</li>
+<li>GEO is SEO&#39;s sibling: structured data and quotable statements get you cited by AI engines.</li>
+<li>Audit on raw HTML (not a head-swallowing proxy) and reuse Lighthouse CI for performance.</li>
+<li>Keep a checklist of hand-maintained surfaces (llms.txt, locale copy, meta) so counts never
+contradict across languages.</li>
+<li>Finish with GA4 (lazy-loaded) and Search Console / Bing submission.</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="faq">FAQ</h2><p><strong>What is llms.txt and do I need one?</strong>
+A machine-readable file that tells AI crawlers what your site is and what&#39;s worth citing — a
+GEO counterpart to sitemap.xml. If you want AI engines to represent your content accurately,
+it&#39;s worth having, alongside an expanded llms-full.txt.</p>
+<p><strong>What is GEO (generative engine optimization)?</strong>
+Optimizing content to be cited by AI engines like ChatGPT, Perplexity, and AI Overviews — via
+structured data, quotable self-contained statements, and llms.txt — rather than only ranking in
+classic search.</p>
+<p><strong>How do you do SEO for a multilingual site?</strong>
+Declare translations with hreflang (plus x-default), generate a sitemap covering every
+language, localize meaningfully (including currency), and keep hand-maintained surfaces in sync
+across locales.</p>
+<p><strong>How do you submit a site to Google and Bing?</strong>
+Add the verification file (allow-listed at the site root), then submit your sitemap in Google
+Search Console and Bing Webmaster Tools.</p>
+<hr>
+<p><em>Back to the start → <a href="/blog/china-travel-budget-100-cities/">The product and business story</a> ·
+Try it: <a href="https://1000usdinchina.com">1000usdinchina.com</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Multilingual SEO & GEO: Sitemaps, llms.txt and AI-Citation",
+  "image": "https://www.agentupdate.ai/blog/images/seo-geo-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-22",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/en/multilingual-seo-geo-llms-txt",
+  "about": ["llms.txt", "multilingual SEO", "generative engine optimization", "hreflang"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What is llms.txt and do I need one?","acceptedAnswer":{"@type":"Answer","text":"A machine-readable file that tells AI crawlers what your site is and what's worth citing, a GEO counterpart to sitemap.xml. If you want AI engines to represent your content accurately, it's worth having alongside an expanded llms-full.txt."}},
+    {"@type":"Question","name":"What is GEO (generative engine optimization)?","acceptedAnswer":{"@type":"Answer","text":"Optimizing content to be cited by AI engines like ChatGPT, Perplexity, and AI Overviews via structured data, quotable self-contained statements, and llms.txt, rather than only ranking in classic search."}},
+    {"@type":"Question","name":"How do you do SEO for a multilingual site?","acceptedAnswer":{"@type":"Answer","text":"Declare translations with hreflang plus x-default, generate a sitemap covering every language, localize meaningfully including currency, and keep hand-maintained surfaces in sync across locales."}},
+    {"@type":"Question","name":"How do you submit a site to Google and Bing?","acceptedAnswer":{"@type":"Answer","text":"Add the verification file allow-listed at the site root, then submit your sitemap in Google Search Console and Bing Webmaster Tools."}}
+  ]
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="table-of-contents" data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of contents</a> </li><li class="toc-item " data-slug="multilingual-seo-foundations" data-astro-cid-4sn4zg3r> <a href="#multilingual-seo-foundations" data-astro-cid-4sn4zg3r>Multilingual SEO foundations</a> </li><li class="toc-item " data-slug="sitemap-robots-and-llmstxt" data-astro-cid-4sn4zg3r> <a href="#sitemap-robots-and-llmstxt" data-astro-cid-4sn4zg3r>sitemap, robots, and llms.txt</a> </li><li class="toc-item " data-slug="geo-getting-cited-by-ai-engines" data-astro-cid-4sn4zg3r> <a href="#geo-getting-cited-by-ai-engines" data-astro-cid-4sn4zg3r>GEO: getting cited by AI engines</a> </li><li class="toc-item " data-slug="auditing-with-an-seo-skill" data-astro-cid-4sn4zg3r> <a href="#auditing-with-an-seo-skill" data-astro-cid-4sn4zg3r>Auditing with an SEO skill</a> </li><li class="toc-item " data-slug="the-hand-maintained-surfaces" data-astro-cid-4sn4zg3r> <a href="#the-hand-maintained-surfaces" data-astro-cid-4sn4zg3r>The hand-maintained surfaces</a> </li><li class="toc-item " data-slug="analytics-and-search-console-submission" data-astro-cid-4sn4zg3r> <a href="#analytics-and-search-console-submission" data-astro-cid-4sn4zg3r>Analytics and search-console submission</a> </li><li class="toc-item " data-slug="key-takeaways" data-astro-cid-4sn4zg3r> <a href="#key-takeaways" data-astro-cid-4sn4zg3r>Key takeaways</a> </li><li class="toc-item " data-slug="faq" data-astro-cid-4sn4zg3r> <a href="#faq" data-astro-cid-4sn4zg3r>FAQ</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/travel-data-etl-compliant-json" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/etl-pipeline-cover.png" alt="1000usdinchina.com Dev Retrospective (3) - Travel Data ETL: 4.5 GB of Raw Data to Clean City JSON" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/travel-data-etl-compliant-json" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (3) - Travel Data ETL: 4.5 GB of Raw Data to Clean City JSON</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>How I turned 4.5 GB of raw Chinese travel data into clean, compliant per-city JSON — an ETL pipeline whose aggregation never leaks shop data.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 23, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/edge-serverless-nextjs-cloudflare-d1" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/edge-architecture-cover.png" alt="1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/edge-serverless-nextjs-cloudflare-d1" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (2) - Edge Serverless: Next.js 15 + Cloudflare Pages, D1 &amp; Workers</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>How a travel app runs fully on the edge with Next.js 15, Cloudflare Pages, D1 and Workers: static/dynamic boundary, edge caching, i18n.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 23, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>
