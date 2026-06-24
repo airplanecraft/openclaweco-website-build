@@ -12,7 +12,7 @@ Disallow: /pagefind/
 
 # Resources
 # LLM-friendly content: /llms.txt
-Sitemap: https://www.agentupdate.ai/sitemap.xml
-# RSS: https://www.agentupdate.ai/rss.xml
-# RSS: https://www.agentupdate.ai/zh/rss.xml
+Sitemap: https://agentupdate.ai/sitemap.xml
+# RSS: https://agentupdate.ai/rss.xml
+# RSS: https://agentupdate.ai/zh/rss.xml
 

@@ -6,12 +6,12 @@
 </p>
 
 <p align="center">
-  <a href="https://www.agentupdate.ai">🌐 Live Site</a> ·
-  <a href="https://www.agentupdate.ai/zh/">🇨🇳 中文站</a> ·
-  <a href="https://www.agentupdate.ai/tutorial/">📚 Tutorials</a> ·
-  <a href="https://www.agentupdate.ai/news/">📰 News</a> ·
-  <a href="https://www.agentupdate.ai/releases/">🚀 Releases</a> ·
-  <a href="https://www.agentupdate.ai/simulators/">🎮 Simulators</a>
+  <a href="https://agentupdate.ai">🌐 Live Site</a> ·
+  <a href="https://agentupdate.ai/zh/">🇨🇳 中文站</a> ·
+  <a href="https://agentupdate.ai/tutorial/">📚 Tutorials</a> ·
+  <a href="https://agentupdate.ai/news/">📰 News</a> ·
+  <a href="https://agentupdate.ai/releases/">🚀 Releases</a> ·
+  <a href="https://agentupdate.ai/simulators/">🎮 Simulators</a>
 </p>
 
 ---

@@ -1,6 +1,6 @@
 # AgentUpdate.ai
 
-> AgentUpdate.ai is a bilingual (English/Chinese) platform for the AI agent ecosystem. It covers autonomous coding agents, workflow automation tools, reusable skills, plugins, version releases, experiential simulators, and in-depth tutorials. The site is built with Astro and deployed as a static site at www.agentupdate.ai.
+> AgentUpdate.ai is a bilingual (English/Chinese) platform for the AI agent ecosystem. It covers autonomous coding agents, workflow automation tools, reusable skills, plugins, version releases, experiential simulators, and in-depth tutorials. The site is built with Astro and deployed as a static site at agentupdate.ai.
 
 Key facts:
 - Content is available in English (default, `/`) and Chinese (`/zh/`)
@@ -11,49 +11,49 @@ Key facts:
 ## Tutorials
 
 ### Claude Code Series
-- [Claude Code Masterclass](https://www.agentupdate.ai/tutorial/claude-code-tutorial/): Terminal-based AI coding assistant deep dive
-- [Claude Code Teams](https://www.agentupdate.ai/tutorial/claude-teams-tutorial/): Multi-agent parallel development guide
-- [Claude-Mem Practical Guide](https://www.agentupdate.ai/tutorial/claude-mem-tutorial/): Mastering the memory system for long-term context
-- [Claude Code + OpenSpec](https://www.agentupdate.ai/tutorial/claude-openspec-tutorial/): Building autonomous development pipelines
-- [Claude HUD Tutorial](https://www.agentupdate.ai/tutorial/claude-hud-tutorial/): 18-chapter masterclass on HUD visualization
-- [Claude Permission Modes](https://www.agentupdate.ai/tutorial/claude-permission-modes-tutorial/): Complete guide to security and execution modes
+- [Claude Code Masterclass](https://agentupdate.ai/tutorial/claude-code-tutorial/): Terminal-based AI coding assistant deep dive
+- [Claude Code Teams](https://agentupdate.ai/tutorial/claude-teams-tutorial/): Multi-agent parallel development guide
+- [Claude-Mem Practical Guide](https://agentupdate.ai/tutorial/claude-mem-tutorial/): Mastering the memory system for long-term context
+- [Claude Code + OpenSpec](https://agentupdate.ai/tutorial/claude-openspec-tutorial/): Building autonomous development pipelines
+- [Claude HUD Tutorial](https://agentupdate.ai/tutorial/claude-hud-tutorial/): 18-chapter masterclass on HUD visualization
+- [Claude Permission Modes](https://agentupdate.ai/tutorial/claude-permission-modes-tutorial/): Complete guide to security and execution modes
 
 ### Autonomous Agents & Frameworks
-- [Antigravity Masterclass](https://www.agentupdate.ai/tutorial/antigravity-masterclass/): Building autonomous teams with AI agents
-- [OpenClaw Masterclass](https://www.agentupdate.ai/tutorial/openclaw-masterclass/): Deep dive into the OpenClaw agent runtime
-- [Hermes Agent Guide](https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/): Practical hands-on with Hermes framework
-- [AutoResearch Masterclass](https://www.agentupdate.ai/tutorial/autoresearch-tutorial/): Karpathy-style automated research agents
-- [GStack Superpowers](https://www.agentupdate.ai/tutorial/tutorial-gstack-superpowers/): Mastering AI-accelerated development with NodeFlow
+- [Antigravity Masterclass](https://agentupdate.ai/tutorial/antigravity-masterclass/): Building autonomous teams with AI agents
+- [OpenClaw Masterclass](https://agentupdate.ai/tutorial/openclaw-masterclass/): Deep dive into the OpenClaw agent runtime
+- [Hermes Agent Guide](https://agentupdate.ai/tutorial/hermes-agent-tutorial/): Practical hands-on with Hermes framework
+- [AutoResearch Masterclass](https://agentupdate.ai/tutorial/autoresearch-tutorial/): Karpathy-style automated research agents
+- [GStack Superpowers](https://agentupdate.ai/tutorial/tutorial-gstack-superpowers/): Mastering AI-accelerated development with NodeFlow
 
 ### Workflow & Orchestration
-- [n8n Full Course](https://www.agentupdate.ai/tutorial/n8n-tutorial/): From automation flows to multi-agent orchestration
-- [LangGraph Expert Class](https://www.agentupdate.ai/tutorial/langgraph-tutorial/): Reconstructing complex workflows with multi-agent logic
-- [LangChain Masterclass](https://www.agentupdate.ai/tutorial/langchain-tutorial/): From basics to production AI applications
-- [Dify Full Guide](https://www.agentupdate.ai/tutorial/dify-tutorial/): Building LLM apps with Dify platform
+- [n8n Full Course](https://agentupdate.ai/tutorial/n8n-tutorial/): From automation flows to multi-agent orchestration
+- [LangGraph Expert Class](https://agentupdate.ai/tutorial/langgraph-tutorial/): Reconstructing complex workflows with multi-agent logic
+- [LangChain Masterclass](https://agentupdate.ai/tutorial/langchain-tutorial/): From basics to production AI applications
+- [Dify Full Guide](https://agentupdate.ai/tutorial/dify-tutorial/): Building LLM apps with Dify platform
 
 ### Tools & Utilities
-- [OpenCLI Masterclass](https://www.agentupdate.ai/tutorial/opencli-masterclass/): Turn any website into a CLI tool
-- [Terminal Selection Guide](https://www.agentupdate.ai/tutorial/terminal-tutorial/): Choosing the right environment for the AI agent era
-- [Firecrawl Tutorial](https://www.agentupdate.ai/tutorial/firecrawl-tutorial/): Advanced web scraping for AI agents
-- [Agent Extensions Guide](https://www.agentupdate.ai/tutorial/agent-extensions-tutorial/): Building and using agent-side extensions
+- [OpenCLI Masterclass](https://agentupdate.ai/tutorial/opencli-masterclass/): Turn any website into a CLI tool
+- [Terminal Selection Guide](https://agentupdate.ai/tutorial/terminal-tutorial/): Choosing the right environment for the AI agent era
+- [Firecrawl Tutorial](https://agentupdate.ai/tutorial/firecrawl-tutorial/): Advanced web scraping for AI agents
+- [Agent Extensions Guide](https://agentupdate.ai/tutorial/agent-extensions-tutorial/): Building and using agent-side extensions
 
 ## Products
-- [Product Catalog](https://www.agentupdate.ai/product/): Directory of 400+ AI agent tools — filterable by type (Big Tech, Startup, Open Source, Hosting, Hardware)
+- [Product Catalog](https://agentupdate.ai/product/): Directory of 400+ AI agent tools — filterable by type (Big Tech, Startup, Open Source, Hosting, Hardware)
 
 ## Skills & Plugins
-- [Skill Markets](https://www.agentupdate.ai/skills/): Discovery platform for reusable agent capabilities
-- [Plugin Directory](https://www.agentupdate.ai/plugins/): Community and official plugin registry
+- [Skill Markets](https://agentupdate.ai/skills/): Discovery platform for reusable agent capabilities
+- [Plugin Directory](https://agentupdate.ai/plugins/): Community and official plugin registry
 
 ## News & Releases
-- [Latest News](https://www.agentupdate.ai/news/): Daily curated AI agent industry updates and analysis
-- [Latest Releases](https://www.agentupdate.ai/releases/): Automated tracking of version updates and changelogs
+- [Latest News](https://agentupdate.ai/news/): Daily curated AI agent industry updates and analysis
+- [Latest Releases](https://agentupdate.ai/releases/): Automated tracking of version updates and changelogs
 
 ## Simulators
-- [Simulators](https://www.agentupdate.ai/simulators/): Interactive browser environments to learn about autonomous agents (e.g. Claude Code Simulator)
+- [Simulators](https://agentupdate.ai/simulators/): Interactive browser environments to learn about autonomous agents (e.g. Claude Code Simulator)
 
 ## Optional
-- [中文首页](https://www.agentupdate.ai/zh/): Chinese language homepage
-- [中文教程](https://www.agentupdate.ai/zh/tutorial/): Chinese language tutorial index
-- [中文新闻](https://www.agentupdate.ai/zh/news/): Chinese language news
-- [中文产品](https://www.agentupdate.ai/zh/product/): Chinese language product catalog
-- [Tags](https://www.agentupdate.ai/tags/): Browse content by topic tags
+- [中文首页](https://agentupdate.ai/zh/): Chinese language homepage
+- [中文教程](https://agentupdate.ai/zh/tutorial/): Chinese language tutorial index
+- [中文新闻](https://agentupdate.ai/zh/news/): Chinese language news
+- [中文产品](https://agentupdate.ai/zh/product/): Chinese language product catalog
+- [Tags](https://agentupdate.ai/tags/): Browse content by topic tags
