@@ -34021,6 +34021,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.agentupdate.ai/releases/openai-agents-sdk</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.agentupdate.ai/zh/releases/openai-agents-sdk</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.agentupdate.ai/releases/autogpt</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -34076,18 +34088,6 @@
   </url>
   <url>
     <loc>https://www.agentupdate.ai/zh/releases/openai-codex</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/releases/openai-agents-sdk</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.agentupdate.ai/zh/releases/openai-agents-sdk</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
