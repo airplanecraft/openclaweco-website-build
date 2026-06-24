@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起） — AgentUpdate.ai</title><meta name="description" content="对一人公司 / 独立开发者来说，Cloudflare 几乎是性价比天花板：$5/月的 Workers、免费的 Pages 与全球边缘网络、D1 数据库、KV / R2 存储、内置缓存，还能直接跑 Qwen 等小模型，再配 GitHub Actions 全自动上线。用一个真实上线的多语种 SaaS +..."><meta name="keywords" content="一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）, Run a Full-Stack SaaS Solo: Cloudflare is the Ultimate Foundation for One-Person Companies (From $5/mo), Cloudflare, Serverless, SaaS, Indie Hacking"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/cloudflare-for-one-person-companies/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/cloudflare-for-one-person-companies/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/cloudflare-for-one-person-companies/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/cloudflare-for-one-person-companies/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起） — AgentUpdate.ai"><meta property="og:description" content="对一人公司 / 独立开发者来说，Cloudflare 几乎是性价比天花板：$5/月的 Workers、免费的 Pages 与全球边缘网络、D1 数据库、KV / R2 存储、内置缓存，还能直接跑 Qwen 等小模型，再配 GitHub Actions 全自动上线。用一个真实上线的多语种 SaaS +..."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/cloudflare-for-one-person-companies.png"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/cloudflare-for-one-person-companies/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起） — AgentUpdate.ai"><meta name="twitter:description" content="对一人公司 / 独立开发者来说，Cloudflare 几乎是性价比天花板：$5/月的 Workers、免费的 Pages 与全球边缘网络、D1 数据库、KV / R2 存储、内置缓存，还能直接跑 Qwen 等小模型，再配 GitHub Actions 全自动上线。用一个真实上线的多语种 SaaS +..."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/cloudflare-for-one-person-companies.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）","description":"对一人公司 / 独立开发者来说，Cloudflare 几乎是性价比天花板：$5/月的 Workers、免费的 Pages 与全球边缘网络、D1 数据库、KV / R2 存储、内置缓存，还能直接跑 Qwen 等小模型，再配 GitHub Actions 全自动上线。用一个真实上线的多语种 SaaS + mermaid 架构图，拆给你看它强在哪、坑在哪。","image":"/images/blog/cloudflare-for-one-person-companies.png","datePublished":"2026-06-24T03:17:31.760Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/cloudflare-for-one-person-companies"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/cloudflare-for-one-person-companies/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/cloudflare-for-one-person-companies/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月24日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>15 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/cloudflare" class="tag" data-astro-cid-w5q62dq7>#Cloudflare</a><a href="/zh/tags/serverless" class="tag" data-astro-cid-w5q62dq7>#Serverless</a><a href="/zh/tags/saas" class="tag" data-astro-cid-w5q62dq7>#SaaS</a><span class="tag" data-astro-cid-w5q62dq7>#Indie Hacking</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/cloudflare-for-one-person-companies.png" alt="一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#一先说钱5月撑起一个真-saas" data-astro-cid-w5q62dq7>一、先说钱：$5/月，撑起一个真 SaaS</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#二一套乐高覆盖全栈" data-astro-cid-w5q62dq7>二、一套&quot;乐高&quot;，覆盖全栈</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#workers-你的后端-渲染层" data-astro-cid-w5q62dq7>Workers —— 你的后端 / 渲染层</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#pages-前端-静态站" data-astro-cid-w5q62dq7>Pages —— 前端 / 静态站</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#d1-边缘关系型数据库" data-astro-cid-w5q62dq7>D1 —— 边缘关系型数据库</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#kv-全球键值存储" data-astro-cid-w5q62dq7>KV —— 全球键值存储</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#r2-对象存储零出口流量费" data-astro-cid-w5q62dq7>R2 —— 对象存储，零出口流量费</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#workers-ai-边缘直接跑-qwen" data-astro-cid-w5q62dq7>Workers AI —— 边缘直接跑 Qwen</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#cache-cron-durable-objects-queues" data-astro-cid-w5q62dq7>Cache / Cron / Durable Objects / Queues</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#三把-qwen-这类小模型白嫖进产品" data-astro-cid-w5q62dq7>三、把 Qwen 这类小模型&quot;白嫖&quot;进产品</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#四运维负担趋近于零一人公司最在乎的" data-astro-cid-w5q62dq7>四、运维负担趋近于零（一人公司最在乎的）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#五再白嫖一层github-actions-当你的免费-cicd" data-astro-cid-w5q62dq7>五、再白嫖一层：GitHub + Actions 当你的免费 CI/CD</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#六几个真实的坑先知道少踩" data-astro-cid-w5q62dq7>六、几个真实的坑（先知道，少踩）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#结论一人公司就该站在巨人的边缘网络上" data-astro-cid-w5q62dq7>结论：一人公司，就该站在巨人的边缘网络上</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>如果你是<strong>一人公司（OPC）或独立开发者</strong>，你最缺的不是创意，是<strong>时间、钱、和运维精力</strong>。传统那套——租服务器、配 Nginx、装数据库、买 CDN、操心 DDoS、半夜被告警叫醒——对一个人来说是慢性自杀。</p>
+<p>过去两年我把一个真实产品—— <a href="https://1000usdinchina.com"><strong>1000usdinchina.com</strong></a>，一个面向外国游客的中国旅行预算 SaaS（4 语种、上百城数据、带 AI 行程助手）—— <strong>完整跑在 Cloudflare 上</strong>。今天不讲概念，直接拆它为什么是一人公司的宝藏底座。</p>
+<p>先给你一张全景，下面所有东西都在<strong>同一张边缘网络、同一个仓库、一条部署命令</strong>里：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart TB
+    user([全球用户 / 爬虫]) --> edge
+
+    subgraph CF["☁️ Cloudflare 全球边缘网络（300+ 城市）"]
+        edge["边缘入口: DNS · SSL · CDN · DDoS 防护（全免费）"]
+        edge --> pages["Pages: 静态前端 / 预览环境"]
+        edge --> worker["Workers: 动态后端 / SSR（$5/月起）"]
+
+        worker --> d1[("D1: 边缘 SQLite")]
+        worker --> kv[("KV: 会话 / 配置 / 缓存")]
+        worker --> r2[("R2: 对象存储 · 零出口费")]
+        worker --> ai["Workers AI: Qwen / Llama 小模型"]
+        worker --> cache["Cache: 边缘 HTTP 缓存"]
+        cron["Cron Triggers: 定时任务"] --> worker
+    end
+
+    style CF fill:#fdf6e3,stroke:#d4a017
+    style ai fill:#eef2fb,stroke:#2860c8</pre></div><p>一个人，把上面这一整套跑起来，<strong>月成本是一杯咖啡</strong>。下面逐块拆。</p>
+<hr>
+<h2 id="一先说钱5月撑起一个真-saas">一、先说钱：$5/月，撑起一个真 SaaS</h2><p>Cloudflare 的定价对小团队近乎&quot;不讲道理&quot;。把&quot;免费&quot;和&quot;$5&quot;两档拆开看：</p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>档位</th>
+<th>对一人公司的意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全球 CDN / DNS / 免费 SSL / DDoS 防护</td>
+<td><strong>免费</strong></td>
+<td>别处单买就是月费，这里 0 元</td>
+</tr>
+<tr>
+<td>Pages 静态托管（请求数不限）+ 预览环境</td>
+<td><strong>免费</strong></td>
+<td>前端 + 每个分支预览，白送</td>
+</tr>
+<tr>
+<td>D1 / KV / R2 / Workers AI</td>
+<td><strong>温和免费额度</strong></td>
+<td>小流量期基本白嫖</td>
+</tr>
+<tr>
+<td>Workers（计算 / SSR）</td>
+<td><strong>$5/月</strong></td>
+<td>含每月千万级请求，超出按量、单价极低</td>
+</tr>
+</tbody></table>
+<p>三个关键点：</p>
+<ol>
+<li><strong>没有&quot;闲置也烧钱&quot;</strong>。Serverless 按调用计费，没流量就几乎不花钱。一人公司同时养三五个小项目，成本依然可控。</li>
+<li><strong>不会被流量打爆账单</strong>。哪怕某天上了 Hacker News，平台有用量护栏，不会一觉醒来收到天价账单。</li>
+<li><strong>省的不只是钱，是决策成本</strong>。你不用在&quot;要不要为这点流量升配&quot;上反复纠结。</li>
+</ol>
+<p>对比传统 VPS：最低配 + CDN + 托管数据库 + 对象存储，月成本和心智负担都远不止于此。</p>
+<hr>
+<h2 id="二一套乐高覆盖全栈">二、一套"乐高"，覆盖全栈</h2><p>Cloudflare 真正的杀手锏是：<strong>计算、数据、存储、AI、网络全在同一张边缘网络上</strong>，互相之间零延迟、统一鉴权、一个 <code>wrangler</code> 命令部署。一个人不用在五个云供应商之间拼胶水、对五份账单。</p>
+<h3 id="workers-你的后端-渲染层">Workers —— 你的后端 / 渲染层</h3><p>全球 300+ 城市边缘运行，冷启动近乎为零。可以跑 API、做 SSR（我用 <strong>Next.js + OpenNext</strong> 把整个站部署成 Worker）。用户请求落到离他最近的节点，天然全球加速。</p>
+<h3 id="pages-前端-静态站">Pages —— 前端 / 静态站</h3><p>Git 推送即部署，免费、自带预览 URL。纯静态站、文档、落地页放这里最省。</p>
+<h3 id="d1-边缘关系型数据库">D1 —— 边缘关系型数据库</h3><p>基于 SQLite，<strong>写真 SQL</strong>、有迁移机制。我的 case / 用户行程 / 标签 / 订阅都在 D1。对&quot;需要强一致、需要 join&quot;的业务数据，它是主力。</p>
+<h3 id="kv-全球键值存储">KV —— 全球键值存储</h3><p>读极快（边缘就近），最终一致。最适合放 <strong>session、配置、热点缓存</strong>——我用它存登录会话。</p>
+<h3 id="r2-对象存储零出口流量费">R2 —— 对象存储，**零出口流量费**</h3><p>兼容 S3 API，但 S3 最贵的&quot;出站流量费&quot;它<strong>完全不收</strong>。图片、用户上传、备份、生成的文件都丢这里，搬数据不肉疼。</p>
+<h3 id="workers-ai-边缘直接跑-qwen">Workers AI —— 边缘直接跑 Qwen</h3><p>不用租 GPU、不用接第三方 key，边缘直接调 <strong>Qwen / Llama</strong> 等开源模型（详见下一节）。</p>
+<h3 id="cache-cron-durable-objects-queues">Cache / Cron / Durable Objects / Queues</h3><p>边缘 HTTP 缓存把 TTFB 拉到几十毫秒；Cron 一行配置一个定时 worker（我用它每隔几分钟生成一条新行程）；需要锁、队列、实时连接时，再上 Durable Objects / Queues。</p>
+<p><strong>一句话</strong>：一个人、一个仓库、一条部署命令，就能上线一个有数据库、有缓存、有 AI、有定时任务的完整产品。</p>
+<p>那这些块在一次真实请求里怎么协作？看带缓存的请求生命周期：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">sequenceDiagram
+    participant U as 用户与爬虫
+    participant E as 边缘缓存 (Cache 与 KV)
+    participant W as Worker
+    participant D as D1 与 Workers AI
+
+    U->>E: 请求页面
+    alt 缓存命中
+        E-->>U: 直接返回 (几十毫秒，省计算)
+    else 未命中
+        E->>W: 转发
+        W->>D: 查数据与调 Qwen
+        D-->>W: 结果
+        W->>W: 渲染
+        W-->>E: 响应 (可写回缓存)
+        E-->>U: 返回
+    end</pre></div><p>热路径用缓存挡在计算前面，<strong>省 CPU、省钱、还快</strong>——这对有 CPU 额度上限 of 边缘运行时尤其关键（见第六节）。</p>
+<hr>
+<h2 id="三把-qwen-这类小模型白嫖进产品">三、把 Qwen 这类小模型"白嫖"进产品</h2><p>很多独立开发者想加 AI 功能，一看 OpenAI 账单就劝退。Cloudflare 的 <strong>Workers AI</strong> 换了个玩法：</p>
+<ul>
+<li>在边缘<strong>直接调用开源模型</strong>（Qwen 系列、Llama 等），不用自己租 GPU、不用接第三方 API key，模型就在你 Worker 旁边，调用没有跨网络往返。</li>
+<li><strong>每个账号每天有免费额度</strong>（按 &quot;neurons&quot; 计），小流量产品基本<strong>白嫖</strong>就够用；超出按量、单价低。</li>
+</ul>
+<p><a href="https://1000usdinchina.com">1000usdinchina.com</a> 的&quot;AI 行程助手&quot;就是用 Workers AI 上的 <strong>Qwen 小模型</strong>做的——用户用自然语言说&quot;带爸妈玩 10 天、预算 1000 刀&quot;，模型把它结构化成行程参数，再算出真实花费。对一人公司来说，这是<strong>几乎零成本把 AI 卖点装进产品</strong>的捷径。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">flowchart LR
+    A["用户自然语言: '带爸妈玩 10 天，预算 1000 刀'"] --> B["Worker"]
+    B --> C["Workers AI (Qwen): 抽取结构化参数"]
+    C --> D["行程引擎: 城市/天数/人群/档位"]
+    D --> E["真实成本估算: 读 D1 价格数据"]
+    E --> F(["生成行程与报价"])
+    style C fill:#eef2fb,stroke:#2860c8</pre></div><blockquote>
+<p>⚠️ 诚实提醒：免费额度是<strong>账号级、按天</strong>的。如果你 dev 环境拿真模型反复压测，会把当天额度烧光、连带影响线上——这个坑我踩过。开发期尽量 mock，真模型调用留给线上。</p>
+</blockquote>
+<hr>
+<h2 id="四运维负担趋近于零一人公司最在乎的">四、运维负担趋近于零（一人公司最在乎的）</h2><ul>
+<li><strong>不用管服务器</strong>：没有要打补丁的 OS、要重启的进程、要扩容的实例。</li>
+<li><strong>全球加速 + 安全默认开</strong>：用户在哪都快；DDoS、SSL 这些&quot;不出事是应该、一出事是大事&quot;的东西，平台默认兜底。</li>
+<li><strong>回滚一条命令</strong>：线上出问题 <code>wrangler rollback</code>，秒退上一版。</li>
+<li><strong>预览环境白送</strong>：每个分支/部署自带预览 URL，一个人也能&quot;先在 dev 验证再上 prod&quot;。</li>
+</ul>
+<p>省下来的不是钱，是<strong>你本来要花在运维上的、本就稀缺的注意力</strong>。</p>
+<hr>
+<h2 id="五再白嫖一层github-actions-当你的免费-cicd">五、再白嫖一层：GitHub + Actions 当你的免费 CI/CD</h2><p>Cloudflare 负责&quot;跑&quot;，<strong>代码托管和自动上线交给 GitHub + GitHub Actions</strong>——这俩对一人公司同样接近免费，且和 Cloudflare 是天作之合：</p>
+<ul>
+<li><strong>GitHub</strong>：免费私有仓库，代码、Issue、版本全在一处，不用自建 Git 服务器。</li>
+<li><strong>GitHub Actions</strong>：免费 CI/CD（公开仓库基本不限量，私有仓库每月有慷慨免费分钟数）。<strong>一个 <code>.github/workflows/*.yml</code> 就是你的全自动流水线</strong>，不用养任何构建服务器。</li>
+</ul>
+<p>把 <code>CLOUDFLARE_API_TOKEN</code> 存进 GitHub Secrets，Actions 里一句 <code>wrangler deploy</code> 就把产物推上 Cloudflare。<strong>一个人，推一次代码，测试 + 构建 + 部署全自动完成</strong>——这在十年前是一个团队 + 一套 Jenkins 才有的待遇，现在 0 运维、近 0 成本。</p>
+<p>我那套流水线，每次 <code>git push</code> 全自动跑完，还能&quot;先 dev、验过再 prod&quot;，一个人也有灰度的体面：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-3">flowchart TD
+    push["git push → main"] --> install["装依赖 (pnpm)"]
+    install --> quality["lint + typecheck"]
+    quality --> test["单元 + D1 集成 + E2E (Playwright)"]
+    test --> build["构建 (next build / OpenNext)"]
+    build --> perf{"Lighthouse 性能门禁"}
+    perf -->|不达标| fail["❌ 阻断, 不部署"]
+    perf -->|达标| dev["wrangler deploy → dev worker"]
+    dev --> verify{"dev 验证 (golden path)"}
+    verify -->|绿| prod["wrangler deploy → prod"]
+    verify -->|红| fail
+    prod --> live(["🌐 全球上线"])
+
+    style live fill:#eaf7ef,stroke:#1f7a46
+    style fail fill:#fdecea,stroke:#b5462f</pre></div><blockquote>
+<p>⚠️ 诚实提醒：私有仓库的 Actions 免费分钟数有上限，<strong>重 E2E / Lighthouse 很吃分钟数</strong>；真跑爆了可以减少触发频率、或挂自托管 runner。但对多数一人公司，免费额度绰绰有余。</p>
+</blockquote>
+<hr>
+<h2 id="六几个真实的坑先知道少踩">六、几个真实的坑（先知道，少踩）</h2><p>吹归吹，作为真用过的人，我也得把代价讲清楚——不然你上去会骂街：</p>
+<ol>
+<li><strong>边缘运行时 ≠ Node.js</strong>。Workers 跑的是 V8 边缘运行时，<strong><code>fs</code> / <code>path</code> / <code>child_process</code> 这些 Node 专属 API 用不了</strong>，得用 Web 标准 API / Web Crypto。迁移老 Node 项目要改。</li>
+<li><strong>KV 是最终一致</strong>。它读快，但写完不保证立刻全球可见，<strong>别拿它存&quot;必须强一致&quot;的数据</strong>（那种放 D1）。</li>
+<li><strong>Workers AI 有每日额度天花板</strong>（见第三节），重 AI 的产品要规划用量、做缓存。</li>
+<li><strong>CPU 时间有上限</strong>。单请求 CPU 时间有限，<strong>重计算 / 每次都重渲染</strong>会触发限制——要靠缓存（KV/R2/边缘缓存）把热路径挡在计算之前（就是第二节那张时序图的意义）。</li>
+<li><strong>有一定厂商绑定</strong>。D1、KV、Workers AI 都是 Cloudflare 专有；好处是整合无缝，代价是搬家有成本。早期我认为<strong>对一人公司，整合带来的速度 &gt; 锁定的风险</strong>，但你心里要有数。</li>
+</ol>
+<hr>
+<h2 id="结论一人公司就该站在巨人的边缘网络上">结论：一人公司，就该站在巨人的边缘网络上</h2><p>一人公司的胜负手是<strong>用最少的人力和现金，最快把产品送到用户面前、并扛住增长</strong>。把这两层叠起来：</p>
+<ul>
+<li><strong>Cloudflare</strong>：$5/月的计算 + 免费的全球网络 + 一站式的数据/存储/缓存/AI；</li>
+<li><strong>GitHub + Actions</strong>：免费的代码托管 + 全自动测试构建部署。</li>
+</ul>
+<p>合起来，几乎是为&quot;小而全&quot;量身定做的底座。你不需要运维团队，也不需要五个云账单。你需要的是：一个仓库、一条 <code>wrangler deploy</code>、和把省下来的时间花在产品本身。</p>
+<p>如果你正打算一个人启动点什么——<strong>先去开个 Cloudflare 账号，把 Pages + Workers + D1 跑通一个 Hello World，再用 GitHub Actions 接上自动部署</strong>。你会回来谢我。</p>
+<hr>
+<p><em>这篇基于我把 <a href="https://1000usdinchina.com">1000usdinchina.com</a>（Next.js + OpenNext 部署到 Workers、D1 存数据、KV 管会话、Workers AI 跑 Qwen、Cron 做定时生成、GitHub Actions 自动上线的多语种 SaaS）完整跑在 Cloudflare 上的经验。想看&quot;这套栈能做出什么样的成品&quot;，可以直接去站上点点看。具体某项服务的免费额度与单价以 Cloudflare 官网当前为准。</em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "一个人也能跑全栈 SaaS：Cloudflare 是一人公司的宝藏底座（月付 $5 起）",
+  "image": "https://www.agentupdate.ai/blog/images/cloudflare-for-one-person-companies.png",
+  "description": "对一人公司 / 独立开发者来说，Cloudflare 几乎是性价比天花板：$5/月的 Workers、免费 of Pages 与全球边缘网络、D1 数据库、KV / R2 存储、内置缓存，还能直接跑 Qwen 等小模型，再配 GitHub Actions 全自动上线。",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-24",
+  "inLanguage": "zh",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/zh/cloudflare-for-one-person-companies"
+}
+</script>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="一先说钱5月撑起一个真-saas" data-astro-cid-w5q62dq7> <a href="#一先说钱5月撑起一个真-saas" data-astro-cid-w5q62dq7>一、先说钱：$5/月，撑起一个真 SaaS</a> </li><li class="toc-item " data-slug="二一套乐高覆盖全栈" data-astro-cid-w5q62dq7> <a href="#二一套乐高覆盖全栈" data-astro-cid-w5q62dq7>二、一套&quot;乐高&quot;，覆盖全栈</a> </li><li class="toc-item h3-nav" data-slug="workers-你的后端-渲染层" data-astro-cid-w5q62dq7> <a href="#workers-你的后端-渲染层" data-astro-cid-w5q62dq7>Workers —— 你的后端 / 渲染层</a> </li><li class="toc-item h3-nav" data-slug="pages-前端-静态站" data-astro-cid-w5q62dq7> <a href="#pages-前端-静态站" data-astro-cid-w5q62dq7>Pages —— 前端 / 静态站</a> </li><li class="toc-item h3-nav" data-slug="d1-边缘关系型数据库" data-astro-cid-w5q62dq7> <a href="#d1-边缘关系型数据库" data-astro-cid-w5q62dq7>D1 —— 边缘关系型数据库</a> </li><li class="toc-item h3-nav" data-slug="kv-全球键值存储" data-astro-cid-w5q62dq7> <a href="#kv-全球键值存储" data-astro-cid-w5q62dq7>KV —— 全球键值存储</a> </li><li class="toc-item h3-nav" data-slug="r2-对象存储零出口流量费" data-astro-cid-w5q62dq7> <a href="#r2-对象存储零出口流量费" data-astro-cid-w5q62dq7>R2 —— 对象存储，零出口流量费</a> </li><li class="toc-item h3-nav" data-slug="workers-ai-边缘直接跑-qwen" data-astro-cid-w5q62dq7> <a href="#workers-ai-边缘直接跑-qwen" data-astro-cid-w5q62dq7>Workers AI —— 边缘直接跑 Qwen</a> </li><li class="toc-item h3-nav" data-slug="cache-cron-durable-objects-queues" data-astro-cid-w5q62dq7> <a href="#cache-cron-durable-objects-queues" data-astro-cid-w5q62dq7>Cache / Cron / Durable Objects / Queues</a> </li><li class="toc-item " data-slug="三把-qwen-这类小模型白嫖进产品" data-astro-cid-w5q62dq7> <a href="#三把-qwen-这类小模型白嫖进产品" data-astro-cid-w5q62dq7>三、把 Qwen 这类小模型&quot;白嫖&quot;进产品</a> </li><li class="toc-item " data-slug="四运维负担趋近于零一人公司最在乎的" data-astro-cid-w5q62dq7> <a href="#四运维负担趋近于零一人公司最在乎的" data-astro-cid-w5q62dq7>四、运维负担趋近于零（一人公司最在乎的）</a> </li><li class="toc-item " data-slug="五再白嫖一层github-actions-当你的免费-cicd" data-astro-cid-w5q62dq7> <a href="#五再白嫖一层github-actions-当你的免费-cicd" data-astro-cid-w5q62dq7>五、再白嫖一层：GitHub + Actions 当你的免费 CI/CD</a> </li><li class="toc-item " data-slug="六几个真实的坑先知道少踩" data-astro-cid-w5q62dq7> <a href="#六几个真实的坑先知道少踩" data-astro-cid-w5q62dq7>六、几个真实的坑（先知道，少踩）</a> </li><li class="toc-item " data-slug="结论一人公司就该站在巨人的边缘网络上" data-astro-cid-w5q62dq7> <a href="#结论一人公司就该站在巨人的边缘网络上" data-astro-cid-w5q62dq7>结论：一人公司，就该站在巨人的边缘网络上</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/seo-geo-optimization-claude-code-guide" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/seo-geo-optimization.png" alt="从传统 SEO 到 AI-native GEO：我们如何使用 Claude Code 技能库自愈升级 AgentUpdate.ai" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/seo-geo-optimization-claude-code-guide" data-astro-cid-w5q62dq7>从传统 SEO 到 AI-native GEO：我们如何使用 Claude Code 技能库自愈升级 AgentUpdate.ai</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文详细记录了我们如何使用 Claude Code 的 seo-audit-full 与 geo-content-optimizer 技能，对 AgentUpdate.ai 展开自动化技术 SEO 治理与生成式引擎优化（GEO）升级的五个具体步骤，包含详尽的代码对比、Schema 升级、每个步骤优化前后的评分对比，以及本地编译验证实战。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月23日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate Team</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/multilingual-seo-geo-llms-txt" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/seo-geo-cover.png" alt="1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/multilingual-seo-geo-llms-txt" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>给 4 语言边缘应用做 SEO 和 GEO:hreflang、sitemap、robots、llms.txt、AI 引用就绪、Lighthouse 进 loop —— 以及那些必须手动更新的面。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月22日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

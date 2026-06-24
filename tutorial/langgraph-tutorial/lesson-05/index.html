@@ -1,0 +1,367 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai</title><meta name="description" content="Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-05/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-05/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-05/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-05/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai"><meta property="og:description" content="Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-05/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai"><meta name="twitter:description" content="Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Part 05 | Initial Success: Running the \\\"Research-Write\\\" Closed Loop — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai","description":"Part 05 | Initial Success: Running the \\\"Research-Write\\\" Closed Loop Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-05/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-05/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langgraph-tutorial/lesson-05/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langgraph-tutorial/lesson-05/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/langgraph-tutorial" class="series-title-link" data-astro-cid-vma7orrt> LANGGRAPH MASTERCLASS: FROM CONTROL FLOWS TO COMPLEX WORKFLOWS </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Session 01 | Why LangGraph? The End of the Chain Era and the Rise of State Graphs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 02 | The Heart of StateGraph: Dissecting the Global State</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 03 | Business Nodes: The True Executors of the Graph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 04 | Routing Edges and the END Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-05" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 06 | The Native Powerhouse: Seamlessly Integrating External Skills with ToolNode</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 07 | Conditional Edges: The \&quot;Branching Decider\&quot; of Workflows</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 08 | Building a Standard ReAct Agent Architecture</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 09 | Beyond the Local Scope: Handling Exceptions in Tool Nodes</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 10 | Granular Streaming: Watching the Graph Get the Job Done</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 11 | Parallel Execution: The Divide and Conquer Mechanism</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 12 | The Black Magic of Reducers: How to Safely Incrementally Update Data</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 13 | Human in the Loop (HITL): Building an Approval Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 14 | Time Machine! Building Checkpoints with SqliteSaver/MemorySaver</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 15 | Manual Retouching: Correcting Agent Hallucinations with update_state</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 16 | Exploring Multi-Agent Architectures: Flat vs. Hierarchical</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 17 | Supervisor Agent: Building the Command Center</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 18 | Sub-graphs: Condensing a Low-Level Graph into a Standard Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 19 | Cross-Agent Shared vs. Private State Walls: Information Routing and Isolation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 20 | Network of Agents Simulation in Action</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>21 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 21 | Async Execution: Leaving Blocking in the Past</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>22 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 22 | Observability: Seamlessly Mounting LangSmith Probes onto LangGraph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>23 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 23 | Fine-Grained Token Streaming (stream_mode=\&quot;messages\&quot;)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>24 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 24 | Anti-Timeout Strategies: Timeouts and LLM Fallback Retries</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-25" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>25 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>26 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 26 | Frontend Integration: Architecting Frontend-Backend Separation for LangGraph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>27 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 27 | Production-Grade Powerhouse: A First Look at LangGraph Cloud</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>28 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 28 | Extracting Complex Data (Structured Outputs)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>29 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 29 | Testing Graphs: How Do We Automate Acceptance Testing for Agent Performance?</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>30 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 30 | Capstone Project Showcase: A Complete AI Content Agency</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/langgraph-tutorial" data-astro-cid-ilhxcym7>LangGraph Masterclass: From Control Flows to Complex Workflows</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"LangGraph Masterclass: From Control Flows to Complex Workflows","item":"https://www.agentupdate.ai/tutorial/langgraph-tutorial"},{"@type":"ListItem","position":4,"name":"Part 05 | Initial Success: Running the \\\"Research-Write\\\" Closed Loop"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>20 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><h2>🎯 Learning Objectives for This Session</h2>
+<p>Hey there, future AI architects, welcome back to our LangGraph Masterclass! Last time, we discussed the philosophy of LangGraph. Now, it's time to turn those theories into actual code. Don't rush into building complex decision trees just yet; let's start with the most fundamental but crucial step: <strong>getting the MVP of our AI Content Agency up and running!</strong></p>
+<p>In this session, we will:</p>
+<ul>
+<li><strong>Master the core mechanism of LangGraph's sequential execution flow:</strong> Understand how <code>add_node</code> and <code>add_edge</code> weave together a fixed workflow.</li>
+<li><strong>Successfully integrate the Researcher and Writer Agents into the LangGraph workflow:</strong> They are no longer standalone scripts, but integral parts of our agency's system.</li>
+<li><strong>Learn to define and manage Graph State:</strong> Ensure information flows smoothly and accurately between different Agents.</li>
+<li><strong>Successfully run the "Research-Write" MVP closed loop of the AI Content Agency:</strong> Witness the birth of your first content creation pipeline firsthand!</li>
+</ul>
+<h2>📖 Core Concepts</h2>
+<h3>Why Start with a Fixed Sequence? — The Triumph of MVP Thinking</h3>
+<p>In software engineering, we constantly emphasize the concept of MVP (Minimum Viable Product). What is the MVP for our AI Content Agency? It's the ability to complete a minimal closed loop "from topic to content". The most straightforward approach is to have a researcher investigate first, and then hand the findings over to a writer to draft the content. In between, there are no complex decisions, no retries, and no branching—just a straight line.</p>
+<p>Why do it this way?</p>
+<ol>
+<li><strong>Reduce Complexity:</strong> The most common mistake beginners make is trying to cram all the logic in right from the start. LangGraph is powerful, but if you can't even manage a simple sequential flow, how can you handle complex conditional branches? Getting it running first to validate core functionality is the golden rule.</li>
+<li><strong>Rapid Validation:</strong> With a fixed sequence, we can quickly verify whether each Agent functions correctly and whether data passes smoothly between them. If an issue arises, troubleshooting is much simpler.</li>
+<li><strong>Lay the Foundation:</strong> Sequential flow is the bedrock of all complex graphs. Once you grasp the essence of <code>add_node</code> and <code>add_edge</code>, introducing <code>add_conditional_edges</code> later will feel completely natural. It's like building a house: without a solid foundation, even the most magnificent superstructure is just a castle in the air.</li>
+</ol>
+<h3>The Basic Building Blocks of LangGraph: Node, Edge, State</h3>
+<p>Remember the core of LangGraph we mentioned last time? It's a directed graph composed of <strong>Nodes</strong> and <strong>Edges</strong>.</p>
+<ul>
+<li><strong>Node:</strong> In our AI Content Agency, each Agent (like the Researcher or Writer) is a node. A node receives input, executes a task, and outputs a result. This "task execution" could be calling an LLM, executing a tool, or even just running a simple Python function.</li>
+<li><strong>Edge:</strong> Edges define the direction of flow between nodes. An edge from Node A to Node B means that after Node A completes its task, its output will serve as Node B's input (or rather, the state updates, and then B reads that state).</li>
+<li><strong>State:</strong> This is the soul of LangGraph! All nodes in the Graph share a mutable state. When a node finishes its task, it updates this shared state. The next node then reads the information it needs from this updated state. This state-passing mechanism is the foundation of multi-agent collaboration.</li>
+</ul>
+<p>In this session, we will primarily use <code>add_node</code> to register our Agents and <code>add_edge</code> to define the fixed sequential flow between them.</p>
+<h3>Mermaid Diagram: The "Research-Write" Workflow in Action</h3>
+<p>Here is the core workflow we are building in this session. It's highly concise and intuitive:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[Start] --&gt; B(Researcher);
+    B --&gt; C(Writer);
+    C --&gt; D[End];</pre></div><p>This diagram clearly illustrates:</p>
+<ol>
+<li><strong>Start</strong>: The starting point of the workflow, where we pass in the initial topic.</li>
+<li><strong>Researcher</strong>: Receives the topic, conducts research, and updates the shared state with the findings.</li>
+<li><strong>Writer</strong>: Reads the research findings from the shared state, drafts the content, and updates the shared state with the draft.</li>
+<li><strong>End</strong>: The endpoint of the workflow, where we can retrieve the finalized content from the final state.</li>
+</ol>
+<p>Simple, right? But it is exactly this simplicity that forms the cornerstone of complex systems.</p>
+<h2>💻 Hands-on Code Walkthrough</h2>
+<p>Alright, theory is great, but nothing beats rolling up our sleeves and getting to work! We will use Python to implement this "Research-Write" closed loop.</p>
+<pre><code class="language-python">import operator
+from typing import Annotated, List, Tuple, TypedDict
+from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_core.runnables import Runnable
+from langchain_openai import ChatOpenAI
+from langgraph.graph import StateGraph, END
+
+# =============================================================================
+# 1. Define the shared state of our AI Content Agency (Agency State)
+#    This is the data shared and updated by all nodes during the Graph's execution.
+# =============================================================================
+class AgencyState(TypedDict):
+    """
+    This represents the shared state of our AI Content Agency during content creation.
+    """
+    topic: str  # The topic for content creation.
+    research_data: str  # Data collected by the researcher.
+    draft_content: str  # Draft content written by the writer.
+    # (Optional) If you need to store message history, you can define it like this:
+    # messages: Annotated[List[BaseMessage], operator.add] 
+
+# =============================================================================
+# 2. Simulate our Agents (Node Functions)
+#    To focus on LangGraph itself, we use simple Python functions to simulate Agent behavior here.
+#    In a real project, these would be more complex LangChain Agents or custom Runnables.
+# =============================================================================
+
+# Simulate the Researcher Agent
+def research_agent(state: AgencyState) -&gt; AgencyState:
+    """
+    Simulates the Researcher Agent.
+    It takes the current state, gets the topic from 'topic', simulates research,
+    and updates 'research_data'.
+    """
+    print(f"\n--- 研究员正在调查主题: {state['topic']} ---") # Researcher is researching topic.
+    # Simulate a time-consuming operation and research results.
+    simulated_research_result = f"关于 '{state['topic']}' 的初步调查结果：\n" \
+                                "1. 市场趋势显示，此类内容近期关注度高。\n" \
+                                "2. 主要竞品内容侧重于技术原理，缺乏应用场景。\n" \
+                                "3. 用户普遍反馈希望有更多实战案例和避坑指南。"
+    
+    print("--- 研究员调查完成，更新状态 ---") # Researcher finished research, updating state.
+    # Update state and return the new state dictionary.
+    return {"research_data": simulated_research_result}
+
+# Simulate the Writer Agent
+def writer_agent(state: AgencyState) -&gt; AgencyState:
+    """
+    Simulates the Writer Agent.
+    It takes the current state, gets research data from 'research_data', simulates writing,
+    and updates 'draft_content'.
+    """
+    print(f"\n--- 写作者正在基于调查结果撰写内容 ---") # Writer is writing content based on research results.
+    print(f"调查结果摘要:\n{state['research_data'][:100]}...") # Research results summary.
+
+    # Simulate a time-consuming operation and writing process.
+    simulated_draft = f"标题：深入浅出：{state['topic']} 实战指南与避坑\n\n" \
+                      f"前言：在当今快速发展的AI时代，{state['topic']} 已成为不可忽视的关键技术。本指南将结合最新市场趋势和用户反馈，为您提供一份详尽的实战策略。\n\n" \
+                      f"第一部分：市场洞察与竞品分析\n{state['research_data']}\n\n" \
+                      f"第二部分：核心技术原理与应用场景\n（此处省略具体技术细节，聚焦实战）\n\n" \
+                      f"第三部分：常见问题与避坑指南\n（此处基于用户反馈提供建议）\n\n" \
+                      f"结语：掌握 {state['topic']}，赋能未来AI应用！"
+    
+    print("--- 写作者撰写完成，更新状态 ---") # Writer finished writing, updating state.
+    # Update state and return the new state dictionary.
+    return {"draft_content": simulated_draft}
+
+# =============================================================================
+# 3. Build the LangGraph Workflow
+#    Use StateGraph to define our Agent nodes and the sequential flow between them.
+# =============================================================================
+
+# Instantiate StateGraph, specifying our defined shared state type.
+workflow = StateGraph(AgencyState)
+
+# Add Nodes
+# Each node is associated with an Agent function we defined above.
+workflow.add_node("researcher", research_agent) # Register the researcher node.
+workflow.add_node("writer", writer_agent)       # Register the writer node.
+
+# Set Entry Point
+# Define where the Graph starts execution.
+workflow.set_entry_point("researcher") # Start from the researcher.
+
+# Add Edges
+# Define the sequential flow between nodes.
+workflow.add_edge("researcher", "writer") # After the researcher completes its task, flow to the writer.
+
+# Set Finish Point
+# Define where the Graph finishes execution.
+workflow.set_finish_point("writer") # After the writer completes its task, the Graph finishes.
+
+# Compile the Graph
+# Compile the defined workflow into an executable Runnable.
+app = workflow.compile()
+
+# =============================================================================
+# 4. Run our AI Content Agency MVP
+#    Pass in the initial state and observe the Graph's execution process and final result.
+# =============================================================================
+if __name__ == "__main__":
+    print("--- AI 内容机构 MVP 启动 ---") # AI Content Agency MVP started.
+
+    # Define initial state: the topic we want to create content about.
+    initial_state = {"topic": "LangGraph 多智能体协同在内容创作中的应用", "research_data": "", "draft_content": ""}
+
+    # Run the Graph
+    # Calling app.stream() allows you to see state updates at each node step by step.
+    final_state = None
+    for s in app.stream(initial_state):
+        # 's' is a dictionary where the key is the name of the currently executing node,
+        # and the value is the state update after that node's execution.
+        print(s)
+        print("----") # Separator for readability.
+        final_state = s # Keep track of the last state for final output.
+
+    print("\n--- AI 内容机构 MVP 运行结束 ---") # AI Content Agency MVP finished running.
+
+    # Print the final generated content.
+    if final_state and "writer" in final_state: # Ensure final state exists and contains the result from the writer node.
+        print("\n🎉 最终生成的内容草稿 (Final Generated Content Draft):")
+        print(final_state["writer"]["draft_content"])
+    elif final_state and END in final_state: # If the final state is directly END, get it from the END node.
+        print("\n🎉 最终生成的内容草稿 (Final Generated Content Draft):")
+        print(final_state[END]["draft_content"])
+    else:
+        print("\n⚠️ 未能获取最终内容草稿。") # Failed to retrieve final content draft.
+</code></pre>
+<h3>Code Walkthrough: Step by Step</h3>
+<ol>
+<li><p><strong>Defining <code>AgencyState</code> (<code>TypedDict</code>)</strong></p>
+<ul>
+<li>We defined <code>AgencyState</code> using <code>TypedDict</code>. This is the single source of truth shared across the entire Graph.</li>
+<li><code>topic</code>: When the workflow starts, we provide the agency with a topic.</li>
+<li><code>research_data</code>: The researcher writes its findings here.</li>
+<li><code>draft_content</code>: The writer writes the initial draft here.</li>
+<li><strong>Key Takeaway:</strong> This single, mutable state is the core of LangGraph. Every node reads the information it needs from here and writes its output back to it.</li>
+</ul>
+</li>
+<li><p><strong>Simulating Agents (<code>research_agent</code>, <code>writer_agent</code>)</strong></p>
+<ul>
+<li>To keep the focus on LangGraph's structure, I used simple Python functions to simulate the Agents here.</li>
+<li>Each function receives an <code>AgencyState</code> object (or a subset of it), performs some simulated "work", and returns a dictionary. This dictionary is then used to <strong>update</strong> the current <code>AgencyState</code>.</li>
+<li><strong>Note:</strong> The returned dictionary is merged with the current state (by default, this is a shallow merge: dictionary values are overwritten, while list values using <code>Annotated[List[..., operator.add]]</code> are appended). Here, we simply overwrite <code>research_data</code> and <code>draft_content</code>.</li>
+</ul>
+</li>
+<li><p><strong>Building the LangGraph Workflow (<code>workflow = StateGraph(AgencyState)</code>)</strong></p>
+<ul>
+<li><code>StateGraph(AgencyState)</code>: Initializes a state graph and explicitly tells it that our shared state type is <code>AgencyState</code>.</li>
+<li><code>workflow.add_node("researcher", research_agent)</code>: Registers our <code>research_agent</code> function as a node named "researcher". When the Graph flows to this node, it executes the <code>research_agent</code> function.</li>
+<li><code>workflow.set_entry_point("researcher")</code>: Sets the entry point of the Graph. This means when the Graph starts, it begins execution at the "researcher" node.</li>
+<li><code>workflow.add_edge("researcher", "writer")</code>: Adds an edge from "researcher" to "writer". This indicates that after the "researcher" node finishes, the control flow unconditionally transfers to the "writer" node.</li>
+<li><code>workflow.set_finish_point("writer")</code>: Sets the finish point of the Graph. Once the "writer" node finishes executing, the Graph stops and returns the final state.</li>
+<li><code>app = workflow.compile()</code>: Compiles our defined workflow into an executable LangChain Runnable object. This <code>app</code> object serves as the "brain" of our entire AI Content Agency.</li>
+</ul>
+</li>
+<li><p><strong>Running Our MVP (<code>app.stream(initial_state)</code>)</strong></p>
+<ul>
+<li>We create an <code>initial_state</code> dictionary containing only the <code>topic</code>. <code>research_data</code> and <code>draft_content</code> are initialized as empty strings.</li>
+<li><code>app.stream(initial_state)</code>: Starts the Graph. It returns an iterator, and each iteration outputs a dictionary representing the state changes after the current node executes. This is incredibly helpful for debugging and understanding the flow.</li>
+<li>Finally, we extract <code>draft_content</code> from the <code>final_state</code>. This is the very first piece of work completed by our agency!</li>
+</ul>
+</li>
+</ol>
+<h2>Pitfalls and How to Avoid Them</h2>
+<p>As an architect, my job isn't just to teach you "how to do it", but also to warn you about "which traps to avoid".</p>
+<ol>
+<li><p><strong>State Design Traps: Information Loss or Contamination</strong></p>
+<ul>
+<li><strong>The Pitfall:</strong> Poorly designed <code>AgencyState</code>. For instance, forgetting to add an Agent's output field to the state, leaving the next Agent without the necessary information. Or, different Agents accidentally overwriting each other's critical data.</li>
+<li><strong>How to Avoid:</strong><ul>
+<li><strong>Plan the state in advance:</strong> Before writing code, draw a diagram listing what inputs each Agent needs and what outputs it produces. These inputs and outputs become the fields of your <code>AgencyState</code>.</li>
+<li><strong>Apply the Single Responsibility Principle (SRP) to state fields:</strong> Try to assign the update responsibility of each state field to a specific Agent. For example, <code>research_data</code> should primarily be updated by the <code>researcher</code>, and <code>draft_content</code> by the <code>writer</code>.</li>
+<li><strong>Use <code>Annotated</code> and <code>operator.add</code> for lists:</strong> If your state requires accumulating lists (like message history), using <code>Annotated[List[BaseMessage], operator.add]</code> ensures new messages are appended rather than overwritten. We didn't use it in this session, but we will in the future.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Unclear Node Responsibilities: The "Kitchen Sink" Agent</strong></p>
+<ul>
+<li><strong>The Pitfall:</strong> Cramming too much logic into a single Agent node, like having one Agent handle both research and writing. This makes the node bloated, hard to maintain, difficult to debug, and impossible to reuse.</li>
+<li><strong>How to Avoid:</strong><ul>
+<li><strong>Keep node granularity moderate:</strong> Each node should only be responsible for a clear, logically independent task. Our <code>research_agent</code> handling only research and <code>writer_agent</code> handling only writing in this session is a perfect example.</li>
+<li><strong>Facilitate debugging:</strong> Nodes with a single responsibility are easier to test and troubleshoot. If a node fails, you immediately know whether the research logic or the writing logic is at fault.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Debugging Difficulties: Black Box Execution</strong></p>
+<ul>
+<li><strong>The Pitfall:</strong> Directly calling <code>app.invoke()</code> without printing intermediate states. When the Graph's execution result isn't what you expected, you won't know which step went wrong.</li>
+<li><strong>How to Avoid:</strong><ul>
+<li><strong>Utilize <code>app.stream()</code>:</strong> As demonstrated in our code, the <code>stream()</code> method is your best debugging buddy. It lets you see the state updates after each node executes, helping you trace data flow and logic.</li>
+<li><strong>Print logs inside Agent functions:</strong> I added <code>print</code> statements inside <code>research_agent</code> and <code>writer_agent</code>. This is extremely useful during the development phase, allowing you to visually track what each Agent is doing and what inputs it received.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>When to Introduce Conditional Logic? Premature Optimization</strong></p>
+<ul>
+<li><strong>The Pitfall:</strong> Obsessing over how to add conditional checks, retry loops, or human-in-the-loop approvals before the MVP is even running.</li>
+<li><strong>How to Avoid:</strong><ul>
+<li><strong>Get it running first, then optimize:</strong> Emphasizing MVP thinking once again. Ensure the simplest "Research-Write" closed loop runs stably and outputs the expected content. This is your solid foundation for moving toward complex workflows.</li>
+<li><strong>Iterate gradually:</strong> Once you have mastered sequential flows, then consider introducing <code>add_conditional_edges</code> to implement complex decision logic. That will be the challenge for the next stage, but with the foundation built in this session, you'll tackle it with confidence.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2>📝 Session Summary</h2>
+<p>Congratulations! We have just built and run the first MVP version of our AI Content Agency—a "Research-Write" closed loop that goes from a topic to a content draft.</p>
+<p>In this session, we:</p>
+<ul>
+<li><strong>Clarified the importance of MVP thinking</strong> in complex system development, and why starting with a fixed sequential flow is a wise move.</li>
+<li><strong>Deeply understood LangGraph's Node, Edge, and State concepts</strong>, which are the building blocks of all complex workflows.</li>
+<li><strong>Successfully orchestrated</strong> the simulated <code>Researcher</code> and <code>Writer</code> Agents into LangGraph through hands-on code, building a sequential flow using <code>add_node</code>, <code>set_entry_point</code>, <code>add_edge</code>, and <code>set_finish_point</code>.</li>
+<li><strong>Mastered the key to state management</strong>, ensuring seamless information transfer between Agents.</li>
+<li><strong>Learned common pitfalls and avoidance strategies</strong> during development, which is invaluable experience for a senior architect.</li>
+</ul>
+<p>Now, you have a running "skeleton". Next time, we will start thinking: what if the researcher finds the topic too vague, or the writer feels the research data is insufficient? How do we enable them to <strong>provide feedback and retry</strong>? That's right, we will begin exploring LangGraph's conditional logic and looping mechanisms to make our agency smarter and more robust!</p>
+<p>Ready? The excitement continues in the next session!</p>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Part 04 | Routing Edges and the END Node</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-06" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Part 06 | The Native Powerhouse: Seamlessly Integrating External Skills with ToolNode</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

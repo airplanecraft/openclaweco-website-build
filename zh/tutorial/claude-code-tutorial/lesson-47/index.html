@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 47 章 | 分享预览与角色分工验证 — Claude Code 终极大师课 — AgentUpdate.ai</title><meta name="description" content="第 47 章 | 分享预览与角色分工验证 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-47/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-code-tutorial/lesson-47/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-47/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-code-tutorial/lesson-47/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 47 章 | 分享预览与角色分工验证 — Claude Code 终极大师课 — AgentUpdate.ai"><meta property="og:description" content="第 47 章 | 分享预览与角色分工验证 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-47/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 47 章 | 分享预览与角色分工验证 — Claude Code 终极大师课 — AgentUpdate.ai"><meta name="twitter:description" content="第 47 章 | 分享预览与角色分工验证 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"第 47 章 | 分享预览与角色分工验证 — Claude Code 终极大师课 — AgentUpdate.ai","description":"第 47 章 | 分享预览与角色分工验证 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。","inLanguage":"zh-CN","url":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-47/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-47/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.DHQ-IJjR.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-code-tutorial/lesson-47/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-code-tutorial/lesson-47/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-p7qzptk4> <div class="container dual-layout-container" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-p7qzptk4> <div class="sidebar-box" data-astro-cid-p7qzptk4> <span class="catalog-header-tag" data-astro-cid-p7qzptk4>课程大纲 // CURRICULUM</span> <a href="/zh/tutorial/claude-code-tutorial" class="series-title-link" data-astro-cid-p7qzptk4> CLAUDE CODE 终极大师课 </a> <ul class="nav-lesson-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-1" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>01 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 01 章 | 告别静态工具：什么是终端级 AI 编程代理 Claude Code？</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-2" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>02 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 02 章 | 环境搭建与授权：Windows/Mac/Linux 极速安装指南</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-3" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>03 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 03 章 | 理解 Claude Code 的底层信任模型</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-4" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>04 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 04 章 | 交互基石：探索终端里的魔法模式 (Modes)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-5" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>05 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 05 章 | 第一个 Hello World 项目</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-6" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>06 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 06 章 | 代码库雷达：用自然语言进行 Repository 探索</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-7" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>07 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 07 章 | 编写 CLAUDE.md：给 AI 的持久层项目简报</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-8" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>08 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 08 章 | Context Window (上下文) 管理的艺术</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-9" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>09 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 09 章 | 精准的 Prompt Scoping（作用域边界控制）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>10 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 10 章 | 文件批处理与重构利器</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>11 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 11 章 | Bug 终结者：基于栈追踪 (Stack Trace) 的自动修复</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>12 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 12 章 | 理解&quot;记忆断档&quot;：Vibe Coding 翻车实录分析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>13 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 13 章 | 产品经理的新技能：从 PRD 到可运行原型只需 20 分钟</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>14 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 14 章 | 用 CSV 做自动数据分析与洞察提取</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>15 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 15 章 | 用户访谈与问卷综合 (User Research Synthesis)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>16 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 16 章 | 日常文档全自动生成流水线</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>17 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 17 章 | Claude Cowork：跨多步骤的自动任务分解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>18 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 18 章 | 基于终端的自动化 UI Testing</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>19 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 19 章 | 什么是 MCP？它为什么是 AI Agent 的&quot;USB 接口</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>20 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 20 章 | 官方内置连接器配置与启用</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>21 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>22 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 22 章 | Slack 消息的监控与自动化分发 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>23 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 23 章 | 图形化思维：Excalidraw MCP 绘图实战</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>24 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 24 章 | 数据库直连：SQL 客户端检索与分析 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-25" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>25 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>26 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 26 章 | 基于 MCP 的跨应用组合拳 (Orchestration)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>27 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 27 章 | MCP 失效与连接重试安全策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>28 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 28 章 | 告别 Prompt 工程，步入 Skills 工程</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>29 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 29 章 | SKILL.md 结构深度剖析：渐进式披露 (Progressive Disclosure)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>30 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 30 章 | 从 0 构建你的第一个专属 Skill（五步法）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-31" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>31 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 31 章 | 前端开发设计飞跃：Frontend-design Skill 案例解析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-32" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>32 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 32 章 | 使用 skills.sh：2026 时代的 Agent npm 管理器</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-33" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>33 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 33 章 | 企业级办公文档 Skill：定制公司品牌模板</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-34" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>34 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 34 章 | 智能决策树：具有上下文感知能力的工具选择</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-35" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>35 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 35 章 | AI 辅助造 AI：用 Skill-creator 生成复杂工作流</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-36" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>36 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 36 章 | Skill 开发的安全模型与恶意插件防范</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-37" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>37 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 37 章 | Vibe Coding 的致命伤与工程救赎</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-38" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>38 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 38 章 | `planning-with-files` 插件入门</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-39" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>39 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 39 章 | 跨天、长生命周期项目的持续集成</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-40" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>40 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 40 章 | 多功能并行开发防串扰策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-41" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>41 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 41 章 | Debug 地狱求生：记录试错日志让 AI 智商上线</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-42" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>42 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 42 章 | 单元测试驱动的 Agentic 代码生成 (TDD + Claude)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-43" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>43 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 43 章 | 代码走查验证策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-44" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>44 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 44 章 | 视觉能力的加入：图片资产与视频帧的理解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-45" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>45 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 45 章 | Builder.io 平台介绍：从孤岛到 Slack 化团队协同</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-46" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>46 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 46 章 | 并行代理协作 (Parallel Agents)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-47" class="lesson-nav-link active" data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>47 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 47 章 | 分享预览与角色分工验证</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-48" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>48 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 48 章 | Agentic 后端理论：所有后端正在成为思考的主体</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-49" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>49 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 49 章 | 基于权限流的管理哲学</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-50" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>50 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 50 章 | 从程序员到全栈掌控者：属于 Agent 开发者的十年机遇</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/claude-code-tutorial" data-astro-cid-ilhxcym7>Claude Code 终极大师课</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 47 章 | 分享预览与角色分工验证</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial"},{"@type":"ListItem","position":3,"name":"Claude Code 终极大师课","item":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial"},{"@type":"ListItem","position":4,"name":"第 47 章 | 分享预览与角色分工验证"}]}</script> <header class="lesson-details-header" data-astro-cid-p7qzptk4> <h1 class="lesson-display-title" data-astro-cid-p7qzptk4>第 47 章 | 分享预览与角色分工验证</h1> <div class="lesson-meta-row" data-astro-cid-p7qzptk4>  <span class="meta-item" data-astro-cid-p7qzptk4>20 分钟阅读</span> <span class="meta-separator" data-astro-cid-p7qzptk4>|</span>  <span class="meta-item" data-astro-cid-p7qzptk4>更新于：2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-p7qzptk4><p>Live preview 无感托管：让 QA 与 PM 不装任何环境即可点开 URL 审查原型。</p>
+<hr>
+<h2>🎯 学习目标</h2>
+<ul>
+<li>掌握利用自动化工具，如 Docker 和 Nginx，快速部署前端原型预览环境的方法。</li>
+<li>理解并实践基于 HTTP Basic Authentication 的 URL 访问控制策略，确保预览内容安全。</li>
+<li>学会配置简易的 CI/CD 流程（例如 GitHub Actions），实现代码提交到预览部署的自动化。</li>
+<li>了解如何利用 AI 助手（如 Claude）优化预览环境的配置、部署与安全验证流程。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>47.1 无感托管与预览环境的价值</h3>
+<p>在现代敏捷开发流程中，快速迭代和高效反馈是成功的关键。前端原型或新功能开发完成后，如何让项目经理（PM）、质量保证（QA）工程师以及其他非技术干系人无需安装任何本地环境，即可直接通过一个 URL 进行审查和测试，是提升协作效率的重要一环。这就是“无感托管”和“预览环境”的核心价值。</p>
+<p><strong>什么是无感托管？</strong>
+无感托管指的是将应用程序（通常是前端静态页面或轻量级后端服务）部署到一个公共可访问的服务器上，并通过一个唯一的 URL 提供访问。对于审查者而言，他们只需点击链接，即可在浏览器中直接查看和交互，无需关心背后的技术栈、部署细节，更不需要安装 Node.js、Docker 或任何开发工具。</p>
+<p><strong>预览环境的重要性：</strong></p>
+<ul>
+<li><strong>加速反馈循环：</strong> PM 和 QA 可以即时看到最新的开发成果，提供早期反馈，避免在后期发现重大问题。</li>
+<li><strong>降低沟通成本：</strong> 避免了截图、录屏等低效的沟通方式，直接在真实环境中演示。</li>
+<li><strong>提高产品质量：</strong> 允许在合并到主分支之前，对特定功能或修复进行独立、全面的测试。</li>
+<li><strong>支持并行开发：</strong> 每个功能分支或 Pull Request 都可以拥有独立的预览环境，互不干扰。</li>
+</ul>
+<p>本期我们将聚焦于如何利用 Docker 和 Nginx 构建一个轻量级、安全的预览环境，并辅以 CI/CD 自动化，让整个流程“无感”且高效。</p>
+<h3>47.2 基于 URL 的角色分工验证</h3>
+<p>当我们将原型部署到公共 URL 后，安全性就成了首要考虑的问题。我们不希望任何人都能访问到尚未发布或敏感的原型。此时，基于 URL 的角色分工验证就显得尤为重要。对于内部预览，HTTP Basic Authentication（基本认证）是一种简单而有效的解决方案。</p>
+<p><strong>HTTP Basic Authentication 工作原理：</strong>
+当浏览器请求受基本认证保护的资源时，服务器会返回一个 <code>401 Unauthorized</code> 响应，并在响应头中包含 <code>WWW-Authenticate: Basic realm="..."</code>。浏览器收到此响应后，会弹出一个认证对话框，要求用户输入用户名和密码。用户输入后，浏览器会将用户名和密码用 Base64 编码，并以 <code>Authorization: Basic &lt;encoded_credentials&gt;</code> 的形式发送给服务器。服务器验证凭据后，如果正确，则返回资源；否则，继续返回 <code>401 Unauthorized</code>。</p>
+<p><strong>为什么选择 Basic Auth 进行角色分工验证？</strong></p>
+<ul>
+<li><strong>简单易用：</strong> 配置相对简单，无需复杂的身份认证系统。</li>
+<li><strong>广泛支持：</strong> 几乎所有浏览器和 HTTP 客户端都原生支持。</li>
+<li><strong>足够内部使用：</strong> 对于非公开的内部原型审查，其安全性通常足够。</li>
+</ul>
+<p>我们可以为 QA 和 PM 创建独立的 Basic Auth 凭据，或者共享一套凭据，让他们能够通过这个简单的“门槛”来访问预览链接。</p>
+<pre><code>+------------------+     HTTP GET /prototype
+|   QA/PM Browser  | &lt;------------------------+
+| (No Env Needed)  |                          |
++--------+---------+                          |
+         | (1) Request Preview URL            |
+         |                                    |
+         | (2) Server Responds 401            |
+         |     + WWW-Authenticate: Basic      |
+         |                                    |
+         | (3) Browser Prompts for Credentials|
+         |                                    |
+         | (4) User Enters User/Pass          |
+         |     (e.g., qa/review123)           |
+         |                                    |
+         | (5) Browser Sends Authorization Header |
+         |     (Base64 encoded)               |
+         |                                    |
++--------v---------+                          |
+|   Nginx Server   | ------------------------&gt;+
+|  (with Basic Auth)|
+|  + .htpasswd file |
++------------------+
+         | (6) Nginx Verifies Credentials
+         |     against .htpasswd
+         |
+         | (7) If Valid, Serve Prototype Files
+         |
+         | (8) Prototype Rendered in Browser
+         v
+</code></pre>
+<p><em>图 47.1: Basic Authentication 流程示意图</em></p>
+<h3>47.3 自动化与 AI 赋能：Claude 的角色</h3>
+<p>在上述流程中，从 Dockerfile 的编写、Nginx 配置的生成、<code>.htpasswd</code> 文件的创建，再到 CI/CD 自动化脚本的撰写，每一步都需要一定的技术知识。AI 助手，特别是像 Claude 这样的代码生成和理解专家，可以在这个过程中扮演一个强大的“副驾驶”角色。</p>
+<p><strong>Claude 如何赋能？</strong></p>
+<ol>
+<li><strong>方案建议与代码生成：</strong> 当你描述需求时（例如“我需要一个前端预览环境，带认证”），Claude 可以快速给出合适的方案（如 Docker + Nginx），并直接生成对应的 <code>Dockerfile</code> 和 <code>nginx.conf</code> 配置。</li>
+<li><strong>命令辅助：</strong> 对于 <code>htpasswd</code> 这样的命令行工具，Claude 可以提供详细的使用说明和示例，甚至帮你生成具体的命令。</li>
+<li><strong>CI/CD 脚本编写：</strong> 自动化部署是关键，但 CI/CD 平台（如 GitHub Actions）的 YAML 配置通常比较繁琐。Claude 可以根据你的部署目标（例如“推送到某个分支后，自动构建 Docker 镜像并 SSH 部署到服务器”），生成完整的 CI/CD 脚本。</li>
+<li><strong>问题排查与优化：</strong> 在部署或认证过程中遇到问题时，你可以向 Claude 描述错误信息，它能帮助你分析原因并提供解决方案。</li>
+</ol>
+<p>通过 Claude 的协助，即使是对部署和运维不那么熟悉的开发者，也能高效地搭建起专业的预览与验证流程。</p>
+<hr>
+<h2>💻 模拟 Claude TUI 交互</h2>
+<p>以下模拟了与 Claude 在终端中的一系列交互，演示它如何协助我们完成预览环境的搭建与自动化。</p>
+<pre><code>&gt; 你好 Claude，我正在开发一个前端应用，想为它设置一个预览环境，能够让 QA 和 PM 通过 URL 访问，而且他们不需要安装任何东西。我希望这个预览环境能有简单的密码保护。你能帮我吗？
+
+╭─ Claude ──────────────────────────────────────────────────────────╮
+│  当然可以！这是一个非常常见的需求。我们可以使用 Docker 容器化你的前端应用，   │
+│  并用 Nginx 作为 Web 服务器，同时配置 HTTP Basic Authentication 来实现 │
+│  密码保护。整个过程可以被自动化，让 QA 和 PM 只需要一个链接和一套凭据。     │
+│                                                                   │
+│  我们一步步来：                                                   │
+│  1.  **容器化前端应用：** 生成一个 Dockerfile。                       │
+│  2.  **Nginx 配置 Basic Auth：** 生成带密码保护的 Nginx 配置。        │
+│  3.  **生成密码文件：** 指导你如何创建 .htpasswd 文件。                │
+│  4.  **自动化部署：** 帮你编写一个 GitHub Actions 工作流。             │
+│                                                                   │
+│  首先，请问你的前端应用构建后会生成静态文件在哪个目录？通常是 `dist` 或 `build`。│
+╰───────────────────────────────────────────────────────────────────╯
+
+&gt; 我的前端构建输出目录是 `dist`。请先帮我生成一个 Dockerfile 吧。
+
+╭─ Claude ──────────────────────────────────────────────────────────╮
+│  好的，这是一个用于将你的前端静态文件打包进 Nginx 容器的 Dockerfile。     │
+│  假设你的前端项目根目录下的 `dist` 文件夹包含了所有构建后的静态资源。       │
+│                                                                   │
+│  ```dockerfile                                                    │
+│  # 使用 Nginx 官方的稳定版 Alpine Linux 镜像，体积小巧高效。        │
+│  FROM nginx:stable-alpine                                         │
+│                                                                   │
+│  # 将构建好的前端静态文件从本地的 `./dist` 目录复制到 Nginx 的默认静态文件服务目录。│
+│  COPY ./dist /usr/share/nginx/html                                │
+│                                                                   │
+│  # 暴露 80 端口，这是 Nginx 默认监听的 HTTP 端口。                   │
+│  EXPOSE 80                                                        │
+│                                                                   │
+│  # 容器启动时运行 Nginx，并且以后台模式运行。                      │
+│  CMD ["nginx", "-g", "daemon off;"]                               │
+│  ```                                                              │
+│                                                                   │
+│  你可以将上述内容保存为项目根目录下的 `Dockerfile` 文件。             │
+│  接下来，我们需要为 Nginx 配置 Basic Auth。你需要一个用户名和密码。     │
+│  你希望使用什么用户名和密码？例如：`qa_reviewer` 和 `secure_pass`。    │
+╰───────────────────────────────────────────────────────────────────╯
+
+&gt; 用户名用 `qa`，密码用 `review123` 吧。请帮我生成 Nginx 配置，并且告诉我如何生成密码文件。
+
+╭─ Claude ──────────────────────────────────────────────────────────╮
+│  没问题。下面是 Nginx 的配置片段，你需要将其保存为一个 `.conf` 文件，      │
+│  例如 `nginx.conf`。这个配置会启用 Basic Auth，并指定密码文件路径。       │
+│                                                                   │
+│  ```nginx                                                         │
+│  server {                                                         │
+│      listen 80; # 监听 80 端口                                    │
+│      server_name your-preview-domain.com; # 替换为你的预览域名或 IP 地址   │
+│                                                                   │
+│      location / {                                                 │
+│          root /usr/share/nginx/html; # Nginx 提供静态文件的根目录        │
+│          index index.html index.htm; # 默认索引文件                  │
+│          auth_basic "Restricted Prototype Access"; # 认证对话框提示信息   │
+│          auth_basic_user_file /etc/nginx/.htpasswd; # 密码文件路径      │
+│          try_files $uri $uri/ /index.html; # 用于单页应用（SPA）的路由回退│
+│      }                                                            │
+│  }                                                                │
+│  ```                                                              │
+│                                                                   │
+│  **如何生成 `.htpasswd` 密码文件：**                                 │
+│                                                                   │
+│  你需要使用 `htpasswd` 工具，它通常随 Apache HTTP Server 一起安装，或者  │
+│  可以通过 `apache2-utils` 包获取。                                  │
+│                                                                   │
+│  1.  **安装 `htpasswd` 工具（如果尚未安装）：**                       │
+│      对于 Debian/Ubuntu 系统：                                     │
+│      `sudo apt-get update &amp;&amp; sudo apt-get install apache2-utils`    │
+│      对于 CentOS/RHEL 系统：                                      │
+│      `sudo yum install httpd-tools`                               │
+│                                                                   │
+│  2.  **生成密码文件：**                                            │
+│      使用 `-c` 参数在第一次创建文件时指定文件名。                    │
+│      `htpasswd -c .htpasswd qa`                                   │
+│      系统会提示你输入密码两次。请输入 `review123`。                 │
+│                                                                   │
+│      如果你需要添加更多用户，后续请不要再使用 `-c` 参数，否则会覆盖原有文件。│
+│      例如，添加一个 `pm` 用户：                                    │
+│      `htpasswd .htpasswd pm`                                      │
+│                                                                   │
+│  这个 `.htpasswd` 文件需要放在你的 Docker 镜像中 Nginx 配置所指定的路径。 │
+│  最简单的做法是将其与 `nginx.conf` 一起拷贝到容器中。               │
+│  你需要更新你的 Dockerfile 来包含这个 Nginx 配置和 `.htpasswd` 文件。   │
+│  需要我帮你更新 Dockerfile 吗？                                   │
+╰───────────────────────────────────────────────────────────────────╯
+</code></pre>
+<hr>
+<h2>💻 代码演示</h2>
+<p>结合 Claude 的建议，我们来完善 Dockerfile，并展示一个简单的 GitHub Actions 工作流，实现自动部署。</p>
+<h3>1. 完整的 Dockerfile (包含 Nginx 配置和密码文件)</h3>
+<p>首先，在你的项目根目录下创建 <code>nginx</code> 文件夹，并将 <code>nginx.conf</code> 和 <code>.htpasswd</code> 放入其中。
+<strong><code>nginx/nginx.conf</code>:</strong></p>
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name your-preview-domain.com; # 替换为你的域名或 IP
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        auth_basic "Restricted Prototype Access";
+        auth_basic_user_file /etc/nginx/.htpasswd; # Nginx 容器内的路径
+        try_files $uri $uri/ /index.html;
+    }
+}
+</code></pre>
+<p><strong><code>nginx/.htpasswd</code>:</strong> (使用 <code>htpasswd -c .htpasswd qa</code> 生成，密码 <code>review123</code>)</p>
+<pre><code>qa:$apr1$e.f1g.h2$I.j/K.l3m.n4o.p5q.r6
+</code></pre>
+<p><em>(注意：这是加密后的密码，每次生成都不同，请用你自己的实际生成结果替换)</em></p>
+<p><strong>项目根目录下的 <code>Dockerfile</code>:</strong></p>
+<pre><code class="language-dockerfile"># 第 47 章：阶段 1: 构建前端应用 (如果需要)
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY . .
+RUN yarn build # 假设你的构建命令是 `yarn build`，生成到 `dist` 目录
+
+# 第 47 章：阶段 2: 部署 Nginx 服务器
+FROM nginx:stable-alpine
+# 第 47 章：将构建好的前端静态文件从 builder 阶段复制到 Nginx 的默认静态文件服务目录
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# 第 47 章：复制 Nginx 配置文件和 .htpasswd 文件
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/.htpasswd /etc/nginx/.htpasswd
+
+# 第 47 章：暴露 80 端口
+EXPOSE 80
+
+# 第 47 章：容器启动时运行 Nginx
+CMD ["nginx", "-g", "daemon off;"]
+</code></pre>
+<p><strong>说明：</strong> 这里使用了多阶段构建（Multi-stage build），先在 <code>builder</code> 阶段构建前端应用，然后只将构建结果和 Nginx 配置复制到最终的 <code>nginx</code> 镜像中，以减小镜像体积。</p>
+<h3>2. GitHub Actions 自动化部署工作流</h3>
+<p>这个工作流将在每次代码推送到 <code>preview</code> 分支时，自动构建 Docker 镜像，推送到 Docker Hub，然后通过 SSH 连接到远程服务器，拉取并运行最新镜像。</p>
+<p><strong><code>.github/workflows/deploy-preview.yml</code>:</strong></p>
+<pre><code class="language-yaml">name: Deploy Preview Environment
+
+on:
+  push:
+    branches:
+      - preview # 当代码推送到 preview 分支时触发此工作流
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 在最新的 Ubuntu 运行器上执行
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3 # 检出仓库代码
+
+    - name: Build Docker image
+      run: |
+        docker build -t my-app-preview:${{ github.sha }} .
+      # 构建 Docker 镜像，使用 Git SHA 作为标签
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }} # Docker Hub 用户名，存储为 GitHub Secret
+        password: ${{ secrets.DOCKER_PASSWORD }} # Docker Hub 密码，存储为 GitHub Secret
+
+    - name: Push Docker image to Docker Hub
+      run: |
+        # 标记并推送镜像到 Docker Hub
+        docker tag my-app-preview:${{ github.sha }} your_docker_username/my-app-preview:${{ github.sha }}
+        docker push your_docker_username/my-app-preview:${{ github.sha }}
+        # 同时推送一个 latest 标签，方便后续拉取最新版本
+        docker tag my-app-preview:${{ github.sha }} your_docker_username/my-app-preview:latest
+        docker push your_docker_username/my-app-preview:latest
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }} # 确保 Docker Hub 用户名可用
+
+    - name: Deploy to Remote Server via SSH
+      uses: appleboy/ssh-action@master # 使用 appleboy/ssh-action 进行 SSH 连接
+      with:
+        host: ${{ secrets.SSH_HOST }} # 远程服务器 IP/域名
+        username: ${{ secrets.SSH_USERNAME }} # SSH 用户名
+        key: ${{ secrets.SSH_PRIVATE_KEY }} # SSH 私钥
+        script: |
+          # 登录 Docker Hub (在远程服务器上)
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          
+          # 拉取最新的 Docker 镜像
+          docker pull your_docker_username/my-app-preview:latest
+          
+          # 停止并删除旧的容器 (如果存在)
+          docker stop my-app-preview || true
+          docker rm my-app-preview || true
+          
+          # 运行新的容器，将容器的 80 端口映射到主机的 80 端口
+          docker run -d --name my-app-preview -p 80:80 your_docker_username/my-app-preview:latest
+          
+          echo "Deployment complete. Preview URL: http://${{ secrets.SSH_HOST }}"
+</code></pre>
+<p><strong>重要提示：</strong>
+你需要在 GitHub 仓库的 <code>Settings -&gt; Secrets -&gt; Actions</code> 中配置以下 secrets：</p>
+<ul>
+<li><code>DOCKER_USERNAME</code>: 你的 Docker Hub 用户名。</li>
+<li><code>DOCKER_PASSWORD</code>: 你的 Docker Hub 密码。</li>
+<li><code>SSH_HOST</code>: 你的远程服务器 IP 地址或域名。</li>
+<li><code>SSH_USERNAME</code>: 远程服务器的 SSH 用户名（例如 <code>ubuntu</code> 或 <code>root</code>）。</li>
+<li><code>SSH_PRIVATE_KEY</code>: 访问远程服务器的 SSH 私钥（通常以 <code>-----BEGIN RSA PRIVATE KEY-----</code> 开头）。</li>
+</ul>
+<p>配置完成后，每次你将代码推送到 <code>preview</code> 分支，GitHub Actions 就会自动执行上述步骤，更新你的预览环境。</p>
+<hr>
+<h2>🔧 涉及的 Tools / Commands</h2>
+<table>
+<thead>
+<tr>
+<th align="left">工具名称</th>
+<th align="left">用途</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>Docker</code></td>
+<td align="left">容器化应用和部署</td>
+<td align="left">用于构建、运行和管理容器，确保应用在不同环境中行为一致。</td>
+</tr>
+<tr>
+<td align="left"><code>Nginx</code></td>
+<td align="left">Web 服务器和反向代理</td>
+<td align="left">提供高性能的静态文件服务，并支持配置 Basic Authentication。</td>
+</tr>
+<tr>
+<td align="left"><code>htpasswd</code></td>
+<td align="left">生成和管理 Basic Auth 密码文件</td>
+<td align="left">Apache 工具集的一部分，用于创建加密的用户名和密码文件。</td>
+</tr>
+<tr>
+<td align="left"><code>git</code></td>
+<td align="left">版本控制系统</td>
+<td align="left">管理项目代码，并触发 CI/CD 工作流。</td>
+</tr>
+<tr>
+<td align="left"><code>GitHub Actions</code></td>
+<td align="left">CI/CD 自动化平台</td>
+<td align="left">实现代码提交、构建、测试和部署的自动化流程。</td>
+</tr>
+<tr>
+<td align="left"><code>ssh</code></td>
+<td align="left">安全远程连接</td>
+<td align="left">用于在 GitHub Actions 中安全连接到远程服务器进行部署操作。</td>
+</tr>
+<tr>
+<td align="left"><code>yarn</code>/<code>npm</code></td>
+<td align="left">Node.js 包管理器</td>
+<td align="left">构建前端应用时可能用到，用于安装依赖和执行构建脚本。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ol>
+<li><strong>无感托管是提升协作效率的关键：</strong> 通过提供无需本地环境设置的 URL 预览，显著加速了 QA/PM 的原型审查和反馈流程。</li>
+<li><strong>Docker 容器化是实现跨环境一致部署的基石：</strong> 它将应用及其依赖打包成一个可移植的单元，确保预览环境的稳定性和可重复性。</li>
+<li><strong>Nginx 结合 <code>htpasswd</code> 提供简单而有效的 Basic Auth：</strong> 这是保护内部预览链接，限制访问权限的常用且便捷的机制。</li>
+<li><strong>CI/CD 自动化是现代开发的标准实践：</strong> 利用 GitHub Actions 等工具，可以实现从代码提交到预览环境部署的完全自动化，大大减少手动操作和潜在错误。</li>
+<li><strong>AI 助手（如 Claude）能大幅提升开发和部署效率：</strong> Claude 可以协助生成 Dockerfile、Nginx 配置、<code>htpasswd</code> 命令以及 CI/CD 脚本，降低技术门槛，加速整个流程。</li>
+</ol>
+<hr>
+<h2>🔗 参考资料</h2>
+<ol>
+<li><strong>Nginx HTTP Basic Authentication 官方文档:</strong> 详细介绍了 Nginx 中如何配置和使用基本认证。
+<a href="https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html">https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html</a></li>
+<li><strong>Docker Documentation:</strong> 学习 Docker 的核心概念、命令和最佳实践。
+<a href="https://docs.docker.com/">https://docs.docker.com/</a></li>
+<li><strong>GitHub Actions Documentation:</strong> 了解如何创建、配置和管理 GitHub Actions 工作流。
+<a href="https://docs.github.com/en/actions">https://docs.github.com/en/actions</a></li>
+</ol>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-p7qzptk4> <div class="pag-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-46" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>← 上一课时</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 46 章 | 并行代理协作 (Parallel Agents)</span> </a> </div> <div class="pag-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-48" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>下一课时 →</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 48 章 | Agentic 后端理论：所有后端正在成为思考的主体</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-p7qzptk4></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

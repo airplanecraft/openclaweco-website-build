@@ -1,0 +1,397 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lesson 16 | Performance Tuning &amp; Token Economics — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。 Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-16/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Lesson 16 | Performance Tuning &amp; Token Economics — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。 Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Lesson 16 | Performance Tuning &amp; Token Economics — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。 Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Lesson 16 | Performance Tuning & Token Economics — Hermes Agent Hands-On Guide — AgentUpdate.ai","description":"优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。 Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-16/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-16/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/hermes-agent-tutorial" class="series-title-link" data-astro-cid-vma7orrt> HERMES AGENT HANDS-ON GUIDE </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-1" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Meet Hermes Agent: Architecture Overview &amp; Quick Install</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-2" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Model Switching &amp; Provider Configuration</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-3" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Deep Dive into Skills: Self-Evolving Agent Capabilities</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-4" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Memory &amp; User Profiling: Persistent Context Across Sessions</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-5" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Messaging Gateway: Chat via Telegram, Discord &amp; More</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 06 | MCP Tool Ecosystem: Bridging the External World</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-7" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 07 | Cron Scheduling &amp; Automated Task Orchestration</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 08 | Context Files &amp; Workspace Awareness</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-9" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 09 | Multi-Turn Conversations &amp; Complex Task Decomposition</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 10 | Security Model &amp; Permission Controls</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 11 | Custom Personas: Building Domain-Specific Agents</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 12 | Agent Collaboration: Multi-Agent Communication &amp; Delegation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 13 | Knowledge Base: RAG &amp; Long-Term Document Management</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 14 | Code Generation &amp; Scaffolding in Practice</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 15 | Agent-Driven DevOps: CI/CD &amp; Deployment Automation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-16" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 16 | Performance Tuning &amp; Token Economics</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 17 | Logging System &amp; Observability Practices</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 18 | Production Deployment: VPS to GPU Clusters</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 19 | Community Ecosystem &amp; Skill Marketplace Contribution Guide</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 20 | Future Vision: From Personal Assistant to Autonomous Organization</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/hermes-agent-tutorial" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Lesson 16 | Performance Tuning &amp; Token Economics</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial"},{"@type":"ListItem","position":4,"name":"Lesson 16 | Performance Tuning & Token Economics"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Lesson 16 | Performance Tuning &amp; Token Economics</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>20 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) --> <div class="direct-summary-box" data-astro-cid-vma7orrt> <div class="summary-box-title" data-astro-cid-vma7orrt>DIRECT SUMMARY // KEY TAKEAWAY</div> <p class="summary-box-text" data-astro-cid-vma7orrt>优化 Agent 的响应速度和成本控制——上下文窗口管理策略、模型选择与性价比对比、缓存机制、批量处理优化。让 Agent 既聪明又省钱。</p> </div> <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><hr>
+<h2>title: "Lesson 16 | Performance Tuning &amp; Token Economics"
+summary: "Striking the ultimate balance between intelligence and cost. Understand context windows, batch throughput, and system cache management strategies."
+sortOrder: 160
+status: "published"</h2>
+<hr>
+<h1><strong>Lesson 16 | Performance Tuning &amp; Token Economics</strong></h1>
+<p><strong>Subtitle: Striking the ultimate balance between intelligence and cost. Understand context windows, batch throughput, and system cache management strategies.</strong></p>
+<p>Welcome to the 16th lesson of the Hermes Agent tutorial. In previous lessons, we have mastered the Agent's architecture, skill extension, memory system, and multi-channel deployment. As your Agent begins to handle complex tasks in the real world, two new challenges will emerge: <strong>performance</strong> and <strong>cost</strong>. An Agent that is slow to respond or incurs high bills is difficult to sustain in a production environment.</p>
+<p>In this lesson, we will delve into the core of Hermes Agent performance tuning and introduce the concept of "Token Economics." We will learn how to manage every thought (LLM call) of the Agent like a savvy economist, maximizing cost-effectiveness by minimizing operational costs while ensuring its "intelligence."</p>
+<hr>
+<h3><strong>Learning Objectives</strong></h3>
+<p>After completing this lesson, you will be able to:</p>
+<ol>
+<li><strong>Understand Token Economics</strong>: Gain a deep understanding of how Tokens affect the operational cost and performance of an Agent, and learn to analyze problems from a Token perspective.</li>
+<li><strong>Fine-tune Context Window Management</strong>: Understand how <code>max_context_tokens</code> works, its dual impact on cost and conversation quality, and how to configure it reasonably based on task requirements.</li>
+<li><strong>Apply System Cache Strategies</strong>: Master how to significantly reduce repetitive API requests, and thereby lower costs and latency, by enabling LLM call caching and Skill result caching.</li>
+<li><strong>Master Batch Processing (Batch Throughput)</strong>: Understand the applicable scenarios for batch processing and learn to configure <code>batch_size</code> and <code>batch_interval</code> to improve processing efficiency in high-concurrency scenarios.</li>
+<li><strong>Comprehensive Tuning</strong>: Be able to apply a combination of strategies to develop a complete performance and cost optimization plan for your Agent.</li>
+</ol>
+<hr>
+<h3><strong>Core Concepts Explained</strong></h3>
+<p>Before diving into practical application, we must first understand the key concepts that determine an Agent's performance and cost.</p>
+<h4><strong>1. Token Economics</strong></h4>
+<p>In the world of Large Language Models (LLMs), the <strong>Token</strong> is the most basic unit for billing and processing. Whether it's OpenAI's GPT series or Anthropic's Claude series, their understanding and generation of text are based on Tokens.</p>
+<ul>
+<li><strong>What is a Token?</strong> A Token can be a word, a phrase, or even a punctuation mark. For English, one Token usually corresponds to one word. For Chinese, one Token might correspond to one or more characters. For example, "Hello" is 1 Token, while "你好" is typically 2 Tokens.</li>
+<li><strong>The Core of Cost</strong>: Every interaction you have with an LLM, whether it's the input (Prompt) or the output (Completion), consumes Tokens. API providers bill you based on the total number of <strong>Input Tokens</strong> and <strong>Output Tokens</strong> you consume.</li>
+<li><strong>Token Consumption in Hermes Agent</strong>:<ul>
+<li><strong>User Input</strong>: Every message from the user.</li>
+<li><strong>System Prompt</strong>: Instructions that define the Agent's role and capabilities.</li>
+<li><strong>History</strong>: Past conversation content included to maintain coherence.</li>
+<li><strong>Memory Retrieval</strong>: Relevant information extracted from long-term memory.</li>
+<li><strong>Skill Definition &amp; Execution</strong>: Descriptions of available tools (Skills) provided to the LLM, as well as the results after tool execution.</li>
+<li><strong>LLM's Response</strong>: The final reply generated by the model.</li>
+</ul>
+</li>
+</ul>
+<p>The <strong>core idea of Token Economics</strong> is to treat every LLM API call as an "economic activity." Our goal is to achieve the highest quality output with the minimum Token input. Any unnecessary Token consumption is a "cost" that needs to be optimized.</p>
+<h4><strong>2. Context Window</strong></h4>
+<p>The <strong>Context Window</strong> refers to the maximum number of Tokens an LLM can process in a single request. You can think of it as the model's "short-term working memory." All information provided to the model (user input, history, memory, etc., as mentioned above) must fit within this window.</p>
+<ul>
+<li><strong>Impact of Window Size</strong>:<ul>
+<li><strong>Large Window</strong>:<ul>
+<li><strong>Pros</strong>: Can accommodate longer conversation histories and richer background knowledge, enabling the Agent to perform better on complex, long-span tasks with a better "memory."</li>
+<li><strong>Cons</strong>: More Tokens are sent with each call, leading to <strong>higher costs</strong> and <strong>longer latency</strong>. Furthermore, very long contexts can suffer from the "Needle in a Haystack" or "Lost in the Middle" problems, where the model may not effectively utilize information in the middle of the window.</li>
+</ul>
+</li>
+<li><strong>Small Window</strong>:<ul>
+<li><strong>Pros</strong>: Low cost, fast response.</li>
+<li><strong>Cons</strong>: The Agent is prone to "amnesia," unable to maintain coherent long conversations, and performs poorly on tasks requiring extensive background information.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>In Hermes Agent, context management is an automated process, but we can set an upper limit for this window using the <code>max_context_tokens</code> parameter, allowing us to trade off between conversation quality and cost.</p>
+<h4><strong>3. System Cache</strong></h4>
+<p><strong>Caching</strong> is a classic performance optimization technique. Its core idea is "<strong>don't recompute what has already been computed</strong>." In Hermes Agent, the most expensive "computation" is the call to the LLM API.</p>
+<p>Hermes Agent has a powerful built-in caching system that primarily targets two areas:</p>
+<ul>
+<li><strong>LLM Call Cache</strong>:<ul>
+<li><strong>How it works</strong>: The system stores each request to the LLM (including the full Prompt) and its corresponding response. When an identical request occurs later, the Agent retrieves the result directly from the cache without making another expensive LLM API call.</li>
+<li><strong>Applicable Scenarios</strong>: For applications with relatively fixed and repetitive questions (like common customer service queries or standardized report generation tasks), the effect of caching is immediate and significant.</li>
+</ul>
+</li>
+<li><strong>Skill Execution Cache</strong>:<ul>
+<li><strong>How it works</strong>: For "deterministic" skills where the same input always produces the same output, their execution results can be cached. For example, a skill that checks "is today a public holiday?" should return the same result anytime it's called within the same day.</li>
+<li><strong>Applicable Scenarios</strong>: Skills that query static data or perform fixed calculations.</li>
+</ul>
+</li>
+</ul>
+<p>Enabling the cache is one of the most direct and effective ways to reduce Token consumption and improve response speed.</p>
+<h4><strong>4. Batch Throughput</strong></h4>
+<p><strong>Batch Processing</strong> refers to grouping multiple independent requests and processing them together in a single operation. This is an optimization strategy for high-concurrency, high-throughput scenarios.</p>
+<ul>
+<li><strong>How it works</strong>: When the system receives a large number of requests in a short period (for example, an Agent deployed on a busy Discord server), it doesn't process them one by one immediately. Instead, it waits for a short duration (<code>batch_interval</code>), collects a certain number of requests (<code>batch_size</code>), and then bundles them for processing, possibly submitting them to the model in one go (especially for embedding models or self-hosted models that support batching).</li>
+<li><strong>Advantages</strong>:<ul>
+<li><strong>Improved Efficiency</strong>: Reduces network communication overhead and increases the utilization of underlying hardware (like GPUs).</li>
+<li><strong>Handles Rate Limiting</strong>: Can process requests more smoothly, avoiding triggering the API provider's rate limits due to a sudden spike in requests.</li>
+</ul>
+</li>
+</ul>
+<p>For most applications based on cloud LLM APIs, batch processing is mainly reflected in batchable tasks like embedding. However, understanding this concept is crucial for future deployments of self-hosted models or for processing large-scale data.</p>
+<hr>
+<h3><strong>💻 Practical Demo</strong></h3>
+<p>Now, let's practice how to perform tuning through a specific scenario.</p>
+<p><strong>Scenario</strong>: We are building an "Internal Company Knowledge Base Q&amp;A Agent." Employees frequently ask repetitive questions about company policies and product documentation. Our goal is to minimize its operational cost while ensuring the accuracy of its answers.</p>
+<h4><strong>Step 1: Establish a Baseline</strong></h4>
+<p>First, we'll use a "cost-is-no-object," high-performance configuration as our baseline for comparison.</p>
+<p>Open your <code>config/config.yml</code> file and set it up as follows (or confirm it's similar):</p>
+<pre><code class="language-yaml"># config/config.yml
+
+# ... other configurations ...
+
+agent:
+  # Use a powerful model
+  provider: openai/gpt-4-turbo-preview
+  
+  # Set a very large context window to ensure the Agent "knows everything"
+  max_context_tokens: 12000
+  
+  # ... other agent configurations ...
+
+# Caching system completely disabled
+cache:
+  enabled: false
+  
+# Batching disabled
+batching:
+  enabled: false
+
+# ... other configurations ...
+</code></pre>
+<p><strong>Action</strong>:
+Start the Hermes Agent.</p>
+<pre><code class="language-bash">hermes run
+</code></pre>
+<p>Now, let's ask the Agent the <strong>exact same</strong> question twice in a row.</p>
+<p><strong>First Question</strong>:</p>
+<blockquote>
+<p>User: "Please explain our company's vacation policy in detail."</p>
+</blockquote>
+<p>Observe the terminal logs. You will see output similar to the following, showing the complete LLM call flow and Token consumption (the exact log format may vary by version, but the core information will be present).</p>
+<pre><code class="language-log">[INFO] [HermesAgent] Received message: "Please explain our company's vacation policy in detail."
+[INFO] [Memory] Retrieving relevant memories for query...
+[INFO] [LLMProvider] Sending request to openai/gpt-4-turbo-preview. Input Tokens: 2580
+[INFO] [LLMProvider] Received response. Output Tokens: 450. Total Tokens: 3030
+[INFO] [HermesAgent] Sending response: "Our company's vacation policy is as follows:..."
+</code></pre>
+<p><strong>Second Question</strong> (identical to the first):</p>
+<blockquote>
+<p>User: "Please explain our company's vacation policy in detail."</p>
+</blockquote>
+<p>Observing the logs again, you'll find that the entire process was <strong>repeated exactly</strong>.</p>
+<pre><code class="language-log">[INFO] [HermesAgent] Received message: "Please explain our company's vacation policy in detail."
+[INFO] [Memory] Retrieving relevant memories for query...
+[INFO] [LLMProvider] Sending request to openai/gpt-4-turbo-preview. Input Tokens: 2580
+[INFO] [LLMProvider] Received response. Output Tokens: 450. Total Tokens: 3030
+[INFO] [HermesAgent] Sending response: "Our company's vacation policy is as follows:..."
+</code></pre>
+<p><strong>Baseline Analysis</strong>:</p>
+<ul>
+<li><strong>Cost</strong>: Two separate questions consumed <code>3030 * 2 = 6060</code> Tokens. If 100 employees ask this once a day, the cost would be substantial.</li>
+<li><strong>Performance</strong>: Each query requires the full LLM processing time, resulting in higher latency.</li>
+</ul>
+<h4><strong>Step 2: Enabling the Powerful Cache</strong></h4>
+<p>For a knowledge base Q&amp;A scenario with high repetitiveness, caching is our primary optimization tool.</p>
+<p><strong>Modify Configuration</strong>:
+Edit <code>config/config.yml</code> to enable caching.</p>
+<pre><code class="language-yaml"># config/config.yml
+
+# ... other configurations ...
+
+cache:
+  enabled: true
+  # Use in-memory as the cache backend, simple and efficient. For production, consider 'redis'.
+  backend: in_memory 
+  # Cache TTL (Time To Live) in seconds. 86400 seconds = 24 hours.
+  ttl: 86400 
+  
+  # Enable LLM call caching
+  llm_cache:
+    enabled: true
+  
+  # (Optional) If you have deterministic Skills, you can enable this too
+  skill_cache:
+    enabled: true
+
+# ... other configurations ...
+</code></pre>
+<p><strong>Action</strong>:
+Restart the Hermes Agent to load the new configuration.</p>
+<pre><code class="language-bash"># If it was running, stop it with Ctrl+C first
+hermes run
+</code></pre>
+<p>Let's perform the same test again.</p>
+<p><strong>First Question</strong>:</p>
+<blockquote>
+<p>User: "Please explain our company's vacation policy in detail."</p>
+</blockquote>
+<p>The log output will be the same as the baseline test because this is the first request, and there's no data in the cache. This is a "Cache Miss."</p>
+<pre><code class="language-log">[INFO] [LLMProvider] Sending request to openai/gpt-4-turbo-preview. Input Tokens: 2580
+[INFO] [LLMProvider] Received response. Output Tokens: 450. Total Tokens: 3030
+[INFO] [Cache] Storing result for request hash '...' in cache.
+</code></pre>
+<p><strong>Second Question</strong> (identical to the first):</p>
+<blockquote>
+<p>User: "Please explain our company's vacation policy in detail."</p>
+</blockquote>
+<p>Now, witness the result! Observe the logs:</p>
+<pre><code class="language-log">[INFO] [HermesAgent] Received message: "Please explain our company's vacation policy in detail."
+[INFO] [Cache] HIT! Found cached result for request hash '...'.
+[INFO] [HermesAgent] Sending response from cache: "Our company's vacation policy is as follows:..."
+</code></pre>
+<p><strong>Optimization Analysis</strong>:</p>
+<ul>
+<li><strong>Cost</strong>: The <strong>Token consumption for the second question is 0</strong>! The LLM API call was completely skipped.</li>
+<li><strong>Performance</strong>: The response is almost <strong>instantaneous</strong> because the data is read directly from memory, eliminating network latency and model computation time.</li>
+</ul>
+<p>This single change has brought significant cost and performance benefits to our knowledge base Agent.</p>
+<h4><strong>Step 3: Trimming the Context Window</strong></h4>
+<p>Our previous setting of <code>max_context_tokens: 12000</code> was very large. While this ensures the Agent can handle complex questions, it can also be wasteful. For most single-turn Q&amp;A, such a long history is not needed.</p>
+<p>We can moderately reduce this value to lower the base cost of each call.</p>
+<p><strong>Modify Configuration</strong>:
+Edit <code>config/config.yml</code>.</p>
+<pre><code class="language-yaml"># config/config.yml
+
+agent:
+  # ...
+  provider: openai/gpt-4-turbo-preview
+  
+  # Reduce the context window to a more reasonable value, e.g., 4096
+  # This is still enough to accommodate the system prompt, some history, and retrieved knowledge
+  max_context_tokens: 4096
+  # ...
+</code></pre>
+<p><strong>Action</strong>:
+Restart the Agent and ask a <strong>new question</strong> (to avoid hitting the cache).</p>
+<blockquote>
+<p>User: "What is our company's reimbursement process?"</p>
+</blockquote>
+<p>Observe the Token count in the logs.</p>
+<pre><code class="language-log">[INFO] [LLMProvider] Sending request to openai/gpt-4-turbo-preview. Input Tokens: 1850
+[INFO] [LLMProvider] Received response. Output Tokens: 320. Total Tokens: 2170
+</code></pre>
+<p><strong>Optimization Analysis</strong>:</p>
+<ul>
+<li><strong>Cost</strong>: Compared to the 2500+ Input Tokens in our baseline test, the base Token consumption is now lower. This is because the Agent, when constructing the prompt, will truncate or summarize the conversation history and background information based on the <code>4096</code> limit.</li>
+<li><strong>Trade-off</strong>: This setting needs to be balanced according to your specific application. If your Agent needs to engage in multi-turn, in-depth discussions, <code>4096</code> might not be enough and may need to be increased. Conversely, for simple Q&amp;A tasks, a smaller window (like <code>2048</code>) might suffice, further reducing costs. <strong>Best practice: Start with a smaller value and test. If you notice a decline in the Agent's performance (e.g., it forgets previous parts of the conversation), gradually increase it.</strong></li>
+</ul>
+<h4><strong>Step 4: Configuring Batching</strong></h4>
+<p>Suppose our knowledge base Agent becomes very popular, and at 9 AM every morning, hundreds of employees start asking questions simultaneously. This is where batch processing can be useful, especially for tasks that can be parallelized, like embedding vectorization.</p>
+<p><strong>Modify Configuration</strong>:
+Edit <code>config/config.yml</code>.</p>
+<pre><code class="language-yaml"># config/config.yml
+
+# ...
+
+batching:
+  enabled: true
+  # Process a maximum of 16 requests per batch
+  batch_size: 16
+  # Wait a maximum of 0.5 seconds; process the batch even if it's not full
+  batch_interval: 0.5
+
+# ...
+</code></pre>
+<p><strong>How It Works</strong>:
+When <code>enabled: true</code>, certain internal queues in Hermes Agent (like memory storage tasks that require embedding) will switch to batch mode.</p>
+<ul>
+<li>When a request comes in, it's not processed immediately but is added to a batching queue.</li>
+<li>The system waits until the number of requests in the queue reaches <code>batch_size</code> (16) or the waiting time exceeds <code>batch_interval</code> (0.5 seconds).</li>
+<li>Once either condition is met, the system bundles all requests in the queue and sends them to the processing module at once (e.g., generating embeddings for 16 text segments in a single call).</li>
+</ul>
+<p><strong>Note</strong>: For Chat Completion tasks, most third-party APIs (like OpenAI) do not natively support batching different questions from multiple users into a single request. Therefore, batching here primarily optimizes the Agent's internal data processing workflows, such as memory vectorization, or improves GPU utilization when using self-hosted models. Nevertheless, enabling it in high-concurrency situations is still a good practice for enhancing overall system robustness and efficiency.</p>
+<hr>
+<h3><strong>Commands Used</strong></h3>
+<p>In this lesson, we primarily performed tuning by editing configuration files and observing logs. The commands involved are very basic:</p>
+<ol>
+<li><p><strong>Edit the configuration file</strong>:</p>
+<pre><code class="language-bash"># Use your favorite editor, e.g., vim
+vim config/config.yml
+</code></pre>
+</li>
+<li><p><strong>Start/Restart the Agent</strong>:</p>
+<pre><code class="language-bash">hermes run
+</code></pre>
+</li>
+<li><p><strong>Monitor logs in real-time</strong> (run in a separate terminal window):</p>
+<pre><code class="language-bash">tail -f logs/hermes.log
+</code></pre>
+</li>
+</ol>
+<hr>
+<h3><strong>Key Takeaways</strong></h3>
+<ol>
+<li><strong>Everything is a Token</strong>: Deeply understand that Tokens are the foundation of cost and performance analysis. Optimizing an Agent is essentially about optimizing Token efficiency.</li>
+<li><strong>Caching is a Silver Bullet</strong>: For scenarios with repetitive requests, enabling <code>cache</code> is the simplest and most effective way to reduce costs and improve performance. Prioritize enabling <code>llm_cache</code>.</li>
+<li><strong>Context is a Double-Edged Sword</strong>: <code>max_context_tokens</code> determines the Agent's "memory" and the cost of a single interaction. You need to find the optimal balance between conversation quality and cost based on your specific task scenario.</li>
+<li><strong>Batching for the Future</strong>: <code>batching</code> is designed for high-concurrency, high-throughput scenarios. While it may not always directly save chat Tokens, it improves the system's overall processing capacity and stability.</li>
+<li><strong>Tuning is a Continuous Process</strong>: There is no one-size-fits-all "best configuration." The best practice is to "<strong>Measure - Adjust - Measure Again</strong>," continuously finding the configuration mix that best suits your business needs through ongoing monitoring and experimentation.</li>
+</ol>
+<hr>
+<h3><strong>References</strong></h3>
+<ol>
+<li><a href="https://hermes-agent.io/docs/performance-tuning">Hermes Agent Official Documentation (Assumed Link)</a></li>
+<li><a href="https://platform.openai.com/tokenizer">OpenAI Tokenizer</a>: An intuitive tool that helps you understand how text is broken down into Tokens.</li>
+<li><a href="https://openai.com/pricing">OpenAI API Pricing Page</a>: Understanding the Token costs of different models will give you a more tangible sense of Token Economics.</li>
+<li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>: The seminal paper on the Transformer architecture, the root of understanding context windows and the attention mechanism.</li>
+</ol>
+<p>Through this lesson, you have advanced from being an Agent "user" to an "optimizer." By mastering these tuning techniques, you will be able to build Hermes Agents that are both intelligent and economical, ready to face real-world challenges with confidence. In the next lesson, we will explore a more advanced topic: Agent safety and alignment. Stay tuned</p>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Lesson 15 | Agent-Driven DevOps: CI/CD &amp; Deployment Automation</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Lesson 17 | Logging System &amp; Observability Practices</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

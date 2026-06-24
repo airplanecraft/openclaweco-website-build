@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口 — AgentUpdate.ai</title><meta name="description" content="一个单人开发者如何放心 ship 一个 100 城边缘应用:3 段环境链路、不 mock 的真 D1 集成测试、Lighthouse CI 当部署卡口。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口, 1000usdinchina.com Dev Retrospective (7) - Solo Edge App CI/CD: Real-D1 Tests &amp; Lighthouse Gates, devops, ci-cd, 测试, lighthouse, cloudflare"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口 — AgentUpdate.ai"><meta property="og:description" content="一个单人开发者如何放心 ship 一个 100 城边缘应用:3 段环境链路、不 mock 的真 D1 集成测试、Lighthouse CI 当部署卡口。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/devops-pipeline-cover.png"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口 — AgentUpdate.ai"><meta name="twitter:description" content="一个单人开发者如何放心 ship 一个 100 城边缘应用:3 段环境链路、不 mock 的真 D1 集成测试、Lighthouse CI 当部署卡口。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/devops-pipeline-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口","description":"一个单人开发者如何放心 ship 一个 100 城边缘应用:3 段环境链路、不 mock 的真 D1 集成测试、Lighthouse CI 当部署卡口。","image":"/images/blog/devops-pipeline-cover.png","datePublished":"2026-06-21T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月21日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>8 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/devops" class="tag" data-astro-cid-w5q62dq7>#devops</a><a href="/zh/tags/ci-cd" class="tag" data-astro-cid-w5q62dq7>#ci-cd</a><span class="tag" data-astro-cid-w5q62dq7>#测试</span><span class="tag" data-astro-cid-w5q62dq7>#lighthouse</span><a href="/zh/tags/cloudflare" class="tag" data-astro-cid-w5q62dq7>#cloudflare</a> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/devops-pipeline-cover.png" alt="1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#3-段环境链路" data-astro-cid-w5q62dq7>3 段环境链路</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#4-个依赖6-种测试" data-astro-cid-w5q62dq7>4 个依赖,6 种测试</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#真-d1不-mock" data-astro-cid-w5q62dq7>真 D1,不 mock</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#lighthouse-ci-当部署卡口" data-astro-cid-w5q62dq7>Lighthouse CI 当部署卡口</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#让测试输出不碍事" data-astro-cid-w5q62dq7>让测试输出不碍事</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>没有 QA 团队、没有一堆 staging —— 就一个开发者 ship 一个 100 城边缘应用,且不能搞坏它。底气来自
+<strong>3 段环境链路</strong>、<strong>真 D1 集成测试</strong>(不 mock)、<strong>Lighthouse CI</strong> 当硬部署卡口。这篇是 DevOps 的故事。</p>
+<p>这是<a href="/zh/blog/china-travel-budget-100-cities/">系列</a>第 7 篇。</p>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#pipeline">3 段环境链路</a></li>
+<li><a href="#tests">4 个依赖,6 种测试</a></li>
+<li><a href="#d1">真 D1,不 mock</a></li>
+<li><a href="#lighthouse">Lighthouse CI 当部署卡口</a></li>
+<li><a href="#subagents">让测试输出不碍事</a></li>
+<li><a href="#faq">常见问题</a></li>
+</ul>
+<p><a id="pipeline"></a></p>
+<h2 id="3-段环境链路">3 段环境链路</h2><p>每个改动走同样的三段,而且<strong>绿了才进下一段</strong>:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart LR
+    L[本地<br/>pnpm dev · dev D1] -->|绿| D[dev worker<br/>真 Workers runtime · dev D1]
+    D -->|golden path 绿| P[prod<br/>真用户 · prod D1]
+    P -.->|事故| R[wrangler rollback]</pre></div><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>它证明什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>本地</strong>(<code>pnpm dev</code>)</td>
+<td>90% 迭代:UI 和逻辑</td>
+</tr>
+<tr>
+<td><strong>dev worker</strong></td>
+<td>真 Workers runtime —— OpenNext、边缘 binding、D1</td>
+</tr>
+<tr>
+<td><strong>prod</strong></td>
+<td>真用户、真数据</td>
+</tr>
+</tbody></table>
+<p>规则:别跳过 dev worker 直推 prod。本地服务器抓不到边缘运行时或 binding 问题,只有 dev worker 能。
+紧急 hotfix 可以跳 dev,但只在明确决定下 —— 绝不作为常规。D1 migration 永远先 dev 再 prod ——
+绝不拿未验证的 migration 打 prod。</p>
+<p><a id="tests"></a></p>
+<h2 id="4-个依赖6-种测试">4 个依赖,6 种测试</h2><p>一个刻意小的测试栈覆盖很广:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart TB
+    V[Vitest] --> U[单元测试]
+    V --> I[D1 集成 via miniflare]
+    PW[Playwright] --> E[E2E]
+    PW --> S[i18n smoke]
+    PW --> A11Y[a11y via axe-core]
+    LH[Lighthouse CI] --> WV[Web Vitals]</pre></div><p><strong>4 个依赖 —— Vitest、Playwright、axe-core、Lighthouse CI —— 覆盖 6 种测试:</strong> 单元、D1 集成、
+e2e、i18n smoke、无障碍、Web Vitals。小表面、广覆盖、低维护。只有当这 4 个确实覆盖不了某需求时
+才加新类型 —— 对工具膨胀保持纪律。</p>
+<p><a id="d1"></a></p>
+<h2 id="真-d1不-mock">真 D1,不 mock</h2><p>集成测试经 miniflare 打<strong>真本地 D1</strong> —— 真 SQL 打真 SQLite 引擎。<strong>Mock D1 不收。</strong> 一个返回
+你预期值的 mock 证明的是你的 mock,不是你的查询。真 D1 抓得到 schema 不匹配、绑错参数、在你脑子里
+成立但 SQLite 里不成立的 SQL。代价 —— 起 miniflare —— 换来一个测真实情况的测试套件,值。</p>
+<p>一个值得记录的诚实约束:有些页面依赖 D1 的方式,普通 e2e 环境(不带 D1 跑)服务不了,所以那些测试
+CI-skip,改由 D1 集成套件和 dev worker 验证。把约束说清楚,胜过一个只因从没真跑过而「假绿」的测试。</p>
+<p><a id="lighthouse"></a></p>
+<h2 id="lighthouse-ci-当部署卡口">Lighthouse CI 当部署卡口</h2><p>性能不是感觉 —— 是<strong>卡口</strong>。Lighthouse CI 跑分档预算(如 Total Blocking Time),回归就<strong>挡掉部署</strong>。
+它抓到过真问题:</p>
+<ul>
+<li>接入 Google Analytics 把首页 <strong>TBT 推过预算</strong>。修法不是放松预算 —— 是用 <code>lazyOnload</code> 策略加载 GA,
+让分析不再阻塞主线程。卡口逼出了对的修法,而不是放一个慢页面上线。</li>
+<li>预算按页面类型分档,并调到能吸收真实 CI runner 噪声、又不掩盖真回归 —— 紧到能抓问题,松到不狼来了。</li>
+</ul>
+<p>性能卡口把「网站最近感觉变慢」变成「这个 PR 超了 TBT 预算,数字在这」—— 可执行,不是感觉。</p>
+<p><a id="subagents"></a></p>
+<h2 id="让测试输出不碍事">让测试输出不碍事</h2><p>一次全量 e2e、一个 268 路由构建、一份 <code>wrangler</code> 上传清单 —— 每个都吐一股输出洪流。和 AI coding
+agent 迭代时,这股洪流会淹没工作 context。所以这些重命令交给子代理,在它自己的 context 里读完整日志,
+只回 <code>{passed, failed, failures:[...]}</code>。主线看到的是干净摘要,不是一万行。(这是
+<a href="/zh/blog/claude-code-prompt-context-harness-loop-engineering/">第 5 篇</a>的 harness/context 纪律,
+用到 DevOps 上。)</p>
+<h2 id="要点">要点</h2><ul>
+<li>3 段链路(本地 → dev worker → prod),绿了才进,能抓到本地服务器抓不到的边缘运行时问题。</li>
+<li>4 个测试依赖能覆盖 6 种测试 —— 保持栈小而有纪律。</li>
+<li>经 miniflare 打真 D1;mock 数据库只测了 mock。</li>
+<li>用 Lighthouse CI 把性能做成硬卡口 —— 它逼出真修法(如 GA <code>lazyOnload</code>),而不是放慢页面上线。</li>
+<li>把吵闹的测试/构建输出卸给子代理,让它回摘要,不是洪流。</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="常见问题">常见问题</h2><p><strong>怎么不 mock 测试 Cloudflare D1 应用?</strong>
+用 miniflare 起真本地 D1,在集成测试里跑真 SQL。这能抓到 mock 会掩盖的 schema 和查询 bug。</p>
+<p><strong>Lighthouse CI 部署卡口是什么?</strong>
+一个 CI 步骤,拿 Lighthouse 对照设定的性能预算(如 Total Blocking Time)跑,回归就让构建失败,
+挡掉部署直到性能修好。</p>
+<p><strong>单人开发者没 QA 怎么放心 ship?</strong>
+分段链路(本地 → dev → prod)绿了才进、小而广的自动化测试栈、真 D1 集成测试、性能卡口、快速 rollback。</p>
+<p><strong>为什么先部署到 dev worker 再 prod?</strong>
+本地 dev 服务器复现不了真 Workers runtime、边缘 binding 或 D1 行为。dev worker 在真用户看到前验证这些。</p>
+<hr>
+<p><em>下一篇 → <a href="/zh/blog/multilingual-seo-geo-llms-txt/">多语言 SEO 与 GEO:sitemap、llms.txt、4 语言的 AI 引用</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口",
+  "image": "https://www.agentupdate.ai/blog/images/devops-pipeline-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-21",
+  "inLanguage": "zh",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/zh/solo-edge-app-ci-cd-lighthouse-d1-tests"
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="3-段环境链路" data-astro-cid-w5q62dq7> <a href="#3-段环境链路" data-astro-cid-w5q62dq7>3 段环境链路</a> </li><li class="toc-item " data-slug="4-个依赖6-种测试" data-astro-cid-w5q62dq7> <a href="#4-个依赖6-种测试" data-astro-cid-w5q62dq7>4 个依赖,6 种测试</a> </li><li class="toc-item " data-slug="真-d1不-mock" data-astro-cid-w5q62dq7> <a href="#真-d1不-mock" data-astro-cid-w5q62dq7>真 D1,不 mock</a> </li><li class="toc-item " data-slug="lighthouse-ci-当部署卡口" data-astro-cid-w5q62dq7> <a href="#lighthouse-ci-当部署卡口" data-astro-cid-w5q62dq7>Lighthouse CI 当部署卡口</a> </li><li class="toc-item " data-slug="让测试输出不碍事" data-astro-cid-w5q62dq7> <a href="#让测试输出不碍事" data-astro-cid-w5q62dq7>让测试输出不碍事</a> </li><li class="toc-item " data-slug="要点" data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-slug="常见问题" data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/workers-ai-cover.png" alt="1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>我如何用 Cloudflare Workers AI + Qwen 做一个 AI 行程规划器,月成本约 $0 —— 以及那个 dev 测试烧光 prod 当天额度的免费额度坑。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月20日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-prompt-context-harness-loop-engineering" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/claude-code-engineering-cover.png" alt="1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-prompt-context-harness-loop-engineering" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>我如何用 Claude Code 单人 ship 一个 100 城应用 —— 让 AI coding agent 可靠的四种工程纪律:prompt、context、harness、loop engineering。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月19日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

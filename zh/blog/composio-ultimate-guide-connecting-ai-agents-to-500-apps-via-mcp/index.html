@@ -1,0 +1,961 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南 — AgentUpdate.ai</title><meta name="description" content="本文深度解析 AI Agent 集成平台 Composio，涵盖 MCP 安装、500+ 应用连接、竞品对比及 Reddit/Facebook 营销自动化实战，助开发者快速上手 AI 自动化。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南, Composio Ultimate Guide: Connecting AI Agents to 500+ Apps via MCP, Composio, AI Agent, MCP, 自动化, 开发者教程, 营销自动化"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南 — AgentUpdate.ai"><meta property="og:description" content="本文深度解析 AI Agent 集成平台 Composio，涵盖 MCP 安装、500+ 应用连接、竞品对比及 Reddit/Facebook 营销自动化实战，助开发者快速上手 AI 自动化。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4b638a70.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南 — AgentUpdate.ai"><meta name="twitter:description" content="本文深度解析 AI Agent 集成平台 Composio，涵盖 MCP 安装、500+ 应用连接、竞品对比及 Reddit/Facebook 营销自动化实战，助开发者快速上手 AI 自动化。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4b638a70.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南","description":"本文深度解析 AI Agent 集成平台 Composio，涵盖 MCP 安装、500+ 应用连接、竞品对比及 Reddit/Facebook 营销自动化实战，助开发者快速上手 AI 自动化。","image":"/images/blog/ai-cover-4b638a70.jpg","datePublished":"2026-06-01T23:44:28.057Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月2日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric w</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#Composio</span><a href="/zh/tags/ai-agent" class="tag" data-astro-cid-w5q62dq7>#AI Agent</a><a href="/zh/tags/mcp" class="tag" data-astro-cid-w5q62dq7>#MCP</a><span class="tag" data-astro-cid-w5q62dq7>#自动化</span><span class="tag" data-astro-cid-w5q62dq7>#开发者教程</span><span class="tag" data-astro-cid-w5q62dq7>#营销自动化</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-4b638a70.jpg" alt="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#1-composio-是什么" data-astro-cid-w5q62dq7>1. Composio 是什么？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#架构总览" data-astro-cid-w5q62dq7>架构总览</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#2-竞品对比composio-vs-zapier-vs-make" data-astro-cid-w5q62dq7>2. 竞品对比：Composio vs Zapier vs Make</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#3-定价方案" data-astro-cid-w5q62dq7>3. 定价方案</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#4-注册-composio-账号" data-astro-cid-w5q62dq7>4. 注册 Composio 账号</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#41-整体流程" data-astro-cid-w5q62dq7>4.1 整体流程</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#42-注册步骤" data-astro-cid-w5q62dq7>4.2 注册步骤</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#5-在-composio-网站上-connect-应用" data-astro-cid-w5q62dq7>5. 在 Composio 网站上 Connect 应用</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#51-connect-流程详解" data-astro-cid-w5q62dq7>5.1 Connect 流程详解</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#52-connect-reddit" data-astro-cid-w5q62dq7>5.2 Connect Reddit</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#53-connect-facebook" data-astro-cid-w5q62dq7>5.3 Connect Facebook</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#54-connect-instagram" data-astro-cid-w5q62dq7>5.4 Connect Instagram</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#55-connect-twitterx" data-astro-cid-w5q62dq7>5.5 Connect Twitter/X</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#56-connect-tiktok" data-astro-cid-w5q62dq7>5.6 Connect TikTok</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#57-connect-gmail-google-sheets-等-google-系应用" data-astro-cid-w5q62dq7>5.7 Connect Gmail / Google Sheets 等 Google 系应用</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#58-所有已连接应用一览" data-astro-cid-w5q62dq7>5.8 所有已连接应用一览</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#6-安装-mcp-server" data-astro-cid-w5q62dq7>6. 安装 MCP Server</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#什么是-mcp" data-astro-cid-w5q62dq7>什么是 MCP？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#安装步骤" data-astro-cid-w5q62dq7>安装步骤</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#7-实战reddit-搜索与发帖" data-astro-cid-w5q62dq7>7. 实战：Reddit 搜索与发帖</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#71-搜索帖子" data-astro-cid-w5q62dq7>7.1 搜索帖子</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#72-发帖" data-astro-cid-w5q62dq7>7.2 发帖</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#73-评论帖子" data-astro-cid-w5q62dq7>7.3 评论帖子</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#8-实战facebook-搜索与发帖" data-astro-cid-w5q62dq7>8. 实战：Facebook 搜索与发帖</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#81-搜索-facebook-内容" data-astro-cid-w5q62dq7>8.1 搜索 Facebook 内容</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#82-facebook-page-发帖" data-astro-cid-w5q62dq7>8.2 Facebook Page 发帖</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#83-facebook-vs-reddit-能力对比" data-astro-cid-w5q62dq7>8.3 Facebook vs Reddit 能力对比</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#9-杀手锏多平台并行查询" data-astro-cid-w5q62dq7>9. 杀手锏：多平台并行查询</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#场景你想知道全网关于中国旅游的讨论热度" data-astro-cid-w5q62dq7>场景：你想知道全网关于&quot;中国旅游&quot;的讨论热度</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#10-营销自动化实战" data-astro-cid-w5q62dq7>10. 营销自动化实战</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#场景你想在中国旅游社区推广你的旅游产品" data-astro-cid-w5q62dq7>场景：你想在中国旅游社区推广你的旅游产品</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#101-多平台监听" data-astro-cid-w5q62dq7>10.1 多平台监听</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#102-找到目标用户" data-astro-cid-w5q62dq7>10.2 找到目标用户</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#103-精准互动评论" data-astro-cid-w5q62dq7>10.3 精准互动（评论）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#104-自动化发帖示例" data-astro-cid-w5q62dq7>10.4 自动化发帖示例</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#11-常见坑与注意事项" data-astro-cid-w5q62dq7>11. 常见坑与注意事项</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#-必须知道的坑" data-astro-cid-w5q62dq7>🚨 必须知道的坑</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#-效率技巧" data-astro-cid-w5q62dq7>⚡ 效率技巧</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#12-总结" data-astro-cid-w5q62dq7>12. 总结</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#composio-的核心优势" data-astro-cid-w5q62dq7>Composio 的核心优势</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#快速开始-checklist" data-astro-cid-w5q62dq7>快速开始 Checklist</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><blockquote>
+<p>面向开发者的 Composio MCP 实战教程 — 从安装到社媒营销自动化</p>
+</blockquote>
+<hr>
+<h2 id="目录">目录</h2><ol>
+<li><a href="#1-composio-%E6%98%AF%E4%BB%80%E4%B9%88">Composio 是什么？</a></li>
+<li><a href="#2-%E7%AB%9E%E5%93%81%E5%AF%B9%E6%AF%94composio-vs-zapier-vs-make">竞品对比：Composio vs Zapier vs Make</a></li>
+<li><a href="#3-%E5%AE%9A%E4%BB%B7%E6%96%B9%E6%A1%88">定价方案</a></li>
+<li><a href="#4-%E6%B3%A8%E5%86%8C-composio-%E8%B4%A6%E5%8F%B7">注册 Composio 账号</a></li>
+<li><a href="#5-%E5%9C%A8-composio-%E7%BD%91%E7%AB%99%E4%B8%8A-connect-%E5%BA%94%E7%94%A8">在 Composio 网站上 Connect 应用</a></li>
+<li><a href="#6-%E5%AE%89%E8%A3%85-mcp-server">安装 MCP Server</a></li>
+<li><a href="#7-%E5%AE%9E%E6%88%98reddit-%E6%90%9C%E7%B4%A2%E4%B8%8E%E5%8F%91%E5%B8%96">实战：Reddit 搜索与发帖</a></li>
+<li><a href="#8-%E5%AE%9E%E6%88%98facebook-%E6%90%9C%E7%B4%A2%E4%B8%8E%E5%8F%91%E5%B8%96">实战：Facebook 搜索与发帖</a></li>
+<li><a href="#9-%E6%9D%80%E6%89%8B%E9%94%8F%E5%A4%9A%E5%B9%B3%E5%8F%B0%E5%B9%B6%E8%A1%8C%E6%9F%A5%E8%AF%A2">杀手锏：多平台并行查询</a></li>
+<li><a href="#10-%E8%90%A5%E9%94%80%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E6%88%98">营销自动化实战</a></li>
+<li><a href="#11-%E5%B8%B8%E8%A7%81%E5%9D%91%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">常见坑与注意事项</a></li>
+<li><a href="#12-%E6%80%BB%E7%BB%93">总结</a></li>
+</ol>
+<hr>
+<h2 id="1-composio-是什么">1. Composio 是什么？</h2><p><strong>Composio</strong> 是一个为 AI Agent 设计的应用集成平台。它提供了一个统一的 API/MCP 接口，让你的 AI 助手（Claude、ChatGPT、Cursor 等）可以直接操作 <strong>500+ 第三方应用</strong> — 包括 Reddit、Facebook、Twitter、Instagram、TikTok、Gmail、Google Sheets、GitHub 等等。</p>
+<p><strong>核心价值：</strong> 你不需要自己写每个平台的 API 集成代码。Composio 帮你处理 OAuth 认证、API 调用、数据格式转换。你只需要通过 MCP（Model Context Protocol）连接，就能让 AI 直接操作这些应用。</p>
+<h3 id="架构总览">架构总览</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph LR
+    A[你的 AI 助手<br/>Claude / Cursor / VS Code] -->|MCP Protocol| B[Composio MCP Server]
+    B --> C[Reddit]
+    B --> D[Facebook]
+    B --> E[Twitter/X]
+    B --> F[Instagram]
+    B --> G[TikTok]
+    B --> H[Gmail]
+    B --> I[500+ 更多应用]
+    
+    style A fill:#4A90D9,color:#fff
+    style B fill:#FF6B35,color:#fff</pre></div><p><strong>一句话总结：</strong> Composio 是 AI Agent 的「万能遥控器」。</p>
+<hr>
+<h2 id="2-竞品对比composio-vs-zapier-vs-make">2. 竞品对比：Composio vs Zapier vs Make</h2><blockquote>
+<p>⚠️ <strong>关键区别：</strong> Zapier 和 Make 是「无代码自动化工具」，面向非技术用户。Composio 是「AI Agent 集成层」，面向开发者。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th><strong>Composio</strong></th>
+<th><strong>Zapier</strong></th>
+<th><strong>Make (Integromat)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>定位</strong></td>
+<td>AI Agent 集成平台</td>
+<td>无代码自动化</td>
+<td>可视化自动化</td>
+</tr>
+<tr>
+<td><strong>目标用户</strong></td>
+<td>开发者 / AI 工程师</td>
+<td>非技术用户</td>
+<td>半技术用户</td>
+</tr>
+<tr>
+<td><strong>接入方式</strong></td>
+<td>MCP / SDK / API</td>
+<td>Web UI 拖拽</td>
+<td>Web UI 可视化流程</td>
+</tr>
+<tr>
+<td><strong>与 AI 集成</strong></td>
+<td>✅ 原生支持（Claude/GPT 直接调用）</td>
+<td>❌ 需要额外配置</td>
+<td>❌ 需要额外配置</td>
+</tr>
+<tr>
+<td><strong>支持应用数</strong></td>
+<td>500+</td>
+<td>7000+</td>
+<td>1500+</td>
+</tr>
+<tr>
+<td><strong>OAuth 代管</strong></td>
+<td>✅ Composio 帮你管理 token</td>
+<td>✅ 内置</td>
+<td>✅ 内置</td>
+</tr>
+<tr>
+<td><strong>批量并行调用</strong></td>
+<td>✅ 原生支持（一次请求调多个平台）</td>
+<td>❌ 串行执行</td>
+<td>⚠️ 需要 Iterator 模块</td>
+</tr>
+<tr>
+<td><strong>定价起步</strong></td>
+<td>免费 20K calls/月</td>
+<td>$19.99/月</td>
+<td>$10.59/月</td>
+</tr>
+<tr>
+<td><strong>代码控制</strong></td>
+<td>✅ 完全代码控制</td>
+<td>❌ GUI only</td>
+<td>⚠️ 有限的自定义函数</td>
+</tr>
+<tr>
+<td><strong>MCP 支持</strong></td>
+<td>✅ 原生</td>
+<td>❌ 无</td>
+<td>❌ 无</td>
+</tr>
+</tbody></table>
+<p><strong>什么时候选 Composio：</strong></p>
+<ul>
+<li>你用 Claude Code / Cursor / AI Agent 做开发</li>
+<li>你需要 AI 直接操作第三方应用</li>
+<li>你需要<strong>一次查询多个平台</strong>并汇总结果</li>
+<li>你是开发者，喜欢用代码控制一切</li>
+</ul>
+<p><strong>什么时候选 Zapier/Make：</strong></p>
+<ul>
+<li>你不懂代码，只想做简单的 if-this-then-that</li>
+<li>你需要连接冷门应用（Zapier 生态最广）</li>
+<li>你的流程是固定的，不需要 AI 参与</li>
+</ul>
+<hr>
+<h2 id="3-定价方案">3. 定价方案</h2><p>Composio 采用按调用次数计费的模式，非常开发者友好：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>月费</th>
+<th>月调用次数</th>
+<th>超额单价</th>
+<th>支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Free</strong></td>
+<td><strong>$0</strong></td>
+<td>20,000 次</td>
+<td>—</td>
+<td>社区支持</td>
+</tr>
+<tr>
+<td><strong>Starter</strong></td>
+<td><strong>$29/月</strong></td>
+<td>200,000 次</td>
+<td>$0.299/1K calls</td>
+<td>邮件支持</td>
+</tr>
+<tr>
+<td><strong>Pro</strong></td>
+<td><strong>$229/月</strong></td>
+<td>2,000,000 次</td>
+<td>$0.249/1K calls</td>
+<td>Slack 支持</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>定制</td>
+<td>定制</td>
+<td>定制</td>
+<td>专属 SLA + SOC-2</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 <strong>对开发者的建议：</strong> Free 方案的 20K calls/月 足够个人项目和测试使用。一个典型的 Reddit 搜索大约消耗 1-2 次调用，20K 次可以做很多事了。</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>注意：</strong> 每次工具调用（搜索、发帖、获取评论等）都算一次 call。多平台并行查询时，每个平台各算一次。</p>
+</blockquote>
+<hr>
+<h2 id="4-注册-composio-账号">4. 注册 Composio 账号</h2><blockquote>
+<p>⚠️ <strong>这是第一步，不能跳过！</strong> 必须先有 Composio 账号，才能 Connect 应用，MCP 才能正常工作。</p>
+</blockquote>
+<h3 id="41-整体流程">4.1 整体流程</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart LR
+    A[1️⃣ 注册 Composio] --> B[2️⃣ 在网页上 Connect 应用]
+    B --> C[3️⃣ 安装 MCP Server]
+    C --> D[4️⃣ Claude Code 中使用]
+    
+    style A fill:#E74C3C,color:#fff
+    style B fill:#E67E22,color:#fff
+    style C fill:#3498DB,color:#fff
+    style D fill:#2ECC71,color:#fff</pre></div><p><strong>为什么要先注册和 Connect？</strong> MCP Server 只是一个「管道」，它通过你的 Composio 账号来访问第三方应用的 API。如果你没有在 Composio 网站上连接 Reddit，MCP 调用 Reddit API 时会报错：<code>No active connection for toolkit: reddit</code>。</p>
+<h3 id="42-注册步骤">4.2 注册步骤</h3><ol>
+<li><p><strong>打开 Composio 官网：</strong> <a href="https://composio.dev">https://composio.dev</a></p>
+</li>
+<li><p><strong>点击 &quot;Get Started&quot; 或 &quot;Sign Up&quot;</strong></p>
+</li>
+<li><p><strong>选择注册方式：</strong></p>
+<ul>
+<li>GitHub 账号登录（推荐，开发者首选）</li>
+<li>Google 账号登录</li>
+<li>邮箱 + 密码注册</li>
+</ul>
+</li>
+<li><p><strong>完成注册后，进入 Composio Dashboard</strong></p>
+</li>
+</ol>
+<blockquote>
+<p>💡 <strong>免费方案无需绑卡。</strong> 注册即用，20K calls/月 免费。</p>
+</blockquote>
+<hr>
+<h2 id="5-在-composio-网站上-connect-应用">5. 在 Composio 网站上 Connect 应用</h2><blockquote>
+<p>🔥 <strong>这是最关键的一步！</strong> 所有第三方应用的 OAuth 授权都在这里完成。MCP 只是「读取」这些授权，不能替代这一步。</p>
+</blockquote>
+<h3 id="51-connect-流程详解">5.1 Connect 流程详解</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-2">flowchart TD
+    A[登录 Composio Dashboard] --> B[进入 Integrations 页面]
+    B --> C[搜索你想连接的应用]
+    C --> D[点击 Connect]
+    D --> E[跳转到第三方 OAuth 页面]
+    E --> F[登录并授权]
+    F --> G[自动跳回 Composio]
+    G --> H{状态显示 Connected?}
+    H -->|是| I[✅ 可以通过 MCP 调用了]
+    H -->|否| J[❌ 重试或检查账号权限]
+    J --> D
+    
+    style A fill:#4A90D9,color:#fff
+    style I fill:#2ECC71,color:#fff
+    style J fill:#E74C3C,color:#fff</pre></div><h3 id="52-connect-reddit">5.2 Connect Reddit</h3><p><strong>步骤：</strong></p>
+<ol>
+<li>登录 <a href="https://app.composio.dev">Composio Dashboard</a></li>
+<li>左侧菜单找到 <strong>Integrations</strong> 或 <strong>Connected Apps</strong></li>
+<li>搜索 <strong>Reddit</strong>，点击进入</li>
+<li>点击 <strong>Connect</strong> 按钮</li>
+<li>浏览器会跳转到 Reddit 的 OAuth 授权页面</li>
+<li><strong>登录你的 Reddit 账号</strong> → 点击 <strong>Allow</strong></li>
+<li>自动跳回 Composio，状态变为 <strong>Connected ✅</strong></li>
+</ol>
+<p><strong>Reddit 授权后你可以做什么：</strong></p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>工具名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>搜索帖子</td>
+<td><code>REDDIT_SEARCH_ACROSS_SUBREDDITS</code></td>
+<td>全站搜索</td>
+</tr>
+<tr>
+<td>获取热门</td>
+<td><code>REDDIT_GET_R_TOP</code></td>
+<td>指定 Subreddit 热帖</td>
+</tr>
+<tr>
+<td>发帖</td>
+<td><code>REDDIT_CREATE_REDDIT_POST</code></td>
+<td>发文字/链接帖</td>
+</tr>
+<tr>
+<td>评论</td>
+<td><code>REDDIT_POST_REDDIT_COMMENT</code></td>
+<td>回复帖子或评论</td>
+</tr>
+<tr>
+<td>查看评论</td>
+<td><code>REDDIT_RETRIEVE_POST_COMMENTS</code></td>
+<td>获取帖子所有评论</td>
+</tr>
+<tr>
+<td>查看规则</td>
+<td><code>REDDIT_GET_SUBREDDIT_RULES</code></td>
+<td>发帖前必查</td>
+</tr>
+</tbody></table>
+<h3 id="53-connect-facebook">5.3 Connect Facebook</h3><p><strong>步骤：</strong></p>
+<ol>
+<li>在 Composio Dashboard 搜索 <strong>Facebook</strong></li>
+<li>点击 <strong>Connect</strong></li>
+<li>跳转到 Facebook OAuth 页面</li>
+<li><strong>登录 Facebook 账号</strong> → 选择你要关联的 <strong>Facebook Page</strong> → 点击 <strong>继续</strong></li>
+<li>授权 Composio 管理你的 Page</li>
+<li>跳回 Composio，状态变为 <strong>Connected ✅</strong></li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Facebook 关键注意事项：</strong></p>
+<ul>
+<li>Composio 的 Facebook 集成绑定的是 <strong>Facebook Page（公共主页）</strong>，不是个人主页</li>
+<li>如果你没有 Page，需要先在 Facebook 上创建一个</li>
+<li>群组帖子目前<strong>不支持通过 API 发帖/评论</strong>，只能通过网页搜索间接获取内容</li>
+<li>授权时确保勾选了所有权限（<code>pages_manage_posts</code>, <code>pages_read_engagement</code> 等）</li>
+</ul>
+</blockquote>
+<h3 id="54-connect-instagram">5.4 Connect Instagram</h3><p><strong>步骤：</strong></p>
+<ol>
+<li>在 Composio Dashboard 搜索 <strong>Instagram</strong></li>
+<li>点击 <strong>Connect</strong></li>
+<li>跳转到 Meta（Facebook）OAuth 页面（Instagram 用 Facebook 身份验证）</li>
+<li><strong>选择关联的 Facebook Page</strong> → 授权 Instagram Professional 账号</li>
+<li>跳回 Composio，状态变为 <strong>Connected ✅</strong></li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Instagram 前提条件：</strong></p>
+<ul>
+<li>你的 Instagram 必须是 <strong>Professional 账号</strong>（Business 或 Creator）</li>
+<li>Instagram 账号必须<strong>关联一个 Facebook Page</strong></li>
+<li>普通个人账号无法使用 API</li>
+</ul>
+</blockquote>
+<p><strong>如何把个人 Instagram 升级为 Professional：</strong></p>
+<ol>
+<li>打开 Instagram App → 设置 → 账号 → 切换为 Professional 账号</li>
+<li>选择 Creator 或 Business</li>
+<li>关联你的 Facebook Page</li>
+</ol>
+<h3 id="55-connect-twitterx">5.5 Connect Twitter/X</h3><p><strong>步骤：</strong></p>
+<ol>
+<li>在 Composio Dashboard 搜索 <strong>Twitter</strong></li>
+<li>点击 <strong>Connect</strong></li>
+<li>跳转到 X (Twitter) OAuth 页面</li>
+<li><strong>登录 Twitter 账号</strong> → 点击 <strong>Authorize App</strong></li>
+<li>跳回 Composio，状态变为 <strong>Connected ✅</strong></li>
+</ol>
+<h3 id="56-connect-tiktok">5.6 Connect TikTok</h3><p><strong>步骤：</strong></p>
+<ol>
+<li>在 Composio Dashboard 搜索 <strong>TikTok</strong></li>
+<li>点击 <strong>Connect</strong></li>
+<li>跳转到 TikTok OAuth 页面</li>
+<li><strong>登录 TikTok 账号</strong> → 授权</li>
+<li>跳回 Composio，状态变为 <strong>Connected ✅</strong></li>
+</ol>
+<h3 id="57-connect-gmail-google-sheets-等-google-系应用">5.7 Connect Gmail / Google Sheets 等 Google 系应用</h3><p>Google 系应用共用一个 Google OAuth：</p>
+<ol>
+<li>搜索 <strong>Gmail</strong> 或 <strong>Google Sheets</strong> 等</li>
+<li>点击 <strong>Connect</strong></li>
+<li>跳转 Google OAuth → 选择 Google 账号 → 授权</li>
+<li>一次授权，所有 Google 应用通用 ✅</li>
+</ol>
+<h3 id="58-所有已连接应用一览">5.8 所有已连接应用一览</h3><p>Connect 完成后，在 Composio Dashboard 的 Integrations 页面可以看到所有已连接的应用：</p>
+<div class="code-wrapper"><pre><code>✅ Reddit       — ericwhk1205       — Connected
+✅ Facebook     — Wang Jianping     — Connected
+⬜ Instagram   — 未连接
+⬜ Twitter/X   — 未连接
+⬜ TikTok      — 未连接
+✅ Gmail        — eric@gmail.com    — Connected
+</code></pre>
+</div><blockquote>
+<p>💡 <strong>多账号支持：</strong> 同一个应用可以连接多个账号。比如 Facebook 上连接了个人 Page 和公司 Page，调用时通过 <code>account</code> 参数指定用哪个。</p>
+</blockquote>
+<blockquote>
+<p>💡 <strong>另一种 Connect 方式（通过 MCP 对话连接）：</strong> 如果你没有在网站上预先 Connect，在 Claude Code 对话中请求操作某个平台时，Composio 也会弹出授权链接。但<strong>强烈建议先在网站上 Connect 好所有应用</strong>，这样使用体验更流畅。</p>
+</blockquote>
+<hr>
+<h2 id="6-安装-mcp-server">6. 安装 MCP Server</h2><blockquote>
+<p>前提：你已经完成了 <a href="#4-%E6%B3%A8%E5%86%8C-composio-%E8%B4%A6%E5%8F%B7">第4步注册</a> 和 <a href="#5-%E5%9C%A8-composio-%E7%BD%91%E7%AB%99%E4%B8%8A-connect-%E5%BA%94%E7%94%A8">第5步 Connect 应用</a>。</p>
+</blockquote>
+<h3 id="什么是-mcp">什么是 MCP？</h3><p>MCP（Model Context Protocol）是 Anthropic 提出的标准协议，让 AI 助手可以通过统一的接口调用外部工具。你可以把它理解为 AI 世界的「USB 接口」— 一个标准，连接万物。</p>
+<h3 id="安装步骤">安装步骤</h3><p><strong>一行命令搞定：</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">claude mcp add --scope user --transport http composio https://connect.composio.dev/mcp
+</code></pre>
+</div><p><strong>参数说明：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--scope user</code></td>
+<td>全局生效（所有项目可用）</td>
+</tr>
+<tr>
+<td><code>--transport http</code></td>
+<td>使用 HTTP 传输（SSE 协议）</td>
+</tr>
+<tr>
+<td><code>composio</code></td>
+<td>MCP server 名称（自定义）</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>Composio 的 MCP 端点</td>
+</tr>
+</tbody></table>
+<p><strong>验证安装：</strong></p>
+<p>在 Claude Code 中输入 <code>/mcp</code>，应该能看到 composio 出现在已安装列表中。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-3">sequenceDiagram
+    participant User as 你的终端
+    participant Claude as Claude Code
+    participant MCP as Composio MCP Server
+    participant Apps as 已 Connect 的应用
+
+    User->>Claude: claude mcp add composio ...
+    Claude->>MCP: 建立 SSE 连接
+    MCP-->>Claude: 连接成功 ✅
+    
+    User->>Claude: "帮我搜索Reddit中国旅游帖子"
+    Claude->>MCP: 调用 REDDIT_SEARCH
+    MCP->>Apps: 用你已授权的 Reddit Token 调 API
+    Apps-->>MCP: 返回帖子数据
+    MCP-->>Claude: 格式化结果
+    Claude-->>User: 展示搜索结果</pre></div><blockquote>
+<p>⚠️ <strong>重要提示：</strong></p>
+<ul>
+<li>安装后需要<strong>重启 Claude Code</strong>才能生效</li>
+<li>如果连接失败，检查网络是否需要代理</li>
+<li>MCP 不会帮你做 OAuth 授权 — 必须先在网站或对话中 Connect 好应用</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="7-实战reddit-搜索与发帖">7. 实战：Reddit 搜索与发帖</h2><h3 id="71-搜索帖子">7.1 搜索帖子</h3><p><strong>搜索关键词：</strong></p>
+<div class="code-wrapper"><pre><code>帮我搜索 Reddit 上最近关于&quot;去中国旅游&quot;的热门帖子
+</code></pre>
+</div><p>Claude 会调用 <code>REDDIT_SEARCH_ACROSS_SUBREDDITS</code> 工具：</p>
+<p><strong>实际调用示例（你看不到，但 Claude 在后台做了这些）：</strong></p>
+<div class="code-wrapper"><pre><code class="language-json">// 搜索请求
+{
+  &quot;tool_slug&quot;: &quot;REDDIT_SEARCH_ACROSS_SUBREDDITS&quot;,
+  &quot;arguments&quot;: {
+    &quot;search_query&quot;: &quot;travel China tourism&quot;,
+    &quot;sort&quot;: &quot;hot&quot;,
+    &quot;limit&quot;: 25
+  }
+}
+</code></pre>
+</div><p><strong>返回结果示例：</strong></p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;posts&quot;: [
+    {
+      &quot;title&quot;: &quot;云南玉龙雪山蓝月谷&quot;,
+      &quot;score&quot;: 379,
+      &quot;num_comments&quot;: 9,
+      &quot;subreddit&quot;: &quot;travelchina&quot;,
+      &quot;permalink&quot;: &quot;/r/travelchina/comments/xxx/&quot;,
+      &quot;created_utc&quot;: 1780223243
+    },
+    // ... 更多帖子
+  ]
+}
+</code></pre>
+</div><p><strong>获取特定 Subreddit 的热门帖子：</strong></p>
+<div class="code-wrapper"><pre><code>看看 r/travelchina 今天最热的5个帖子
+</code></pre>
+</div><p>这会调用 <code>REDDIT_GET_R_TOP</code>：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;REDDIT_GET_R_TOP&quot;,
+  &quot;arguments&quot;: {
+    &quot;subreddit&quot;: &quot;travelchina&quot;,
+    &quot;t&quot;: &quot;day&quot;,
+    &quot;limit&quot;: 5
+  }
+}
+</code></pre>
+</div><h3 id="72-发帖">7.2 发帖</h3><blockquote>
+<p>⚠️ <strong>发帖是公开操作！</strong> 发出去就删不回来了。Claude 会先跟你确认内容再发布。</p>
+</blockquote>
+<p><strong>创建新帖：</strong></p>
+<div class="code-wrapper"><pre><code>在 r/test 发一个帖子，标题是&quot;测试&quot;，内容是&quot;这是通过 Composio API 发的测试帖子&quot;
+</code></pre>
+</div><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;REDDIT_CREATE_REDDIT_POST&quot;,
+  &quot;arguments&quot;: {
+    &quot;subreddit&quot;: &quot;test&quot;,
+    &quot;title&quot;: &quot;测试&quot;,
+    &quot;kind&quot;: &quot;self&quot;,
+    &quot;text&quot;: &quot;这是通过 Composio API 发的测试帖子&quot;
+  }
+}
+</code></pre>
+</div><h3 id="73-评论帖子">7.3 评论帖子</h3><div class="code-wrapper"><pre><code>在这个帖子下评论：https://www.reddit.com/r/travelchina/comments/xxx/
+评论内容：&quot;Great post! Very helpful.&quot;
+</code></pre>
+</div><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;REDDIT_POST_REDDIT_COMMENT&quot;,
+  &quot;arguments&quot;: {
+    &quot;thing_id&quot;: &quot;t3_xxx&quot;,
+    &quot;text&quot;: &quot;Great post! Very helpful.&quot;
+  }
+}
+</code></pre>
+</div><blockquote>
+<p>⚠️ <strong>thing_id 格式：</strong> <code>t3_</code> 前缀表示回复帖子，<code>t1_</code> 前缀表示回复评论。别搞混了。</p>
+</blockquote>
+<hr>
+<h2 id="8-实战facebook-搜索与发帖">8. 实战：Facebook 搜索与发帖</h2><h3 id="81-搜索-facebook-内容">8.1 搜索 Facebook 内容</h3><p>Facebook 的内容不能直接搜索帖子（API 限制），但可以通过<strong>网页搜索</strong>间接找到公开的 Facebook 帖子和群组：</p>
+<div class="code-wrapper"><pre><code>搜索 Facebook 上关于中国旅游的热门群组和帖子
+</code></pre>
+</div><p>Claude 会使用 <code>COMPOSIO_SEARCH_WEB</code> 搜索：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;COMPOSIO_SEARCH_WEB&quot;,
+  &quot;arguments&quot;: {
+    &quot;query&quot;: &quot;site:facebook.com China travel groups posts 2026&quot;
+  }
+}
+</code></pre>
+</div><p><strong>返回结果包含：</strong></p>
+<ul>
+<li>群组链接（如 facebook.com/groups/travelchina3/）</li>
+<li>公开帖子链接</li>
+<li>帖子标题和摘要</li>
+</ul>
+<h3 id="82-facebook-page-发帖">8.2 Facebook Page 发帖</h3><blockquote>
+<p>⚠️ <strong>重要限制：</strong> Composio 的 Facebook 集成只支持 <strong>Page（公共主页）</strong>，不支持个人主页和群组。如果你想在群组里发帖，需要手动操作。</p>
+</blockquote>
+<p><strong>在 Page 上发帖：</strong></p>
+<div class="code-wrapper"><pre><code>在我的 Facebook Page 上发一条关于中国旅游的帖子
+</code></pre>
+</div><div class="code-wrapper"><pre><code class="language-json">{
+  &quot;tool_slug&quot;: &quot;FACEBOOK_CREATE_POST&quot;,
+  &quot;arguments&quot;: {
+    &quot;page_id&quot;: &quot;你的Page ID&quot;,
+    &quot;message&quot;: &quot;🇨🇳 中国旅游小贴士：推荐使用支付宝、高德地图和12306买火车票！&quot;
+  }
+}
+</code></pre>
+</div><h3 id="83-facebook-vs-reddit-能力对比">8.3 Facebook vs Reddit 能力对比</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>Reddit</th>
+<th>Facebook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>搜索帖子</td>
+<td>✅ 完整支持</td>
+<td>⚠️ 只能通过网页搜索间接获取</td>
+</tr>
+<tr>
+<td>发帖</td>
+<td>✅ 支持</td>
+<td>⚠️ 只支持 Page，不支持群组</td>
+</tr>
+<tr>
+<td>评论</td>
+<td>✅ 支持</td>
+<td>⚠️ 只支持 Page 帖子</td>
+</tr>
+<tr>
+<td>读取内容</td>
+<td>✅ 完整支持</td>
+<td>⚠️ 有限</td>
+</tr>
+<tr>
+<td>获取评论</td>
+<td>✅ 支持</td>
+<td>⚠️ 需要 Page 权限</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-杀手锏多平台并行查询">9. 杀手锏：多平台并行查询</h2><blockquote>
+<p>🔥 <strong>这是 Composio 最强大的功能之一 — 一次请求，同时查询多个平台。</strong></p>
+</blockquote>
+<h3 id="场景你想知道全网关于中国旅游的讨论热度">场景：你想知道全网关于"中国旅游"的讨论热度</h3><p><strong>不用 Composio 的情况：</strong> 分别打开 Reddit、Facebook、Twitter，一个一个搜。</p>
+<p><strong>用 Composio 的情况：</strong> 一句话搞定。</p>
+<div class="code-wrapper"><pre><code>帮我同时搜索 Reddit、Facebook 网页、Twitter 上关于&quot;去中国旅游&quot;的最新热门内容
+</code></pre>
+</div><p>Claude 会<strong>并行调用</strong>多个工具：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-4">sequenceDiagram
+    participant User as 你
+    participant Claude as Claude + Composio
+    participant R as Reddit API
+    participant F as Web Search (Facebook)
+    participant T as Twitter API
+
+    User->>Claude: 搜索"去中国旅游"多平台
+
+    par 并行执行
+        Claude->>R: REDDIT_SEARCH_ACROSS_SUBREDDITS
+        Claude->>F: COMPOSIO_SEARCH_WEB (site:facebook.com)
+        Claude->>T: TWITTER_RECENT_SEARCH
+    end
+
+    R-->>Claude: Reddit 帖子列表
+    F-->>Claude: Facebook 群组/帖子
+    T-->>Claude: Twitter 推文
+
+    Claude->>Claude: 去重 + 排序 + 汇总
+    Claude-->>User: 统一结果列表 ✅</pre></div><p><strong>实际代码调用：</strong></p>
+<div class="code-wrapper"><pre><code class="language-json">// COMPOSIO_MULTI_EXECUTE_TOOL — 一次请求，并行调用
+{
+  &quot;tools&quot;: [
+    {
+      &quot;tool_slug&quot;: &quot;REDDIT_SEARCH_ACROSS_SUBREDDITS&quot;,
+      &quot;arguments&quot;: {
+        &quot;search_query&quot;: &quot;travel China tourism&quot;,
+        &quot;sort&quot;: &quot;hot&quot;,
+        &quot;limit&quot;: 10
+      }
+    },
+    {
+      &quot;tool_slug&quot;: &quot;COMPOSIO_SEARCH_WEB&quot;,
+      &quot;arguments&quot;: {
+        &quot;query&quot;: &quot;site:facebook.com China travel groups 2026&quot;
+      }
+    },
+    {
+      &quot;tool_slug&quot;: &quot;TWITTER_RECENT_SEARCH&quot;,
+      &quot;arguments&quot;: {
+        &quot;query&quot;: &quot;China travel tips&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+</div><p><strong>你拿到的结果：</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>平台</th>
+<th>标题</th>
+<th>得分</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Reddit</td>
+<td>云南玉龙雪山蓝月谷</td>
+<td>379⬆</td>
+<td>reddit.com/r/travelchina/...</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Reddit</td>
+<td>如何像黄仁勋一样在北京胡同吃美食</td>
+<td>79⬆</td>
+<td>reddit.com/r/travelchina/...</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Facebook</td>
+<td>🇨🇳 TRAVEL in CHINA 群组讨论</td>
+<td>—</td>
+<td>facebook.com/groups/travelchina3/...</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Twitter</td>
+<td>#ChinaTravel tips thread</td>
+<td>1.2K❤</td>
+<td>x.com/user/status/...</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Reddit</td>
+<td>中国只有二维码菜单怎么点餐</td>
+<td>23⬆</td>
+<td>reddit.com/r/chinatravel/...</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 <strong>营销价值：</strong> 一次查询就能掌握全网讨论趋势，比人工逐个平台搜索效率高10倍。</p>
+</blockquote>
+<hr>
+<h2 id="10-营销自动化实战">10. 营销自动化实战</h2><h3 id="场景你想在中国旅游社区推广你的旅游产品">场景：你想在中国旅游社区推广你的旅游产品</h3><p><strong>完整的营销工作流：</strong></p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-5">flowchart TD
+    A[🔍 第一步：多平台监听] --> B[📊 第二步：分析热度趋势]
+    B --> C[🎯 第三步：找到目标用户]
+    C --> D[💬 第四步：精准互动]
+    D --> E[📈 第五步：效果追踪]
+    
+    A1[Reddit r/travelchina<br/>r/Chinavisa] --> A
+    A2[Facebook 中国旅游群组] --> A
+    A3[Twitter #ChinaTravel] --> A
+    A4[TikTok China Travel 视频] --> A
+    
+    style A fill:#3498DB,color:#fff
+    style B fill:#9B59B6,color:#fff
+    style C fill:#E67E22,color:#fff
+    style D fill:#2ECC71,color:#fff
+    style E fill:#E74C3C,color:#fff</pre></div><h3 id="101-多平台监听">10.1 多平台监听</h3><div class="code-wrapper"><pre><code>搜索 Reddit、Facebook、Twitter 上最近7天关于&quot;中国旅游攻略&quot;的讨论，按热度排序
+</code></pre>
+</div><h3 id="102-找到目标用户">10.2 找到目标用户</h3><div class="code-wrapper"><pre><code>在 Reddit 上找到最近准备去中国旅游的帖子，列出发帖人的用户名和帖子链接
+</code></pre>
+</div><h3 id="103-精准互动评论">10.3 精准互动（评论）</h3><div class="code-wrapper"><pre><code>在这个帖子下评论：&quot;推荐下载 Alipay 和 Amap，基本覆盖所有支付和导航需求。
+另外12306 app可以买火车票，支持英文界面。&quot;
+</code></pre>
+</div><blockquote>
+<p>⚠️ <strong>营销注意事项：</strong></p>
+<ul>
+<li><strong>不要发硬广！</strong> Reddit 社区对广告极度反感，容易被 downvote 甚至 ban</li>
+<li>以<strong>提供价值</strong>为主：分享真实经验、实用攻略</li>
+<li>先混脸熟，再自然带出你的产品</li>
+<li>每次操作间隔至少几分钟，避免被判定为 spam</li>
+</ul>
+</blockquote>
+<h3 id="104-自动化发帖示例">10.4 自动化发帖示例</h3><p>如果你想定时在多个平台发布内容：</p>
+<div class="code-wrapper"><pre><code class="language-python"># 伪代码 — 展示 Composio 的多平台发布能力
+# 实际使用中通过 Claude Code 对话完成
+
+platforms = {
+    &quot;reddit&quot;: {
+        &quot;tool&quot;: &quot;REDDIT_CREATE_REDDIT_POST&quot;,
+        &quot;subreddit&quot;: &quot;travelchina&quot;,
+        &quot;title&quot;: &quot;My China Travel Tips After 30 Days&quot;,
+        &quot;text&quot;: &quot;Just came back from a 30-day trip across China...&quot;
+    },
+    &quot;facebook&quot;: {
+        &quot;tool&quot;: &quot;FACEBOOK_CREATE_POST&quot;,
+        &quot;page_id&quot;: &quot;your_page_id&quot;,
+        &quot;message&quot;: &quot;🇨🇳 Just came back from 30 days in China...&quot;
+    }
+}
+
+# Composio MULTI_EXECUTE 一次并行发布
+</code></pre>
+</div><hr>
+<h2 id="11-常见坑与注意事项">11. 常见坑与注意事项</h2><h3 id="-必须知道的坑">🚨 必须知道的坑</h3><table>
+<thead>
+<tr>
+<th>坑</th>
+<th>说明</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reddit thing_id 前缀</strong></td>
+<td><code>t3_</code> 是帖子，<code>t1_</code> 是评论，搞错就发错地方</td>
+<td>回复帖子用 <code>t3_xxx</code>，回复评论用 <code>t1_xxx</code></td>
+</tr>
+<tr>
+<td><strong>Facebook 只支持 Page</strong></td>
+<td>群组和个人主页的 API 访问受限</td>
+<td>Page 操作没问题，群组需要手动</td>
+</tr>
+<tr>
+<td><strong>Reddit 发帖限流</strong></td>
+<td>连续发帖会触发 RATELIMIT 错误</td>
+<td>每次操作间隔 5-10 分钟</td>
+</tr>
+<tr>
+<td><strong>Subreddit 规则</strong></td>
+<td>有些社区强制要求 flair，缺少会被删帖</td>
+<td>先用 <code>REDDIT_GET_SUBREDDIT_RULES</code> 查看规则</td>
+</tr>
+<tr>
+<td><strong>OAuth Token 过期</strong></td>
+<td>长时间不用，连接可能失效</td>
+<td>重新点击授权链接即可</td>
+</tr>
+<tr>
+<td><strong>并行调用计费</strong></td>
+<td>多平台并行时，每个平台各算一次调用</td>
+<td>Free 方案 20K calls 够日常使用</td>
+</tr>
+<tr>
+<td><strong>Facebook 评论权限</strong></td>
+<td>需要特定权限才能在 Page 帖子下评论</td>
+<td>确保 Page 管理员权限已授权</td>
+</tr>
+</tbody></table>
+<h3 id="-效率技巧">⚡ 效率技巧</h3><ol>
+<li><strong>用 <code>COMPOSIO_SEARCH_WEB</code> 先广搜，再用平台 API 精搜</strong> — 效率最高</li>
+<li><strong>先查规则再发帖</strong> — <code>REDDIT_GET_SUBREDDIT_RULES</code> 能避免帖子被删</li>
+<li><strong>用 <code>REDDIT_GET_R_TOP</code> 按时间范围获取</strong> — <code>t: &quot;day&quot; / &quot;week&quot; / &quot;month&quot;</code> </li>
+<li><strong>多账号管理</strong> — 同一平台可以连多个账号，调用时指定 <code>account</code> 参数</li>
+</ol>
+<hr>
+<h2 id="12-总结">12. 总结</h2><h3 id="composio-的核心优势">Composio 的核心优势</h3><p>mermaid
+mindmap
+  root((Composio))
+    AI 原生
+      MCP 协议支持
+      Claude/GPT 直接调用
+      自然语言控制
+    多平台
+      500+ 应用
+      统一 API
+      并行查询
+    开发者友好
+      代码控制
+      SDK 支持
+      免费 20K calls
+    营销利器
+      全网监听
+      自动化发布
+      精准互动</p>
+<h3 id="快速开始-checklist">快速开始 Checklist</h3><ul>
+<li><input disabled="" type="checkbox"> 注册 Composio 账号：<a href="https://composio.dev">composio.dev</a></li>
+<li><input disabled="" type="checkbox"> 在 Dashboard 上 Connect 你需要的应用（Reddit、Facebook、Instagram...）</li>
+<li><input disabled="" type="checkbox"> 安装 MCP Server：<code>claude mcp add --scope user --transport http composio https://connect.composio.dev/mcp</code></li>
+<li><input disabled="" type="checkbox"> 重启 Claude Code</li>
+<li><input disabled="" type="checkbox"> 验证连接：<code>/mcp</code> 查看 composio 是否在列表中</li>
+<li><input disabled="" type="checkbox"> 搜索测试：搜一个你感兴趣的话题</li>
+<li><input disabled="" type="checkbox"> 发帖测试：先在 r/test 测试发帖</li>
+<li><input disabled="" type="checkbox"> 尝试多平台并行查询</li>
+<li><input disabled="" type="checkbox"> 开始你的营销自动化之旅 🚀</li>
+</ul>
+<hr>
+<blockquote>
+<p>📝 <strong>本文作者：</strong> eric<br><strong>最后更新：</strong> 2026-06-01<br><strong>Composio 官网：</strong> <a href="https://composio.dev">composio.dev</a><br><strong>文档：</strong> <a href="https://docs.composio.dev">docs.composio.dev</a><br><strong>定价：</strong> <a href="https://composio.dev/pricing">composio.dev/pricing</a></p>
+</blockquote>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="1-composio-是什么" data-astro-cid-w5q62dq7> <a href="#1-composio-是什么" data-astro-cid-w5q62dq7>1. Composio 是什么？</a> </li><li class="toc-item h3-nav" data-slug="架构总览" data-astro-cid-w5q62dq7> <a href="#架构总览" data-astro-cid-w5q62dq7>架构总览</a> </li><li class="toc-item " data-slug="2-竞品对比composio-vs-zapier-vs-make" data-astro-cid-w5q62dq7> <a href="#2-竞品对比composio-vs-zapier-vs-make" data-astro-cid-w5q62dq7>2. 竞品对比：Composio vs Zapier vs Make</a> </li><li class="toc-item " data-slug="3-定价方案" data-astro-cid-w5q62dq7> <a href="#3-定价方案" data-astro-cid-w5q62dq7>3. 定价方案</a> </li><li class="toc-item " data-slug="4-注册-composio-账号" data-astro-cid-w5q62dq7> <a href="#4-注册-composio-账号" data-astro-cid-w5q62dq7>4. 注册 Composio 账号</a> </li><li class="toc-item h3-nav" data-slug="41-整体流程" data-astro-cid-w5q62dq7> <a href="#41-整体流程" data-astro-cid-w5q62dq7>4.1 整体流程</a> </li><li class="toc-item h3-nav" data-slug="42-注册步骤" data-astro-cid-w5q62dq7> <a href="#42-注册步骤" data-astro-cid-w5q62dq7>4.2 注册步骤</a> </li><li class="toc-item " data-slug="5-在-composio-网站上-connect-应用" data-astro-cid-w5q62dq7> <a href="#5-在-composio-网站上-connect-应用" data-astro-cid-w5q62dq7>5. 在 Composio 网站上 Connect 应用</a> </li><li class="toc-item h3-nav" data-slug="51-connect-流程详解" data-astro-cid-w5q62dq7> <a href="#51-connect-流程详解" data-astro-cid-w5q62dq7>5.1 Connect 流程详解</a> </li><li class="toc-item h3-nav" data-slug="52-connect-reddit" data-astro-cid-w5q62dq7> <a href="#52-connect-reddit" data-astro-cid-w5q62dq7>5.2 Connect Reddit</a> </li><li class="toc-item h3-nav" data-slug="53-connect-facebook" data-astro-cid-w5q62dq7> <a href="#53-connect-facebook" data-astro-cid-w5q62dq7>5.3 Connect Facebook</a> </li><li class="toc-item h3-nav" data-slug="54-connect-instagram" data-astro-cid-w5q62dq7> <a href="#54-connect-instagram" data-astro-cid-w5q62dq7>5.4 Connect Instagram</a> </li><li class="toc-item h3-nav" data-slug="55-connect-twitterx" data-astro-cid-w5q62dq7> <a href="#55-connect-twitterx" data-astro-cid-w5q62dq7>5.5 Connect Twitter/X</a> </li><li class="toc-item h3-nav" data-slug="56-connect-tiktok" data-astro-cid-w5q62dq7> <a href="#56-connect-tiktok" data-astro-cid-w5q62dq7>5.6 Connect TikTok</a> </li><li class="toc-item h3-nav" data-slug="57-connect-gmail-google-sheets-等-google-系应用" data-astro-cid-w5q62dq7> <a href="#57-connect-gmail-google-sheets-等-google-系应用" data-astro-cid-w5q62dq7>5.7 Connect Gmail / Google Sheets 等 Google 系应用</a> </li><li class="toc-item h3-nav" data-slug="58-所有已连接应用一览" data-astro-cid-w5q62dq7> <a href="#58-所有已连接应用一览" data-astro-cid-w5q62dq7>5.8 所有已连接应用一览</a> </li><li class="toc-item " data-slug="6-安装-mcp-server" data-astro-cid-w5q62dq7> <a href="#6-安装-mcp-server" data-astro-cid-w5q62dq7>6. 安装 MCP Server</a> </li><li class="toc-item h3-nav" data-slug="什么是-mcp" data-astro-cid-w5q62dq7> <a href="#什么是-mcp" data-astro-cid-w5q62dq7>什么是 MCP？</a> </li><li class="toc-item h3-nav" data-slug="安装步骤" data-astro-cid-w5q62dq7> <a href="#安装步骤" data-astro-cid-w5q62dq7>安装步骤</a> </li><li class="toc-item " data-slug="7-实战reddit-搜索与发帖" data-astro-cid-w5q62dq7> <a href="#7-实战reddit-搜索与发帖" data-astro-cid-w5q62dq7>7. 实战：Reddit 搜索与发帖</a> </li><li class="toc-item h3-nav" data-slug="71-搜索帖子" data-astro-cid-w5q62dq7> <a href="#71-搜索帖子" data-astro-cid-w5q62dq7>7.1 搜索帖子</a> </li><li class="toc-item h3-nav" data-slug="72-发帖" data-astro-cid-w5q62dq7> <a href="#72-发帖" data-astro-cid-w5q62dq7>7.2 发帖</a> </li><li class="toc-item h3-nav" data-slug="73-评论帖子" data-astro-cid-w5q62dq7> <a href="#73-评论帖子" data-astro-cid-w5q62dq7>7.3 评论帖子</a> </li><li class="toc-item " data-slug="8-实战facebook-搜索与发帖" data-astro-cid-w5q62dq7> <a href="#8-实战facebook-搜索与发帖" data-astro-cid-w5q62dq7>8. 实战：Facebook 搜索与发帖</a> </li><li class="toc-item h3-nav" data-slug="81-搜索-facebook-内容" data-astro-cid-w5q62dq7> <a href="#81-搜索-facebook-内容" data-astro-cid-w5q62dq7>8.1 搜索 Facebook 内容</a> </li><li class="toc-item h3-nav" data-slug="82-facebook-page-发帖" data-astro-cid-w5q62dq7> <a href="#82-facebook-page-发帖" data-astro-cid-w5q62dq7>8.2 Facebook Page 发帖</a> </li><li class="toc-item h3-nav" data-slug="83-facebook-vs-reddit-能力对比" data-astro-cid-w5q62dq7> <a href="#83-facebook-vs-reddit-能力对比" data-astro-cid-w5q62dq7>8.3 Facebook vs Reddit 能力对比</a> </li><li class="toc-item " data-slug="9-杀手锏多平台并行查询" data-astro-cid-w5q62dq7> <a href="#9-杀手锏多平台并行查询" data-astro-cid-w5q62dq7>9. 杀手锏：多平台并行查询</a> </li><li class="toc-item h3-nav" data-slug="场景你想知道全网关于中国旅游的讨论热度" data-astro-cid-w5q62dq7> <a href="#场景你想知道全网关于中国旅游的讨论热度" data-astro-cid-w5q62dq7>场景：你想知道全网关于&quot;中国旅游&quot;的讨论热度</a> </li><li class="toc-item " data-slug="10-营销自动化实战" data-astro-cid-w5q62dq7> <a href="#10-营销自动化实战" data-astro-cid-w5q62dq7>10. 营销自动化实战</a> </li><li class="toc-item h3-nav" data-slug="场景你想在中国旅游社区推广你的旅游产品" data-astro-cid-w5q62dq7> <a href="#场景你想在中国旅游社区推广你的旅游产品" data-astro-cid-w5q62dq7>场景：你想在中国旅游社区推广你的旅游产品</a> </li><li class="toc-item h3-nav" data-slug="101-多平台监听" data-astro-cid-w5q62dq7> <a href="#101-多平台监听" data-astro-cid-w5q62dq7>10.1 多平台监听</a> </li><li class="toc-item h3-nav" data-slug="102-找到目标用户" data-astro-cid-w5q62dq7> <a href="#102-找到目标用户" data-astro-cid-w5q62dq7>10.2 找到目标用户</a> </li><li class="toc-item h3-nav" data-slug="103-精准互动评论" data-astro-cid-w5q62dq7> <a href="#103-精准互动评论" data-astro-cid-w5q62dq7>10.3 精准互动（评论）</a> </li><li class="toc-item h3-nav" data-slug="104-自动化发帖示例" data-astro-cid-w5q62dq7> <a href="#104-自动化发帖示例" data-astro-cid-w5q62dq7>10.4 自动化发帖示例</a> </li><li class="toc-item " data-slug="11-常见坑与注意事项" data-astro-cid-w5q62dq7> <a href="#11-常见坑与注意事项" data-astro-cid-w5q62dq7>11. 常见坑与注意事项</a> </li><li class="toc-item h3-nav" data-slug="-必须知道的坑" data-astro-cid-w5q62dq7> <a href="#-必须知道的坑" data-astro-cid-w5q62dq7>🚨 必须知道的坑</a> </li><li class="toc-item h3-nav" data-slug="-效率技巧" data-astro-cid-w5q62dq7> <a href="#-效率技巧" data-astro-cid-w5q62dq7>⚡ 效率技巧</a> </li><li class="toc-item " data-slug="12-总结" data-astro-cid-w5q62dq7> <a href="#12-总结" data-astro-cid-w5q62dq7>12. 总结</a> </li><li class="toc-item h3-nav" data-slug="composio-的核心优势" data-astro-cid-w5q62dq7> <a href="#composio-的核心优势" data-astro-cid-w5q62dq7>Composio 的核心优势</a> </li><li class="toc-item h3-nav" data-slug="快速开始-checklist" data-astro-cid-w5q62dq7> <a href="#快速开始-checklist" data-astro-cid-w5q62dq7>快速开始 Checklist</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/modern-web-architecture-seo-edge-redirects-and-ai-friendly-design-guide" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-f8769239.jpg" alt="构建现代 Web 架构：AI 时代下的 SEO应该怎么做" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/modern-web-architecture-seo-edge-redirects-and-ai-friendly-design-guide" data-astro-cid-w5q62dq7>构建现代 Web 架构：AI 时代下的 SEO应该怎么做</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>深入探讨现代 Web 架构在 AI 时代的演进，涵盖 URL 规范化、边缘重定向、AI Slug 锁定机制及 Cloudflare 优化。通过 llms.txt 标准提升 SEO 与 AI 搜索友好度。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月1日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-dynamic-workflows-best-practices" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-ba5ac2a8.jpg" alt="Claude Code Dynamic Workflow 使用注意的问题" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-dynamic-workflows-best-practices" data-astro-cid-w5q62dq7>Claude Code Dynamic Workflow 使用注意的问题</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文详解 Claude Code 的 Dynamic Workflow 功能，涵盖触发机制、终端快捷键配置、权限 allowlist 设置、成本优化及 Ultracode 模式的实战技巧。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月30日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

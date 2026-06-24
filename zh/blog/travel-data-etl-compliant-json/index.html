@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON — AgentUpdate.ai</title><meta name="description" content="我如何把 4.5GB 原始中国旅行数据(酒店、餐饮、交通、景点)洗成干净合规的每城 JSON,并用一条聚合红线保证永不泄露店级数据。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON, 1000usdinchina.com Dev Retrospective (3) - Travel Data ETL: 4.5 GB of Raw Data to Clean City JSON, 数据工程, etl, json, 合规"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/travel-data-etl-compliant-json/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/travel-data-etl-compliant-json/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/travel-data-etl-compliant-json/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/travel-data-etl-compliant-json/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON — AgentUpdate.ai"><meta property="og:description" content="我如何把 4.5GB 原始中国旅行数据(酒店、餐饮、交通、景点)洗成干净合规的每城 JSON,并用一条聚合红线保证永不泄露店级数据。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/etl-pipeline-cover.png"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/travel-data-etl-compliant-json/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON — AgentUpdate.ai"><meta name="twitter:description" content="我如何把 4.5GB 原始中国旅行数据(酒店、餐饮、交通、景点)洗成干净合规的每城 JSON,并用一条聚合红线保证永不泄露店级数据。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/etl-pipeline-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON","description":"我如何把 4.5GB 原始中国旅行数据(酒店、餐饮、交通、景点)洗成干净合规的每城 JSON,并用一条聚合红线保证永不泄露店级数据。","image":"/images/blog/etl-pipeline-cover.png","datePublished":"2026-06-17T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/travel-data-etl-compliant-json"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/travel-data-etl-compliant-json/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/travel-data-etl-compliant-json/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月17日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>7 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#数据工程</span><span class="tag" data-astro-cid-w5q62dq7>#etl</span><span class="tag" data-astro-cid-w5q62dq7>#json</span><span class="tag" data-astro-cid-w5q62dq7>#合规</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/etl-pipeline-cover.png" alt="1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#原始数据长啥样" data-astro-cid-w5q62dq7>原始数据长啥样</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#管线分阶段" data-astro-cid-w5q62dq7>管线分阶段</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#合规红线" data-astro-cid-w5q62dq7>合规红线</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#验证闭环" data-astro-cid-w5q62dq7>验证闭环</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#诚实处理数据缺口" data-astro-cid-w5q62dq7>诚实处理数据缺口</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p><a href="https://1000usdinchina.com">1000usdinchina.com</a> 里的数字,好坏全看背后的数据。100 城的背后
+是一条<strong>旅行数据 ETL</strong> 管线,吞进约 <strong>4.5GB</strong> 原始源 —— 约 443K 酒店、60 城餐饮数据、57 城地铁
+几何、全国景区、高铁和航班 —— 每城输出一个干净、<strong>合规</strong>的 JSON。</p>
+<p>这是<a href="/zh/blog/china-travel-budget-100-cities/">系列</a>第 3 篇。</p>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#raw">原始数据长啥样</a></li>
+<li><a href="#pipeline">管线分阶段</a></li>
+<li><a href="#compliance">合规红线</a></li>
+<li><a href="#validation">验证闭环</a></li>
+<li><a href="#gaps">诚实处理数据缺口</a></li>
+<li><a href="#faq">常见问题</a></li>
+</ul>
+<p><a id="raw"></a></p>
+<h2 id="原始数据长啥样">原始数据长啥样</h2><p>原始旅行数据又大、又脏、又不一致:</p>
+<ul>
+<li>单个约 443K 行的酒店表。</li>
+<li>60 城合计 <strong>4–5GB</strong> 的餐饮 CSV。</li>
+<li>57 城的地铁站点/线路几何 CSV。</li>
+<li>全国景区,加高铁、航班表。</li>
+</ul>
+<p>没有一份是即插即用的。编码各异、列在漂移、价格缺失、同一座城有三种拼写。管线的活就是把它变得
+枯燥而统一。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart LR
+    subgraph Raw[原始源 ~4.5GB]
+      H[酒店 .xlsx ~443K]
+      F[餐饮 CSV 60 城]
+      M[地铁几何 57 城]
+      A[景区 / 高铁 / 航班]
+    end
+    Raw --> X[抽取]
+    X --> C[清洗 / 归一化]
+    C --> G[聚合]
+    G --> O[(data/cities/&#123;slug&#125;/*.json)]
+    O --> V[etl-validate]
+    V -->|失败| C
+    V -->|通过| Ship[入 git]</pre></div><p><a id="pipeline"></a></p>
+<h2 id="管线分阶段">管线分阶段</h2><ol>
+<li><strong>抽取</strong> —— 读每种源格式(xlsx/csv),只取产品需要的字段。</li>
+<li><strong>清洗 / 归一化</strong> —— 统一城市 slug、修编码、把价格强转数字、丢掉无可用信号的行。</li>
+<li><strong>聚合</strong> —— 把每城几千行压成一小撮汇总值:餐费中位数、住宿档位、交通成本。</li>
+<li><strong>输出</strong> —— 写 <code>data/cities/{slug}/*.json</code>(和一个交通矩阵)。<strong>这些聚合产物入 git</strong>;
+原始源数据集永不入 —— 既为合规,也因为几个 GB 不该进仓库。</li>
+</ol>
+<p>一个关键细节:原始数据集被显式 git-ignore,只有<em>聚合</em>产物 ship。仓库保持小巧,不含任何
+有许可负担的内容。</p>
+<p><a id="compliance"></a></p>
+<h2 id="合规红线">合规红线</h2><p>整条管线最重要的规则,是关于<strong>不</strong>输出什么。餐饮数据文件(<code>food.json</code>)<strong>只输出聚合</strong> ——
+餐费区间、菜系风格、招牌菜。它被<strong>严禁</strong>含任何店级字段:没有店名、shopid、电话、评分、评论数、
+图片、店内 url。</p>
+<table>
+<thead>
+<tr>
+<th>保留(聚合)</th>
+<th>剔除(店级)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>meal_budget_cny</code>、<code>meal_mid_cny</code>、<code>meal_high_cny</code></td>
+<td>店名</td>
+</tr>
+<tr>
+<td><code>cuisine_styles</code></td>
+<td>shopid / 电话</td>
+</tr>
+<tr>
+<td><code>signature_dishes</code></td>
+<td>评分 / 评论数</td>
+</tr>
+<tr>
+<td></td>
+<td>图片 / 店内 url</td>
+</tr>
+</tbody></table>
+<p>这不是锦上添花。聚合正是让数据可用、可分享、又不必转发别人店级清单的关键。它是<em>数据产品</em>和
+<em>爬来的副本</em>之间的分界线。</p>
+<p><a id="validation"></a></p>
+<h2 id="验证闭环">验证闭环</h2><p>因为这条红线在重构时太容易不小心越过,管线以一个<strong>每次 ETL 改动都跑</strong>的验证步骤收尾。它检查
+输出 schema,并且关键地断言 <code>food.json</code> 里永不出现任何被禁的店级字段。验证不过,数据就不 ship。
+改 ETL 和跑验证是分不开的 —— 你没法跳过自检。</p>
+<p><a id="gaps"></a></p>
+<h2 id="诚实处理数据缺口">诚实处理数据缺口</h2><p>真实数据集有窟窿,假装没有就会算出错误预算:</p>
+<ul>
+<li>少数城市(如香港、澳门、台湾)<strong>餐费缺失</strong>,保留 <code>null</code>,导出步骤直接跳过,而不是编数字。</li>
+<li>个别城市<strong>餐饮覆盖薄</strong>,用对标城市的<em>参照倍率</em>补,明确建模,而不是行内瞎猜。</li>
+<li><strong>景点票价缺失</strong>被当成真风险:<code>null</code> 价会被悄悄计成 ¥0,<em>低估</em>预算,所以把价格核准并打补丁,
+而不是任由它把总额悄悄拉低。</li>
+</ul>
+<p>把缺口暴露出来 —— 而不是糊过去 —— 才是估算诚实的根本。</p>
+<h2 id="要点">要点</h2><ul>
+<li>旅行数据 ETL 把几个 GB 的脏源,变成小而统一的每城 JSON。</li>
+<li>入 git 的是聚合产物,绝不是原始数据集 —— 为合规也为仓库整洁。</li>
+<li>只输出聚合(无店级字段)是让数据成为可分享产品的规则,由自动验证步骤强制。</li>
+<li>显式建模数据缺口;一个被读成 ¥0 的静默 <code>null</code> 会悄悄污染预算。</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="常见问题">常见问题</h2><p><strong>什么是旅行数据 ETL 管线?</strong>
+一个把原始旅行源(酒店、餐饮、交通)抽取出来、通过清洗和聚合转换、再加载成干净格式的过程 ——
+这里是每城一个 JSON。</p>
+<p><strong>为什么聚合而不存原始行?</strong>
+聚合让数据可用且合规:它回答「这里一顿饭多少钱」,而不必转发单个餐厅的店名、评分或联系方式。</p>
+<p><strong>缺失价格怎么处理?</strong>
+保留 <code>null</code> 并在导出时跳过,或用明确建模的参照倍率补 —— 绝不静默当成 0,那会低估预算。</p>
+<hr>
+<p><em>下一篇 → <a href="/zh/blog/interactive-svg-china-map/">手画一张交互式 100 城中国 SVG 地图</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON",
+  "image": "https://www.agentupdate.ai/blog/images/etl-pipeline-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-17",
+  "inLanguage": "zh",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/zh/travel-data-etl-compliant-json"
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="原始数据长啥样" data-astro-cid-w5q62dq7> <a href="#原始数据长啥样" data-astro-cid-w5q62dq7>原始数据长啥样</a> </li><li class="toc-item " data-slug="管线分阶段" data-astro-cid-w5q62dq7> <a href="#管线分阶段" data-astro-cid-w5q62dq7>管线分阶段</a> </li><li class="toc-item " data-slug="合规红线" data-astro-cid-w5q62dq7> <a href="#合规红线" data-astro-cid-w5q62dq7>合规红线</a> </li><li class="toc-item " data-slug="验证闭环" data-astro-cid-w5q62dq7> <a href="#验证闭环" data-astro-cid-w5q62dq7>验证闭环</a> </li><li class="toc-item " data-slug="诚实处理数据缺口" data-astro-cid-w5q62dq7> <a href="#诚实处理数据缺口" data-astro-cid-w5q62dq7>诚实处理数据缺口</a> </li><li class="toc-item " data-slug="要点" data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-slug="常见问题" data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/edge-serverless-nextjs-cloudflare-d1" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/edge-architecture-cover.png" alt="1000usdinchina.com开发总结(2)-边缘 Serverless:Next.js 15 + Cloudflare Pages、D1、Workers" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/edge-serverless-nextjs-cloudflare-d1" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(2)-边缘 Serverless:Next.js 15 + Cloudflare Pages、D1、Workers</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>一个多语言旅行应用如何完全跑在边缘:Next.js 15 + Cloudflare Pages + D1 + Workers,静/动态边界、边缘缓存、i18n 货币耦合。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月16日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/china-travel-budget-100-cities" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/china-travel-budget-cover.png" alt="1000usdinchina.com开发总结(1)-我单人做了个覆盖 100 城的中国旅行预算估算器" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/china-travel-budget-100-cities" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(1)-我单人做了个覆盖 100 城的中国旅行预算估算器</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>去中国玩到底要花多少钱?我做了个免费预算估算器,覆盖 100 城,全程单人 + AI coding agent。这篇讲产品与技术栈总览。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月15日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第1集：六个概念一次搞清 — Claude Code 扩展体系完全指南 — AgentUpdate.ai</title><meta name="description" content="Tool、Skill、Hook、Command、MCP、Plugin 各是什么？它们之间如何协作？ 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/agent-extensions-tutorial/lesson-01/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/agent-extensions-tutorial/lesson-01/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/agent-extensions-tutorial/lesson-01/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/agent-extensions-tutorial/lesson-01/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第1集：六个概念一次搞清 — Claude Code 扩展体系完全指南 — AgentUpdate.ai"><meta property="og:description" content="Tool、Skill、Hook、Command、MCP、Plugin 各是什么？它们之间如何协作？ 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/agent-extensions-tutorial/lesson-01/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第1集：六个概念一次搞清 — Claude Code 扩展体系完全指南 — AgentUpdate.ai"><meta name="twitter:description" content="Tool、Skill、Hook、Command、MCP、Plugin 各是什么？它们之间如何协作？ 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"第1集：六个概念一次搞清 — Claude Code 扩展体系完全指南 — AgentUpdate.ai","description":"Tool、Skill、Hook、Command、MCP、Plugin 各是什么？它们之间如何协作？ 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。","inLanguage":"zh-CN","url":"https://www.agentupdate.ai/zh/tutorial/agent-extensions-tutorial/lesson-01/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/zh/tutorial/agent-extensions-tutorial/lesson-01/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.DHQ-IJjR.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/agent-extensions-tutorial/lesson-01/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/agent-extensions-tutorial/lesson-01/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-p7qzptk4> <div class="container dual-layout-container" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-p7qzptk4> <div class="sidebar-box" data-astro-cid-p7qzptk4> <span class="catalog-header-tag" data-astro-cid-p7qzptk4>课程大纲 // CURRICULUM</span> <a href="/zh/tutorial/agent-extensions-tutorial" class="series-title-link" data-astro-cid-p7qzptk4> CLAUDE CODE 扩展体系完全指南 </a> <ul class="nav-lesson-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-01" class="lesson-nav-link active" data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>01 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第1集：六个概念一次搞清</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>02 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第2集：扩展体系的层次结构</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>03 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第3集：Tool — Claude 的手和脚</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>04 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第4集：Skill — 可复用的工作流模板</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>05 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第5集：Hook — 事件驱动的自动化</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>06 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第6集：MCP 协议 — Claude 的「外包团队」</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>07 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第7集：内部 MCP vs 外部 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>08 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第8集：MCP 生态全景 — 你能接什么</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>09 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第9集：Plugin 解剖 — 一个 Plugin 包含什么</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>10 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第10集：安装方式与目录结构全景</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>11 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第11集：基础认知 Q&amp;A</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>12 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第12集：实战排错 Q&amp;A</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/agent-extensions-tutorial" data-astro-cid-ilhxcym7>Claude Code 扩展体系完全指南</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第1集：六个概念一次搞清</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial"},{"@type":"ListItem","position":3,"name":"Claude Code 扩展体系完全指南","item":"https://www.agentupdate.ai/zh/tutorial/agent-extensions-tutorial"},{"@type":"ListItem","position":4,"name":"第1集：六个概念一次搞清"}]}</script> <header class="lesson-details-header" data-astro-cid-p7qzptk4> <h1 class="lesson-display-title" data-astro-cid-p7qzptk4>第1集：六个概念一次搞清</h1> <div class="lesson-meta-row" data-astro-cid-p7qzptk4>  <span class="meta-item" data-astro-cid-p7qzptk4>5 分钟阅读</span> <span class="meta-separator" data-astro-cid-p7qzptk4>|</span>  <span class="meta-item" data-astro-cid-p7qzptk4>更新于：2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) --> <div class="direct-summary-box" data-astro-cid-p7qzptk4> <div class="summary-box-title" data-astro-cid-p7qzptk4>核心要点总结 // DIRECT SUMMARY</div> <p class="summary-box-text" data-astro-cid-p7qzptk4>Tool、Skill、Hook、Command、MCP、Plugin 各是什么？它们之间如何协作？</p> </div> <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-p7qzptk4><blockquote>
+<p>Tool、Skill、Hook、Command、MCP、Plugin 各是什么？为什么有的只是 Skill，有的还带 MCP 服务？</p>
+</blockquote>
+<h4>概念速览</h4>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>一句话解释</th>
+<th>类比</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Tool</strong></td>
+<td>Claude 内置的原子操作能力</td>
+<td>手</td>
+<td>Read、Write、Edit、Bash</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>用 Markdown 定义的可复用工作流</td>
+<td>菜谱</td>
+<td><code>/gsd-quick</code>、<code>/caveman</code>、<code>/mem-search</code></td>
+</tr>
+<tr>
+<td><strong>Hook</strong></td>
+<td>事件触发的自动化脚本</td>
+<td>自动门</td>
+<td>SessionStart 启动服务、PostToolUse 记录日志</td>
+</tr>
+<tr>
+<td><strong>Command</strong></td>
+<td>Skill 暴露给用户的斜杠命令</td>
+<td>菜单项</td>
+<td><code>/setup</code>、<code>/configure</code></td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>外部工具服务器，通过协议与 Claude 通信</td>
+<td>外包团队</td>
+<td>MySQL 查询、memory 搜索、图片分析</td>
+</tr>
+<tr>
+<td><strong>Plugin</strong></td>
+<td>把 Skill + Hook + MCP + Command 打包分发</td>
+<td>全家桶套餐</td>
+<td>claude-mem、caveman、claude-hud</td>
+</tr>
+</tbody></table>
+<h4>关系图</h4>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TB
+    subgraph Claude Code 核心
+        TOOLS[Tools<br>内置原子能力<br>Read/Write/Edit/Bash/...]
+    end
+
+    subgraph 扩展层
+        SKILLS[Skills<br>SKILL.md 定义<br>可复用工作流]
+        HOOKS[Hooks<br>事件触发脚本<br>SessionStart/PostToolUse/...]
+        MCP[MCP Servers<br>外部工具服务<br>stdio/SSE 协议]
+    end
+
+    subgraph 分发层
+        PLUGIN[Plugin<br>打包分发单元<br>= Skills + Hooks + MCP + Commands]
+    end
+
+    subgraph 用户界面
+        CMD[Slash Commands<br>用户输入 /xxx<br>触发 Skill 或 Command]
+    end
+
+    PLUGIN --&gt;|包含| SKILLS
+    PLUGIN --&gt;|包含| HOOKS
+    PLUGIN --&gt;|包含| MCP
+    PLUGIN --&gt;|包含| CMD
+
+    SKILLS --&gt;|注册为| CMD
+    CMD --&gt;|触发| SKILLS
+    SKILLS --&gt;|调用| TOOLS
+    MCP --&gt;|暴露新| TOOLS2[MCP Tools<br>search/get_observations/...]
+    TOOLS2 --&gt;|Claude 可调用| TOOLS
+    HOOKS --&gt;|事件触发| AUTO[自动执行]
+
+    style TOOLS fill:#2ecc71,color:#fff
+    style PLUGIN fill:#9b59b6,color:#fff
+    style MCP fill:#e74c3c,color:#fff
+    style HOOKS fill:#f39c12,color:#fff
+    style SKILLS fill:#3498db,color:#fff</pre></div><h4>为什么有的只是 Skill，有的还带 MCP？</h4>
+<p>取决于功能的复杂度：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>需要什么</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>纯 Skill</td>
+<td>只需要 Markdown 指令 + Claude 内置 Tool</td>
+<td><code>/gsd-quick</code>：读文件、写文件、跑命令——全是内置能力</td>
+</tr>
+<tr>
+<td>Skill + Hook</td>
+<td>需要在特定事件自动执行</td>
+<td><code>/caveman</code>：每次 SessionStart 自动激活压缩模式</td>
+</tr>
+<tr>
+<td>Skill + Hook + MCP</td>
+<td>需要外部数据/服务</td>
+<td><code>claude-mem</code>：需要启动搜索服务、数据库、持久化存储</td>
+</tr>
+<tr>
+<td>Skill + Command</td>
+<td>需要多个斜杠命令入口</td>
+<td><code>claude-hud</code>：<code>/setup</code> + <code>/configure</code> 两个命令</td>
+</tr>
+</tbody></table>
+<p><strong>判断标准</strong>：</p>
+<ul>
+<li>只需要 Claude 本身的能力 → 纯 Skill</li>
+<li>需要自动触发（开机启动、每次操作后执行）→ 加 Hook</li>
+<li>需要外部数据/服务/数据库 → 加 MCP Server</li>
+<li>需要分发给其他用户 → 打包成 Plugin</li>
+</ul>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-p7qzptk4> <div class="pag-item prev" data-astro-cid-p7qzptk4>  </div> <div class="pag-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/agent-extensions-tutorial/lesson-02" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>下一课时 →</span> <span class="pag-title" data-astro-cid-p7qzptk4>第2集：扩展体系的层次结构</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-p7qzptk4></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

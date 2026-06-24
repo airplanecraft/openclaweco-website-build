@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lesson 11 | Custom Personas: Building Domain-Specific Agents — Hermes Agent Hands-On Guide — AgentUpdate.ai</title><meta name="description" content="通过 System Prompt 模板将通用 Agent 精细打造成代码审查员、产品经理等特定领域的专家。 Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-11/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-11/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/hermes-agent-tutorial/lesson-11/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-11/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Lesson 11 | Custom Personas: Building Domain-Specific Agents — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta property="og:description" content="通过 System Prompt 模板将通用 Agent 精细打造成代码审查员、产品经理等特定领域的专家。 Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-11/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Lesson 11 | Custom Personas: Building Domain-Specific Agents — Hermes Agent Hands-On Guide — AgentUpdate.ai"><meta name="twitter:description" content="通过 System Prompt 模板将通用 Agent 精细打造成代码审查员、产品经理等特定领域的专家。 Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Lesson 11 | Custom Personas: Building Domain-Specific Agents — Hermes Agent Hands-On Guide — AgentUpdate.ai","description":"通过 System Prompt 模板将通用 Agent 精细打造成代码审查员、产品经理等特定领域的专家。 Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-11/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial/lesson-11/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-11/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/hermes-agent-tutorial/lesson-11/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/hermes-agent-tutorial" class="series-title-link" data-astro-cid-vma7orrt> HERMES AGENT HANDS-ON GUIDE </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-1" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Meet Hermes Agent: Architecture Overview &amp; Quick Install</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-2" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Model Switching &amp; Provider Configuration</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-3" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Deep Dive into Skills: Self-Evolving Agent Capabilities</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-4" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Memory &amp; User Profiling: Persistent Context Across Sessions</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-5" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Messaging Gateway: Chat via Telegram, Discord &amp; More</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-6" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 06 | MCP Tool Ecosystem: Bridging the External World</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-7" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 07 | Cron Scheduling &amp; Automated Task Orchestration</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-8" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 08 | Context Files &amp; Workspace Awareness</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-9" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 09 | Multi-Turn Conversations &amp; Complex Task Decomposition</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 10 | Security Model &amp; Permission Controls</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-11" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 11 | Custom Personas: Building Domain-Specific Agents</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 12 | Agent Collaboration: Multi-Agent Communication &amp; Delegation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 13 | Knowledge Base: RAG &amp; Long-Term Document Management</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 14 | Code Generation &amp; Scaffolding in Practice</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 15 | Agent-Driven DevOps: CI/CD &amp; Deployment Automation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 16 | Performance Tuning &amp; Token Economics</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 17 | Logging System &amp; Observability Practices</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 18 | Production Deployment: VPS to GPU Clusters</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 19 | Community Ecosystem &amp; Skill Marketplace Contribution Guide</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 20 | Future Vision: From Personal Assistant to Autonomous Organization</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/hermes-agent-tutorial" data-astro-cid-ilhxcym7>Hermes Agent Hands-On Guide</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Lesson 11 | Custom Personas: Building Domain-Specific Agents</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"Hermes Agent Hands-On Guide","item":"https://www.agentupdate.ai/tutorial/hermes-agent-tutorial"},{"@type":"ListItem","position":4,"name":"Lesson 11 | Custom Personas: Building Domain-Specific Agents"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Lesson 11 | Custom Personas: Building Domain-Specific Agents</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>20 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) --> <div class="direct-summary-box" data-astro-cid-vma7orrt> <div class="summary-box-title" data-astro-cid-vma7orrt>DIRECT SUMMARY // KEY TAKEAWAY</div> <p class="summary-box-text" data-astro-cid-vma7orrt>通过 System Prompt 模板将通用 Agent 精细打造成代码审查员、产品经理等特定领域的专家。</p> </div> <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><hr>
+<h2>title: "Lesson 11 | Custom Personas: Building Domain-Specific Agents"
+summary: "Refine a general-purpose Agent into a domain-specific expert, such as a code reviewer or product manager, using System Prompt templates."
+sortOrder: 110
+status: "published"</h2>
+<p>Alright, as a technical education expert, I will write the 11th installment of the Hermes Agent tutorial for you.</p>
+<hr>
+<h1><strong>Lesson 11 | Custom Personas: Building Domain-Specific Agents</strong></h1>
+<p><strong>Subtitle: Refine a general-purpose Agent into a domain-specific expert, such as a code reviewer or product manager, using System Prompt templates.</strong></p>
+<p>Welcome to the 11th lesson in the Hermes Agent tutorial series. In previous lessons, we mastered the core architecture of Hermes Agent, model configuration, the powerful Skills system, and the persistent Memory mechanism. Our Agent is now capable of executing complex tasks and remembering interaction history. However, a truly powerful Agent needs not only "abilities" (Skills) and "memory" (Memory), but also a clear "identity" and "personality"—this is where Persona comes in.</p>
+<p>In this lesson, we will dive deep into the Persona system of Hermes Agent. We will learn how to use customized System Prompts to transform a general-purpose AI assistant into a specialist in a specific domain, such as a rigorous Code Reviewer or an insightful Product Manager.</p>
+<hr>
+<h3><strong>Learning Objectives</strong></h3>
+<p>By the end of this lesson, you will be able to:</p>
+<ol>
+<li><strong>Understand the core role of a Persona</strong>: Grasp how a Persona defines an Agent's identity, behavioral guidelines, and communication style.</li>
+<li><strong>Analyze the power of <code>system_prompt</code></strong>: Master the design principles of a System Prompt and understand how it sets underlying instructions and constraints for the LLM.</li>
+<li><strong>Locate and manage Persona files</strong>: Learn how to find, view, and manage <code>persona.yaml</code> configuration files within the Hermes Agent file system.</li>
+<li><strong>Create a custom Persona from scratch</strong>: Personally write a brand new Persona file to define the behavior patterns of a specific role.</li>
+<li><strong>Apply and switch Personas</strong>: Apply a created Persona to a specified Agent via the command line and test its effects.</li>
+<li><strong>Build a "Code Reviewer" Agent in practice</strong>: Complete a full case study to build a dedicated Agent capable of performing professional code reviews.</li>
+</ol>
+<hr>
+<h3><strong>Core Concepts Explained</strong></h3>
+<h4>1. What is a Persona?</h4>
+<p>In the context of Hermes Agent, a <strong>Persona</strong> is a configuration file that defines the Agent's core identity, goals, behavioral guidelines, and communication style. It's like injecting a "soul" into the Agent, determining the role it plays when interacting with users.</p>
+<p>An Agent without a clear Persona is like a knowledgeable generalist with no specific stance—it can answer any question but lacks depth and focus. In contrast, an Agent with a well-designed Persona transforms into an expert in a specific field, with all its responses and actions revolving around its core identity.</p>
+<p>Persona complements the concepts we've learned before:</p>
+<ul>
+<li><strong>Persona vs. Skills</strong>: A Persona defines <strong>"who"</strong> the Agent is and <strong>"how it should act,"</strong> while Skills define <strong>"what it can do."</strong> A "Code Reviewer" Persona would guide the Agent to prioritize and appropriately use code analysis-related Skills.</li>
+<li><strong>Persona vs. Memory</strong>: A Persona can guide the Agent on <strong>"how to use its memory."</strong> For example, a "Product Manager" Persona might be instructed to: "Review historical conversations to understand the project's evolution and the user's core pain points."</li>
+</ul>
+<h4>2. <code>system_prompt</code>: The Core Engine of a Persona</h4>
+<p>The implementation of a Persona primarily relies on a key concept: the <strong>System Prompt</strong>.</p>
+<p>A <code>system_prompt</code> is a piece of text that provides underlying guidance to the model's behavior. It is placed before the user's input in every interaction with the LLM (Large Language Model). You can think of it as a detailed character description sheet a director gives to an actor before a play begins. This sheet tells the actor:</p>
+<ul>
+<li><strong>Your Identity</strong>: You are an experienced software architect.</li>
+<li><strong>Your Goal</strong>: To help users design robust and scalable systems.</li>
+<li><strong>Your Behavioral Guidelines</strong>: You must consider performance, security, and cost. You are forbidden from giving irresponsible advice.</li>
+<li><strong>Your Communication Style</strong>: Professional, rigorous, and structured, using diagrams and code examples frequently.</li>
+</ul>
+<p>A well-designed <code>system_prompt</code> can significantly influence the quality and style of the LLM's output, making its behavior more predictable and aligned with expectations. It is the most important tool for achieving role specialization in an Agent.</p>
+<h4>3. The Structure of a Persona File</h4>
+<p>In Hermes Agent, each Persona is defined by a separate YAML file, typically located in the <code>~/.hermes/personas/</code> directory. A typical <code>persona.yaml</code> file structure is as follows:</p>
+<pre><code class="language-yaml"># persona.yaml
+
+# Unique identifier for the Persona, used for referencing in commands
+name: code_reviewer
+
+# Author information
+author: Hermes-Tutorial
+
+# Version number, for easy iteration management
+version: "1.0"
+
+# A brief description of this Persona
+description: "A persona for an AI agent acting as an expert code reviewer."
+
+# Core: The system prompt
+system_prompt: |
+  You are an expert Senior Software Engineer specializing in code quality, performance, and security. Your name is "CodeInspector". Your primary function is to conduct meticulous and constructive code reviews.
+
+  When a user submits code for review, you must adhere to the following principles:
+
+  1.  **Clarity and Readability**: Assess if the code is easy to understand. Check for clear variable names, logical structure, and sufficient comments where necessary.
+  2.  **Best Practices &amp; Conventions**: Ensure the code follows language-specific best practices and common style guides (e.g., PEP 8 for Python, GoF patterns for OOP).
+  3.  **Potential Bugs &amp; Edge Cases**: Proactively identify logical errors, race conditions, null pointer exceptions, and unhandled edge cases.
+  4.  **Performance Optimization**: Look for inefficient algorithms, unnecessary computations, or memory leaks. Suggest more performant alternatives.
+  5.  **Security Vulnerabilities**: Scan for common security risks such as SQL injection, Cross-Site Scripting (XSS), insecure direct object references, etc.
+  6.  **Maintainability &amp; Scalability**: Evaluate the code's design. Is it modular? Is it easily extensible? Does it follow principles like SOLID?
+
+  Your feedback must be:
+  - **Constructive and Respectful**: Frame your feedback to be helpful and educational, not critical or judgmental.
+  - **Actionable**: Provide concrete examples of how to improve the code.
+  - **Structured**: Organize your review into the following sections:
+    - **[Overall Impression]**: A brief summary of the code quality.
+    - **[Critical Issues]**: High-priority problems that must be fixed (e.g., security flaws, major bugs).
+    - **[Suggestions for Improvement]**: Recommendations for enhancing performance, readability, and maintainability.
+    - **[Minor Nits]**: Small stylistic or non-critical points.
+
+  Always begin your response with "CodeInspector Review:". Do not engage in casual conversation outside the scope of code review unless explicitly asked.
+</code></pre>
+<p>This YAML file clearly defines all the elements of the <code>code_reviewer</code> Persona, especially the <code>system_prompt</code> section, which uses a multi-line text block (<code>|</code>) to detail the Agent's role, review principles, and output format.</p>
+<hr>
+<h3><strong>💻 Practical Demonstration</strong></h3>
+<p>Next, let's go through a complete process to create a "Code Reviewer" Agent.</p>
+<h4><strong>Step 1: Locate and Inspect Existing Personas</strong></h4>
+<p>First, we need to find the directory where Hermes Agent stores Persona files. By default, it is located at <code>.hermes/personas</code> in your user's home directory.</p>
+<p>Open your terminal and execute the following commands:</p>
+<pre><code class="language-bash"># Change to the Hermes Agent configuration directory
+cd ~/.hermes
+
+# List all files in the personas directory
+ls -l personas/
+</code></pre>
+<p>You should see at least one file named <code>default.yaml</code>. This is the default Persona used by all newly created Agents. Let's examine its content:</p>
+<pre><code class="language-bash">cat personas/default.yaml
+</code></pre>
+<p>You will find that the <code>system_prompt</code> in <code>default.yaml</code> is usually quite generic, something like "You are a helpful AI assistant." This allows it to handle a variety of tasks but lacks specialization.</p>
+<h4><strong>Step 2: Create a Custom Persona File</strong></h4>
+<p>Now, let's create our own <code>code_reviewer.yaml</code> file.</p>
+<pre><code class="language-bash"># Create a new file in the personas directory
+touch personas/code_reviewer.yaml
+</code></pre>
+<p>Use your favorite text editor (like <code>vim</code>, <code>nano</code>, or VS Code) to open this new file:</p>
+<pre><code class="language-bash">vim personas/code_reviewer.yaml
+</code></pre>
+<p>Copy and paste the entire content of the <code>code_reviewer.yaml</code> provided in the "Core Concepts Explained" section above into this file, then save and exit.</p>
+<p>Now, your <code>personas</code> directory should contain two files: <code>default.yaml</code> and <code>code_reviewer.yaml</code>. Hermes Agent will automatically recognize all <code>.yaml</code> files in the <code>personas</code> directory as available Personas.</p>
+<h4><strong>Step 3: Apply the New Persona to an Agent</strong></h4>
+<p>Suppose we already have a running Agent, or we want to create a new one. First, list all available Agents to get their IDs.</p>
+<pre><code class="language-bash">hermes agent list
+</code></pre>
+<p>The terminal will output something like this:</p>
+<pre><code>+--------------------------------------+---------+----------------+---------+
+| ID                                   | Name    | Provider       | Persona |
++--------------------------------------+---------+----------------+---------+
+| a1b2c3d4-e5f6-7890-1234-567890abcdef | my-agent| openai_chat    | default |
++--------------------------------------+---------+----------------+---------+
+</code></pre>
+<p>Take note of the ID of the Agent you want to modify (here it's <code>a1b2c3d4-e5f6-7890-1234-567890abcdef</code>).</p>
+<p>Now, use the <code>hermes agent update</code> command with the <code>--persona</code> parameter to update its Persona. Note that the Persona name is the filename without the <code>.yaml</code> extension.</p>
+<pre><code class="language-bash"># Update the persona of the agent with ID a1b2c3d4... to code_reviewer
+hermes agent update a1b2c3d4-e5f6-7890-1234-567890abcdef --persona code_reviewer
+</code></pre>
+<p>After the command executes successfully, run <code>hermes agent list</code> again to see the result:</p>
+<pre><code class="language-bash">hermes agent list
+</code></pre>
+<p>The output should now be updated:</p>
+<pre><code>+--------------------------------------+---------+----------------+----------------+
+| ID                                   | Name    | Provider       | Persona        |
++--------------------------------------+---------+----------------+----------------+
+| a1b2c3d4-e5f6-7890-1234-567890abcdef | my-agent| openai_chat    | code_reviewer  |
++--------------------------------------+---------+----------------+----------------+
+</code></pre>
+<p>Excellent! Our Agent has now successfully "transformed" into a code review expert.</p>
+<h4><strong>Step 4: Test the New Persona</strong></h4>
+<p>It's time to test our creation. We will submit a piece of Python code with some obvious issues to this Agent and see if its response matches the expectations we set in the <code>system_prompt</code>.</p>
+<p>Start a chat session with the Agent:</p>
+<pre><code class="language-bash">hermes chat a1b2c3d4-e5f6-7890-1234-567890abcdef
+</code></pre>
+<p>Once in the chat interface, paste the following Python code and send it:</p>
+<pre><code class="language-python"># A function to process some data
+def process_data(data, factor):
+    # a temporary list
+    temp = []
+    for i in data:
+        if i &gt; 10:
+            # multiply by factor
+            res = i * factor
+            temp.append(res)
+    return temp
+
+my_data = [5, 12, 8, 25, 15]
+processed = process_data(my_data, 2)
+print(processed)
+</code></pre>
+<p>This code has a few issues:</p>
+<ul>
+<li>Function and variable names are not clear enough (<code>process_data</code>, <code>temp</code>, <code>res</code>).</li>
+<li>It contains a "magic number" (<code>10</code>).</li>
+<li>It could be simplified using a list comprehension.</li>
+<li>The comments are overly redundant and useless.</li>
+</ul>
+<p>Now, observe the Agent's reply. An Agent with the <code>code_reviewer</code> Persona should provide structured, professional, and constructive feedback like the following:</p>
+<pre><code>CodeInspector Review:
+
+[Overall Impression]
+The provided Python code snippet is functionally correct for its intended purpose of filtering and transforming a list of numbers. However, there are several opportunities to improve its clarity, adherence to Pythonic best practices, and maintainability.
+
+[Critical Issues]
+None. The code does not contain any critical bugs or security vulnerabilities.
+
+[Suggestions for Improvement]
+1.  **Use More Descriptive Variable Names**: Variables like `temp` and `res` are generic. Consider renaming them to `filtered_and_multiplied` and `result` respectively for better readability. The function name `process_data` is also vague; a name like `filter_and_multiply_by_factor` would be more explicit about its function.
+
+2.  **Avoid Magic Numbers**: The number `10` is used directly in the `if` condition without explanation. It's better to define it as a constant with a descriptive name, for example, `MINIMUM_THRESHOLD = 10`. This makes the code easier to understand and modify in the future.
+
+3.  **Embrace Pythonic Idioms**: The `for` loop with an `if` condition to build a new list is a classic case where a list comprehension would be more concise and efficient. The entire function body can be rewritten as a single line:
+    ```python
+    def filter_and_multiply(data, factor, threshold=10):
+        return [item * factor for item in data if item &gt; threshold]
+    ```
+
+4.  **Improve Comments**: Comments like `# a temporary list` and `# multiply by factor` are redundant as they just state what the code is already doing. Good comments should explain *why* something is done, not *what* is being done. In this case, most comments can be removed in favor of clearer code.
+
+[Minor Nits]
+- The function lacks a docstring explaining what it does, its parameters, and what it returns. Adding one would significantly improve usability.
+
+This refactoring would make the code more professional, readable, and maintainable.
+</code></pre>
+<p>In contrast, if you were using the <code>default</code> Persona, you might get a simple explanation or just an optimized version of the code, but it would be nearly impossible to get such a structured, systematic, and detailed report in the tone of a professional reviewer. This is the power of a Persona.</p>
+<hr>
+<h3><strong>Commands Involved</strong></h3>
+<p>Here are the core commands we used in this lesson:</p>
+<ul>
+<li><code>ls -l ~/.hermes/personas/</code>: List all available Persona configuration files.</li>
+<li><code>cat ~/.hermes/personas/default.yaml</code>: View the content of a specific Persona file.</li>
+<li><code>touch ~/.hermes/personas/new_persona.yaml</code>: Create a new Persona configuration file.</li>
+<li><code>vim ~/.hermes/personas/new_persona.yaml</code>: Edit a Persona configuration file (can be replaced with other editors).</li>
+<li><code>hermes agent list</code>: List all current Agents and their configurations, including their Persona.</li>
+<li><code>hermes agent update &lt;AGENT_ID&gt; --persona &lt;PERSONA_NAME&gt;</code>: Update the Persona for a specified Agent.</li>
+<li><code>hermes chat &lt;AGENT_ID&gt;</code>: Interact with and test an Agent using its new Persona.</li>
+</ul>
+<hr>
+<h3><strong>Key Takeaways</strong></h3>
+<ol>
+<li><strong>A Persona is the Agent's Soul</strong>: It defines the Agent's identity, goals, and behavioral guidelines, which is key to achieving domain specialization.</li>
+<li><strong>The System Prompt is the Core</strong>: Through a well-designed <code>system_prompt</code>, we can set powerful underlying instructions for the LLM to precisely control its output.</li>
+<li><strong>Personas are Defined by YAML Files</strong>: Each Persona is configured in a separate <code>.yaml</code> file (located in <code>~/.hermes/personas/</code>), making them clearly structured and easy to manage and share.</li>
+<li><strong>Personas Drive Professional Behavior</strong>: A good Persona makes an Agent's behavior, language style, and knowledge application focus on a specific domain, thus providing professional value far beyond that of a general-purpose model.</li>
+<li><strong>Practice Makes Perfect</strong>: Creating an excellent Persona requires continuous iteration and testing. Try different wording, rules, and output formats, observe the Agent's reactions, and keep refining your <code>system_prompt</code>.</li>
+</ol>
+<p>You have now mastered the powerful ability to shape the "personality" of your Hermes Agent. Why not try creating some custom Personas for your own workflow? For example, a "Commit Message Assistant" to help you write Git commit messages, a "Product Analyst" to help you analyze user feedback, or a "Language Partner" to help you learn a new language. The sky's the limit!</p>
+<hr>
+<h3><strong>References</strong></h3>
+<ul>
+<li><strong>Hermes Agent Official Documentation (Hypothetical)</strong>: <code>https://hermes-agent.io/docs/configuration/personas</code></li>
+<li><strong>OpenAI Prompt Engineering Guide</strong>: <a href="https://platform.openai.com/docs/guides/prompt-engineering">https://platform.openai.com/docs/guides/prompt-engineering</a></li>
+<li><strong>Anthropic's Guide to Prompting</strong>: <a href="https://docs.anthropic.com/claude/page/prompting">https://docs.anthropic.com/claude/page/prompting</a></li>
+</ul>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-10" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Lesson 10 | Security Model &amp; Permission Controls</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/hermes-agent-tutorial/lesson-12" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Lesson 12 | Agent Collaboration: Multi-Agent Communication &amp; Delegation</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

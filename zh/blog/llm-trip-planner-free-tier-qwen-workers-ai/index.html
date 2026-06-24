@@ -1,0 +1,255 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI — AgentUpdate.ai</title><meta name="description" content="我如何用 Cloudflare Workers AI + Qwen 做一个 AI 行程规划器,月成本约 $0 —— 以及那个 dev 测试烧光 prod 当天额度的免费额度坑。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI, 1000usdinchina.com Dev Retrospective (6) - LLM Trip-Planner on a Free Tier: Qwen + Workers AI, llm, cloudflare, workers-ai, qwen, 成本"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/llm-trip-planner-free-tier-qwen-workers-ai/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/llm-trip-planner-free-tier-qwen-workers-ai/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI — AgentUpdate.ai"><meta property="og:description" content="我如何用 Cloudflare Workers AI + Qwen 做一个 AI 行程规划器,月成本约 $0 —— 以及那个 dev 测试烧光 prod 当天额度的免费额度坑。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/workers-ai-cover.png"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI — AgentUpdate.ai"><meta name="twitter:description" content="我如何用 Cloudflare Workers AI + Qwen 做一个 AI 行程规划器,月成本约 $0 —— 以及那个 dev 测试烧光 prod 当天额度的免费额度坑。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/workers-ai-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI","description":"我如何用 Cloudflare Workers AI + Qwen 做一个 AI 行程规划器,月成本约 $0 —— 以及那个 dev 测试烧光 prod 当天额度的免费额度坑。","image":"/images/blog/workers-ai-cover.png","datePublished":"2026-06-20T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/llm-trip-planner-free-tier-qwen-workers-ai/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/llm-trip-planner-free-tier-qwen-workers-ai/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月20日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>7 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/llm" class="tag" data-astro-cid-w5q62dq7>#llm</a><a href="/zh/tags/cloudflare" class="tag" data-astro-cid-w5q62dq7>#cloudflare</a><span class="tag" data-astro-cid-w5q62dq7>#workers-ai</span><a href="/zh/tags/qwen" class="tag" data-astro-cid-w5q62dq7>#qwen</a><span class="tag" data-astro-cid-w5q62dq7>#成本</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/workers-ai-cover.png" alt="1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#ai-规划器做什么" data-astro-cid-w5q62dq7>AI 规划器做什么</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#为什么-qwen-workers-ai" data-astro-cid-w5q62dq7>为什么 Qwen + Workers AI</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#免费额度的坑" data-astro-cid-w5q62dq7>免费额度的坑</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#两条不能分叉的创建路径" data-astro-cid-w5q62dq7>两条不能分叉的创建路径</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#成本约等于零" data-astro-cid-w5q62dq7>成本:约等于零</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p><a href="https://1000usdinchina.com">1000usdinchina.com</a> 让你用自然语言描述一趟旅行,拿回一份结构化行程。
+这个 AI 规划器跑在 <strong>Cloudflare Workers AI</strong> 上、用 <strong>Qwen</strong> 模型 —— 月成本约 <strong>$0</strong>。这篇讲它
+怎么运作、为什么选 Qwen,以及那个曾经在 dev 测试时烧光 prod 当天额度的免费额度坑。</p>
+<p>这是<a href="/zh/blog/china-travel-budget-100-cities/">系列</a>第 6 篇。</p>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#what">AI 规划器做什么</a></li>
+<li><a href="#why-qwen">为什么 Qwen + Workers AI</a></li>
+<li><a href="#trap">免费额度的坑</a></li>
+<li><a href="#two-paths">两条不能分叉的创建路径</a></li>
+<li><a href="#cost">成本:约等于零</a></li>
+<li><a href="#faq">常见问题</a></li>
+</ul>
+<p><a id="what"></a></p>
+<h2 id="ai-规划器做什么">AI 规划器做什么</h2><p>产品有结构化表单,但也接受自由文本:<em>「10 天,上海落地,爱美食和古镇,成都离开,中等预算。」</em>
+LLM 把它变成表单产出的同一批结构化字段 —— 城市、天数、预算档、兴趣 —— 然后喂给完全相同的估算器。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart LR
+    U[自然语言行程请求] --> Q[Qwen on Workers AI]
+    Q --> S[结构化种子:城市、天数、档位、兴趣]
+    S --> E[与表单相同的估算器]
+    E --> R[算好钱的行程]</pre></div><p>LLM 是<strong>前门</strong>,不是大脑。它把意图解析成结构;确定性的估算器做算钱。这让 AI 的活小、便宜、可验证。</p>
+<p><a id="why-qwen"></a></p>
+<h2 id="为什么-qwen-workers-ai">为什么 Qwen + Workers AI</h2><p>三个理由:</p>
+<ul>
+<li><strong>内置于边缘。</strong> Workers AI 把模型跑在 Worker 旁边 —— 没有单独的 API 供应商、没有第二个 SDK、
+没有额外延迟跳。规划器已经在 Cloudflare 上,模型也在。</li>
+<li><strong>Qwen 中文好。</strong> 领域是中国城市、菜系、地名。中文强的模型能正确解析「古镇」或「成都出发」。</li>
+<li><strong>免费额度够用。</strong> 对一个每请求跑一段短结构化抽取 prompt 的规划器,内含额度以 $0 覆盖真实用量。</li>
+</ul>
+<p><a id="trap"></a></p>
+<h2 id="免费额度的坑">免费额度的坑</h2><p>代价高昂的一课。Cloudflare Workers AI 免费额度是<strong>按天、账号级</strong>的预算 —— 以「neurons」计
+(约 10k/天)。<strong>账号级</strong>是坑:dev 和 prod 共享<em>同一个</em>每日池。</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart TD
+    A[每日免费额度:约 10k neurons,账号级] --> B[Dev:反复探测真模型]
+    A --> C[Prod:真实用户的 AI 规划]
+    B -->|烧掉共享池| D[额度耗尽]
+    C -->|撞上空池| E[AiError 4006:线上规划器挂]</pre></div><p>我在 dev 里拿<strong>真</strong>模型测规划器 —— 一发接一发地调 —— 把当天 neurons 烧光了。prod 随后撞上空池,
+开始返回 <code>AiError 4006</code>。真实用户的 AI 规划因为我的 dev 探测而宕。</p>
+<p>理解到它是账号级每日预算后,该有的修法:</p>
+<ul>
+<li>别在 dev 猛打真模型;缓存响应、节制探测。</li>
+<li>把每日额度当成跨所有环境的共享、有限资源。</li>
+<li>优雅降级:LLM 不可用时退回结构化表单路径,产品照常能用。</li>
+</ul>
+<p><a id="two-paths"></a></p>
+<h2 id="两条不能分叉的创建路径">两条不能分叉的创建路径</h2><p>产品现在有<strong>两条创建行程的路</strong>:表单和 AI 聊天。纪律是:任何关于路线、城市、天数的规则必须同时
+作用于<strong>两条</strong>路,且 LLM 必须吐出表单产出的<strong>同一批结构化种子字段</strong>。否则两条路分叉 —— AI 行程
+遵守和表单不同的规则,估算器拿到不一致的输入。一个估算器、两个前门、之间是相同的结构化契约。</p>
+<p><a id="cost"></a></p>
+<h2 id="成本约等于零">成本:约等于零</h2><p>因为 LLM 每请求只做一次小的结构化抽取调用,且额度紧张时退回表单,这个 AI 功能的月账单约 <strong>$0</strong>。
+给独立开发者的启示:一个有差异化的 AI 功能不需要大模型账单 —— 让 LLM 的活窄(解析,别算),
+跑在边缘,把额度当共享资源尊重。</p>
+<h2 id="要点">要点</h2><ul>
+<li>把 LLM 当成把意图解析成结构的前门;让确定性引擎干实际的活 —— 更便宜、可验证。</li>
+<li>Cloudflare Workers AI 免费额度是账号级的<em>每日</em>预算;dev 和 prod 共享。</li>
+<li>别在 dev 猛探真模型 —— 你会饿死 prod(<code>AiError 4006</code>)。</li>
+<li>让表单和 AI 创建路径共用一份相同的结构化契约,使它们永不分叉。</li>
+<li>一个有意义的 AI 功能可以约 $0,只要它的活保持窄、且边缘原生。</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="常见问题">常见问题</h2><p><strong>Cloudflare Workers AI 真免费吗?</strong>
+它有按账号级、以每日「neurons」计的慷慨免费额度。轻量的结构化抽取负载能在额度内零成本跑;重负载转付费。</p>
+<p><strong>中国旅行应用为什么用 Qwen?</strong>
+Qwen 对中文地名、菜系、措辞处理得好,在领域是中国城市时很关键 —— 而且它直接在边缘的 Workers AI 上可用。</p>
+<p><strong>AiError 4006 是什么原因?</strong>
+账号级每日额度耗尽。因为 dev 和 prod 共享池,激进的 dev 真模型测试能把 prod 搞挂。缓存、节制探测。</p>
+<p><strong>怎么让 AI 功能便宜?</strong>
+给 LLM 一个窄活(把意图解析成结构化字段),让确定性引擎算,跑在边缘,额度紧张时退回非 AI 路径。</p>
+<hr>
+<p><em>下一篇 → <a href="/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/">放心 ship 一个单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "在免费额度上做 LLM 行程规划:Qwen + Workers AI",
+  "image": "https://www.agentupdate.ai/blog/images/workers-ai-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-20",
+  "inLanguage": "zh",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/zh/llm-trip-planner-free-tier-qwen-workers-ai"
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="ai-规划器做什么" data-astro-cid-w5q62dq7> <a href="#ai-规划器做什么" data-astro-cid-w5q62dq7>AI 规划器做什么</a> </li><li class="toc-item " data-slug="为什么-qwen-workers-ai" data-astro-cid-w5q62dq7> <a href="#为什么-qwen-workers-ai" data-astro-cid-w5q62dq7>为什么 Qwen + Workers AI</a> </li><li class="toc-item " data-slug="免费额度的坑" data-astro-cid-w5q62dq7> <a href="#免费额度的坑" data-astro-cid-w5q62dq7>免费额度的坑</a> </li><li class="toc-item " data-slug="两条不能分叉的创建路径" data-astro-cid-w5q62dq7> <a href="#两条不能分叉的创建路径" data-astro-cid-w5q62dq7>两条不能分叉的创建路径</a> </li><li class="toc-item " data-slug="成本约等于零" data-astro-cid-w5q62dq7> <a href="#成本约等于零" data-astro-cid-w5q62dq7>成本:约等于零</a> </li><li class="toc-item " data-slug="要点" data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-slug="常见问题" data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-prompt-context-harness-loop-engineering" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/claude-code-engineering-cover.png" alt="1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-prompt-context-harness-loop-engineering" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>我如何用 Claude Code 单人 ship 一个 100 城应用 —— 让 AI coding agent 可靠的四种工程纪律:prompt、context、harness、loop engineering。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月19日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/interactive-svg-china-map" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/svg-map-cover.png" alt="1000usdinchina.com开发总结(4)-手画一张交互式 100 城中国 SVG 地图" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/interactive-svg-china-map" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(4)-手画一张交互式 100 城中国 SVG 地图</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>为什么我用原生 SVG 而不是地图库做了一张交互式 100 城中国地图 —— 以及那个放大时城市点全变黑团的 bug。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月18日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

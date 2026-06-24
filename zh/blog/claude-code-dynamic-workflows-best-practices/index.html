@@ -1,0 +1,623 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Claude Code Dynamic Workflow 使用注意的问题 — AgentUpdate.ai</title><meta name="description" content="本文详解 Claude Code 的 Dynamic Workflow 功能，涵盖触发机制、终端快捷键配置、权限 allowlist 设置、成本优化及 Ultracode 模式的实战技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="Claude Code Dynamic Workflow 使用注意的问题, Claude Code Dynamic Workflows: A Deep Dive and Best Practices, Claude Code, Dynamic Workflow, AI Agents, Automation, Developer Tools"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflows-best-practices/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/claude-code-dynamic-workflows-best-practices/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflows-best-practices/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/claude-code-dynamic-workflows-best-practices/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="Claude Code Dynamic Workflow 使用注意的问题 — AgentUpdate.ai"><meta property="og:description" content="本文详解 Claude Code 的 Dynamic Workflow 功能，涵盖触发机制、终端快捷键配置、权限 allowlist 设置、成本优化及 Ultracode 模式的实战技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-ba5ac2a8.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflows-best-practices/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Claude Code Dynamic Workflow 使用注意的问题 — AgentUpdate.ai"><meta name="twitter:description" content="本文详解 Claude Code 的 Dynamic Workflow 功能，涵盖触发机制、终端快捷键配置、权限 allowlist 设置、成本优化及 Ultracode 模式的实战技巧。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-ba5ac2a8.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Claude Code Dynamic Workflow 使用注意的问题","description":"本文详解 Claude Code 的 Dynamic Workflow 功能，涵盖触发机制、终端快捷键配置、权限 allowlist 设置、成本优化及 Ultracode 模式的实战技巧。","image":"/images/blog/ai-cover-ba5ac2a8.jpg","datePublished":"2026-05-30T15:11:09.219Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/claude-code-dynamic-workflows-best-practices"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-code-dynamic-workflows-best-practices/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-code-dynamic-workflows-best-practices/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Claude Code Dynamic Workflow 使用注意的问题</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"Claude Code Dynamic Workflow 使用注意的问题"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>Claude Code Dynamic Workflow 使用注意的问题</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年5月30日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric w</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude-code" class="tag" data-astro-cid-w5q62dq7>#Claude Code</a><span class="tag" data-astro-cid-w5q62dq7>#Dynamic Workflow</span><a href="/zh/tags/ai-agents" class="tag" data-astro-cid-w5q62dq7>#AI Agents</a><a href="/zh/tags/automation" class="tag" data-astro-cid-w5q62dq7>#Automation</a><a href="/zh/tags/developer-tools" class="tag" data-astro-cid-w5q62dq7>#Developer Tools</a> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-ba5ac2a8.jpg" alt="Claude Code Dynamic Workflow 使用注意的问题" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#什么是-dynamic-workflow" data-astro-cid-w5q62dq7>什么是 Dynamic Workflow</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#开启与关闭" data-astro-cid-w5q62dq7>开启与关闭</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#检查是否开启" data-astro-cid-w5q62dq7>检查是否开启</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#关闭方式三选一" data-astro-cid-w5q62dq7>关闭方式（三选一）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#重新开启" data-astro-cid-w5q62dq7>重新开启</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#触发方式" data-astro-cid-w5q62dq7>触发方式</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#方式一关键词触发" data-astro-cid-w5q62dq7>方式一：关键词触发</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#方式二ultracode-自动触发" data-astro-cid-w5q62dq7>方式二：Ultracode 自动触发</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#方式三保存的命令" data-astro-cid-w5q62dq7>方式三：保存的命令</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#关键词高亮与取消" data-astro-cid-w5q62dq7>关键词高亮与取消</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#不想触发怎么办" data-astro-cid-w5q62dq7>不想触发怎么办？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#终端配置" data-astro-cid-w5q62dq7>终端配置</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#权限配置" data-astro-cid-w5q62dq7>权限配置</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#核心规则" data-astro-cid-w5q62dq7>核心规则</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#启动确认按权限模式" data-astro-cid-w5q62dq7>启动确认（按权限模式）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#-长运行前必须做的事" data-astro-cid-w5q62dq7>⚠️ 长运行前必须做的事</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#费用与-token-消耗" data-astro-cid-w5q62dq7>费用与 Token 消耗</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#成本特点" data-astro-cid-w5q62dq7>成本特点</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#-省钱技巧" data-astro-cid-w5q62dq7>💰 省钱技巧</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#模型成本对比粗略" data-astro-cid-w5q62dq7>模型成本对比（粗略）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#ultracode-模式" data-astro-cid-w5q62dq7>Ultracode 模式</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#是什么" data-astro-cid-w5q62dq7>是什么</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#开启" data-astro-cid-w5q62dq7>开启</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#行为" data-astro-cid-w5q62dq7>行为</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#代价" data-astro-cid-w5q62dq7>代价</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#退出" data-astro-cid-w5q62dq7>退出</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#适用判断" data-astro-cid-w5q62dq7>适用判断</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#管理运行workflows" data-astro-cid-w5q62dq7>管理运行：/workflows</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#-操作快捷键" data-astro-cid-w5q62dq7>⌨️ 操作快捷键</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#进度信息" data-astro-cid-w5q62dq7>进度信息</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#保存为命令复用" data-astro-cid-w5q62dq7>保存为命令复用</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#保存方法" data-astro-cid-w5q62dq7>保存方法</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#保存位置" data-astro-cid-w5q62dq7>保存位置</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#使用" data-astro-cid-w5q62dq7>使用</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#优先级" data-astro-cid-w5q62dq7>优先级</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#恢复与限制" data-astro-cid-w5q62dq7>恢复与限制</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#恢复运行" data-astro-cid-w5q62dq7>恢复运行</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#-跨-session-不保留" data-astro-cid-w5q62dq7>⚠️ 跨 session 不保留</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#运行时限制" data-astro-cid-w5q62dq7>运行时限制</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#需要阶段签字确认" data-astro-cid-w5q62dq7>需要阶段签字确认？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#完整速查表" data-astro-cid-w5q62dq7>完整速查表</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><blockquote>
+<p><strong>Claude Code</strong> 的 <strong>Dynamic Workflow</strong> 能编排<strong>数十到数百个子 agent</strong> 并行工作。功能强大，但有几个坑需要提前知道。</p>
+</blockquote>
+<hr>
+<h2 id="目录">目录</h2><ol>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF-dynamic-workflow">什么是 Dynamic Workflow</a></li>
+<li><a href="#%E5%BC%80%E5%90%AF%E4%B8%8E%E5%85%B3%E9%97%AD">开启与关闭</a></li>
+<li><a href="#%E8%A7%A6%E5%8F%91%E6%96%B9%E5%BC%8F">触发方式</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E8%AF%8D%E9%AB%98%E4%BA%AE%E4%B8%8E%E5%8F%96%E6%B6%88">关键词高亮与取消</a></li>
+<li><a href="#%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE">权限配置</a></li>
+<li><a href="#%E8%B4%B9%E7%94%A8%E4%B8%8E-token-%E6%B6%88%E8%80%97">费用与 Token 消耗</a></li>
+<li><a href="#ultracode-%E6%A8%A1%E5%BC%8F">Ultracode 模式</a></li>
+<li><a href="#%E7%AE%A1%E7%90%86%E8%BF%90%E8%A1%8Cworkflows">管理运行：/workflows</a></li>
+<li><a href="#%E4%BF%9D%E5%AD%98%E4%B8%BA%E5%91%BD%E4%BB%A4%E5%A4%8D%E7%94%A8">保存为命令复用</a></li>
+<li><a href="#%E6%81%A2%E5%A4%8D%E4%B8%8E%E9%99%90%E5%88%B6">恢复与限制</a></li>
+<li><a href="#%E5%AE%8C%E6%95%B4%E9%80%9F%E6%9F%A5%E8%A1%A8">完整速查表</a></li>
+</ol>
+<hr>
+<h2 id="什么是-dynamic-workflow">什么是 Dynamic Workflow</h2><p><strong>Dynamic Workflow</strong> 是一段 <strong>JavaScript 脚本</strong>，由 <strong>Claude 编写</strong>，运行时在后台编排多个<strong>子 agent</strong> 执行任务。</p>
+<table>
+<thead>
+<tr>
+<th>对比</th>
+<th><strong>Subagent</strong></th>
+<th><strong>Skill</strong></th>
+<th><strong>Workflow</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编排者</td>
+<td>Claude 逐轮决定</td>
+<td>Claude 跟随指令</td>
+<td><strong>脚本决定</strong></td>
+</tr>
+<tr>
+<td>中间结果存在哪</td>
+<td>Claude 上下文</td>
+<td>Claude 上下文</td>
+<td><strong>脚本变量</strong></td>
+</tr>
+<tr>
+<td>规模</td>
+<td>几个</td>
+<td>几个</td>
+<td><strong>几十~几百 agent</strong></td>
+</tr>
+<tr>
+<td>可中断恢复</td>
+<td>否</td>
+<td>否</td>
+<td><strong>同 session 内可恢复</strong></td>
+</tr>
+<tr>
+<td>可复现</td>
+<td>否</td>
+<td>指令可复现</td>
+<td><strong>脚本可复现 + 可保存为命令</strong></td>
+</tr>
+</tbody></table>
+<p>✅ <strong>适合场景</strong>：大规模代码审计、500 文件迁移、多源交叉验证研究、多角度方案对比。</p>
+<p>❌ <strong>不适合</strong>：简单问答、几个子任务（直接用 <strong>subagent</strong>）、有固定指令的重复操作（用 <strong>skill</strong>）。</p>
+<hr>
+<h2 id="开启与关闭">开启与关闭</h2><h3 id="检查是否开启">检查是否开启</h3><div class="code-wrapper"><pre><code class="language-bash">/config   # 打开配置界面，查看 Dynamic Workflows 状态
+</code></pre>
+</div><h3 id="关闭方式三选一">关闭方式（三选一）</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>持久性</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/config</code> 切换</td>
+<td><strong>持久</strong></td>
+<td>打开配置 → 关闭 <strong>Dynamic Workflows</strong></td>
+</tr>
+<tr>
+<td><strong><code>settings.json</code></strong></td>
+<td><strong>持久</strong></td>
+<td>设置 <code>&quot;disableWorkflows&quot;: true</code></td>
+</tr>
+<tr>
+<td><strong>环境变量</strong></td>
+<td>每次启动</td>
+<td><code>CLAUDE_CODE_DISABLE_WORKFLOWS=1</code></td>
+</tr>
+</tbody></table>
+<h3 id="重新开启">重新开启</h3><p>反向操作即可。关掉后：</p>
+<ul>
+<li><code>/deep-research</code> 等内置命令<strong>不可用</strong></li>
+<li><code>workflow</code> 关键词<strong>不再触发</strong></li>
+<li><code>/effort</code> 菜单<strong>移除 ultracode 选项</strong></li>
+</ul>
+<hr>
+<h2 id="触发方式">触发方式</h2><h3 id="方式一关键词触发">方式一：关键词触发</h3><p>在 prompt 中包含 <strong><code>workflow</code></strong> 关键词：</p>
+<div class="code-wrapper"><pre><code>Run a workflow to audit every API endpoint for missing auth checks
+</code></pre>
+</div><p>Claude Code 会<strong>高亮</strong> <code>workflow</code> 这个词，表示识别到触发意图。</p>
+<h3 id="方式二ultracode-自动触发">方式二：Ultracode 自动触发</h3><p>设置 <code>/effort ultracode</code>，Claude <strong>自动</strong>为每个实质性任务规划 workflow。</p>
+<h3 id="方式三保存的命令">方式三：保存的命令</h3><p>保存过的 workflow 变成 <strong><code>/&lt;name&gt;</code></strong> 命令，直接调用。内置的有 <code>/deep-research</code>。</p>
+<hr>
+<h2 id="关键词高亮与取消">关键词高亮与取消</h2><p>当你的 prompt 包含 <code>workflow</code> 时，Claude Code <strong>高亮显示</strong>该词，表示即将触发 <strong>dynamic workflow</strong>。</p>
+<h3 id="不想触发怎么办">不想触发怎么办？</h3><p>按 <strong><code>Alt+W</code></strong> 取消高亮，该次 prompt 退回<strong>普通对话模式</strong>。</p>
+<blockquote>
+<p>⚠️ <strong>重点</strong>：部分终端会拦截 Alt 组合键，需要额外配置才能让 <code>Alt+W</code> 生效。</p>
+</blockquote>
+<h3 id="终端配置">终端配置</h3><h4 id="-ghostty">🟣 Ghostty</h4><p>在 <code>~/.config/ghostty/config</code> 中添加：</p>
+<div class="code-wrapper"><pre><code>macos-option-as-alt = true
+</code></pre>
+</div><h4 id="-iterm2">🔵 iTerm2</h4><p><strong>Preferences</strong> → <strong>Profiles</strong> → <strong>Keys</strong> → <strong>Left Option Key</strong>: 设为 <code>Esc+</code></p>
+<h4 id="-kitty">🟢 Kitty</h4><p>一般默认支持，如不行在 <code>kitty.conf</code> 加：</p>
+<div class="code-wrapper"><pre><code>macos_option_as_alt yes
+</code></pre>
+</div><h4 id="-wezterm">🟠 WezTerm</h4><p>在配置中：</p>
+<div class="code-wrapper"><pre><code class="language-lua">config.keys = {
+  { key = &quot;w&quot;, mods = &quot;ALT&quot;, action = wezterm.action.SendKey({ key = &quot;w&quot;, mods = &quot;ALT&quot; }) },
+}
+</code></pre>
+</div><p>改完<strong>重启终端</strong>生效。</p>
+<hr>
+<h2 id="权限配置">权限配置</h2><h3 id="核心规则">核心规则</h3><table>
+<thead>
+<tr>
+<th>操作类型</th>
+<th>权限行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件编辑（<code>Write</code>/<code>Edit</code>）</td>
+<td>✅ <strong>自动批准</strong>（子 agent 固定 <code>acceptEdits</code> 模式）</td>
+</tr>
+<tr>
+<td><strong>Shell 命令</strong></td>
+<td>⚠️ 未在 <strong>allowlist</strong> 中会<strong>弹窗暂停</strong></td>
+</tr>
+<tr>
+<td><strong>Web 搜索/抓取</strong></td>
+<td>⚠️ 未在 <strong>allowlist</strong> 中会<strong>弹窗暂停</strong></td>
+</tr>
+<tr>
+<td><strong>MCP 工具调用</strong></td>
+<td>⚠️ 未在 <strong>allowlist</strong> 中会<strong>弹窗暂停</strong></td>
+</tr>
+</tbody></table>
+<h3 id="启动确认按权限模式">启动确认（按权限模式）</h3><table>
+<thead>
+<tr>
+<th>权限模式</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Default</code> / <code>acceptEdits</code></td>
+<td><strong>每次启动前弹窗确认</strong>，除非选过 &quot;don&#39;t ask again&quot;</td>
+</tr>
+<tr>
+<td><code>Auto</code></td>
+<td><strong>仅首次确认</strong>；ultracode 下完全跳过</td>
+</tr>
+<tr>
+<td><code>Bypass</code> / <code>claude -p</code></td>
+<td><strong>从不弹窗</strong></td>
+</tr>
+</tbody></table>
+<h3 id="-长运行前必须做的事">⚠️ 长运行前必须做的事</h3><blockquote>
+<p><strong>提前把需要的命令加到 <code>allowlist</code></strong>，否则 workflow 中途弹窗卡住！</p>
+</blockquote>
+<p><strong>方式一</strong>：直接告诉 Claude：</p>
+<div class="code-wrapper"><pre><code>允许 git 和 npm 命令不弹窗
+</code></pre>
+</div><p><strong>方式二</strong>：手动编辑 <code>settings.json</code>：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;permissions&quot;: {
+    &quot;allow&quot;: [
+      &quot;Bash(git *)&quot;,
+      &quot;Bash(npm *)&quot;,
+      &quot;WebSearch&quot;,
+      &quot;WebFetch&quot;
+    ]
+  }
+}
+</code></pre>
+</div><p><strong>配置文件位置</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用域</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~/.claude/settings.json</code></td>
+<td>🌐 <strong>全局</strong>（所有项目）</td>
+</tr>
+<tr>
+<td>`.claude/settings.json``</td>
+<td>👥 <strong>项目级</strong>（团队共享，随 repo 提交）</td>
+</tr>
+<tr>
+<td><code>.claude/settings.local.json</code></td>
+<td>👤 <strong>项目级</strong>（仅自己，gitignore）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="费用与-token-消耗">费用与 Token 消耗</h2><h3 id="成本特点">成本特点</h3><ul>
+<li>单次 workflow <strong>spawn 大量 agent</strong>，token 消耗远大于普通对话</li>
+<li>所有 agent <strong>默认使用当前 session 模型</strong></li>
+<li>计入 <strong>plan 用量</strong>和<strong>速率限制</strong></li>
+</ul>
+<h3 id="-省钱技巧">💰 省钱技巧</h3><table>
+<thead>
+<tr>
+<th>技巧</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>检查模型</strong></td>
+<td>长运行前用 <code>/model</code> 确认，别用 <strong>Opus</strong> 跑简单任务</td>
+</tr>
+<tr>
+<td><strong>指定小模型</strong></td>
+<td>描述任务时说&quot;简单阶段用 <strong>Haiku</strong>&quot;</td>
+</tr>
+<tr>
+<td><strong>提前停止</strong></td>
+<td><code>/workflows</code> → <code>x</code> 停止，已完成工作不丢</td>
+</tr>
+<tr>
+<td><strong>用 default 模型</strong></td>
+<td>日常用 <strong>Sonnet</strong>，复杂任务再切 <strong>Opus</strong></td>
+</tr>
+</tbody></table>
+<h3 id="模型成本对比粗略">模型成本对比（粗略）</h3><div class="code-wrapper"><pre><code>Haiku  &lt;  Sonnet  &lt;  Opus
+💰便宜      💰💰中等      💰💰💰贵
+</code></pre>
+</div><p>workflow 脚本中可为不同阶段<strong>指定不同模型</strong>：</p>
+<div class="code-wrapper"><pre><code class="language-javascript">agent(&#39;简单分类任务&#39;, { model: &#39;haiku&#39; })
+agent(&#39;复杂推理任务&#39;, { model: &#39;opus&#39; })
+</code></pre>
+</div><hr>
+<h2 id="ultracode-模式">Ultracode 模式</h2><h3 id="是什么">是什么</h3><blockquote>
+<p><strong>Ultracode</strong> = <code>xhigh</code> <strong>推理深度</strong> + <strong>自动 workflow 编排</strong></p>
+</blockquote>
+<h3 id="开启">开启</h3><div class="code-wrapper"><pre><code>/effort ultracode
+</code></pre>
+</div><h3 id="行为">行为</h3><ul>
+<li>每个实质性任务<strong>自动规划</strong>成 workflow</li>
+<li>可能一个请求触发<strong>多个 workflow 串行</strong>：<code>understand</code> → <code>design</code> → <code>implement</code> → <code>verify</code></li>
+<li><code>auto</code> 权限模式下<strong>跳过启动确认</strong></li>
+</ul>
+<h3 id="代价">代价</h3><ul>
+<li>🔴 <strong>token 消耗极大</strong>，每个任务可能 spawn 几十上百 agent</li>
+<li>🟡 <strong>耗时更长</strong>，但结果更全面可信</li>
+<li>🔵 <strong>仅当次 session 有效</strong></li>
+</ul>
+<h3 id="退出">退出</h3><div class="code-wrapper"><pre><code>/effort high    # 降回普通高档
+/effort medium  # 降回中档
+</code></pre>
+</div><h3 id="适用判断">适用判断</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>大规模代码审计</td>
+<td>✅ <strong>ultracode</strong></td>
+</tr>
+<tr>
+<td>复杂重构需多角度验证</td>
+<td>✅ <strong>ultracode</strong></td>
+</tr>
+<tr>
+<td>研究任务需交叉核实</td>
+<td>✅ <strong>ultracode</strong></td>
+</tr>
+<tr>
+<td>日常开发、简单问答</td>
+<td>❌ <strong>别开</strong></td>
+</tr>
+<tr>
+<td>快速改个 bug</td>
+<td>❌ <strong>别开</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="管理运行workflows">管理运行：/workflows</h2><div class="code-wrapper"><pre><code>/workflows
+</code></pre>
+</div><p>打开 <strong>workflow 管理界面</strong>，查看运行中和已完成的 workflow。</p>
+<h3 id="-操作快捷键">⌨️ 操作快捷键</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>↑</code> / <code>↓</code></td>
+<td>选择阶段或 agent</td>
+</tr>
+<tr>
+<td><code>Enter</code> / <code>→</code></td>
+<td>钻入查看详情（prompt、tool 调用、结果）</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>返回上一级</td>
+</tr>
+<tr>
+<td><code>j</code> / <code>k</code></td>
+<td>详情内滚动</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>⏸️ <strong>暂停</strong> / ▶️ <strong>恢复</strong>运行</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>🛑 <strong>停止</strong>选中 agent 或整个 workflow</td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td>🔄 <strong>重启</strong>选中的运行中 agent</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>💾 <strong>保存</strong>脚本为命令</td>
+</tr>
+</tbody></table>
+<h3 id="进度信息">进度信息</h3><p>每个阶段显示：</p>
+<ul>
+<li><strong>agent 数量</strong></li>
+<li><strong>token 消耗</strong></li>
+<li><strong>已用时间</strong></li>
+</ul>
+<hr>
+<h2 id="保存为命令复用">保存为命令复用</h2><h3 id="保存方法">保存方法</h3><ol>
+<li><code>/workflows</code> → 选中满意的运行</li>
+<li>按 <strong><code>s</code></strong></li>
+<li><strong><code>Tab</code></strong> 切换保存位置</li>
+<li><strong><code>Enter</code></strong> 确认</li>
+</ol>
+<h3 id="保存位置">保存位置</h3><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>路径</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>📦 <strong>项目级</strong></td>
+<td><code>.claude/workflows/</code></td>
+<td>团队共享，随 repo 提交</td>
+</tr>
+<tr>
+<td>👤 <strong>个人级</strong></td>
+<td><code>~/.claude/workflows/</code></td>
+<td>所有项目可用，仅自己</td>
+</tr>
+</tbody></table>
+<h3 id="使用">使用</h3><p>保存后变成 <strong><code>/&lt;name&gt;</code></strong> 命令：</p>
+<div class="code-wrapper"><pre><code>/my-audit          # 直接调用
+</code></pre>
+</div><p>出现在 <code>/</code> <strong>自动补全</strong>列表中，与内置命令（如 <code>/deep-research</code>）并列。</p>
+<h3 id="优先级">优先级</h3><p>同名时，<strong>📦 项目级 &gt; 👤 个人级</strong>。</p>
+<hr>
+<h2 id="恢复与限制">恢复与限制</h2><h3 id="恢复运行">恢复运行</h3><ul>
+<li>暂停后可在<strong>同一 session</strong> 恢复</li>
+<li>已完成的 agent <strong>返回缓存结果</strong>，不重新跑</li>
+<li>恢复方式：<code>/workflows</code> → <code>p</code>，或让 Claude 用同一脚本重新启动</li>
+</ul>
+<h3 id="-跨-session-不保留">⚠️ 跨 session 不保留</h3><blockquote>
+<p><strong>退出 Claude Code 后 workflow 不保留。</strong> 下次 session 需重新运行。但<strong>保存过的命令脚本还在</strong>，可以重跑。</p>
+</blockquote>
+<h3 id="运行时限制">运行时限制</h3><table>
+<thead>
+<tr>
+<th>限制</th>
+<th>值</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>并发 agent 上限</td>
+<td><strong>min(16, CPU-2)</strong></td>
+<td>资源控制</td>
+</tr>
+<tr>
+<td>单次运行 agent 总数</td>
+<td><strong>1000</strong></td>
+<td>防止无限循环</td>
+</tr>
+<tr>
+<td>脚本内文件系统访问</td>
+<td><strong>无</strong></td>
+<td>只有 agent 能读写文件</td>
+</tr>
+<tr>
+<td>脚本内 shell 访问</td>
+<td><strong>无</strong></td>
+<td>只有 agent 能执行命令</td>
+</tr>
+<tr>
+<td>运行中用户输入</td>
+<td><strong>无</strong></td>
+<td>只有权限弹窗能暂停</td>
+</tr>
+</tbody></table>
+<h3 id="需要阶段签字确认">需要阶段签字确认？</h3><blockquote>
+<p>拆成<strong>多个独立 workflow</strong>，每个跑完审查后再跑下一个。</p>
+</blockquote>
+<hr>
+<h2 id="完整速查表">完整速查表</h2><div class="code-wrapper"><pre><code># 🔄 开启/关闭
+/effort ultracode          # 开启 ultracode（xhigh + 自动 workflow）
+/effort high               # 退出 ultracode
+/config                    # 关闭 Dynamic Workflows 开关
+
+# 🚀 触发
+prompt 中包含 &quot;workflow&quot;    # 关键词触发
+/&lt;saved-name&gt;              # 调用保存的命令
+/deep-research &lt;question&gt;  # 内置命令
+
+# 📋 管理
+/workflows                 # 打开管理界面
+Alt+W                      # 取消关键词高亮（不触发 workflow）
+
+# ⌨️ 管理界面内操作
+p = 暂停/恢复
+x = 停止
+s = 保存为命令
+Enter = 查看详情
+Esc = 返回
+
+# 🔐 权限
+直接说 &quot;允许 git 命令不弹窗&quot; → Claude 帮你改 allowlist
+或手动编辑 settings.json 的 permissions.allow 数组
+
+# 💰 省钱
+/model                     # 检查当前模型
+简单阶段指定 haiku          # 脚本内 { model: &#39;haiku&#39; }
+/workflows → x             # 及时停止不需要的运行
+</code></pre>
+</div><hr>
+<p><em>基于 Claude Code 官方文档整理，最后更新：2026-05-30</em></p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="什么是-dynamic-workflow" data-astro-cid-w5q62dq7> <a href="#什么是-dynamic-workflow" data-astro-cid-w5q62dq7>什么是 Dynamic Workflow</a> </li><li class="toc-item " data-slug="开启与关闭" data-astro-cid-w5q62dq7> <a href="#开启与关闭" data-astro-cid-w5q62dq7>开启与关闭</a> </li><li class="toc-item h3-nav" data-slug="检查是否开启" data-astro-cid-w5q62dq7> <a href="#检查是否开启" data-astro-cid-w5q62dq7>检查是否开启</a> </li><li class="toc-item h3-nav" data-slug="关闭方式三选一" data-astro-cid-w5q62dq7> <a href="#关闭方式三选一" data-astro-cid-w5q62dq7>关闭方式（三选一）</a> </li><li class="toc-item h3-nav" data-slug="重新开启" data-astro-cid-w5q62dq7> <a href="#重新开启" data-astro-cid-w5q62dq7>重新开启</a> </li><li class="toc-item " data-slug="触发方式" data-astro-cid-w5q62dq7> <a href="#触发方式" data-astro-cid-w5q62dq7>触发方式</a> </li><li class="toc-item h3-nav" data-slug="方式一关键词触发" data-astro-cid-w5q62dq7> <a href="#方式一关键词触发" data-astro-cid-w5q62dq7>方式一：关键词触发</a> </li><li class="toc-item h3-nav" data-slug="方式二ultracode-自动触发" data-astro-cid-w5q62dq7> <a href="#方式二ultracode-自动触发" data-astro-cid-w5q62dq7>方式二：Ultracode 自动触发</a> </li><li class="toc-item h3-nav" data-slug="方式三保存的命令" data-astro-cid-w5q62dq7> <a href="#方式三保存的命令" data-astro-cid-w5q62dq7>方式三：保存的命令</a> </li><li class="toc-item " data-slug="关键词高亮与取消" data-astro-cid-w5q62dq7> <a href="#关键词高亮与取消" data-astro-cid-w5q62dq7>关键词高亮与取消</a> </li><li class="toc-item h3-nav" data-slug="不想触发怎么办" data-astro-cid-w5q62dq7> <a href="#不想触发怎么办" data-astro-cid-w5q62dq7>不想触发怎么办？</a> </li><li class="toc-item h3-nav" data-slug="终端配置" data-astro-cid-w5q62dq7> <a href="#终端配置" data-astro-cid-w5q62dq7>终端配置</a> </li><li class="toc-item " data-slug="权限配置" data-astro-cid-w5q62dq7> <a href="#权限配置" data-astro-cid-w5q62dq7>权限配置</a> </li><li class="toc-item h3-nav" data-slug="核心规则" data-astro-cid-w5q62dq7> <a href="#核心规则" data-astro-cid-w5q62dq7>核心规则</a> </li><li class="toc-item h3-nav" data-slug="启动确认按权限模式" data-astro-cid-w5q62dq7> <a href="#启动确认按权限模式" data-astro-cid-w5q62dq7>启动确认（按权限模式）</a> </li><li class="toc-item h3-nav" data-slug="-长运行前必须做的事" data-astro-cid-w5q62dq7> <a href="#-长运行前必须做的事" data-astro-cid-w5q62dq7>⚠️ 长运行前必须做的事</a> </li><li class="toc-item " data-slug="费用与-token-消耗" data-astro-cid-w5q62dq7> <a href="#费用与-token-消耗" data-astro-cid-w5q62dq7>费用与 Token 消耗</a> </li><li class="toc-item h3-nav" data-slug="成本特点" data-astro-cid-w5q62dq7> <a href="#成本特点" data-astro-cid-w5q62dq7>成本特点</a> </li><li class="toc-item h3-nav" data-slug="-省钱技巧" data-astro-cid-w5q62dq7> <a href="#-省钱技巧" data-astro-cid-w5q62dq7>💰 省钱技巧</a> </li><li class="toc-item h3-nav" data-slug="模型成本对比粗略" data-astro-cid-w5q62dq7> <a href="#模型成本对比粗略" data-astro-cid-w5q62dq7>模型成本对比（粗略）</a> </li><li class="toc-item " data-slug="ultracode-模式" data-astro-cid-w5q62dq7> <a href="#ultracode-模式" data-astro-cid-w5q62dq7>Ultracode 模式</a> </li><li class="toc-item h3-nav" data-slug="是什么" data-astro-cid-w5q62dq7> <a href="#是什么" data-astro-cid-w5q62dq7>是什么</a> </li><li class="toc-item h3-nav" data-slug="开启" data-astro-cid-w5q62dq7> <a href="#开启" data-astro-cid-w5q62dq7>开启</a> </li><li class="toc-item h3-nav" data-slug="行为" data-astro-cid-w5q62dq7> <a href="#行为" data-astro-cid-w5q62dq7>行为</a> </li><li class="toc-item h3-nav" data-slug="代价" data-astro-cid-w5q62dq7> <a href="#代价" data-astro-cid-w5q62dq7>代价</a> </li><li class="toc-item h3-nav" data-slug="退出" data-astro-cid-w5q62dq7> <a href="#退出" data-astro-cid-w5q62dq7>退出</a> </li><li class="toc-item h3-nav" data-slug="适用判断" data-astro-cid-w5q62dq7> <a href="#适用判断" data-astro-cid-w5q62dq7>适用判断</a> </li><li class="toc-item " data-slug="管理运行workflows" data-astro-cid-w5q62dq7> <a href="#管理运行workflows" data-astro-cid-w5q62dq7>管理运行：/workflows</a> </li><li class="toc-item h3-nav" data-slug="-操作快捷键" data-astro-cid-w5q62dq7> <a href="#-操作快捷键" data-astro-cid-w5q62dq7>⌨️ 操作快捷键</a> </li><li class="toc-item h3-nav" data-slug="进度信息" data-astro-cid-w5q62dq7> <a href="#进度信息" data-astro-cid-w5q62dq7>进度信息</a> </li><li class="toc-item " data-slug="保存为命令复用" data-astro-cid-w5q62dq7> <a href="#保存为命令复用" data-astro-cid-w5q62dq7>保存为命令复用</a> </li><li class="toc-item h3-nav" data-slug="保存方法" data-astro-cid-w5q62dq7> <a href="#保存方法" data-astro-cid-w5q62dq7>保存方法</a> </li><li class="toc-item h3-nav" data-slug="保存位置" data-astro-cid-w5q62dq7> <a href="#保存位置" data-astro-cid-w5q62dq7>保存位置</a> </li><li class="toc-item h3-nav" data-slug="使用" data-astro-cid-w5q62dq7> <a href="#使用" data-astro-cid-w5q62dq7>使用</a> </li><li class="toc-item h3-nav" data-slug="优先级" data-astro-cid-w5q62dq7> <a href="#优先级" data-astro-cid-w5q62dq7>优先级</a> </li><li class="toc-item " data-slug="恢复与限制" data-astro-cid-w5q62dq7> <a href="#恢复与限制" data-astro-cid-w5q62dq7>恢复与限制</a> </li><li class="toc-item h3-nav" data-slug="恢复运行" data-astro-cid-w5q62dq7> <a href="#恢复运行" data-astro-cid-w5q62dq7>恢复运行</a> </li><li class="toc-item h3-nav" data-slug="-跨-session-不保留" data-astro-cid-w5q62dq7> <a href="#-跨-session-不保留" data-astro-cid-w5q62dq7>⚠️ 跨 session 不保留</a> </li><li class="toc-item h3-nav" data-slug="运行时限制" data-astro-cid-w5q62dq7> <a href="#运行时限制" data-astro-cid-w5q62dq7>运行时限制</a> </li><li class="toc-item h3-nav" data-slug="需要阶段签字确认" data-astro-cid-w5q62dq7> <a href="#需要阶段签字确认" data-astro-cid-w5q62dq7>需要阶段签字确认？</a> </li><li class="toc-item " data-slug="完整速查表" data-astro-cid-w5q62dq7> <a href="#完整速查表" data-astro-cid-w5q62dq7>完整速查表</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-dynamic-workflow-guide-multi-agent" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-36da4f6d.jpg" alt="Claude Code Dynamic Workflow 上手指南:多 Agent 编排" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-code-dynamic-workflow-guide-multi-agent" data-astro-cid-w5q62dq7>Claude Code Dynamic Workflow 上手指南:多 Agent 编排</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文详解 Claude Code 的 Dynamic Workflow 功能，教你如何用 JS 脚本编排多个 AI Agent。涵盖核心 API、并行与流水线模式及数学解题实战，助你实现高效的多智能体协作。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月29日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-opus-4-8-dynamic-workflows-release" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-da86fc87.jpg" alt="Claude Opus 4.8 发布总结" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-opus-4-8-dynamic-workflows-release" data-astro-cid-w5q62dq7>Claude Opus 4.8 发布总结</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>Anthropic 突发发布 Claude Opus 4.8！距离上代仅41天，这次它不仅加了便宜3倍的快速模式，还推出了能自动拆解任务、自己跑几天的「动态工作流」。它变得更诚实了，遇到不会的代码不再瞎编。一文带你大白话看懂这次硬核更新！</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月29日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

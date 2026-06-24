@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering — AgentUpdate.ai</title><meta name="description" content="我如何用 Claude Code 单人 ship 一个 100 城应用 —— 让 AI coding agent 可靠的四种工程纪律:prompt、context、harness、loop engineering。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI..."><meta name="keywords" content="1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering, 1000usdinchina.com Dev Retrospective (5) - Claude Code Workflow: Prompt, Context, Harness, Loop, claude-code, ai-agent, prompt-engineering, context-engineering, 开发工具"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/claude-code-prompt-context-harness-loop-engineering/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/claude-code-prompt-context-harness-loop-engineering/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/claude-code-prompt-context-harness-loop-engineering/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/claude-code-prompt-context-harness-loop-engineering/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering — AgentUpdate.ai"><meta property="og:description" content="我如何用 Claude Code 单人 ship 一个 100 城应用 —— 让 AI coding agent 可靠的四种工程纪律:prompt、context、harness、loop engineering。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI..."><meta property="og:image" content="https://www.agentupdate.ai/images/blog/claude-code-engineering-cover.png"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/claude-code-prompt-context-harness-loop-engineering/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering — AgentUpdate.ai"><meta name="twitter:description" content="我如何用 Claude Code 单人 ship 一个 100 城应用 —— 让 AI coding agent 可靠的四种工程纪律:prompt、context、harness、loop engineering。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI..."><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/claude-code-engineering-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering","description":"我如何用 Claude Code 单人 ship 一个 100 城应用 —— 让 AI coding agent 可靠的四种工程纪律:prompt、context、harness、loop engineering。","image":"/images/blog/claude-code-engineering-cover.png","datePublished":"2026-06-19T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/claude-code-prompt-context-harness-loop-engineering"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-code-prompt-context-harness-loop-engineering/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/claude-code-prompt-context-harness-loop-engineering/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月19日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>11 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude-code" class="tag" data-astro-cid-w5q62dq7>#claude-code</a><a href="/zh/tags/ai-agent" class="tag" data-astro-cid-w5q62dq7>#ai-agent</a><a href="/zh/tags/prompt-engineering" class="tag" data-astro-cid-w5q62dq7>#prompt-engineering</a><a href="/zh/tags/context-engineering" class="tag" data-astro-cid-w5q62dq7>#context-engineering</a><span class="tag" data-astro-cid-w5q62dq7>#开发工具</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/claude-code-engineering-cover.png" alt="1000usdinchina.com开发总结(5)-Claude Code 工作流:prompt、context、harness、loop engineering" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#四种纪律" data-astro-cid-w5q62dq7>四种纪律</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#1-prompt-engineering说-what不说-how" data-astro-cid-w5q62dq7>1. Prompt engineering:说 what,不说 how</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#2-context-engineeringagent-的工作记忆" data-astro-cid-w5q62dq7>2. Context engineering:agent 的工作记忆</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#3-harness-engineering工具权限子代理" data-astro-cid-w5q62dq7>3. Harness engineering:工具、权限、子代理</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#4-loop-engineering迭代到完成" data-astro-cid-w5q62dq7>4. Loop engineering:迭代到完成</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#superpowers-skills可复用的专长" data-astro-cid-w5q62dq7>Superpowers skills:可复用的专长</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>我单人 ship 了一个 100 城、四语言的旅行应用 ——
+<a href="https://1000usdinchina.com">1000usdinchina.com</a>。杠杆不是「AI 帮我写了代码」,而是把一个
+<strong>AI coding agent</strong>(Claude Code)当成一个要在<strong>四种纪律</strong>上工程化的系统:prompt、context、
+harness、loop engineering。这是<a href="/zh/blog/china-travel-budget-100-cities/">系列</a>的旗舰篇,也是
+如果你用 coding agent 开发、最值得读的一篇。</p>
+<p><img src="/images/blog/claude-code-engineering-cover.png" alt="Claude Code 工作流的四种纪律——prompt、context、harness、loop engineering"></p>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#four">四种纪律</a></li>
+<li><a href="#prompt">1. Prompt engineering:说 what,不说 how</a></li>
+<li><a href="#context">2. Context engineering:agent 的工作记忆</a></li>
+<li><a href="#harness">3. Harness engineering:工具、权限、子代理</a></li>
+<li><a href="#loop">4. Loop engineering:迭代到绿</a></li>
+<li><a href="#skills">Superpowers skills:可复用的专长</a></li>
+<li><a href="#faq">常见问题</a></li>
+</ul>
+<p><a id="four"></a></p>
+<h2 id="四种纪律">四种纪律</h2><p>coding agent 不是你向它要片段的聊天机器人。它是一个会读、改、跑、验的自治系统。可靠性来自把
+四层工程化:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart TB
+    P[Prompt engineering<br/>做什么] --> C[Context engineering<br/>agent 知道什么]
+    C --> H[Harness engineering<br/>agent 能做什么]
+    H --> L[Loop engineering<br/>如何迭代到完成]
+    L -->|反馈| C</pre></div><p>少任何一层,agent 都会不可靠:prompt 含糊就乱走,context 缺失就幻觉,harness 弱就没法验,
+没有 loop 就不收敛。</p>
+<p><a id="prompt"></a></p>
+<h2 id="1-prompt-engineering说-what不说-how">1. Prompt engineering:说 what,不说 how</h2><p>第一课:<strong>指令说 WHAT,不说 HOW。</strong>「加一条家庭费用规则」是目标,不是步骤。步骤归 agent。
+过度指定 <em>how</em> 会跟 agent 的规划打架;指定不足 <em>what</em> 又让它漂。好 prompt 钉住意图和验收标准,
+把实现留给 agent —— 然后验证结果。</p>
+<p>一个用代价换来的推论:「好,做 X」不是开始敲代码的许可。对任何非平凡的事,agent 应先规划、
+把计划写下来,只在明确的实现动词上才动手。Prompt engineering 既是指令,也是<em>克制</em>。</p>
+<p><a id="context"></a></p>
+<h2 id="2-context-engineeringagent-的工作记忆">2. Context engineering:agent 的工作记忆</h2><p>大部分杠杆在这里。agent 的好坏取决于它 context window 里有什么。四个机制让 context 保持高信噪比:</p>
+<ul>
+<li><p><strong>项目宪法(<code>CLAUDE.md</code>)。</strong> 硬约束放在一个永远加载的文件里:「TypeScript strict,禁 <code>any</code>」、
+「边缘运行时 —— 禁 Node API」、「未明示不 commit」、「内部文档中文,UI + 代码英文」。这些每一轮
+都覆盖默认行为。</p>
+<div class="code-wrapper"><pre><code class="language-text">## 硬约束(违反即 bug)
+1. TypeScript strict + 禁 `any`
+2. 边缘运行时 —— 禁 fs/path/child_process
+3. i18n 货币强耦合(en→USD, ja→JPY...)
+4. 未明示绝不 commit
+</code></pre>
+</div></li>
+<li><p><strong>持久记忆。</strong> 该跨会话存活的事实(决策、坑、半成品任务的状态)写进持久记忆文件,而不是每次重推。</p>
+</li>
+<li><p><strong>刻意早压。</strong> context 不会在有用阈值自动压,所以我在干净断点(约 60% 满)手动压,保证摘要质量高,
+赶在 harness 被迫晚压之前。</p>
+</li>
+<li><p><strong>子代理隔离。</strong> 吵闹的操作 —— 全量测试、几百条静态路由的构建 —— 交给子代理在<em>它自己</em>的 context
+里读完整输出,只回 <code>{ok, errors:[...]}</code>。主 context 永远看不到那 268 条路由的构建日志。</p>
+</li>
+</ul>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart LR
+    M[主 agent context<br/>高信噪] -->|委派吵闹任务| S[子代理 context]
+    S -->|读完整输出| Logs[(构建/测试洪流)]
+    S -->|只回摘要| M</pre></div><p>Context engineering 决定了 agent 在长会话里是保持锐利,还是淹死在自己的工具输出里。</p>
+<p><a id="harness"></a></p>
+<h2 id="3-harness-engineering工具权限子代理">3. Harness engineering:工具、权限、子代理</h2><p><strong>harness</strong> 是 agent 能<em>做</em>的一切:工具、权限边界、hooks,以及它驱动的部署链路。工程化得好意味着:</p>
+<ul>
+<li><strong>一条 agent 操作的分段链路。</strong> 本地 → dev worker → prod,绿了才进下一段。agent 跑每一段;
+卡口(测试、Lighthouse CI)决定晋级。(完整细节见
+<a href="/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/">第 7 篇测试与 DevOps</a>。)</li>
+<li><strong>权限感知的动作。</strong> 有些动作不可逆或对外(commit、push、deploy)。harness 要求明确授权 ——
+agent 永不自作主张 commit 或上线。</li>
+<li><strong>子代理当工人。</strong> 除了隔离 context,子代理还并行独立工作、后台跑长任务,回报结构化结果。</li>
+</ul>
+<p>心智模型:<strong>你设计 harness,agent 在其中操作。</strong> 好的 harness 让安全的路成为最省事的路。</p>
+<p><a id="loop"></a></p>
+<h2 id="4-loop-engineering迭代到完成">4. Loop engineering:迭代到完成</h2><p>agent 在循环里最闪光:做 → 观察 → 纠正 → 重复,直到某条件成立。艺术在于定义<em>退出条件</em>,并让每次
+迭代便宜。</p>
+<p>这个项目的具体例子是<strong>四语言 i18n 翻译循环</strong>。把一个不断长大的应用翻成四种语言,不是一发 prompt
+的事 —— 它是个循环:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">flowchart TD
+    A[扫描 UI 中未翻译字符串] --> B{找到了吗?}
+    B -->|有| C[翻进 4 个 locale,货币感知]
+    C --> D[跑 i18n smoke + lint]
+    D --> E{绿了?}
+    E -->|否| C
+    E -->|是| A
+    B -->|无| F[完成:所有 locale 同步]</pre></div><p>每一遍找出未翻字符串、填满四个 locale(尊重货币耦合)、跑 i18n smoke 测试,直到一次扫描返回空。
+一个自定步进的 agent 循环,把「翻译整个应用」—— 一个没有单条 prompt 能完成的任务 —— 变成一个
+收敛过程。这就是 loop engineering:不是一个大请求,而是一个便宜的步骤 + 一个清晰的退出条件,跑到完成。</p>
+<p><a id="skills"></a></p>
+<h2 id="superpowers-skills可复用的专长">Superpowers skills:可复用的专长</h2><p>贯穿四种纪律的黏合剂是 <strong>skills</strong> —— 打包、可复用、agent 按需加载的流程。不必每次会话重讲「我们
+怎么做 TDD」或「怎么验 ETL」,那份专长住在一个 agent 调用的 skill 里:</p>
+<ul>
+<li>通用流程 skill:<strong>brainstorming</strong>(任何功能前)、<strong>test-driven-development</strong>、
+<strong>systematic-debugging</strong>、<strong>subagent-driven-development</strong>。</li>
+<li>项目专属 skill:验 ETL 产物、加新城、加新语种(把货币 + 0-decimal 检查内置)、部署流程。</li>
+</ul>
+<p>skill 是 coding agent 积累制度知识的方式。新会话开局就已经懂项目的纪律 —— 因为它们是被编码的,
+不是被记住的。</p>
+<h2 id="要点">要点</h2><ul>
+<li>把 coding agent 当成在四层上工程化的系统:prompt、context、harness、loop。</li>
+<li>prompt 说 <em>what</em> 和验收标准;<em>how</em> 归 agent。克制很重要。</li>
+<li>context 是真正的杠杆:项目宪法、持久记忆、刻意早压、子代理隔离,让它保持高信噪。</li>
+<li>harness 定义什么安全、什么省事;agent 在其中操作,永不越权上线。</li>
+<li>loop engineering 把无界任务(如翻成四语)变成有清晰退出条件的收敛过程。</li>
+<li>skill 编码可复用专长,让每次会话一开局就聪明。</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="常见问题">常见问题</h2><p><strong>AI coding agent 的 context engineering 是什么?</strong>
+通过项目宪法、持久记忆、刻意早压、把吵闹输出卸给子代理,来策展 agent context window 里的内容,
+让 agent 在长会话里保持准确。</p>
+<p><strong>harness engineering 是什么?</strong>
+设计 agent 在其中操作的工具、权限、hooks 和链路,让安全的路(测过、设卡、授权的部署)同时是省事的路。</p>
+<p><strong>loop engineering 是什么?</strong>
+把工作组织成一个便宜的重复步骤 + 一个清晰退出条件 —— 例如「找到并翻译未翻字符串,直到扫描返回空」
+—— 让 agent 收敛到完成。</p>
+<p><strong>一个人能用 Claude Code ship 一个真应用吗?</strong>
+能。这个 100 城、四语言的应用是单人做的,靠的是把 agent 在这四种纪律上工程化,而不是向它要零散片段。</p>
+<hr>
+<p><em>下一篇 → <a href="/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai/">在免费额度上做 LLM 行程规划:Qwen + Cloudflare Workers AI</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Claude Code 工作流:prompt、context、harness、loop engineering",
+  "image": "https://www.agentupdate.ai/blog/images/claude-code-engineering-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-19",
+  "inLanguage": "zh",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/zh/claude-code-prompt-context-harness-loop-engineering"
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="四种纪律" data-astro-cid-w5q62dq7> <a href="#四种纪律" data-astro-cid-w5q62dq7>四种纪律</a> </li><li class="toc-item " data-slug="1-prompt-engineering说-what不说-how" data-astro-cid-w5q62dq7> <a href="#1-prompt-engineering说-what不说-how" data-astro-cid-w5q62dq7>1. Prompt engineering:说 what,不说 how</a> </li><li class="toc-item " data-slug="2-context-engineeringagent-的工作记忆" data-astro-cid-w5q62dq7> <a href="#2-context-engineeringagent-的工作记忆" data-astro-cid-w5q62dq7>2. Context engineering:agent 的工作记忆</a> </li><li class="toc-item " data-slug="3-harness-engineering工具权限子代理" data-astro-cid-w5q62dq7> <a href="#3-harness-engineering工具权限子代理" data-astro-cid-w5q62dq7>3. Harness engineering:工具、权限、子代理</a> </li><li class="toc-item " data-slug="4-loop-engineering迭代到完成" data-astro-cid-w5q62dq7> <a href="#4-loop-engineering迭代到完成" data-astro-cid-w5q62dq7>4. Loop engineering:迭代到完成</a> </li><li class="toc-item " data-slug="superpowers-skills可复用的专长" data-astro-cid-w5q62dq7> <a href="#superpowers-skills可复用的专长" data-astro-cid-w5q62dq7>Superpowers skills:可复用的专长</a> </li><li class="toc-item " data-slug="要点" data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-slug="常见问题" data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/interactive-svg-china-map" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/svg-map-cover.png" alt="1000usdinchina.com开发总结(4)-手画一张交互式 100 城中国 SVG 地图" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/interactive-svg-china-map" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(4)-手画一张交互式 100 城中国 SVG 地图</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>为什么我用原生 SVG 而不是地图库做了一张交互式 100 城中国地图 —— 以及那个放大时城市点全变黑团的 bug。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月18日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/travel-data-etl-compliant-json" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/etl-pipeline-cover.png" alt="1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/travel-data-etl-compliant-json" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(3)-旅行数据 ETL 管线:4.5GB 原始数据 → 干净城市 JSON</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>我如何把 4.5GB 原始中国旅行数据(酒店、餐饮、交通、景点)洗成干净合规的每城 JSON,并用一条聚合红线保证永不泄露店级数据。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月17日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

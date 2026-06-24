@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Lesson 08 | Building a Standard ReAct Agent Architecture — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai</title><meta name="description" content="Lesson 08 | Building a Standard ReAct Agent Architecture Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-08/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-08/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-08/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-08/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Lesson 08 | Building a Standard ReAct Agent Architecture — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai"><meta property="og:description" content="Lesson 08 | Building a Standard ReAct Agent Architecture Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-08/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Lesson 08 | Building a Standard ReAct Agent Architecture — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai"><meta name="twitter:description" content="Lesson 08 | Building a Standard ReAct Agent Architecture Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Lesson 08 | Building a Standard ReAct Agent Architecture — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai","description":"Lesson 08 | Building a Standard ReAct Agent Architecture Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-08/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-08/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langgraph-tutorial/lesson-08/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langgraph-tutorial/lesson-08/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/langgraph-tutorial" class="series-title-link" data-astro-cid-vma7orrt> LANGGRAPH MASTERCLASS: FROM CONTROL FLOWS TO COMPLEX WORKFLOWS </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Session 01 | Why LangGraph? The End of the Chain Era and the Rise of State Graphs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 02 | The Heart of StateGraph: Dissecting the Global State</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 03 | Business Nodes: The True Executors of the Graph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 04 | Routing Edges and the END Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 06 | The Native Powerhouse: Seamlessly Integrating External Skills with ToolNode</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 07 | Conditional Edges: The \&quot;Branching Decider\&quot; of Workflows</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-08" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 08 | Building a Standard ReAct Agent Architecture</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 09 | Beyond the Local Scope: Handling Exceptions in Tool Nodes</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 10 | Granular Streaming: Watching the Graph Get the Job Done</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 11 | Parallel Execution: The Divide and Conquer Mechanism</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 12 | The Black Magic of Reducers: How to Safely Incrementally Update Data</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 13 | Human in the Loop (HITL): Building an Approval Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 14 | Time Machine! Building Checkpoints with SqliteSaver/MemorySaver</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 15 | Manual Retouching: Correcting Agent Hallucinations with update_state</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 16 | Exploring Multi-Agent Architectures: Flat vs. Hierarchical</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 17 | Supervisor Agent: Building the Command Center</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 18 | Sub-graphs: Condensing a Low-Level Graph into a Standard Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 19 | Cross-Agent Shared vs. Private State Walls: Information Routing and Isolation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 20 | Network of Agents Simulation in Action</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>21 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 21 | Async Execution: Leaving Blocking in the Past</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>22 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 22 | Observability: Seamlessly Mounting LangSmith Probes onto LangGraph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>23 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 23 | Fine-Grained Token Streaming (stream_mode=\&quot;messages\&quot;)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>24 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 24 | Anti-Timeout Strategies: Timeouts and LLM Fallback Retries</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-25" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>25 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>26 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 26 | Frontend Integration: Architecting Frontend-Backend Separation for LangGraph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>27 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 27 | Production-Grade Powerhouse: A First Look at LangGraph Cloud</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>28 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 28 | Extracting Complex Data (Structured Outputs)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>29 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 29 | Testing Graphs: How Do We Automate Acceptance Testing for Agent Performance?</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>30 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 30 | Capstone Project Showcase: A Complete AI Content Agency</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/langgraph-tutorial" data-astro-cid-ilhxcym7>LangGraph Masterclass: From Control Flows to Complex Workflows</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Lesson 08 | Building a Standard ReAct Agent Architecture</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"LangGraph Masterclass: From Control Flows to Complex Workflows","item":"https://www.agentupdate.ai/tutorial/langgraph-tutorial"},{"@type":"ListItem","position":4,"name":"Lesson 08 | Building a Standard ReAct Agent Architecture"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Lesson 08 | Building a Standard ReAct Agent Architecture</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>20 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><p><em>Implementing the classic "Reason-Act-Observe" (ReAct) loop using a cyclic edge.</em></p>
+<p>Welcome back, fellow geeks, to our <em>LangGraph Multi-Agent Masterclass</em>. It's your old friend here.</p>
+<p>Over the past 7 lessons, we've laid a solid foundation for our "AI Content Agency": we've defined state machines, mastered basic node routing, and even taught our LLMs to generate simple structured outputs. However, if you look closely at our previous architectures, you'll notice a fatal flaw—<strong>they are too "linear" and too "obedient."</strong></p>
+<p>Imagine if the <code>Researcher</code> in our agency was a purely linear thinker: if you asked them to look up "new products from the 2024 Apple Event," and they didn't have this knowledge in their internal weights, what would they do? Previously, they would just start making things up (hallucinating).</p>
+<p>How does a truly senior researcher work?
+They would first search Google (<strong>Act</strong>), look at the titles of the search results (<strong>Observe</strong>), and think to themselves, "Hmm, this link looks promising, I should click it" (<strong>Reason</strong>). Then, they would use a browser tool to read the webpage (<strong>Act</strong>). If the content isn't enough, they'd try a different keyword... They repeat this loop until they feel they've gathered enough information, and only then will they report back to you.</p>
+<p>This is the tough nut we are going to crack today: the <strong>ReAct (Reason + Act) Architecture</strong>.</p>
+<p>Today, we will leverage LangGraph's <strong>Cyclic Edges</strong> to inject genuine "reasoning and exploration" capabilities into our AI agency, completely refactoring our <code>Researcher</code> agent. Grab your coffee, and let's dive in!</p>
+<hr>
+<h2>🎯 Lesson Objectives</h2>
+<ol>
+<li><strong>Master the underlying logic of ReAct</strong>: Understand how the "Reason-Act-Observe" loop breaks through the capability ceiling of LLMs.</li>
+<li><strong>Master LangGraph cyclic graph construction</strong>: Learn to use Conditional Edges to implement unpredictable, dynamic routing.</li>
+<li><strong>Hands-on Researcher refactoring</strong>: Build a super researcher for our AI Content Agency that can autonomously call tools and decide when to conclude an investigation.</li>
+<li><strong>State and context management</strong>: Understand how <code>MessagesState</code> accumulates clues like memory within an infinite loop.</li>
+</ol>
+<hr>
+<h2>📖 Theory Breakdown</h2>
+<h3>1. What is ReAct?</h3>
+<p>ReAct is a paradigm proposed by Princeton University and Google in 2022 (in the paper <em>ReAct: Synergizing Reasoning and Acting in Language Models</em>). Before this, LLMs either purely reasoned (Chain of Thought) or purely acted (directly calling APIs).</p>
+<p>ReAct combines the two: <strong>it allows the LLM to "think out loud" before taking action, and to "assess the situation" after seeing the results of that action.</strong></p>
+<p>For our <code>Researcher</code>, its inner monologue looks like this:</p>
+<ul>
+<li><strong>Thought</strong>: The boss asked me to check the latest features of LangGraph. I need to use a search engine first.</li>
+<li><strong>Action</strong>: Call <code>search_tool("LangGraph new features 2024")</code></li>
+<li><strong>Observation</strong>: The tool returned 5 search results.</li>
+<li><strong>Thought</strong>: The 2nd result looks the most relevant; I need to read its detailed content.</li>
+<li><strong>Action</strong>: Call <code>scrape_web_tool("url_to_doc")</code></li>
+<li><strong>Observation</strong>: ...webpage text...</li>
+<li><strong>Thought</strong>: I have enough information now. I can start summarizing and finish the task.</li>
+</ul>
+<h3>2. How to map ReAct in LangGraph?</h3>
+<p>In LangGraph, we don't need to hardcode this loop. We only need to define two core nodes and one conditional edge:</p>
+<ol>
+<li><strong>Agent Node (LLM Node)</strong>: Responsible for reasoning and deciding whether to call a tool.</li>
+<li><strong>Tool Node</strong>: Responsible for executing the tool and returning the results.</li>
+<li><strong>Conditional Edge</strong>: Connects to the Agent Node. If the LLM decides to call a tool, it routes to the Tool Node; if the LLM directly outputs the final answer, it routes to <code>END</code>.</li>
+</ol>
+<p>The beauty of this architecture is: <strong>the number of loops is decided by the LLM itself</strong>. If it feels it has investigated enough, the graph ends; if not, the graph continues to loop.</p>
+<h3>3. Core Architecture Diagram (Mermaid)</h3>
+<p>Below is the ReAct workflow diagram we are going to build for our <code>Researcher</code> today. Pay close attention to the loop circuit in the diagram:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    classDef start_end fill:#f96,stroke:#333,stroke-width:2px;
+    classDef agent fill:#69b3a2,stroke:#333,stroke-width:2px;
+    classDef tool fill:#ff9999,stroke:#333,stroke-width:2px;
+    classDef condition fill:#e1d5e7,stroke:#333,stroke-width:2px;
+
+    START((START)):::start_end
+    END((END)):::start_end
+
+    subgraph ReAct_Loop [Core ReAct Loop (Researcher)]
+        Agent[🤖 Agent Node<br>Reason &amp; Decide Next Step]:::agent
+        Condition{💡 Routing Decision<br>Has Tool Call?}:::condition
+        Tools[🛠️ Tool Node<br>Execute Tool &amp; Record Observation]:::tool
+    end
+
+    START --&gt; Agent
+    Agent --&gt; Condition
+    
+    Condition -- "Yes (Go Act)" --&gt; Tools
+    Tools -- "Return Observation" --&gt; Agent
+    
+    Condition -- "No (Task Complete)" --&gt; END</pre></div><p><strong>Instructor's Sharp Take</strong>: Do you see that line pointing from <code>Tools</code> back to <code>Agent</code>? This is exactly where LangGraph overpowers traditional LangChain Chains. Chains are unidirectional, whereas Graphs are Turing-complete. With loops, an Agent truly comes to "life."</p>
+<hr>
+<h2>💻 Hands-on Code Walkthrough</h2>
+<p>Now, let's return to the "AI Content Agency" project. Our Planner has just issued a task: "Investigate the most popular AI coding assistant tools currently on the market and provide a brief comparison report."</p>
+<p>Our <code>Researcher</code> needs to take the order.</p>
+<h3>1. Preparation and Tool Definition</h3>
+<p>First, we need to equip our Researcher with "hands and eyes" (Tools). For demonstration purposes, we'll use mocked search and web scraping tools.</p>
+<pre><code class="language-python">import json
+from typing import TypedDict, Annotated, Sequence
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, ToolMessage
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+from langgraph.graph import StateGraph, START, END
+from langgraph.graph.message import add_messages
+
+# ==========================================
+# 1. Define Tools - The Researcher's Arsenal
+# ==========================================
+
+@tool
+def search_web(query: str) -&gt; str:
+    """Use this tool when you need to search the internet for the latest information."""
+    print(f"   [Tool 执行] 🔍 正在搜索: {query}")
+    # Mock search engine results
+    if "AI 编程助手" in query:
+        return json.dumps([
+            {"title": "Cursor: 彻底改变编程方式", "url": "https://cursor.sh/about"},
+            {"title": "GitHub Copilot 最新特性", "url": "https://github.com/copilot"}
+        ])
+    return "未找到相关信息。"
+
+@tool
+def scrape_web(url: str) -&gt; str:
+    """Use this tool when you need to read the detailed content of a specific webpage."""
+    print(f"   [Tool 执行] 📄 正在抓取网页: {url}")
+    # Mock web scraping
+    if "cursor" in url.lower():
+        return "Cursor 是一款基于 VS Code 分支的 AI 编辑器，深度集成了 Claude 3.5 Sonnet，支持多文件上下文重构。"
+    elif "copilot" in url.lower():
+        return "GitHub Copilot 集成了 OpenAI 的模型，优势在于与 GitHub 生态的无缝对接以及企业级安全合规。"
+    return "网页内容无法读取。"
+
+# Tool list
+tools = [search_web, scrape_web]
+</code></pre>
+<h3>2. Defining State and Agent Node</h3>
+<p>In ReAct, State is incredibly important. We need to record the entire history of "Reason-Act-Observe." The <code>add_messages</code> reducer provided by LangGraph is the perfect solution.</p>
+<pre><code class="language-python"># ==========================================
+# 2. Define State
+# ==========================================
+class AgentState(TypedDict):
+    # Using add_messages ensures messages are appended, not overwritten
+    # This is the secret to ReAct remembering previous search results!
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+
+# ==========================================
+# 3. Define LLM and Node Binding
+# ==========================================
+# Initialize LLM (Assuming you have configured OPENAI_API_KEY)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+
+# Crucial step: Bind tools to the LLM
+# This is equivalent to telling the LLM: "You can call these functions anytime you need to."
+llm_with_tools = llm.bind_tools(tools)
+
+def researcher_agent_node(state: AgentState):
+    """
+    Agent Node: Responsible for reading the current context (including previous observations),
+    reasoning, and deciding whether to output the final answer or continue calling tools.
+    """
+    print("\n[Agent 思考中...] 🧠 正在分析当前情报...")
+    messages = state["messages"]
+    
+    # Inject system prompt to give the Researcher its persona
+    sys_msg = SystemMessage(content="""
+    你是 AI Content Agency 的高级研究员 (Senior Researcher)。
+    你的目标是通过工具收集准确的信息。
+    请遵循以下原则：
+    1. 不要瞎编！必须基于工具返回的事实。
+    2. 如果信息不够，请继续搜索或读取网页。
+    3. 当你收集到足够的信息时，请直接输出最终的调查报告。
+    """)
+    
+    # Invoke the LLM
+    response = llm_with_tools.invoke([sys_msg] + messages)
+    
+    # Return the new message (it will be appended to the state)
+    return {"messages": [response]}
+</code></pre>
+<h3>3. Building Tool Node and Conditional Routing</h3>
+<p>This is the core code of today's lesson. We need to process the <code>tool_calls</code> returned by the LLM, execute them, and stuff the results back to the LLM as <code>ToolMessage</code>s.</p>
+<p><em>(Note: LangGraph officially provides a ready-to-use <code>ToolNode</code>, but to ensure you thoroughly understand the underlying logic, we are writing a minimalist custom tool execution node.)</em></p>
+<pre><code class="language-python"># ==========================================
+# 4. Define Tool Execution Node (Tool Node)
+# ==========================================
+def tool_execution_node(state: AgentState):
+    """
+    Tool Node: Specifically responsible for intercepting the LLM's tool_calls, 
+    executing the actual Python functions, and wrapping the results as ToolMessages to return.
+    """
+    messages = state["messages"]
+    # Get the latest message from the LLM
+    last_message = messages[-1]
+    
+    tool_responses = []
+    # Iterate through all the tools the LLM requested to call
+    for tool_call in last_message.tool_calls:
+        tool_name = tool_call["name"]
+        tool_args = tool_call["args"]
+        
+        # Find the corresponding tool function and execute it
+        tool_instance = next(t for t in tools if t.name == tool_name)
+        try:
+            result = tool_instance.invoke(tool_args)
+        except Exception as e:
+            result = f"工具执行出错: {str(e)}"
+            
+        # Must be wrapped as a ToolMessage, including the tool_call_id
+        # This way the LLM knows which specific call this result corresponds to
+        tool_responses.append(
+            ToolMessage(
+                content=str(result),
+                name=tool_name,
+                tool_call_id=tool_call["id"]
+            )
+        )
+        
+    return {"messages": tool_responses}
+
+# ==========================================
+# 5. Define Conditional Routing (Conditional Edge)
+# ==========================================
+def should_continue(state: AgentState) -&gt; str:
+    """
+    Routing logic: Decides whether the graph continues looping or ends.
+    """
+    messages = state["messages"]
+    last_message = messages[-1]
+    
+    # If the message returned by the LLM contains tool_calls, it means it wants to act
+    if last_message.tool_calls:
+        print("   [路由决策] 🔀 发现工具调用，前往 Tools 节点。")
+        return "continue"
+    
+    # Otherwise, it means the LLM thinks the task is done and outputted plain text
+    print("   [路由决策] 🏁 任务完成，准备输出报告。")
+    return "end"
+</code></pre>
+<h3>4. Assembling and Running our Agency Researcher</h3>
+<p>Let's wire the nodes and edges together!</p>
+<pre><code class="language-python"># ==========================================
+# 6. Build LangGraph
+# ==========================================
+workflow = StateGraph(AgentState)
+
+# Add nodes
+workflow.add_node("agent", researcher_agent_node)
+workflow.add_node("tools", tool_execution_node)
+
+# Set entry point: Always enter the agent node first to reason
+workflow.add_edge(START, "agent")
+
+# Add conditional edges: From the agent, decide where to go based on should_continue's return value
+workflow.add_conditional_edges(
+    "agent",
+    should_continue,
+    {
+        "continue": "tools", # If it returns 'continue', go to the tools node
+        "end": END           # If it returns 'end', finish the graph
+    }
+)
+
+# Add cyclic edge: After tools finish executing, it MUST return to the agent node for "observation and next step reasoning"
+workflow.add_edge("tools", "agent")
+
+# Compile the graph
+researcher_app = workflow.compile()
+
+# ==========================================
+# 7. Mock Run (Demo)
+# ==========================================
+if __name__ == "__main__":
+    from langchain_core.messages import SystemMessage # Complete the missing import from above
+    print("=== AI Content Agency: Researcher 启动 ===")
+    
+    # Task issued by the Planner
+    initial_task = "请调查目前市面上最火的 AI 编程助手工具(Cursor和Copilot)，并给出一份简短的对比报告。"
+    
+    inputs = {"messages": [HumanMessage(content=initial_task)]}
+    
+    # The stream method allows us to see the execution process step-by-step
+    for output in researcher_app.stream(inputs, stream_mode="updates"):
+        # Print the currently executing node
+        for node_name, state_update in output.items():
+            pass # Detailed logs are already printed inside the nodes
+            
+    # Print the final result
+    final_state = researcher_app.get_state(inputs) # Get the final state
+    # (Note: The get_state usage above might require a thread_id in some versions.
+    # The simplest way to get the final message is directly from the last stream output)
+    print("\n==================================")
+    print("📊 Researcher 最终报告:")
+    print("==================================")
+    # Extract the content of the last message in the state
+    print(output['agent']['messages'][-1].content)
+</code></pre>
+<h3>🧠 Mental Walkthrough of the Execution (The LLM's Inner Monologue)</h3>
+<p>When you run this code, you will see the console frantically outputting:</p>
+<ol>
+<li><code>[Agent 思考中...]</code> (Agent Thinking...) -&gt; The LLM decides it needs to look up information.</li>
+<li><code>[路由决策] 🔀 发现工具调用...</code> (Routing Decision: Tool call found...) -&gt; Triggers the conditional edge.</li>
+<li><code>[Tool 执行] 🔍 正在搜索...</code> (Tool Execution: Searching...) -&gt; Executes <code>search_web</code>.</li>
+<li>Returns to Agent, <code>[Agent 思考中...]</code> -&gt; Sees the search results only have URLs, decides to dig deeper.</li>
+<li><code>[路由决策] 🔀 发现工具调用...</code></li>
+<li><code>[Tool 执行] 📄 正在抓取...</code> (Tool Execution: Scraping...) -&gt; Executes <code>scrape_web</code>.</li>
+<li>Returns to Agent, <code>[Agent 思考中...]</code> -&gt; Information gathering is complete, starts writing the report.</li>
+<li><code>[路由决策] 🏁 任务完成...</code> (Routing Decision: Task complete...) -&gt; Routes to END.</li>
+</ol>
+<p><strong>This is true intelligence! It is no longer a rigid process, but an Agent with autonomous exploration capabilities.</strong></p>
+<hr>
+<h2>💣 Gotchas and Troubleshooting Guide</h2>
+<p>As your mentor, I can't just teach you how to run a Demo; I also have to tell you how this architecture will completely wreck you in a real production environment.</p>
+<h3>💣 Pitfall 1: Infinite Loops</h3>
+<p><strong>Symptom</strong>: The LLM gets stuck in a loop. For example, it searches for something and can't find it, so it changes the keyword and searches again, still can't find it, and keeps searching... Your API bill will explode overnight.
+<strong>How to avoid</strong>:
+In LangGraph, you must set a recursion limit when invoking the graph. The default is 25, but it's highly recommended to set it explicitly.</p>
+<pre><code class="language-python"># Limit the graph to a maximum of 10 steps
+researcher_app.invoke(inputs, {"recursion_limit": 10})
+</code></pre>
+<p>If the limit is reached, LangGraph will throw a <code>GraphRecursionError</code>, which you can catch at the outer layer to implement graceful degradation.</p>
+<h3>💣 Pitfall 2: Tool Errors Crashing the Graph</h3>
+<p><strong>Symptom</strong>: <code>scrape_web</code> encounters an anti-bot block and throws a <code>TimeoutError</code>, causing the entire Graph to crash and exit.
+<strong>How to avoid</strong>:
+<strong>Never let a tool's Error bubble up to the graph level!</strong> Just like the <code>try...except</code> block we wrote in <code>tool_execution_node</code>, you should convert the error message into a string and wrap it in a <code>ToolMessage</code> to return to the LLM.
+LLMs are very smart. If it sees a <code>ToolMessage</code> saying "Error: 403 Forbidden", it will figure out a workaround (like trying a different website, or stating in the report that "the website is inaccessible"). <strong>Turning exceptions into observations is the essence of the ReAct architecture.</strong></p>
+<h3>💣 Pitfall 3: Context Window Explosion</h3>
+<p><strong>Symptom</strong>: The Researcher checks 10 webpages, each with 5,000 words. The <code>messages</code> list gets longer and longer, eventually exceeding GPT-4's 128k context limit, throwing a <code>TokenLimitExceeded</code> error.
+<strong>How to avoid</strong>:
+In real-world projects, we cannot <code>add_messages</code> infinitely. We need to introduce <strong>State Trimming</strong> or a <strong>Summarize Node</strong> within the loop. When <code>len(messages)</code> exceeds a certain threshold, it triggers an internal smaller LLM to compress the previous useless webpage content into a summary.
+<em>(Spoiler alert: We will dive deep into this advanced technique in Lesson 12: Long Context and Memory Management!)</em></p>
+<hr>
+<h2>📝 Lesson Summary</h2>
+<p>Today, we completed a cognitive leap from "linear execution" to "dynamic loops":</p>
+<ol>
+<li><strong>The ReAct architecture</strong> isn't some mysterious magic; it is simply <strong>LLM Node + Tool Node + Cyclic Conditional Edge</strong>.</li>
+<li>We successfully built the <code>Researcher</code> role for our "AI Content Agency." It is no longer a nerd that only recites training data, but a true researcher that can use search engines, read webpages, and autonomously decide when to deliver the results.</li>
+<li>We mastered the accumulation mechanism of the <code>messages</code> state in LangGraph, which is the key to the LLM maintaining memory across multiple loops.</li>
+</ol>
+<p><strong>Next Time:</strong>
+Our Researcher is capable now, but it's fighting alone. In our Agency, how does the Planner (Manager) hand tasks over to the Researcher, and how does the Researcher pass the report to the Writer (Lead Author) once done?
+In Lesson 09, <em>Multi-Agent Collaboration: SubGraphs and Networked Organizations</em>, we will take the Researcher we wrote today and plug it in as a <strong>sub-node</strong> within our massive agency network.</p>
+<p>Geeks, get today's code running! Try adding a "weather lookup" tool to your Researcher and see if it can tell you whether to bring an umbrella tomorrow. See you in the next lesson!</p>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-07" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Part 07 | Conditional Edges: The \&quot;Branching Decider\&quot; of Workflows</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Episode 09 | Beyond the Local Scope: Handling Exceptions in Tool Nodes</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

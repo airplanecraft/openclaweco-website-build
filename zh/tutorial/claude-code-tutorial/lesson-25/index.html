@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) — Claude Code 终极大师课 — AgentUpdate.ai</title><meta name="description" content="第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-25/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-code-tutorial/lesson-25/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-25/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-code-tutorial/lesson-25/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) — Claude Code 终极大师课 — AgentUpdate.ai"><meta property="og:description" content="第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-25/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) — Claude Code 终极大师课 — AgentUpdate.ai"><meta name="twitter:description" content="第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) — Claude Code 终极大师课 — AgentUpdate.ai","description":"第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright) 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。","inLanguage":"zh-CN","url":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-25/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-25/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.DHQ-IJjR.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-code-tutorial/lesson-25/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-code-tutorial/lesson-25/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-p7qzptk4> <div class="container dual-layout-container" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-p7qzptk4> <div class="sidebar-box" data-astro-cid-p7qzptk4> <span class="catalog-header-tag" data-astro-cid-p7qzptk4>课程大纲 // CURRICULUM</span> <a href="/zh/tutorial/claude-code-tutorial" class="series-title-link" data-astro-cid-p7qzptk4> CLAUDE CODE 终极大师课 </a> <ul class="nav-lesson-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-1" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>01 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 01 章 | 告别静态工具：什么是终端级 AI 编程代理 Claude Code？</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-2" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>02 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 02 章 | 环境搭建与授权：Windows/Mac/Linux 极速安装指南</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-3" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>03 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 03 章 | 理解 Claude Code 的底层信任模型</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-4" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>04 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 04 章 | 交互基石：探索终端里的魔法模式 (Modes)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-5" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>05 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 05 章 | 第一个 Hello World 项目</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-6" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>06 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 06 章 | 代码库雷达：用自然语言进行 Repository 探索</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-7" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>07 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 07 章 | 编写 CLAUDE.md：给 AI 的持久层项目简报</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-8" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>08 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 08 章 | Context Window (上下文) 管理的艺术</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-9" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>09 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 09 章 | 精准的 Prompt Scoping（作用域边界控制）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>10 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 10 章 | 文件批处理与重构利器</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>11 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 11 章 | Bug 终结者：基于栈追踪 (Stack Trace) 的自动修复</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>12 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 12 章 | 理解&quot;记忆断档&quot;：Vibe Coding 翻车实录分析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>13 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 13 章 | 产品经理的新技能：从 PRD 到可运行原型只需 20 分钟</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>14 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 14 章 | 用 CSV 做自动数据分析与洞察提取</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>15 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 15 章 | 用户访谈与问卷综合 (User Research Synthesis)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>16 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 16 章 | 日常文档全自动生成流水线</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>17 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 17 章 | Claude Cowork：跨多步骤的自动任务分解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>18 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 18 章 | 基于终端的自动化 UI Testing</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>19 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 19 章 | 什么是 MCP？它为什么是 AI Agent 的&quot;USB 接口</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>20 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 20 章 | 官方内置连接器配置与启用</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>21 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>22 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 22 章 | Slack 消息的监控与自动化分发 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>23 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 23 章 | 图形化思维：Excalidraw MCP 绘图实战</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>24 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 24 章 | 数据库直连：SQL 客户端检索与分析 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-25" class="lesson-nav-link active" data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>25 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>26 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 26 章 | 基于 MCP 的跨应用组合拳 (Orchestration)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>27 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 27 章 | MCP 失效与连接重试安全策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>28 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 28 章 | 告别 Prompt 工程，步入 Skills 工程</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>29 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 29 章 | SKILL.md 结构深度剖析：渐进式披露 (Progressive Disclosure)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>30 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 30 章 | 从 0 构建你的第一个专属 Skill（五步法）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-31" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>31 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 31 章 | 前端开发设计飞跃：Frontend-design Skill 案例解析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-32" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>32 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 32 章 | 使用 skills.sh：2026 时代的 Agent npm 管理器</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-33" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>33 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 33 章 | 企业级办公文档 Skill：定制公司品牌模板</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-34" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>34 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 34 章 | 智能决策树：具有上下文感知能力的工具选择</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-35" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>35 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 35 章 | AI 辅助造 AI：用 Skill-creator 生成复杂工作流</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-36" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>36 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 36 章 | Skill 开发的安全模型与恶意插件防范</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-37" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>37 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 37 章 | Vibe Coding 的致命伤与工程救赎</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-38" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>38 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 38 章 | `planning-with-files` 插件入门</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-39" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>39 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 39 章 | 跨天、长生命周期项目的持续集成</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-40" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>40 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 40 章 | 多功能并行开发防串扰策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-41" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>41 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 41 章 | Debug 地狱求生：记录试错日志让 AI 智商上线</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-42" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>42 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 42 章 | 单元测试驱动的 Agentic 代码生成 (TDD + Claude)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-43" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>43 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 43 章 | 代码走查验证策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-44" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>44 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 44 章 | 视觉能力的加入：图片资产与视频帧的理解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-45" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>45 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 45 章 | Builder.io 平台介绍：从孤岛到 Slack 化团队协同</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-46" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>46 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 46 章 | 并行代理协作 (Parallel Agents)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-47" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>47 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 47 章 | 分享预览与角色分工验证</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-48" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>48 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 48 章 | Agentic 后端理论：所有后端正在成为思考的主体</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-49" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>49 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 49 章 | 基于权限流的管理哲学</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-50" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>50 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 50 章 | 从程序员到全栈掌控者：属于 Agent 开发者的十年机遇</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/claude-code-tutorial" data-astro-cid-ilhxcym7>Claude Code 终极大师课</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright)</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial"},{"@type":"ListItem","position":3,"name":"Claude Code 终极大师课","item":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial"},{"@type":"ListItem","position":4,"name":"第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright)"}]}</script> <header class="lesson-details-header" data-astro-cid-p7qzptk4> <h1 class="lesson-display-title" data-astro-cid-p7qzptk4>第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright)</h1> <div class="lesson-meta-row" data-astro-cid-p7qzptk4>  <span class="meta-item" data-astro-cid-p7qzptk4>20 分钟阅读</span> <span class="meta-separator" data-astro-cid-p7qzptk4>|</span>  <span class="meta-item" data-astro-cid-p7qzptk4>更新于：2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-p7qzptk4><p>副标题/大纲：越过本地磁盘：让 Claude Code 在外网上收集参考资料后注入代码项目。</p>
+<h2>🎯 学习目标</h2>
+<ul>
+<li>理解网络代理在爬虫中的重要性、工作原理及其在 Claude Code 中的应用场景。</li>
+<li>掌握 Claude Code 中通过 <code>WebFetch</code> 工具进行轻量级、静态网页内容抓取的方法。</li>
+<li>学习如何利用 <code>Playwright</code> 工具进行复杂的动态网页交互、数据提取与自动化操作。</li>
+<li>了解 Claude Code 如何整合这些外部数据收集能力，实现从互联网获取信息并注入到代码项目中的高级工作流。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>25.1 网络代理与爬虫伦理：数据获取的基石与边界</h3>
+<p>在进行大规模网络数据抓取时，直接使用本地 IP 地址往往会遇到诸多限制，例如：</p>
+<ul>
+<li><strong>IP 封禁：</strong> 目标网站可能会识别并封禁来自同一 IP 地址的频繁访问。</li>
+<li><strong>频率限制：</strong> 网站对单个 IP 的访问频率设有阈值，超出即会触发验证码或临时封禁。</li>
+<li><strong>地理限制：</strong> 部分内容或服务仅对特定地区开放。</li>
+</ul>
+<p>网络代理服务器（Proxy Server）正是为了解决这些问题而生。它充当客户端（我们的爬虫）和目标服务器之间的中间人，所有的请求都通过代理服务器转发。</p>
+<pre><code>+--------------------+      +-----------------------+      +--------------------+
+|  Claude Code /     |      |                       |      |                    |
+|  你的爬虫程序      |-----&gt;|   代理服务器 (Proxy)  |-----&gt;|   目标网站服务器   |
+|  (Client)          |      |                       |      |    (Target Server) |
++--------------------+      +-----------------------+      +--------------------+
+                           ^                               ^
+                           |                               |
+                           +-- 客户端看到的是代理IP --------+-- 目标服务器看到的是代理IP
+</code></pre>
+<p><strong>代理的类型：</strong></p>
+<ul>
+<li><strong>HTTP/HTTPS 代理：</strong> 最常见，用于网页浏览。</li>
+<li><strong>SOCKS 代理：</strong> 更底层，支持 TCP/UDP，可用于非 HTTP 协议的流量。</li>
+<li><strong>透明代理：</strong> 目标网站知道你使用了代理且知道你的真实 IP。</li>
+<li><strong>匿名代理：</strong> 目标网站知道你使用了代理，但不知道你的真实 IP。</li>
+<li><strong>高匿名代理：</strong> 目标网站甚至不知道你使用了代理，认为你是直接访问。</li>
+</ul>
+<p><strong>爬虫伦理与法律边界：</strong>
+尽管代理提供了便利，但进行网络爬取时必须严格遵守伦理和法律规定：</p>
+<ol>
+<li><strong><code>robots.txt</code> 协议：</strong> 任何负责任的爬虫都应首先检查目标网站的 <code>robots.txt</code> 文件，并遵守其中定义的抓取规则（哪些路径不允许抓取、哪些用户代理不允许抓取等）。</li>
+<li><strong>抓取频率：</strong> 模拟人类访问行为，避免在短时间内对服务器造成过大压力，否则可能被视为拒绝服务攻击。</li>
+<li><strong>数据用途：</strong> 明确收集数据的合法用途，不得用于侵犯隐私、版权或商业秘密。</li>
+<li><strong>登录与认证：</strong> 未经授权不得绕过登录机制，除非是抓取公开数据。</li>
+<li><strong>条款与条件：</strong> 遵守网站的服务条款。</li>
+</ol>
+<p>Claude Code 在执行网络抓取任务时，会内置对 <code>robots.txt</code> 的初步检查，并提供配置选项来控制抓取频率和代理使用，以帮助用户在合规的前提下高效工作。</p>
+<h3>25.2 <code>WebFetch</code>：Claude Code 的轻量级网络抓取器</h3>
+<p><code>WebFetch</code> 是 Claude Code 内部封装的一个轻量级、高效的网络请求工具，它旨在简化对静态网页内容的获取。你可以将其理解为 <code>curl</code> 或 Python <code>requests</code> 库的高级抽象，专门为 Claude 的任务执行环境优化。</p>
+<p><strong>核心特性：</strong></p>
+<ul>
+<li><strong>简洁的 API：</strong> 通过简单的 JSON 或 YAML 配置即可发起 HTTP/HTTPS 请求。</li>
+<li><strong>支持代理：</strong> 可轻松集成代理服务器，实现匿名访问或 IP 轮换。</li>
+<li><strong>请求头定制：</strong> 允许自定义 User-Agent、Referer 等 HTTP 请求头，模拟不同客户端行为。</li>
+<li><strong>超时控制：</strong> 防止请求无限期等待。</li>
+<li><strong>自动重试：</strong> 在网络不稳定的情况下，可配置自动重试机制。</li>
+</ul>
+<p><strong>典型应用场景：</strong></p>
+<ul>
+<li>抓取博客文章、新闻页面等静态 HTML 内容。</li>
+<li>获取 API 接口返回的 JSON 或 XML 数据。</li>
+<li>检测网站的可访问性或特定内容的更新。</li>
+</ul>
+<p><strong><code>WebFetch</code> 工具定义示例 (假设 Claude Code 的工具配置是 YAML 格式)：</strong></p>
+<pre><code class="language-yaml">tools:
+  - name: WebFetch
+    description: "用于通过 HTTP/HTTPS 请求获取网页内容或API数据。"
+    parameters:
+      type: object
+      properties:
+        url:
+          type: string
+          description: "目标URL。"
+        method:
+          type: string
+          enum: ["GET", "POST", "PUT", "DELETE"]
+          default: "GET"
+          description: "HTTP 请求方法。"
+        headers:
+          type: object
+          description: "自定义HTTP请求头，键值对形式。"
+        data:
+          type: string
+          description: "POST/PUT请求体数据，可以是JSON字符串或表单数据。"
+        proxy:
+          type: string
+          description: "代理服务器地址，格式如 'http://user:pass@host:port' 或 'socks5://host:port'。"
+        timeout:
+          type: integer
+          default: 30
+          description: "请求超时时间（秒）。"
+        follow_redirects:
+          type: boolean
+          default: true
+          description: "是否跟随HTTP重定向。"
+      required: ["url"]
+</code></pre>
+<h3>25.3 <code>Playwright</code>：应对动态网页的瑞士军刀</h3>
+<p>当目标网页大量依赖 JavaScript 进行内容渲染（如单页应用 SPA）或需要复杂的用户交互（如点击按钮、填写表单、滚动页面加载更多内容）时，仅仅使用 <code>WebFetch</code> 这样的 HTTP 客户端是无法满足需求的。这时，我们就需要一个无头浏览器（Headless Browser）。</p>
+<p><code>Playwright</code> 是 Microsoft 开发的一个强大的无头浏览器自动化库，它支持 Chromium (Chrome)、Firefox 和 WebKit (Safari) 三大浏览器引擎，并提供了统一的 API。</p>
+<p><strong>核心特性：</strong></p>
+<ul>
+<li><strong>多浏览器支持：</strong> 在真实浏览器环境中运行测试或爬虫。</li>
+<li><strong>无头模式：</strong> 可以在后台运行浏览器，无需显示图形界面，节省资源。</li>
+<li><strong>丰富的交互 API：</strong><ul>
+<li>页面导航 (<code>page.goto()</code>)</li>
+<li>元素选择 (<code>page.locator()</code>, <code>page.$()</code>)</li>
+<li>点击 (<code>element.click()</code>)</li>
+<li>输入文本 (<code>element.fill()</code>)</li>
+<li>键盘/鼠标操作</li>
+<li>等待元素出现/网络请求完成 (<code>page.waitForSelector()</code>, <code>page.waitForLoadState()</code>)</li>
+<li>截图 (<code>page.screenshot()</code>)、生成 PDF (<code>page.pdf()</code>)</li>
+</ul>
+</li>
+<li><strong>网络拦截：</strong> 可以拦截、修改或阻止网络请求，例如加载代理、注入脚本、阻止图片加载等。</li>
+<li><strong>上下文隔离：</strong> 每个 <code>BrowserContext</code> 都是独立的，拥有自己的缓存、cookie 和本地存储，互不影响。</li>
+</ul>
+<p><strong><code>Playwright</code> 在 Claude Code 中的集成：</strong>
+Claude Code 可以通过一个专门的 <code>Playwright</code> 工具或 <code>browser_automation</code> 工具来调用 <code>Playwright</code> 的能力。用户通过提供一个描述任务的自然语言指令，或者一个预定义的 <code>Playwright</code> 脚本，让 Claude 来执行。</p>
+<p><strong><code>Playwright</code> 工具定义示例 (假设 Claude Code 的工具配置)：</strong></p>
+<pre><code class="language-yaml">tools:
+  - name: Playwright
+    description: "用于在无头浏览器中执行复杂网页交互和动态内容抓取。"
+    parameters:
+      type: object
+      properties:
+        script:
+          type: string
+          description: "要执行的Playwright Python脚本代码字符串。"
+        url:
+          type: string
+          description: "可选：初始导航URL，如果脚本未指定。"
+        browser:
+          type: string
+          enum: ["chromium", "firefox", "webkit"]
+          default: "chromium"
+          description: "使用的浏览器类型。"
+        headless:
+          type: boolean
+          default: true
+          description: "是否在无头模式下运行浏览器。"
+        proxy:
+          type: string
+          description: "代理服务器地址，格式如 'http://user:pass@host:port'。"
+        args:
+          type: array
+          items:
+            type: string
+          description: "传递给浏览器启动的额外参数，例如 '--disable-gpu'。"
+        context_options:
+          type: object
+          description: "Playwright BrowserContext 选项，如 user_agent, locale 等。"
+      required: ["script"]
+</code></pre>
+<p>通过 <code>Playwright</code>，Claude Code 能够模拟真实用户行为，绕过 JavaScript 渲染障碍，从而获取到最接近用户浏览器所见的内容，极大地扩展了 Claude 的信息收集能力。</p>
+<hr>
+<h2>💻 模拟 Claude TUI 交互</h2>
+<p><strong>场景 1：使用 <code>WebFetch</code> 快速抓取特定技术博客的最新文章标题</strong></p>
+<blockquote>
+<p>我需要获取 <code>https://www.example-tech-blog.com/</code> 网站上关于 "AI" 标签的最新五篇文章标题和链接。</p>
+</blockquote>
+<p>╭─ Claude ──────────────────────────────╮
+│  好的，我将使用 <code>WebFetch</code> 工具尝试抓取该博客的 "AI" 标签页，│
+│  然后解析 HTML 内容以提取标题和链接。如果该页面是动态渲染的，│
+│  我可能需要切换到 <code>Playwright</code>。请稍等...                    │
+│                                                               │
+│  <strong>工具调用: <code>WebFetch</code></strong>                                     │
+│  <code>json                                                      │ │  {                                                            │ │    "url": "https://www.example-tech-blog.com/tags/AI",        │ │    "method": "GET",                                           │ │    "headers": {                                               │ │      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"│ │    }                                                          │ │  }                                                            │ │  </code>                                                          │
+│                                                               │
+│  <strong>工具输出: <code>WebFetch</code> (部分 HTML 内容)</strong>                     │
+│  <code>html                                                      │ │  &lt;!DOCTYPE html&gt;                                              │ │  &lt;html lang="zh"&gt;                                             │ │  &lt;head&gt;...&lt;/head&gt;                                             │ │  &lt;body&gt;                                                       │ │    &lt;div id="posts-list"&gt;                                      │ │      &lt;article class="post-item"&gt;                              │ │        &lt;h2&gt;&lt;a href="/article/ai-future-trends"&gt;AI 未来趋势分析&lt;/a&gt;&lt;/h2&gt;│ │        &lt;p&gt;...&lt;/p&gt;                                             │ │      &lt;/article&gt;                                               │ │      &lt;article class="post-item"&gt;                              │ │        &lt;h2&gt;&lt;a href="/article/llm-development"&gt;大型语言模型开发实践&lt;/a&gt;&lt;/h2&gt;│ │        &lt;p&gt;...&lt;/p&gt;                                             │ │      &lt;/article&gt;                                               │ │      &lt;!-- 更多文章 --&gt;                                        │ │    &lt;/div&gt;                                                     │ │  &lt;/body&gt;                                                      │ │  &lt;/html&gt;                                                      │ │  </code>                                                          │
+│                                                               │
+│  已成功抓取并解析内容。以下是关于 "AI" 的最新五篇文章：       │
+│                                                               │
+│  1.  <strong>AI 未来趋势分析</strong>                                      │
+│      链接: <code>https://www.example-tech-blog.com/article/ai-future-trends</code>│
+│  2.  <strong>大型语言模型开发实践</strong>                                 │
+│      链接: <code>https://www.example-tech-blog.com/article/llm-development</code>│
+│  3.  <strong>深度学习在图像识别中的应用</strong>                           │
+│      链接: <code>https://www.example-tech-blog.com/article/deep-learning-image-recognition</code>│
+│  4.  <strong>强化学习入门指南</strong>                                     │
+│      链接: <code>https://www.example-tech-blog.com/article/reinforcement-learning-guide</code>│
+│  5.  <strong>AI 伦理与治理的挑战</strong>                                  │
+│      链接: <code>https://www.example-tech-blog.com/article/ai-ethics-challenges</code>│
+│                                                               │
+│  您希望我将这些信息注入到您的项目文档中，还是用于生成代码？    │
+╰───────────────────────────────────────╯</p>
+<p><strong>场景 2：使用 <code>Playwright</code> 登录并抓取需要认证的用户仪表盘数据 (假设已获授权)</strong></p>
+<blockquote>
+<p>我需要从 <code>https://my-dashboard.secure-app.com/</code> 上的个人仪表盘抓取我的项目列表。我的用户名是 <code>myuser</code>，密码是 <code>mypassword</code>。请使用代理 <code>http://proxy.example.com:8080</code>。</p>
+</blockquote>
+<p>╭─ Claude ──────────────────────────────╮
+│  好的，我将使用 <code>Playwright</code> 模拟登录并抓取您的仪表盘数据。    │
+│  请注意，在实际操作中，泄露密码是危险的。通常我会建议您使用     │
+│  环境变量或安全凭据管理系统来传递敏感信息。本次操作我会直接使用 │
+│  您提供的凭据和代理。                                         │
+│                                                               │
+│  <strong>工具调用: <code>Playwright</code></strong>                                   │
+│  <code>json                                                      │ │  {                                                            │ │    "browser": "chromium",                                     │ │    "headless": true,                                          │ │    "proxy": "http://proxy.example.com:8080",                  │ │    "script": """                                              │ │import asyncio                                                │ │from playwright.async_api import Page, expect, BrowserContext, request as playwright_request, TimeoutError # 导入 TimeoutError │ │                                                               │ │async def run(page: Page, context: BrowserContext):           │ │    try:                                                       │ │        print("Navigating to login page...")                   │ │        await page.goto("https://my-dashboard.secure-app.com/login", wait_until="domcontentloaded")│ │        await page.wait_for_selector('input[name="username"]', timeout=10000) # 等待用户名输入框出现 │ │                                                               │ │        print("Filling credentials...")                        │ │        await page.fill('input[name="username"]', "myuser")   │ │        await page.fill('input[name="password"]', "mypassword")│ │                                                               │ │        print("Clicking login button...")                      │ │        await page.click('button[type="submit"]')             │ │                                                               │ │        print("Waiting for dashboard to load...")              │ │        await page.wait_for_url("https://my-dashboard.secure-app.com/dashboard", timeout=30000) # 等待跳转到仪表盘页面 │ │        await page.wait_for_load_state("networkidle")          │ │                                                               │ │        print("Extracting project list...")                    │ │        project_elements = await page.locator('.project-item').all()│ │        projects = []                                          │ │        for el in project_elements:                            │ │            title = await el.locator('.project-title').text_content()│ │            status = await el.locator('.project-status').text_content()│ │            projects.append({"title": title.strip(), "status": status.strip()})│ │                                                               │ │        print(f"Extracted {len(projects)} projects.")         │ │        return {"projects": projects}                          │ │    except TimeoutError:                                       │ │        print("Playwright operation timed out.")               │ │        return {"error": "Playwright operation timed out. Check selectors or network."}│ │    except Exception as e:                                     │ │        print(f"An error occurred: {e}")                       │ │        return {"error": str(e)}                               │ │                                                               │ │"""                                                            │ │  }                                                            │ │  </code>                                                          │
+│                                                               │
+│  <strong>工具输出: <code>Playwright</code> (JSON 结果)</strong>                       │
+│  <code>json                                                      │ │  {                                                            │ │    "projects": [                                              │ │      {"title": "Website Redesign Project", "status": "进行中"},│ │      {"title": "Mobile App v2.0", "status": "已完成"},          │ │      {"title": "Backend API Optimization", "status": "待开始"}  │ │    ]                                                          │ │  }                                                            │ │  </code>                                                          │
+│                                                               │
+│  成功从您的仪表盘获取了项目列表：                             │
+│                                                               │
+│  - <strong>Website Redesign Project</strong>: 进行中                       │
+│  - <strong>Mobile App v2.0</strong>: 已完成                                │
+│  - <strong>Backend API Optimization</strong>: 待开始                       │
+│                                                               │
+│  您希望我根据这些项目信息做些什么？例如，生成项目状态报告，或者为 │
+│  "进行中" 的项目创建 Jira 任务？                               │
+╰───────────────────────────────────────╯</p>
+<hr>
+<h2>💻 代码演示</h2>
+<p>以下是一些在 Claude Code 环境中，<code>WebFetch</code> 和 <code>Playwright</code> 工具可能被调用的实际配置或脚本示例。</p>
+<p><strong>1. <code>WebFetch</code> 调用示例 (获取 JSON API 数据，带代理和自定义 User-Agent)</strong></p>
+<p>假设你需要从一个公共 API 获取数据，并希望通过代理隐藏真实 IP，同时模拟浏览器请求。</p>
+<pre><code class="language-json">{
+  "tool_name": "WebFetch",
+  "parameters": {
+    "url": "https://api.public-data-source.com/v1/latest-news?category=technology",
+    "method": "GET",
+    "headers": {
+      "Accept": "application/json",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+      "X-Requested-With": "XMLHttpRequest"
+    },
+    "proxy": "http://user:password@myproxy.com:8888",
+    "timeout": 45
+  }
+}
+</code></pre>
+<p><strong>2. <code>Playwright</code> 脚本示例 (模拟用户登录、搜索并截图)</strong></p>
+<p>这个 Python 脚本展示了如何使用 <code>Playwright</code> 启动一个浏览器，导航到登录页，输入凭据，执行搜索，并截取搜索结果页面的图片。Claude Code 将执行这个脚本并返回结果。</p>
+<pre><code class="language-python"># 第 25 章：playwright_script.py (此脚本将作为字符串传递给 Claude 的 Playwright 工具)
+import asyncio
+from playwright.async_api import Page, expect, BrowserContext, request as playwright_request, TimeoutError
+
+async def run(page: Page, context: BrowserContext):
+    """
+    此函数将在Playwright的Page和BrowserContext中执行。
+    """
+    try:
+        # 1. 导航到登录页面
+        print("Navigating to login page...")
+        await page.goto("https://www.my-internal-tool.com/login", wait_until="domcontentloaded")
+        await page.wait_for_selector('input[name="username"]', timeout=15000)
+
+        # 2. 填写登录凭据
+        print("Filling credentials...")
+        await page.fill('input[name="username"]', "my_secure_username")
+        await page.fill('input[name="password"]', "my_secure_password_from_env") # 假设密码从环境变量或安全存储中获取
+
+        # 3. 点击登录按钮
+        print("Clicking login button...")
+        await page.click('button[type="submit"]')
+
+        # 4. 等待跳转到内部仪表盘或主页
+        print("Waiting for dashboard to load...")
+        await page.wait_for_url("https://www.my-internal-tool.com/dashboard", timeout=30000)
+        await page.wait_for_load_state("networkidle") # 等待所有网络请求完成
+
+        # 5. 执行搜索操作
+        print("Performing search...")
+        search_input = page.locator('input[placeholder="Search projects..."]')
+        await search_input.fill("critical bug")
+        await search_input.press("Enter") # 模拟按下回车键
+
+        # 6. 等待搜索结果加载
+        print("Waiting for search results...")
+        await page.wait_for_selector('.search-results-list', timeout=20000)
+        await page.wait_for_load_state("networkidle")
+
+        # 7. 截图保存结果
+        screenshot_path = "search_results.png"
+        await page.screenshot(path=screenshot_path, full_page=True)
+        print(f"Screenshot saved to {screenshot_path}")
+
+        # 8. 提取搜索结果的标题和链接
+        result_elements = await page.locator('.search-results-list .result-item h3 a').all()
+        results = []
+        for el in result_elements:
+            title = await el.text_content()
+            href = await el.get_attribute('href')
+            results.append({"title": title.strip(), "link": href})
+
+        return {"status": "success", "screenshot": screenshot_path, "search_results": results}
+
+    except TimeoutError:
+        print("Playwright operation timed out.")
+        return {"status": "error", "message": "Playwright operation timed out. Check selectors or network issues."}
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return {"status": "error", "message": str(e)}
+
+# 第 25 章：在 Claude Code 的 tool_name: Playwright 中，这个脚本会作为 "script" 参数的字符串值传入。
+# 第 25 章：Claude 会在后台执行这个脚本，并将 run 函数的返回值作为工具输出。
+</code></pre>
+<p><strong>3. Claude Code 调用 <code>Playwright</code> 工具的 JSON 配置</strong></p>
+<p>当用户通过自然语言指令请求 Claude 执行复杂网页操作时，Claude 可能会生成如下的 <code>Playwright</code> 工具调用：</p>
+<pre><code class="language-json">{
+  "tool_name": "Playwright",
+  "parameters": {
+    "browser": "chromium",
+    "headless": true,
+    "proxy": "http://myproxy.com:8080",
+    "script": "import asyncio\nfrom playwright.async_api import Page, expect, BrowserContext, request as playwright_request, TimeoutError\n\nasync def run(page: Page, context: BrowserContext):\n    try:\n        print(\"Navigating to login page...\")\n        await page.goto(\"https://www.my-internal-tool.com/login\", wait_until=\"domcontentloaded\")\n        await page.wait_for_selector('input[name=\"username\"]', timeout=15000)\n\n        print(\"Filling credentials...\")\n        await page.fill('input[name=\"username\"]', \"my_secure_username\")\n        await page.fill('input[name=\"password\"]', \"my_secure_password_from_env\")\n\n        print(\"Clicking login button...\")\n        await page.click('button[type=\"submit\"]')\n\n        print(\"Waiting for dashboard to load...\")\n        await page.wait_for_url(\"https://www.my-internal-tool.com/dashboard\", timeout=30000)\n        await page.wait_for_load_state(\"networkidle\")\n\n        print(\"Performing search...\")\n        search_input = page.locator('input[placeholder=\"Search projects...\"]')\n        await search_input.fill(\"critical bug\")\n        await search_input.press(\"Enter\")\n\n        print(\"Waiting for search results...\")\n        await page.wait_for_selector('.search-results-list', timeout=20000)\n        await page.wait_for_load_state(\"networkidle\")\n\n        screenshot_path = \"search_results.png\"\n        await page.screenshot(path=screenshot_path, full_page=True)\n        print(f\"Screenshot saved to {screenshot_path}\")\n\n        result_elements = await page.locator('.search-results-list .result-item h3 a').all()\n        results = []\n        for el in result_elements:\n            title = await el.text_content()\n            href = await el.get_attribute('href')\n            results.append({\"title\": title.strip(), \"link\": href})\n\n        return {\"status\": \"success\", \"screenshot\": screenshot_path, \"search_results\": results}\n\n    except TimeoutError:\n        print(\"Playwright operation timed out.\")\n        return {\"status\": \"error\", \"message\": \"Playwright operation timed out. Check selectors or network issues.\"}\n    except Exception as e:\n        print(f\"An unexpected error occurred: {e}\")\n        return {\"status\": \"error\", \"message\": str(e)}\n"
+  }
+}
+</code></pre>
+<hr>
+<h2>🔧 涉及的 Tools / Commands</h2>
+<p>| 工具名称      | 用途                                       | 说明</p>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-p7qzptk4> <div class="pag-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-24" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>← 上一课时</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 24 章 | 数据库直连：SQL 客户端检索与分析 MCP</span> </a> </div> <div class="pag-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-26" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>下一课时 →</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 26 章 | 基于 MCP 的跨应用组合拳 (Orchestration)</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-p7qzptk4></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

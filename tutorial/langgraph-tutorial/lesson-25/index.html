@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai</title><meta name="description" content="Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-25/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-25/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/langgraph-tutorial/lesson-25/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-25/"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai"><meta property="og:description" content="Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-25/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai"><meta name="twitter:description" content="Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs Read the latest updates and in-depth analysis on AgentUpdate.ai."><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs — LangGraph Masterclass: From Control Flows to Complex Workflows — AgentUpdate.ai","description":"Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs Read the latest updates and in-depth analysis on AgentUpdate.ai.","inLanguage":"en","url":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-25/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/tutorial/langgraph-tutorial/lesson-25/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/langgraph-tutorial/lesson-25/" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/langgraph-tutorial" class="series-title-link" data-astro-cid-vma7orrt> LANGGRAPH MASTERCLASS: FROM CONTROL FLOWS TO COMPLEX WORKFLOWS </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Session 01 | Why LangGraph? The End of the Chain Era and the Rise of State Graphs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 02 | The Heart of StateGraph: Dissecting the Global State</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 03 | Business Nodes: The True Executors of the Graph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 04 | Routing Edges and the END Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 05 | Initial Success: Running the \&quot;Research-Write\&quot; Closed Loop</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 06 | The Native Powerhouse: Seamlessly Integrating External Skills with ToolNode</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 07 | Conditional Edges: The \&quot;Branching Decider\&quot; of Workflows</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Lesson 08 | Building a Standard ReAct Agent Architecture</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 09 | Beyond the Local Scope: Handling Exceptions in Tool Nodes</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 10 | Granular Streaming: Watching the Graph Get the Job Done</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 11 | Parallel Execution: The Divide and Conquer Mechanism</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 12 | The Black Magic of Reducers: How to Safely Incrementally Update Data</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 13 | Human in the Loop (HITL): Building an Approval Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 14 | Time Machine! Building Checkpoints with SqliteSaver/MemorySaver</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 15 | Manual Retouching: Correcting Agent Hallucinations with update_state</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 16 | Exploring Multi-Agent Architectures: Flat vs. Hierarchical</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 17 | Supervisor Agent: Building the Command Center</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 18 | Sub-graphs: Condensing a Low-Level Graph into a Standard Node</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 19 | Cross-Agent Shared vs. Private State Walls: Information Routing and Isolation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 20 | Network of Agents Simulation in Action</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>21 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 21 | Async Execution: Leaving Blocking in the Past</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>22 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 22 | Observability: Seamlessly Mounting LangSmith Probes onto LangGraph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>23 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 23 | Fine-Grained Token Streaming (stream_mode=\&quot;messages\&quot;)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>24 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 24 | Anti-Timeout Strategies: Timeouts and LLM Fallback Retries</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-25" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>25 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>26 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 26 | Frontend Integration: Architecting Frontend-Backend Separation for LangGraph</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>27 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 27 | Production-Grade Powerhouse: A First Look at LangGraph Cloud</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>28 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 28 | Extracting Complex Data (Structured Outputs)</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>29 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Episode 29 | Testing Graphs: How Do We Automate Acceptance Testing for Agent Performance?</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>30 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Part 30 | Capstone Project Showcase: A Complete AI Content Agency</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/langgraph-tutorial" data-astro-cid-ilhxcym7>LangGraph Masterclass: From Control Flows to Complex Workflows</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://www.agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"LangGraph Masterclass: From Control Flows to Complex Workflows","item":"https://www.agentupdate.ai/tutorial/langgraph-tutorial"},{"@type":"ListItem","position":4,"name":"Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Episode 25 | Long-Term Memory: Saving Long-Term Preferences in Graphs</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>19 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><p>Hello, future AI architects! It's your old friend, the AI Technical Mentor. Welcome to Episode 25 of the <em>LangGraph Multi-Agent Masterclass</em>.</p>
+<p>We have already built quite a powerful "Universal AI Content Creation Agency." The Planner strategizes, the Researcher gathers extensive knowledge, the Writer crafts brilliant prose, and the Editor stands as the final line of defense for our content. But have you ever run into this situation: for the same client, you have to re-explain their brand tone, preferred terminology, or even their unique definition of "humor" every single time? It's like going to the barbershop and having to explain your preferred haircut from scratch every visit—highly inefficient and a terrible user experience.</p>
+<p>Today, we are going to solve this exact pain point—equipping our AI Editor Agent with "long-term memory" so it can remember users' historical preferences and truly "understand" them. This will be the critical step that takes your AI Agency from merely "capable of working" to "highly perceptive and proactive."</p>
+<h2>🎯 Learning Objectives for This Episode</h2>
+<p>In this episode, you won't just learn the technology; you will understand how to use it to solve real business problems. Specifically, you will gain:</p>
+<ol>
+<li><strong>Understand the Core Value of Long-Term Memory:</strong> Why short-term memory (Graph State) in multi-agent systems is insufficient for complex user interactions, and how long-term memory enhances user experience and system efficiency.</li>
+<li><strong>Master the Paradigm of Building Long-Term Memory in LangGraph:</strong> Learn how to cleverly integrate a VectorStore (vector database) to store unstructured user preferences, and utilize LangGraph's Checkpointers to manage conversational states and memory pointers.</li>
+<li><strong>Hands-on Practice with Personalized Memory for the AI Editor Agent:</strong> Build a workflow for our Editor Agent that "remembers" a user's specific tone, style, and historical feedback, turning it into a truly thoughtful "personal editor."</li>
+<li><strong>Identify and Avoid Common Pitfalls of Long-Term Memory:</strong> Dive deep into advanced issues like memory bloat, memory conflicts, and retrieval accuracy, providing practical solutions.</li>
+</ol>
+<p>Ready? Let's install a "memory chip" into our AI!</p>
+<h2>📖 Principle Analysis</h2>
+<p>In previous lessons, we primarily relied on LangGraph's <code>Graph State</code> to maintain short-term dialogue and task context between agents. This is akin to human "working memory," processing the task currently at hand. However, once a session ends, or when we need to remember personalized user needs across multiple sessions, short-term memory falls short.</p>
+<p>Imagine our AI Editor Agent. One client might prefer a humorous and witty tone, while another favors a rigorous and professional style. If the Editor Agent has to "re-learn" these preferences at the start of every editing task, it will never become a truly efficient and personalized service provider. This is why we need to introduce "long-term memory."</p>
+<p>Long-term memory, as the name suggests, is information that can be persistently stored, retrieved, and utilized when needed. In the context of LangGraph, we typically implement it through a combination of two mechanisms:</p>
+<ol>
+<li><p><strong>VectorStore (Vector Database):</strong> This is a database that stores unstructured data (like text, images, audio) and enables semantic retrieval. We embed users' personalized preferences, brand style guides, historical feedback, etc., into vectors as text, and store them in the VectorStore. When needed, we can perform a semantic similarity search based on the current task or user ID, retrieve the most relevant preference information, and inject it as context into the LLM's prompt. This solves the problems of "what to remember" and "how to retrieve it."</p>
+</li>
+<li><p><strong>Checkpointers:</strong> LangGraph's built-in <code>Checkpointer</code> mechanism allows us to persist the current state of the Graph into a database (like SQLite). It is primarily used to resume interrupted sessions or maintain state continuity across multiple iterations. In this episode, we will use the Checkpointer to save each user's session ID (<code>thread_id</code>), along with indices or summaries that might point to specific memory entries in the VectorStore. This solves the problems of "where the memory is" and "how to associate it."</p>
+</li>
+</ol>
+<p><strong>The core idea is:</strong> The Checkpointer is responsible for remembering "whose session this is, and where they left off last time," while the VectorStore is responsible for storing "all the long-term preferences and historical experiences of this user." When an editing task arrives, the Graph first identifies the user via the Checkpointer, then uses this user ID to retrieve their exclusive long-term preferences from the VectorStore, and finally uses these preferences as additional context to guide the Editor Agent in personalized editing. If the user is unsatisfied with the result and provides feedback, this feedback can be added to the VectorStore in a structured or unstructured way, thereby "teaching" the AI Editor Agent to do better next time.</p>
+<p><strong>The Long-Term Memory Workflow of the AI Editor Agent:</strong></p>
+<ol>
+<li><strong>Task Reception:</strong> The AI Content Agency receives a new content editing request, accompanied by a <code>user_id</code> and <code>content_to_edit</code>.</li>
+<li><strong>Memory Retrieval (Retrieve Preferences):</strong><ul>
+<li>The Graph first identifies the <code>user_id</code> corresponding to the current <code>thread_id</code> via the <code>Checkpointer</code>.</li>
+<li>Using the <code>user_id</code> as a query condition, it retrieves all historical preferences, style guides, and previous feedback for that user from the <code>VectorStore</code>.</li>
+<li>It consolidates the retrieved preference information into a clear set of instructions.</li>
+</ul>
+</li>
+<li><strong>Personalized Editing (Editor Agent):</strong><ul>
+<li>It injects the original content and the retrieved personalized preferences into the Editor Agent's LLM prompt.</li>
+<li>The LLM polishes and optimizes the content based on these instructions.</li>
+</ul>
+</li>
+<li><strong>User Feedback (Process Feedback):</strong><ul>
+<li>If the user provides feedback on the edited result (e.g., "Too formal, make it livelier!").</li>
+<li>The Graph receives the feedback and processes it (this could be summarized by another LLM or stored directly).</li>
+<li>It adds the processed feedback as a new memory entry into the <code>VectorStore</code>, associated with the <code>user_id</code>.</li>
+</ul>
+</li>
+<li><strong>Memory Update:</strong> The <code>Checkpointer</code> automatically saves the latest state of the Graph, including any potentially updated memory pointers or summaries.</li>
+</ol>
+<p>Through this cycle, our AI Editor Agent will no longer be a "disposable" tool, but a "personal assistant" capable of continuously learning and adapting with every interaction.</p>
+<h3>Core Architecture Mermaid Diagram</h3>
+<p>Let's intuitively understand this process through a Mermaid diagram:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[User Submits Edit Request] --&gt; B{Identify User/Session ID}
+    B -- thread_id --&gt; C(LangGraph Checkpointer)
+    C -- user_id --&gt; D[Retrieve User Long-Term Preferences]
+    D -- Query --&gt; E(VectorStore: Preferences/Feedback)
+    E -- Retrieval Results --&gt; D
+    D -- Inject Context --&gt; F[Editor Agent (LLM)]
+    F --&gt; G[Generate Edited Content]
+    G --&gt; H{User Review/Feedback?}
+    H -- Yes --&gt; I[Process User Feedback]
+    I -- Update Memory --&gt; E
+    I --&gt; G'[[Edit Complete/Re-edit]]'
+    H -- No --&gt; J[Complete Edit, Deliver]
+
+    subgraph LangGraph Workflow
+        B --- F
+        F --- I
+    end
+
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#ccf,stroke:#333,stroke-width:2px
+    style D fill:#afa,stroke:#333,stroke-width:2px
+    style I fill:#afa,stroke:#333,stroke-width:2px</pre></div><p><strong>Diagram Legend:</strong></p>
+<ul>
+<li><strong>User Submits Edit Request (A):</strong> The starting point of the workflow, containing the content and user identifier.</li>
+<li><strong>Identify User/Session ID (B):</strong> LangGraph's internal mechanism, identifying the current session via <code>configurable: thread_id</code>.</li>
+<li><strong>LangGraph Checkpointer (C):</strong> Persists the session state, saving the <code>user_id</code> or its associated information to ensure session continuity.</li>
+<li><strong>Retrieve User Long-Term Preferences (D):</strong> This is a LangGraph node responsible for fetching relevant memories from the VectorStore based on the <code>user_id</code>.</li>
+<li><strong>VectorStore: Preferences/Feedback (E):</strong> Our long-term memory bank, storing vector representations of all users' personalized preferences, style guides, and historical feedback.</li>
+<li><strong>Editor Agent (LLM) (F):</strong> Our core editing agent, which receives the original content and retrieved personalized preferences to perform the edit.</li>
+<li><strong>Generate Edited Content (G):</strong> The output of the Editor Agent.</li>
+<li><strong>User Review/Feedback? (H):</strong> Simulates the user's judgment of the edited result.</li>
+<li><strong>Process User Feedback (I):</strong> Another LangGraph node responsible for receiving user feedback, converting it into storable memory, and updating the VectorStore.</li>
+<li><strong>Complete Edit, Deliver (J):</strong> The endpoint of the workflow.</li>
+</ul>
+<p>This architecture clearly demonstrates how the Checkpointer and VectorStore work together to provide our agents with powerful long-term memory capabilities.</p>
+<h2>💻 Hands-on Code Practice (Specific Application in the Agency Project)</h2>
+<p>Alright, enough theory—let's roll up our sleeves and get to work. Now, we will translate the above principles into code, injecting long-term memory into the Editor Agent within our AI Content Agency. We will use Python and some popular LangChain/LangGraph components.</p>
+<h3>1. Environment Setup and Dependency Installation</h3>
+<p>First, ensure your environment has the necessary libraries installed:</p>
+<pre><code class="language-bash">pip install -U langchain-openai langgraph langchain_community chromadb tiktoken
+</code></pre>
+<h3>2. Code Implementation</h3>
+<pre><code class="language-python">import os
+import sqlite3
+from typing import TypedDict, Annotated, List, Literal
+from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_text_splitters import RecursiveCharacterTextSplitter # Used for processing large texts
+from langgraph.graph import StateGraph, END
+from langgraph.checkpoint import MemorySaver, SqliteSaver # Used for persisting state
+
+# Set your OpenAI API key
+# Recommended to set via environment variables, e.g.: export OPENAI_API_KEY="sk-..."
+# os.environ["OPENAI_API_KEY"] = "YOUR_OPENAI_API_KEY" # Please replace with your actual key or set via environment variable
+
+# Ensure API key is set
+if not os.getenv("OPENAI_API_KEY"):
+    raise ValueError("Please set the OPENAI_API_KEY environment variable")
+
+print("--- Environment setup complete, API key loaded ---")
+
+### 1. Define Graph State ###
+# TypedDict is used to define the state schema for LangGraph, ensuring type safety and clarity
+class AgentState(TypedDict):
+    """
+    Define the shared state in our multi-agent workflow.
+    This state will be passed between all nodes.
+    """
+    content: str # 待编辑的原始内容 (Original content to be edited)
+    user_id: str # 用户的唯一标识符，用于检索个性化偏好 (Unique user ID for retrieving preferences)
+    preferences: str # 从 VectorStore 检索到的用户偏好 (User preferences retrieved from VectorStore)
+    edited_content: str # AI 编辑后的内容 (Content after AI editing)
+    feedback: str # 用户对编辑内容的反馈 (User feedback on the edited content)
+    # You can add a history message list for short-term dialogue context, but this episode focuses on long-term memory
+    # chat_history: List[BaseMessage]
+
+print("--- AgentState definition complete ---")
+
+### 2. Initialize VectorStore (Long-Term Memory Bank) ###
+# We use ChromaDB as the vector database to store user preferences and historical feedback.
+# It supports local persistence, making it convenient for demonstration.
+
+# Initialize OpenAI embeddings model to convert text into vectors
+embeddings = OpenAIEmbeddings()
+
+# Initialize ChromaDB. We persist data to the local file system to maintain memory across sessions.
+# persist_directory is the path to store the database files
+VECTOR_DB_PATH = "./chroma_db_editor_memory"
+vectorstore = Chroma(embedding_function=embeddings, persist_directory=VECTOR_DB_PATH)
+
+# Simulate some initial user preference documents
+# In a real scenario, this data might come from the client's brand guidelines, style manuals, or initial communications
+user_preferences_data = [
+    {"user_id": "client_A", "preference": "口吻：活泼、幽默、简洁。避免冗长和过于正式的表达。", "doc_id": "pref_A_1"},
+    {"user_id": "client_A", "preference": "关键词：创新、前沿技术、未来趋势。多用比喻和类比。", "doc_id": "pref_A_2"},
+    {"user_id": "client_B", "preference": "口吻：专业、严谨、细节丰富。强调数据支持和逻辑推理。", "doc_id": "pref_B_1"},
+    {"user_id": "client_B", "preference": "关键词：市场分析、投资回报、风险管理、合规性。避免主观判断。", "doc_id": "pref_B_2"},
+    {"user_id": "client_C", "preference": "口吻：平易近人、通俗易懂。避免行业术语和复杂句式。目标读者是普通大众。", "doc_id": "pref_C_1"},
+    {"user_id": "client_C", "preference": "关键词：健康生活、美食、旅行、亲子教育。内容要积极向上。", "doc_id": "pref_C_2"},
+]
+
+# Check if VectorStore is already populated to avoid duplicate additions
+# This is a simple check; a more rigorous approach would be to check if doc_id exists
+existing_docs = vectorstore.get()
+if not existing_docs["ids"]: # If the database is empty, populate it
+    for data in user_preferences_data:
+        vectorstore.add_texts(
+            texts=[data["preference"]],
+            metadatas=[{"user_id": data["user_id"], "doc_id": data["doc_id"]}]
+        )
+    print(f"--- VectorStore initialized and populated with {len(user_preferences_data)} initial user preferences. ---")
+else:
+    print(f"--- VectorStore already contains {len(existing_docs['ids'])} records, skipping initial population. ---")
+
+
+### 3. Define Agent (LLM) and Graph Nodes ###
+
+# Initialize ChatOpenAI model as our editing brain
+llm = ChatOpenAI(model="gpt-4o", temperature=0.5) # Set temperature lower for more stable editing
+
+# --- Graph Node 1: Retrieve User Preferences ---
+def retrieve_preferences(state: AgentState):
+    """
+    Retrieve the user's long-term preferences and historical feedback from the VectorStore based on user_id.
+    """
+    user_id = state["user_id"]
+    if not user_id:
+        print("Warning: user_id not provided, using generic editing mode.")
+        return {"preferences": "无特定用户偏好。请以通用、专业且清晰的风格编辑。"}
+
+    # Construct a query to attempt retrieving preferences related to this user
+    # More complex query logic can be added here, such as retrieving based on the current content type
+    query = f"用户 {user_id} 的内容创作偏好、风格要求以及历史反馈。"
+    
+    # Execute similarity search and filter documents matching the current user_id
+    # LangChain's Chroma defaults do not support filtering metadata directly in similarity_search
+    # So we retrieve first, then filter in code, or use Chroma's advanced query interface (if needed)
+    # For simplicity in this demo, we assume the retrieval results contain enough relevant information and will be refined by the LLM
+    
+    # In actual production, a better approach is to use Chroma's `similarity_search_with_score` or `similarity_search_by_vector`
+    # combined with the `where` parameter for filtering, but here for demonstration, we retrieve first and filter manually
+    
+    # Retrieve all relevant documents, then filter manually
+    results = vectorstore.similarity_search_with_score(query, k=5) # Retrieve the top 5 most relevant
+    
+    # Filter out preferences that truly belong to the current user_id
+    filtered_preferences = []
+    for doc, score in results:
+        if doc.metadata.get("user_id") == user_id:
+            filtered_preferences.append(doc.page_content)
+            # print(f"  - Matched preference (Score: {score:.2f}): {doc.page_content[:50]}...")
+    
+    preferences_str = "\n".join(filtered_preferences)
+    if not preferences_str:
+        preferences_str = "无特定用户偏好。请以通用、专业且清晰的风格编辑。"
+        print(f"--- No specific preferences retrieved for user {user_id}, using generic mode. ---")
+    else:
+        print(f"--- Successfully retrieved preferences for user {user_id}:\n{preferences_str}\n---")
+    
+    return {"preferences": preferences_str}
+
+# --- Graph Node 2: AI Editor ---
+def editor_agent_node(state: AgentState):
+    """
+    AI Editor node, edits based on the original content and retrieved user preferences.
+    """
+    content = state["content"]
+    preferences = state["preferences"]
+    user_id = state["user_id"]
+
+    prompt = f"""
+    你是一位经验丰富、洞察力敏锐的资深内容编辑。
+    你的任务是为用户 {user_id} 润色和优化以下内容。
+    
+    请务必严格遵循以下用户个性化偏好和风格要求进行编辑。
+    这些偏好是用户长期积累的，代表了他们的品牌声音和期望。
+    
+    --- 用户偏好和风格要求 ---
+    {preferences}
+    ---
+    
+    原始
+</code></pre>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-24" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Part 24 | Anti-Timeout Strategies: Timeouts and LLM Fallback Retries</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/langgraph-tutorial/lesson-26" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Episode 26 | Frontend Integration: Architecting Frontend-Backend Separation for LangGraph</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

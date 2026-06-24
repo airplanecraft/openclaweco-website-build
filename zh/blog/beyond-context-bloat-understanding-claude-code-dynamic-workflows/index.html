@@ -1,0 +1,692 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>起底 Claude Code Dynamic workflow工作流的上下文管理艺术 — AgentUpdate.ai</title><meta name="description" content="本文深度解析 Claude Code 的动态工作流架构，探讨其如何通过无状态线程和 Git Diff 机制解决上下文污染问题，防止 AI 在处理复杂任务时出现目标漂移或性能下降。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="起底 Claude Code Dynamic workflow工作流的上下文管理艺术, Beyond Context Bloat: Understanding Claude Code Dynamic Workflows, Claude Code, AI Agent, 上下文管理, Anthropic, 动态工作流"><link rel="canonical" href="https://www.agentupdate.ai/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="起底 Claude Code Dynamic workflow工作流的上下文管理艺术 — AgentUpdate.ai"><meta property="og:description" content="本文深度解析 Claude Code 的动态工作流架构，探讨其如何通过无状态线程和 Git Diff 机制解决上下文污染问题，防止 AI 在处理复杂任务时出现目标漂移或性能下降。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4a464ce6.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="起底 Claude Code Dynamic workflow工作流的上下文管理艺术 — AgentUpdate.ai"><meta name="twitter:description" content="本文深度解析 Claude Code 的动态工作流架构，探讨其如何通过无状态线程和 Git Diff 机制解决上下文污染问题，防止 AI 在处理复杂任务时出现目标漂移或性能下降。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/images/blog/ai-cover-4a464ce6.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"起底 Claude Code Dynamic workflow工作流的上下文管理艺术","description":"本文深度解析 Claude Code 的动态工作流架构，探讨其如何通过无状态线程和 Git Diff 机制解决上下文污染问题，防止 AI 在处理复杂任务时出现目标漂移或性能下降。","image":"/images/blog/ai-cover-4a464ce6.jpg","datePublished":"2026-06-04T10:15:51.947Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai"},"url":"https://www.agentupdate.ai/zh/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/beyond-context-bloat-understanding-claude-code-dynamic-workflows/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>起底 Claude Code Dynamic workflow工作流的上下文管理艺术</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://www.agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"起底 Claude Code Dynamic workflow工作流的上下文管理艺术"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>起底 Claude Code Dynamic workflow工作流的上下文管理艺术</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月4日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude-code" class="tag" data-astro-cid-w5q62dq7>#Claude Code</a><a href="/zh/tags/ai-agent" class="tag" data-astro-cid-w5q62dq7>#AI Agent</a><span class="tag" data-astro-cid-w5q62dq7>#上下文管理</span><a href="/zh/tags/anthropic" class="tag" data-astro-cid-w5q62dq7>#Anthropic</a><span class="tag" data-astro-cid-w5q62dq7>#动态工作流</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-4a464ce6.jpg" alt="起底 Claude Code Dynamic workflow工作流的上下文管理艺术" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#一问题的根源为什么-ai-会越聊越蠢" data-astro-cid-w5q62dq7>一、问题的根源：为什么 AI 会越聊越蠢？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#二传统-subagent-模式滚雪球式的上下文灾难" data-astro-cid-w5q62dq7>二、传统 Subagent 模式：滚雪球式的上下文灾难</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#传统模式的工作流程" data-astro-cid-w5q62dq7>传统模式的工作流程</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#mermaid-架构图" data-astro-cid-w5q62dq7>Mermaid 架构图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#三动态工作流无状态线程的接力赛" data-astro-cid-w5q62dq7>三、动态工作流：无状态线程的&quot;接力赛&quot;</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#核心三步法fork-drop-fan-in" data-astro-cid-w5q62dq7>核心三步法：Fork → Drop → Fan-In</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#mermaid-架构图" data-astro-cid-w5q62dq7>Mermaid 架构图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#四并行模式fan-out多线程同时开工" data-astro-cid-w5q62dq7>四、并行模式（Fan-Out）：多线程同时开工</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#场景同时修改-3-个无关文件" data-astro-cid-w5q62dq7>场景：同时修改 3 个无关文件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#mermaid-并行图" data-astro-cid-w5q62dq7>Mermaid 并行图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#五串行模式pipeline增量接力赛" data-astro-cid-w5q62dq7>五、串行模式（Pipeline）：增量接力赛</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#场景改代码-写测试-code-review" data-astro-cid-w5q62dq7>场景：改代码 → 写测试 → Code Review</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#ascii-流程图" data-astro-cid-w5q62dq7>ASCII 流程图</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#mermaid-串行图" data-astro-cid-w5q62dq7>Mermaid 串行图</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#上下文传递的数学公式" data-astro-cid-w5q62dq7>上下文传递的数学公式</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#六实战代码一个动态工作流长什么样" data-astro-cid-w5q62dq7>六、实战代码：一个动态工作流长什么样？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#示例并行修改多个文件的工作流脚本" data-astro-cid-w5q62dq7>示例：并行修改多个文件的工作流脚本</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#代码中的上下文管理要点" data-astro-cid-w5q62dq7>代码中的上下文管理要点</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#七经典模式速查" data-astro-cid-w5q62dq7>七、经典模式速查</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#模式总览" data-astro-cid-w5q62dq7>模式总览</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#mermaid-模式总览图" data-astro-cid-w5q62dq7>Mermaid 模式总览图</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#实际触发方式" data-astro-cid-w5q62dq7>实际触发方式</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#八新旧架构核心对比" data-astro-cid-w5q62dq7>八、新旧架构核心对比</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#对比表" data-astro-cid-w5q62dq7>对比表</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#上下文体积对比同一任务" data-astro-cid-w5q62dq7>上下文体积对比（同一任务）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#九终极启示" data-astro-cid-w5q62dq7>九、终极启示</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#给-claude-code-用户的实践建议" data-astro-cid-w5q62dq7>给 Claude Code 用户的实践建议</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#延伸阅读" data-astro-cid-w5q62dq7>延伸阅读</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><blockquote>
+<p>面向 Claude Code 用户与初学者的深度图解教程</p>
+</blockquote>
+<p>你有没有过这样的体验：让 AI Agent 帮你重构代码，刚开始它聪明绝顶，但随着修 Bug 轮次增加、报错日志越堆越长，AI 突然开始&quot;断片&quot;——忘记最初的要求，甚至胡编乱造？</p>
+<p>这在 AI 领域有个专门的名字：<strong>上下文污染（Context Contamination）</strong>。</p>
+<p>为了解决这个行业死穴，Anthropic 在 Claude Code 中引入了 <strong>Dynamic Workflows（动态工作流）</strong> 架构。今天这篇文章，我们用大白话 + 架构图 + 代码 + ASCII 图，彻底拆解它是如何通过&quot;即用即弃&quot;的上下文管理艺术，干翻传统 Subagent 模式的。</p>
+<hr>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#%E4%B8%80%E9%97%AE%E9%A2%98%E7%9A%84%E6%A0%B9%E6%BA%90%E4%B8%BA%E4%BB%80%E4%B9%88-ai-%E4%BC%9A%E8%B6%8A%E8%81%8A%E8%B6%8A%E8%A0%A2">一、问题的根源：为什么 AI 会越聊越蠢？</a></li>
+<li><a href="#%E4%BA%8C%E4%BC%A0%E7%BB%9F-subagent-%E6%A8%A1%E5%BC%8F%E6%BB%9A%E9%9B%AA%E7%90%83%E5%BC%8F%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E7%81%BE%E9%9A%BE">二、传统 Subagent 模式：滚雪球式的上下文灾难</a></li>
+<li><a href="#%E4%B8%89%E5%8A%A8%E6%80%81%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%97%A0%E7%8A%B6%E6%80%81%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%8E%A5%E5%8A%9B%E8%B5%9B">三、动态工作流：无状态线程的&quot;接力赛&quot;</a></li>
+<li><a href="#%E5%9B%9B%E5%B9%B6%E8%A1%8C%E6%A8%A1%E5%BC%8Ffan-out%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%97%B6%E5%BC%80%E5%B7%A5">四、并行模式（Fan-Out）：多线程同时开工</a></li>
+<li><a href="#%E4%BA%94%E4%B8%B2%E8%A1%8C%E6%A8%A1%E5%BC%8Fpipeline%E5%A2%9E%E9%87%8F%E6%8E%A5%E5%8A%9B%E8%B5%9B">五、串行模式（Pipeline）：增量接力赛</a></li>
+<li><a href="#%E5%85%AD%E5%AE%9E%E6%88%98%E4%BB%A3%E7%A0%81%E4%B8%80%E4%B8%AA%E5%8A%A8%E6%80%81%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7">六、实战代码：一个动态工作流长什么样？</a></li>
+<li><a href="#%E4%B8%83%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%BC%8F%E9%80%9F%E6%9F%A5">七、经典模式速查</a></li>
+<li><a href="#%E5%85%AB%E6%96%B0%E6%97%A7%E6%9E%B6%E6%9E%84%E6%A0%B8%E5%BF%83%E5%AF%B9%E6%AF%94">八、新旧架构核心对比</a></li>
+<li><a href="#%E4%B9%9D%E7%BB%88%E6%9E%81%E5%90%AF%E7%A4%BA">九、终极启示</a></li>
+</ul>
+<hr>
+<h2 id="一问题的根源为什么-ai-会越聊越蠢">一、问题的根源：为什么 AI 会越聊越蠢？</h2><p>大模型（LLM）的工作方式，可以简单理解为：<strong>你把所有聊天记录塞进一个&quot;窗口&quot;，模型根据窗口里的内容来回答你的问题。</strong></p>
+<p>但这个窗口是有大小限制的。当窗口里 80% 都是报错日志、废代码、重复的试错过程时，模型就会：</p>
+<table>
+<thead>
+<tr>
+<th>失败模式</th>
+<th>白话解释</th>
+<th>真实表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Agentic Laziness（偷懒）</strong></td>
+<td>干到一半说&quot;我搞定了&quot;</td>
+<td>安全审查 50 项，它只做了 35 项就交差</td>
+</tr>
+<tr>
+<td><strong>Self-preferential Bias（自嗨）</strong></td>
+<td>觉得自己写的都对</td>
+<td>自己写的代码自己审查，永远&quot;看起来没问题&quot;</td>
+</tr>
+<tr>
+<td><strong>Goal Drift（目标漂移）</strong></td>
+<td>忘了最初要干什么</td>
+<td>改着改着 Bug，开始重构起了无关的代码</td>
+</tr>
+<tr>
+<td><strong>Lost in the Middle（迷失中段）</strong></td>
+<td>注意力被垃圾信息淹没</td>
+<td>忘记了第 3 条需求，因为中间夹了 200 行日志</td>
+</tr>
+</tbody></table>
+<p><strong>一句话总结</strong>：上下文窗口就像你的桌面，垃圾文件越多，你越找不到真正重要的东西。</p>
+<hr>
+<h2 id="二传统-subagent-模式滚雪球式的上下文灾难">二、传统 Subagent 模式：滚雪球式的上下文灾难</h2><p>在过去，主 Agent 遇到复杂任务时，会召唤子 Agent 去干活。问题出在<strong>收尾方式</strong>上：</p>
+<h3 id="传统模式的工作流程">传统模式的工作流程</h3><div class="code-wrapper"><pre><code>┌─────────────────────────────────────────────────┐
+│              主会话上下文（越来越臃肿）              │
+│                                                 │
+│  用户提问                                        │
+│  ├─ 主 Agent 派生指令 → 子 Agent                  │
+│  │   ├─ 子 Agent 翻了 10 个文件                   │
+│  │   ├─ 编译报错 5 次 × 每次日志 60 行             │
+│  │   ├─ 跑测试 3 次 × 每次输出 40 行              │
+│  │   └─ 终于修好了！                              │
+│  │                                               │
+│  ◄── 💥 子 Agent 结束，180+ 行垃圾全部塞回 ────── │
+│  │                                               │
+│  ├─ 主 Agent 又派生另一个子 Agent                  │
+│  │   ├─ 又是 100+ 行日志...                       │
+│  │   └─ 又全部塞回来...                           │
+│  │                                               │
+│  ⚠️ 上下文像滚雪球，越来越大，主模型智商直线下降    │
+└─────────────────────────────────────────────────┘
+</code></pre>
+</div><h3 id="mermaid-架构图">Mermaid 架构图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    User([用户提问]) --> Main[主智能体 Main Agent]
+
+    subgraph ctx["主会话上下文 Context Bloat"]
+        Main -- "1. 派生指令" --> Sub[子智能体 Subagent]
+        Sub -- "2. 翻文件 / 报错 / 跑测试" --> Sub
+        Sub -- "3. 💥 全部日志塞回主会话" --> Main
+    end
+
+    style Main fill:#ffd93d</pre></div><p><strong>后果</strong>：主会话变成了垃圾场。改 2-3 个文件还行，改 10 个文件上下文就爆了。</p>
+<hr>
+<h2 id="三动态工作流无状态线程的接力赛">三、动态工作流：无状态线程的"接力赛"</h2><p>动态工作流彻底重构了游戏规则。主 Agent 不再自己冲锋，而是升级为 <strong>&quot;指挥官（Orchestrator）&quot;</strong>，通过一个运行时控制脚本（Harness）来调度一切。</p>
+<p>核心思路只有三个字：<strong>用完即弃</strong>。</p>
+<h3 id="核心三步法fork-drop-fan-in">核心三步法：Fork → Drop → Fan-In</h3><div class="code-wrapper"><pre><code>                    ┌──────────────────┐
+                    │   100% 干净的     │
+                    │   主会话 Session   │
+                    │                  │
+                    │   只有：          │
+                    │   · 用户需求      │
+                    │   · 最终结果      │
+                    └────────┬─────────┘
+                             │
+                    ① 动态生成控制流
+                             │
+                    ┌────────▼─────────┐
+                    │                  │
+                    │   Harness        │
+                    │   (运行时控制)    │
+                    │                  │
+                    └───┬──────────┬───┘
+                        │          │
+              ② Fork    │          │  ② Fork
+              (干净分身) │          │  (干净分身)
+                   ┌────▼───┐  ┌───▼────┐
+                   │ 子Agent │  │ 子Agent │
+                   │   A     │  │   B     │
+                   │         │  │         │
+                   │ 翻文件  │  │ 翻文件  │
+                   │ 报错!   │  │ 报错!   │
+                   │ 再改    │  │ 再改    │
+                   │ 改好了! │  │ 改好了! │
+                   └────┬───┘  └───┬────┘
+                        │          │
+              ③ Drop   │          │  ③ Drop
+              (销毁垃圾)│          │  (销毁垃圾)
+                   ┌────▼───┐  ┌───▼────┐
+                   │只返回   │  │只返回   │
+                   │Git Diff │  │Git Diff │
+                   └────┬───┘  └───┬────┘
+                        │          │
+                        └────┬─────┘
+                             │
+                    ④ Fan-In 收敛
+                             │
+                    ┌────────▼─────────┐
+                    │  主会话只收到：    │
+                    │  ✅ A 的 Git Diff │
+                    │  ✅ B 的 Git Diff │
+                    │  垃圾日志？不存在的│
+                    └──────────────────┘
+</code></pre>
+</div><h3 id="mermaid-架构图">Mermaid 架构图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph TD
+    User([用户提问]) --> Main["🧠 主智能体 Claude Code"]
+
+    subgraph clean["干净的主会话 Session"]
+        Main
+    end
+
+    Main -- "1. 生成控制流" --> Harness["⚙️ Harness 运行时控制"]
+
+    subgraph iso["隔离的临时工作区"]
+        Harness --> SubA["子智能体 A"]
+        Harness --> SubB["子智能体 B"]
+        SubA -- "调试/报错/测试 循环" --> SubA
+        SubB -- "调试/报错/测试 循环" --> SubB
+    end
+
+    SubA -- "2. 🗑️ 销毁日志 只返回 Git Diff" --> Harness
+    SubB -- "2. 🗑️ 销毁日志 只返回 Git Diff" --> Harness
+
+    Harness -- "3. 合并最终成果" --> Main
+
+    style Main fill:#4ecdc4,color:#fff
+    style Harness fill:#45b7d1,color:#fff
+    style SubA fill:#96ceb4
+    style SubB fill:#96ceb4</pre></div><p><strong>关键区别</strong>：子 Agent 返回的是 <strong>Git Diff（代码补丁）</strong>，不是聊天记录。就像你去餐厅点菜，厨师在厨房里试了 5 次才炒好，但端上来的只有那盘成功的菜，你不会看到烧焦的废料。</p>
+<hr>
+<h2 id="四并行模式fan-out多线程同时开工">四、并行模式（Fan-Out）：多线程同时开工</h2><p>当多个任务之间<strong>互不依赖</strong>时，动态工作流会让它们<strong>同时并行执行</strong>。</p>
+<h3 id="场景同时修改-3-个无关文件">场景：同时修改 3 个无关文件</h3><p>假设你的项目要改三个文件：<code>auth.ts</code>、<code>payment.ts</code>、<code>logger.ts</code>，它们互不相关。</p>
+<h4 id="传统模式串行上下文累积">传统模式（串行，上下文累积）</h4><div class="code-wrapper"><pre><code>时间 ─────────────────────────────────────────────►
+
+主 Agent: [改 auth.ts ──── 报错日志塞回 ────] [改 payment.ts ──── 报错日志塞回 ────] [改 logger.ts]
+                 │         上下文膨胀            │         上下文爆了             │
+                 └── 50行垃圾 ──────────────────┘── 50行垃圾 ───────────────────┘
+</code></pre>
+</div><h4 id="动态工作流并行上下文稳定">动态工作流（并行，上下文稳定）</h4><div class="code-wrapper"><pre><code>时间 ─────────────────────────────────────────────►
+
+子 Agent A: [改 auth.ts ──── 报错 ──── 修好 ────] 🗑️ → 只返回 Diff
+子 Agent B: [改 payment.ts ─ 报错 ──── 修好 ────] 🗑️ → 只返回 Diff
+子 Agent C: [改 logger.ts ── 报错 ──── 修好 ────] 🗑️ → 只返回 Diff
+            └─────────── 同时并行 ───────────────┘
+
+主 Session: [干净] ──────────────────────── [收到 3 个 Diff，合并完成]
+                                             上下文始终干净！
+</code></pre>
+</div><h3 id="mermaid-并行图">Mermaid 并行图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph LR
+    Main["🧠 主 Agent"] -->|"Fan-Out"| Harness["⚙️ Harness"]
+
+    Harness -->|"Fork"| A["🔧 改 auth.ts"]
+    Harness -->|"Fork"| B["🔧 改 payment.ts"]
+    Harness -->|"Fork"| C["🔧 改 logger.ts"]
+
+    A -->|"Drop + Diff"| Harness
+    B -->|"Drop + Diff"| Harness
+    C -->|"Drop + Diff"| Harness
+
+    Harness -->|"Fan-In"| Main
+
+    style A fill:#96ceb4
+    style B fill:#96ceb4
+    style C fill:#96ceb4</pre></div><p><strong>结果</strong>：并行执行比串行快 3 倍，而且主会话上下文只增加了 3 个 Git Diff，而不是几百行垃圾日志。</p>
+<hr>
+<h2 id="五串行模式pipeline增量接力赛">五、串行模式（Pipeline）：增量接力赛</h2><p>当任务之间<strong>有先后依赖</strong>时（A 做完 B 才能开始），动态工作流采用&quot;增量接力&quot;的方式传递上下文。</p>
+<h3 id="场景改代码-写测试-code-review">场景：改代码 → 写测试 → Code Review</h3><p>假设你要对 <code>auth.ts</code> 做一次完整的开发流程：</p>
+<ol>
+<li><strong>Agent A</strong>：重构 <code>auth.ts</code> 的认证逻辑</li>
+<li><strong>Agent B</strong>：基于 A 的修改，编写对应的单元测试</li>
+<li><strong>Agent C</strong>：对 A 的代码 + B 的测试做 Code Review</li>
+</ol>
+<h3 id="ascii-流程图">ASCII 流程图</h3><div class="code-wrapper"><pre><code>┌──────────────┐
+│  Agent A     │    上下文 = CLAUDE.md + auth.ts + 任务说明
+│  重构代码     │
+│              │
+│  · 修改函数签名 ×
+│  · 编译报错   ×
+│  · 再改       ×
+│  · 又报错     ×
+│  · 终于通过！  ✓
+│              │
+└──────┬───────┘
+       │ 🗑️ 销毁所有报错日志
+       │ ✅ 只保留 Git Diff
+       ▼
+┌──────────────┐
+│  Agent B     │    上下文 = CLAUDE.md + A 的 Diff + &quot;写测试&quot;
+│  写测试       │
+│              │    ⚠️ B 完全看不到 A 的 4 次失败！
+│  · 看到干净的  │    B 眼里的世界：
+│    代码变更   │    &quot;哦，A 把函数签名改成了这样，
+│  · 直接写测试  │     那我就按新签名写测试呗&quot;
+│  · 一次通过！  ✓
+│              │
+└──────┬───────┘
+       │ 🗑️ 销毁中间过程
+       │ ✅ 只保留测试代码的 Diff
+       ▼
+┌──────────────┐
+│  Agent C     │    上下文 = CLAUDE.md + A 的 Diff + B 的 Diff + &quot;Review&quot;
+│  Code Review │
+│              │    ⚠️ C 看到的只有成品，没有过程
+│  · 审查代码   │    &quot;这个命名不太规范&quot;
+│  · 审查测试   │    &quot;这里缺个边界测试&quot;
+│  · 给出建议   │
+│              │
+└──────┬───────┘
+       │ 🗑️ 销毁中间过程
+       │ ✅ 只返回 Review 报告
+       ▼
+  ┌──────────┐
+  │ 主会话    │   总共只增加了 3 份高密度成果
+  │ 收到：    │   · A 的代码 Diff
+  │ 最终成果  │   · B 的测试 Diff
+  └──────────┘   · C 的 Review 报告
+</code></pre>
+</div><h3 id="mermaid-串行图">Mermaid 串行图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph TD
+    Main["🧠 主 Agent"] -->|"派发任务"| Harness["⚙️ Harness"]
+
+    Harness --> A["Agent A 重构代码"]
+    A -->|"🗑️ 销毁日志 保留 Diff"| B["Agent B 写测试"]
+    B -->|"🗑️ 销毁日志 保留 Diff"| C["Agent C Code Review"]
+    C -->|"🗑️ 销毁日志 保留报告"| Harness
+
+    Harness -->|"Fan-In"| Main
+
+    style A fill:#96ceb4
+    style B fill:#87CEEB
+    style C fill:#DDA0DD</pre></div><h3 id="上下文传递的数学公式">上下文传递的数学公式</h3><p>每一步，下一个 Agent 收到的上下文都是全新拼装的：</p>
+<p>$$\text{Agent B 的上下文} = \underbrace{\text{CLAUDE.md}}<em>{\text{项目规则}} + \underbrace{A</em>{\text{diff}}}<em>{\text{上一步成果}} + \underbrace{\text{B 的任务说明}}</em>{\text{当前目标}}$$</p>
+<p>$$\text{Agent C 的上下文} = \underbrace{\text{CLAUDE.md}}<em>{\text{项目规则}} + \underbrace{A</em>{\text{diff}} + B_{\text{diff}}}<em>{\text{前两步成果}} + \underbrace{\text{C 的任务说明}}</em>{\text{当前目标}}$$</p>
+<p><strong>注意</strong>：每一步的上下文都是<strong>按需拼装</strong>的，不是把历史记录全部堆上去。这就是&quot;增量接力&quot;的精髓。</p>
+<hr>
+<h2 id="六实战代码一个动态工作流长什么样">六、实战代码：一个动态工作流长什么样？</h2><p>动态工作流的底层就是一个 JavaScript 脚本，Claude 会根据你的需求<strong>自动生成</strong>这个脚本。你通常不需要手写，但了解它的结构有助于理解原理。</p>
+<h3 id="示例并行修改多个文件的工作流脚本">示例：并行修改多个文件的工作流脚本</h3><div class="code-wrapper"><pre><code class="language-javascript">// 每个工作流必须以 meta 开头
+export const meta = {
+  name: &#39;rename-user-to-account&#39;,
+  description: &#39;批量将 User 重命名为 Account&#39;,
+  phases: [
+    { title: &#39;Find&#39;, detail: &#39;找出所有 User 引用&#39; },
+    { title: &#39;Rename&#39;, detail: &#39;逐文件替换&#39; },
+    { title: &#39;Verify&#39;, detail: &#39;验证修改正确性&#39; },
+  ],
+}
+
+// Phase 1: 找出所有需要改的文件
+phase(&#39;Find&#39;)
+const files = await agent(
+  &#39;在项目中搜索所有包含 &quot;User&quot; 的文件，返回文件路径列表&#39;,
+  {
+    schema: {
+      type: &#39;object&#39;,
+      properties: {
+        files: {
+          type: &#39;array&#39;,
+          items: { type: &#39;string&#39; },
+        },
+      },
+    },
+  }
+)
+
+// Phase 2: pipeline — 每个文件一个子 Agent，并行修改
+//        每个子 Agent 拿到的是干净上下文，互不干扰
+phase(&#39;Rename&#39;)
+const results = await pipeline(
+  files,
+  (file) =&gt;
+    agent(`将 ${file} 中的 &quot;User&quot; 重命名为 &quot;Account&quot;`, {
+      label: `rename:${file}`,
+      phase: &#39;Rename&#39;,
+      isolation: &#39;worktree&#39;, // 每个子 Agent 在独立工作区中修改
+    }),
+  // pipeline 让每个文件独立走完整个流程
+  // 文件 A 在 Phase 2 时，文件 B 可能还在 Phase 1
+  // 不需要等最慢的文件，先完成的先往下走
+)
+
+// Phase 3: 验证 — 对每个修改做对抗性审查
+phase(&#39;Verify&#39;)
+const verified = await parallel(
+  results
+    .filter(Boolean)
+    .map((r) =&gt; () =&gt;
+      agent(`检查这次重命名是否遗漏了任何 User 引用`, {
+        label: `verify:${r.file}`,
+        phase: &#39;Verify&#39;,
+      })
+    )
+)
+
+// 返回最终结果
+return {
+  totalFiles: files.length,
+  renamed: results.filter(Boolean).length,
+  verified: verified.filter(Boolean).length,
+}
+</code></pre>
+</div><h3 id="代码中的上下文管理要点">代码中的上下文管理要点</h3><div class="code-wrapper"><pre><code class="language-javascript">// 要点 1：agent() 返回的是结构化结果，不是聊天记录
+const files = await agent(&#39;搜索文件&#39;, { schema: FILES_SCHEMA })
+// ^ 返回 { files: [&#39;a.ts&#39;, &#39;b.ts&#39;, &#39;c.ts&#39;] }
+// 不是 &quot;好的，我帮你搜索了文件，找到了以下...&quot; + 200行日志
+
+// 要点 2：isolation: &#39;worktree&#39; 确保并行修改不会互相冲突
+agent(&#39;修改文件&#39;, { isolation: &#39;worktree&#39; })
+// 每个子 Agent 在独立的 git worktree 中工作
+// 就像给每个厨师分配了独立的厨房
+
+// 要点 3：pipeline() 天然支持串行传递
+// 上一步的输出自动成为下一步的输入
+const results = await pipeline(
+  items,
+  stage1, // stage1(item) → result1
+  stage2, // stage2(result1, item) → result2
+  stage3, // stage3(result2, item) → result3
+)
+</code></pre>
+</div><hr>
+<h2 id="七经典模式速查">七、经典模式速查</h2><p>根据官方博客，动态工作流有几种经典模式，每种对应不同的上下文管理策略：</p>
+<h3 id="模式总览">模式总览</h3><div class="code-wrapper"><pre><code>┌───────────────────────────────────────────────────────────────┐
+│                    动态工作流经典模式                           │
+├───────────────┬───────────────────────────────────────────────┤
+│               │                                               │
+│  Fan-Out      │  A ──► [子1, 子2, 子3] ──► 合并              │
+│  并行分发      │  多个无关任务同时干，最后汇总                   │
+│               │  适用：批量修改文件、多源搜索                    │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Pipeline     │  A ──► B ──► C                                │
+│  串行流水线    │  上一步的成果是下一步的输入                      │
+│               │  适用：改代码 → 写测试 → Review                 │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Tournament   │  [子1, 子2, 子3] ──► 对决 ──► 胜者            │
+│  锦标赛       │  多个 Agent 竞争同一任务，选最优                 │
+│               │  适用：方案比选、命名、设计决策                   │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Adversarial  │  A 产生 ──► B 对抗验证                         │
+│  对抗验证      │  一个干活，一个专门挑刺                         │
+│               │  适用：安全审查、代码审查、事实核查               │
+│               │                                               │
+├───────────────┼───────────────────────────────────────────────┤
+│               │                                               │
+│  Loop-Until   │  while (没搞定) { 派 Agent 去干 }              │
+│  循环直到完成  │  不知道要干多少轮，直到满足停止条件               │
+│               │  适用：修 Bug、深度搜索、根因分析                 │
+│               │                                               │
+└───────────────┴───────────────────────────────────────────────┘
+</code></pre>
+</div><h3 id="mermaid-模式总览图">Mermaid 模式总览图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-4">graph TB
+    subgraph fanout["Fan-Out 并行"]
+        FO_Main["Main"] --> FO_A["A"]
+        FO_Main --> FO_B["B"]
+        FO_Main --> FO_C["C"]
+        FO_A --> FO_Merge["合并"]
+        FO_B --> FO_Merge
+        FO_C --> FO_Merge
+    end
+
+    subgraph pipeline["Pipeline 串行"]
+        PL_A["A 改代码"] --> PL_B["B 写测试"] --> PL_C["C Review"]
+    end
+
+    subgraph tournament["Tournament 锦标赛"]
+        T_A["方案 A"] --> T_J1["对决"]
+        T_B["方案 B"] --> T_J1
+        T_C["方案 C"] --> T_J2["对决"]
+        T_J1 --> T_W["🏆 胜者"]
+        T_J2 --> T_W
+    end
+
+    subgraph adversarial["Adversarial 对抗"]
+        AV_A["A 产生方案"] --> AV_B["B 挑刺验证"]
+        AV_B -->|"通过"| AV_Done["✅"]
+        AV_B -->|"驳回"| AV_A
+    end</pre></div><h3 id="实际触发方式">实际触发方式</h3><p>作为 Claude Code 用户，你不需要手写这些模式。只需在提示词中描述你的需求：</p>
+<div class="code-wrapper"><pre><code class="language-bash"># 触发并行修改
+&quot;用 workflow 把 User 重命名为 Account&quot;
+
+# 触发对抗验证
+&quot;用 workflow 审查这个 PR，对每个发现做对抗性验证&quot;
+
+# 触发深度搜索
+&quot;用 workflow 搜索过去 6 个月的 incident 报告，找出反复出现的根因&quot;
+
+# 触发锦标赛
+&quot;帮我给这个 CLI 工具起个名字，用 workflow 多方案竞争&quot;
+
+# 万能触发词
+&quot;ultracode&quot;   # 加上这个词，Claude Code 就会创建 workflow
+</code></pre>
+</div><hr>
+<h2 id="八新旧架构核心对比">八、新旧架构核心对比</h2><h3 id="对比表">对比表</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>传统 Subagent 模式</th>
+<th>动态工作流模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>上下文结构</strong></td>
+<td>垂直堆叠（滚雪球）</td>
+<td>树状分发（即用即弃）</td>
+</tr>
+<tr>
+<td><strong>子 Agent 返回内容</strong></td>
+<td>全部聊天记录 + 日志</td>
+<td>只有 Git Diff / 结构化结果</td>
+</tr>
+<tr>
+<td><strong>试错垃圾日志</strong></td>
+<td>永久粘在主会话中</td>
+<td>隔离区用完即删 🗑️</td>
+</tr>
+<tr>
+<td><strong>主模型智商</strong></td>
+<td>随轮次增加而下降</td>
+<td>始终保持最高水平</td>
+</tr>
+<tr>
+<td><strong>并行能力</strong></td>
+<td>有限，上下文互相污染</td>
+<td>天然支持，互不干扰</td>
+</tr>
+<tr>
+<td><strong>项目规模上限</strong></td>
+<td>2-3 个文件就爆</td>
+<td>1000 个文件依然稳定</td>
+</tr>
+<tr>
+<td><strong>防止偷懒</strong></td>
+<td>❌ 无保障</td>
+<td>✅ 每个子 Agent 有独立目标</td>
+</tr>
+<tr>
+<td><strong>防止自嗨</strong></td>
+<td>❌ 自己验证自己</td>
+<td>✅ 独立 Agent 对抗验证</td>
+</tr>
+<tr>
+<td><strong>防止目标漂移</strong></td>
+<td>❌ 上下文丢失后漂移</td>
+<td>✅ 每个子 Agent 任务聚焦</td>
+</tr>
+</tbody></table>
+<h3 id="上下文体积对比同一任务">上下文体积对比（同一任务）</h3><div class="code-wrapper"><pre><code>传统模式上下文变化：
+│
+█ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █  ← 爆了
+│ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │ │
+│ └─ 子Agent 1 的 180 行日志 ─┘│└─ 子Agent 2 的日志 ─┘│
+│                              │                        │
+└── 用户提问 ──────────────────┴────────────────────────┘
+
+动态工作流上下文变化：
+│
+█ █ █ █ █ █ █ █ ← 始终稳定
+│ │ │ │ │ │ │ │
+│ │ │ └─ Diff 1 (30 行) ──┘
+│ │ └── Diff 2 (25 行) ────┘
+│ └── 用户提问 ─────────────┘
+
+图例：█ = 一个上下文 token
+</code></pre>
+</div><hr>
+<h2 id="九终极启示">九、终极启示</h2><p>Claude Code 的动态工作流让我们明白一个道理：</p>
+<blockquote>
+<p><strong>真正的顶级 AI 架构，不是比谁的上下文窗口能塞进更多垃圾，而是比谁能更优雅地&quot;克制&quot;与&quot;裁剪&quot;上下文。</strong></p>
+</blockquote>
+<p>通过把子 Agent 当成 <strong>&quot;无状态的瞬时线程&quot;</strong>——给它一个干净的任务，让它在隔离区里尽情试错，干完活就擦干现场，只留代码。这种&quot;断舍离&quot;的艺术，正是 AI Agent 迈向企业级超大型工程的必经之路。</p>
+<h3 id="给-claude-code-用户的实践建议">给 Claude Code 用户的实践建议</h3><ol>
+<li><strong>复杂任务才用 workflow</strong>：简单任务不需要，workflow 会消耗更多 token</li>
+<li><strong>用&quot;ultracode&quot;关键词触发</strong>：确保 Claude Code 创建 workflow 而不是直接执行</li>
+<li><strong>配合 <code>/loop</code> 做持续任务</strong>：比如持续监控、定期审查</li>
+<li><strong>配合 <code>/goal</code> 设定完成条件</strong>：防止 workflow 无限运行</li>
+<li><strong>善用 token 预算</strong>：在 prompt 中指定 &quot;use 10k tokens&quot; 来控制消耗</li>
+</ol>
+<h3 id="延伸阅读">延伸阅读</h3><ul>
+<li>📖 官方博客：<a href="https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code">A Harness for Every Task: Dynamic Workflows in Claude Code</a></li>
+<li>🛠️ 保存你的 workflow：在 workflow 菜单按 <code>s</code> 即可保存，文件位于 <code>~/.claude/workflows/</code></li>
+<li>🔄 中断恢复：如果 workflow 被中断（关闭终端等），重新打开会话会自动从断点继续</li>
+</ul>
+<hr>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="一问题的根源为什么-ai-会越聊越蠢" data-astro-cid-w5q62dq7> <a href="#一问题的根源为什么-ai-会越聊越蠢" data-astro-cid-w5q62dq7>一、问题的根源：为什么 AI 会越聊越蠢？</a> </li><li class="toc-item " data-slug="二传统-subagent-模式滚雪球式的上下文灾难" data-astro-cid-w5q62dq7> <a href="#二传统-subagent-模式滚雪球式的上下文灾难" data-astro-cid-w5q62dq7>二、传统 Subagent 模式：滚雪球式的上下文灾难</a> </li><li class="toc-item h3-nav" data-slug="传统模式的工作流程" data-astro-cid-w5q62dq7> <a href="#传统模式的工作流程" data-astro-cid-w5q62dq7>传统模式的工作流程</a> </li><li class="toc-item h3-nav" data-slug="mermaid-架构图" data-astro-cid-w5q62dq7> <a href="#mermaid-架构图" data-astro-cid-w5q62dq7>Mermaid 架构图</a> </li><li class="toc-item " data-slug="三动态工作流无状态线程的接力赛" data-astro-cid-w5q62dq7> <a href="#三动态工作流无状态线程的接力赛" data-astro-cid-w5q62dq7>三、动态工作流：无状态线程的&quot;接力赛&quot;</a> </li><li class="toc-item h3-nav" data-slug="核心三步法fork-drop-fan-in" data-astro-cid-w5q62dq7> <a href="#核心三步法fork-drop-fan-in" data-astro-cid-w5q62dq7>核心三步法：Fork → Drop → Fan-In</a> </li><li class="toc-item h3-nav" data-slug="mermaid-架构图" data-astro-cid-w5q62dq7> <a href="#mermaid-架构图" data-astro-cid-w5q62dq7>Mermaid 架构图</a> </li><li class="toc-item " data-slug="四并行模式fan-out多线程同时开工" data-astro-cid-w5q62dq7> <a href="#四并行模式fan-out多线程同时开工" data-astro-cid-w5q62dq7>四、并行模式（Fan-Out）：多线程同时开工</a> </li><li class="toc-item h3-nav" data-slug="场景同时修改-3-个无关文件" data-astro-cid-w5q62dq7> <a href="#场景同时修改-3-个无关文件" data-astro-cid-w5q62dq7>场景：同时修改 3 个无关文件</a> </li><li class="toc-item h3-nav" data-slug="mermaid-并行图" data-astro-cid-w5q62dq7> <a href="#mermaid-并行图" data-astro-cid-w5q62dq7>Mermaid 并行图</a> </li><li class="toc-item " data-slug="五串行模式pipeline增量接力赛" data-astro-cid-w5q62dq7> <a href="#五串行模式pipeline增量接力赛" data-astro-cid-w5q62dq7>五、串行模式（Pipeline）：增量接力赛</a> </li><li class="toc-item h3-nav" data-slug="场景改代码-写测试-code-review" data-astro-cid-w5q62dq7> <a href="#场景改代码-写测试-code-review" data-astro-cid-w5q62dq7>场景：改代码 → 写测试 → Code Review</a> </li><li class="toc-item h3-nav" data-slug="ascii-流程图" data-astro-cid-w5q62dq7> <a href="#ascii-流程图" data-astro-cid-w5q62dq7>ASCII 流程图</a> </li><li class="toc-item h3-nav" data-slug="mermaid-串行图" data-astro-cid-w5q62dq7> <a href="#mermaid-串行图" data-astro-cid-w5q62dq7>Mermaid 串行图</a> </li><li class="toc-item h3-nav" data-slug="上下文传递的数学公式" data-astro-cid-w5q62dq7> <a href="#上下文传递的数学公式" data-astro-cid-w5q62dq7>上下文传递的数学公式</a> </li><li class="toc-item " data-slug="六实战代码一个动态工作流长什么样" data-astro-cid-w5q62dq7> <a href="#六实战代码一个动态工作流长什么样" data-astro-cid-w5q62dq7>六、实战代码：一个动态工作流长什么样？</a> </li><li class="toc-item h3-nav" data-slug="示例并行修改多个文件的工作流脚本" data-astro-cid-w5q62dq7> <a href="#示例并行修改多个文件的工作流脚本" data-astro-cid-w5q62dq7>示例：并行修改多个文件的工作流脚本</a> </li><li class="toc-item h3-nav" data-slug="代码中的上下文管理要点" data-astro-cid-w5q62dq7> <a href="#代码中的上下文管理要点" data-astro-cid-w5q62dq7>代码中的上下文管理要点</a> </li><li class="toc-item " data-slug="七经典模式速查" data-astro-cid-w5q62dq7> <a href="#七经典模式速查" data-astro-cid-w5q62dq7>七、经典模式速查</a> </li><li class="toc-item h3-nav" data-slug="模式总览" data-astro-cid-w5q62dq7> <a href="#模式总览" data-astro-cid-w5q62dq7>模式总览</a> </li><li class="toc-item h3-nav" data-slug="mermaid-模式总览图" data-astro-cid-w5q62dq7> <a href="#mermaid-模式总览图" data-astro-cid-w5q62dq7>Mermaid 模式总览图</a> </li><li class="toc-item h3-nav" data-slug="实际触发方式" data-astro-cid-w5q62dq7> <a href="#实际触发方式" data-astro-cid-w5q62dq7>实际触发方式</a> </li><li class="toc-item " data-slug="八新旧架构核心对比" data-astro-cid-w5q62dq7> <a href="#八新旧架构核心对比" data-astro-cid-w5q62dq7>八、新旧架构核心对比</a> </li><li class="toc-item h3-nav" data-slug="对比表" data-astro-cid-w5q62dq7> <a href="#对比表" data-astro-cid-w5q62dq7>对比表</a> </li><li class="toc-item h3-nav" data-slug="上下文体积对比同一任务" data-astro-cid-w5q62dq7> <a href="#上下文体积对比同一任务" data-astro-cid-w5q62dq7>上下文体积对比（同一任务）</a> </li><li class="toc-item " data-slug="九终极启示" data-astro-cid-w5q62dq7> <a href="#九终极启示" data-astro-cid-w5q62dq7>九、终极启示</a> </li><li class="toc-item h3-nav" data-slug="给-claude-code-用户的实践建议" data-astro-cid-w5q62dq7> <a href="#给-claude-code-用户的实践建议" data-astro-cid-w5q62dq7>给 Claude Code 用户的实践建议</a> </li><li class="toc-item h3-nav" data-slug="延伸阅读" data-astro-cid-w5q62dq7> <a href="#延伸阅读" data-astro-cid-w5q62dq7>延伸阅读</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/moneyprinterv2-guide-gemini-api-youtube-shorts" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-a18c6816.jpg" alt="MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/moneyprinterv2-guide-gemini-api-youtube-shorts" data-astro-cid-w5q62dq7>MoneyPrinterV2 实战指南:使用 Gemini API 自动生成 YouTube Shorts</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文详细介绍如何使用 MoneyPrinterV2 结合 Gemini API 自动生成 YouTube 短视频，包含环境配置、源码改造及常见依赖 Bug 修复，助你零成本跑通 AI 视频流水线。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月3日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-4b638a70.jpg" alt="Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/composio-ultimate-guide-connecting-ai-agents-to-500-apps-via-mcp" data-astro-cid-w5q62dq7>Composio 完全入门教程：用 AI Agent 连接 500+ 应用的终极指南</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文深度解析 AI Agent 集成平台 Composio，涵盖 MCP 安装、500+ 应用连接、竞品对比及 Reddit/Facebook 营销自动化实战，助开发者快速上手 AI 自动化。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月2日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

@@ -1,0 +1,534 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 — Claude Code 终极大师课 — AgentUpdate.ai</title><meta name="description" content="第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-21/"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://www.agentupdate.ai/tutorial/claude-code-tutorial/lesson-21/"><link rel="alternate" hreflang="zh-CN" href="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-21/"><link rel="alternate" hreflang="x-default" href="https://www.agentupdate.ai/tutorial/claude-code-tutorial/lesson-21/"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 — Claude Code 终极大师课 — AgentUpdate.ai"><meta property="og:description" content="第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://www.agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-21/"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 — Claude Code 终极大师课 — AgentUpdate.ai"><meta name="twitter:description" content="第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://www.agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","logo":"https://www.agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://www.agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://www.agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 — Claude Code 终极大师课 — AgentUpdate.ai","description":"第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。","inLanguage":"zh-CN","url":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-21/","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial/lesson-21/"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://www.agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.DHQ-IJjR.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-code-tutorial/lesson-21/" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/tutorial/claude-code-tutorial/lesson-21/" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-p7qzptk4> <div class="container dual-layout-container" data-astro-cid-p7qzptk4> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-p7qzptk4> <div class="sidebar-box" data-astro-cid-p7qzptk4> <span class="catalog-header-tag" data-astro-cid-p7qzptk4>课程大纲 // CURRICULUM</span> <a href="/zh/tutorial/claude-code-tutorial" class="series-title-link" data-astro-cid-p7qzptk4> CLAUDE CODE 终极大师课 </a> <ul class="nav-lesson-list" data-astro-cid-p7qzptk4> <li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-1" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>01 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 01 章 | 告别静态工具：什么是终端级 AI 编程代理 Claude Code？</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-2" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>02 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 02 章 | 环境搭建与授权：Windows/Mac/Linux 极速安装指南</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-3" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>03 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 03 章 | 理解 Claude Code 的底层信任模型</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-4" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>04 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 04 章 | 交互基石：探索终端里的魔法模式 (Modes)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-5" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>05 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 05 章 | 第一个 Hello World 项目</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-6" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>06 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 06 章 | 代码库雷达：用自然语言进行 Repository 探索</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-7" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>07 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 07 章 | 编写 CLAUDE.md：给 AI 的持久层项目简报</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-8" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>08 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 08 章 | Context Window (上下文) 管理的艺术</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-9" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>09 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 09 章 | 精准的 Prompt Scoping（作用域边界控制）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>10 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 10 章 | 文件批处理与重构利器</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>11 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 11 章 | Bug 终结者：基于栈追踪 (Stack Trace) 的自动修复</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>12 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 12 章 | 理解&quot;记忆断档&quot;：Vibe Coding 翻车实录分析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>13 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 13 章 | 产品经理的新技能：从 PRD 到可运行原型只需 20 分钟</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>14 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 14 章 | 用 CSV 做自动数据分析与洞察提取</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>15 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 15 章 | 用户访谈与问卷综合 (User Research Synthesis)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>16 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 16 章 | 日常文档全自动生成流水线</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>17 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 17 章 | Claude Cowork：跨多步骤的自动任务分解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>18 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 18 章 | 基于终端的自动化 UI Testing</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>19 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 19 章 | 什么是 MCP？它为什么是 AI Agent 的&quot;USB 接口</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>20 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 20 章 | 官方内置连接器配置与启用</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-21" class="lesson-nav-link active" data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>21 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>22 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 22 章 | Slack 消息的监控与自动化分发 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>23 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 23 章 | 图形化思维：Excalidraw MCP 绘图实战</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-24" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>24 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 24 章 | 数据库直连：SQL 客户端检索与分析 MCP</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-25" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>25 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 25 章 | 网络代理与爬虫 MCP (WebFetch / Playwright)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>26 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 26 章 | 基于 MCP 的跨应用组合拳 (Orchestration)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>27 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 27 章 | MCP 失效与连接重试安全策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>28 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 28 章 | 告别 Prompt 工程，步入 Skills 工程</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>29 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 29 章 | SKILL.md 结构深度剖析：渐进式披露 (Progressive Disclosure)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>30 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 30 章 | 从 0 构建你的第一个专属 Skill（五步法）</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-31" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>31 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 31 章 | 前端开发设计飞跃：Frontend-design Skill 案例解析</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-32" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>32 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 32 章 | 使用 skills.sh：2026 时代的 Agent npm 管理器</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-33" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>33 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 33 章 | 企业级办公文档 Skill：定制公司品牌模板</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-34" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>34 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 34 章 | 智能决策树：具有上下文感知能力的工具选择</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-35" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>35 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 35 章 | AI 辅助造 AI：用 Skill-creator 生成复杂工作流</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-36" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>36 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 36 章 | Skill 开发的安全模型与恶意插件防范</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-37" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>37 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 37 章 | Vibe Coding 的致命伤与工程救赎</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-38" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>38 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 38 章 | `planning-with-files` 插件入门</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-39" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>39 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 39 章 | 跨天、长生命周期项目的持续集成</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-40" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>40 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 40 章 | 多功能并行开发防串扰策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-41" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>41 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 41 章 | Debug 地狱求生：记录试错日志让 AI 智商上线</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-42" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>42 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 42 章 | 单元测试驱动的 Agentic 代码生成 (TDD + Claude)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-43" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>43 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 43 章 | 代码走查验证策略</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-44" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>44 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 44 章 | 视觉能力的加入：图片资产与视频帧的理解</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-45" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>45 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 45 章 | Builder.io 平台介绍：从孤岛到 Slack 化团队协同</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-46" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>46 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 46 章 | 并行代理协作 (Parallel Agents)</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-47" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>47 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 47 章 | 分享预览与角色分工验证</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-48" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>48 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 48 章 | Agentic 后端理论：所有后端正在成为思考的主体</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-49" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>49 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 49 章 | 基于权限流的管理哲学</span> </a> </li><li data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-50" class="lesson-nav-link " data-astro-cid-p7qzptk4> <span class="lesson-index-num" data-astro-cid-p7qzptk4>50 //</span> <span class="lesson-title-text" data-astro-cid-p7qzptk4>第 50 章 | 从程序员到全栈掌控者：属于 Agent 开发者的十年机遇</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-p7qzptk4> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial" data-astro-cid-ilhxcym7>教程中心</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/tutorial/claude-code-tutorial" data-astro-cid-ilhxcym7>Claude Code 终极大师课</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"教程中心","item":"https://www.agentupdate.ai/zh/tutorial"},{"@type":"ListItem","position":3,"name":"Claude Code 终极大师课","item":"https://www.agentupdate.ai/zh/tutorial/claude-code-tutorial"},{"@type":"ListItem","position":4,"name":"第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入"}]}</script> <header class="lesson-details-header" data-astro-cid-p7qzptk4> <h1 class="lesson-display-title" data-astro-cid-p7qzptk4>第 21 章 | PM 神器：Jira / Linear 的 MCP 无缝接入</h1> <div class="lesson-meta-row" data-astro-cid-p7qzptk4>  <span class="meta-item" data-astro-cid-p7qzptk4>20 分钟阅读</span> <span class="meta-separator" data-astro-cid-p7qzptk4>|</span>  <span class="meta-item" data-astro-cid-p7qzptk4>更新于：2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) -->  <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-p7qzptk4><h2>🎯 学习目标</h2>
+<ul>
+<li>理解并掌握 MCP (Multi-Component Project) 如何作为统一接口，无缝集成 Jira 或 Linear 等项目管理工具。</li>
+<li>学会利用 Claude TUI 直接从终端创建、更新项目管理工单，并关联代码库状态。</li>
+<li>掌握基于代码提交、分支差异等信息，自动化生成工单描述、故事点和验收标准的核心策略。</li>
+<li>了解如何配置 Claude Tools 以与 Jira/Linear API 进行交互，实现开发流程与项目管理的深度融合。</li>
+</ul>
+<hr>
+<h2>📖 核心概念讲解</h2>
+<h3>21.1 MCP 与项目管理工具的集成哲学</h3>
+<p>在现代软件开发中，开发人员与项目经理之间的协作效率至关重要。然而，频繁的上下文切换（从 IDE 到 Jira/Linear 界面，再到 Slack 等）常常成为生产力的瓶颈。MCP (Multi-Component Project) 的核心理念是提供一个统一的开发工作流编排层，它不仅仅管理代码库和 CI/CD，更将项目管理（PM）工具纳入其生态。</p>
+<p><strong>集成哲学：</strong></p>
+<ol>
+<li><strong>减少上下文切换：</strong> 开发者无需离开终端或 IDE，即可完成项目管理任务。</li>
+<li><strong>数据源单一化：</strong> 代码库（Git）成为进度的“真实之源”。工单状态、故事点、验收标准等信息可以从代码变更中推断或生成，减少手动同步的错误和滞后。</li>
+<li><strong>自动化与智能化：</strong> 利用 AI 和自动化脚本，根据代码库的实际情况（如分支合并、PR 提交、文件改动量），自动建议或更新工单信息。</li>
+<li><strong>双向同步：</strong> 不仅能将开发进度推送到 PM 工具，也能从 PM 工具获取信息，指导开发决策。</li>
+</ol>
+<p><strong>MCP 作为集成桥梁：</strong></p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[开发者工作流 (IDE/Terminal)] --&gt; B{Claude MCP}
+    B --&gt; C[Git/SCM (代码库)]
+    B --&gt; D[CI/CD Pipelines]
+    B --&gt; E[Jira/Linear API]
+    E --&gt; F[Jira/Linear Web UI]
+    C -- "代码变更/进度" --&gt; B
+    B -- "创建/更新工单" --&gt; E
+    E -- "工单状态/信息" --&gt; F
+    F -- "PM决策/需求" --&gt; A</pre></div><p>通过 MCP，Claude 能够扮演一个智能助手，理解开发者的意图，并将其转化为 PM 工具可识别的操作。</p>
+<h3>21.2 Linear API / Jira API 核心能力与自动化策略</h3>
+<p>要实现与 Jira 或 Linear 的无缝集成，我们必须通过它们的 API 进行交互。虽然两个平台的 API 细节有所不同，但核心能力都是围绕工单（Issue/Ticket）的生命周期管理。</p>
+<p><strong>核心 API 能力：</strong></p>
+<ul>
+<li><strong>创建工单 (Create Issue)：</strong><ul>
+<li>标题 (Title/Summary)</li>
+<li>描述 (Description)</li>
+<li>类型 (Type: Feature, Bug, Story)</li>
+<li>项目 (Project/Team)</li>
+<li>状态 (Status)</li>
+<li>经办人 (Assignee)</li>
+<li>优先级 (Priority)</li>
+<li>故事点 (Story Points)</li>
+<li>验收标准 (Acceptance Criteria)</li>
+</ul>
+</li>
+<li><strong>更新工单 (Update Issue)：</strong> 修改上述任何字段。</li>
+<li><strong>添加评论 (Add Comment)：</strong></li>
+<li><strong>查询工单 (Get Issue)：</strong> 根据 ID 或其他条件检索工单信息。</li>
+<li><strong>工作流管理 (Workflow Management)：</strong> 状态转换、自定义字段等。</li>
+</ul>
+<p><strong>自动化工单生成与更新策略：</strong></p>
+<p>Claude 通过 MCP 提供的集成层，可以根据以下策略自动化工单信息：</p>
+<ol>
+<li><p><strong>基于 <code>git diff</code> 生成描述和故事点：</strong></p>
+<ul>
+<li><strong>描述：</strong> 分析当前分支与主分支的 <code>git diff</code> 输出，提取关键文件变更、新增功能点，结合 commit message 生成初步的工单描述。</li>
+<li><strong>故事点：</strong> 简单启发式规则可以包括：<ul>
+<li>代码行数变化 (LOC)</li>
+<li>文件修改数量</li>
+<li>引入新模块/依赖的复杂度</li>
+<li>与现有代码库的耦合度分析</li>
+</ul>
+</li>
+<li>当然，这些都是建议值，仍需人工确认。</li>
+</ul>
+</li>
+<li><p><strong>基于 PR 描述或代码注释生成验收标准：</strong></p>
+<ul>
+<li><strong>PR 描述：</strong> 许多团队要求 PR 描述包含完成标准。Claude 可以解析 PR 文本，提取出 <code>## Acceptance Criteria</code> 或类似的段落。</li>
+<li><strong>代码注释：</strong> 在某些特定文件（如 <code>README.md</code>, <code>CONTRIBUTING.md</code>）或代码注释中，定义了功能需求或测试点，Claude 可以从中提取。</li>
+</ul>
+</li>
+<li><p><strong>基于分支命名或 commit message 关联工单：</strong></p>
+<ul>
+<li>例如，分支名为 <code>feature/JIRA-123-new-feature</code>，Claude 可以自动识别 <code>JIRA-123</code> 并关联。</li>
+<li>Commit message 中包含 <code>[LINEAR-456] Implement X</code> 也可以作为关联依据。</li>
+</ul>
+</li>
+</ol>
+<h3>21.3 MCP 配置与工具链映射</h3>
+<p>为了让 Claude 能够与 Jira/Linear 交互，我们需要在 MCP 的配置文件中进行相应的配置。这通常涉及到 API 密钥、默认项目 ID、以及与 Claude 命令行的映射关系。</p>
+<p><strong>核心配置项：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">配置项</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>pm_tools.default</code></td>
+<td align="left">默认使用的项目管理工具 (<code>jira</code> 或 <code>linear</code>)</td>
+<td align="left"><code>linear</code></td>
+</tr>
+<tr>
+<td align="left"><code>pm_tools.linear</code></td>
+<td align="left">Linear API 配置</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>api_key</code></td>
+<td align="left">Linear API Key (通常是个人访问令牌)</td>
+<td align="left"><code>lin_api_xxxxxxxxxxxxxxxxxx</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_team_id</code></td>
+<td align="left">默认的 Linear Team ID</td>
+<td align="left"><code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code></td>
+</tr>
+<tr>
+<td align="left"><code>pm_tools.jira</code></td>
+<td align="left">Jira API 配置</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>base_url</code></td>
+<td align="left">Jira 实例的 URL</td>
+<td align="left"><code>https://your-company.atlassian.net</code></td>
+</tr>
+<tr>
+<td align="left"><code>username</code></td>
+<td align="left">Jira 用户名 (通常是邮箱)</td>
+<td align="left"><code>user@example.com</code></td>
+</tr>
+<tr>
+<td align="left"><code>api_token</code></td>
+<td align="left">Jira API Token (在 Jira 个人设置中生成)</td>
+<td align="left"><code>ATATT3xFfxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_project</code></td>
+<td align="left">默认的 Jira Project Key</td>
+<td align="left"><code>PROJ</code></td>
+</tr>
+<tr>
+<td align="left"><code>issue_type_map</code></td>
+<td align="left">将 Claude 内部类型映射到 Jira/Linear 的工单类型</td>
+<td align="left"><code>{ "feature": "Story", "bug": "Bug", "task": "Task" }</code></td>
+</tr>
+</tbody></table>
+<p>这些配置允许 Claude 在执行 <code>claude pm</code> 命令时，知道如何认证、向哪个平台发送请求，以及如何解析参数。</p>
+<hr>
+<h2>💻 模拟 Claude TUI 交互</h2>
+<p>以下模拟了 Claude 通过 MCP 与 Jira/Linear 进行交互的几种典型场景。</p>
+<h3>场景一：基于当前代码差异创建新的 Linear Feature 工单</h3>
+<p>假设你刚刚完成了一个新功能的开发，并希望在 Linear 中为其创建一个 Feature 工单。Claude 可以分析你的本地改动，并尝试预填充工单信息。</p>
+<pre><code>&gt; claude pm create issue --type feature --title "Implement User Profile Page" --diff-from main --assignee @me
+
+╭─ Claude ─────────────────────────────────────────────────────────────────────────────────────────╮
+│  正在分析当前分支与 'main' 分支的代码差异...                                                     │
+│  检测到以下主要文件变更：                                                                        │
+│  - src/pages/UserProfile.tsx (新增)                                                              │
+│  - src/components/Avatar.tsx (修改)                                                              │
+│  - api/users.ts (修改)                                                                           │
+│                                                                                                  │
+│  建议的工单描述：                                                                                │
+│  ```                                                                                             │
+│  此功能将为用户提供一个个人资料页面，允许他们查看和编辑自己的基本信息。                          │
+│  主要包含以下模块：                                                                              │
+│  - **用户界面：** 基于 `UserProfile.tsx` 实现，展示用户头像、姓名、邮箱等。                     │
+│  - **组件更新：** `Avatar.tsx` 组件更新以支持新的头像尺寸和加载逻辑。                           │
+│  - **API集成：** `api/users.ts` 增加获取和更新用户资料的端点。                                   │
+│  ```                                                                                             │
+│                                                                                                  │
+│  建议的故事点 (基于代码复杂度初步评估): 5 SP                                                     │
+│                                                                                                  │
+│  是否确认创建此 Linear Feature 工单？ (y/N) y                                                    │
+│  正在创建 Linear 工单...                                                                         │
+│  Linear 工单已成功创建！                                                                         │
+│  ID: LINEAR-1234                                                                                 │
+│  URL: https://linear.app/your-team/issue/LINEAR-1234/implement-user-profile-page                 │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+<h3>场景二：更新 Jira 工单状态并添加评论</h3>
+<p>你已经完成了某个 Jira Bug 的修复，并希望将其状态更新为“待测试”并添加一条评论。</p>
+<pre><code>&gt; claude pm update issue JIRA-456 --status "Ready For Test" --comment "Bug fixed, tested locally. Ready for QA review."
+
+╭─ Claude ─────────────────────────────────────────────────────────────────────────────────────────╮
+│  正在连接 Jira API...                                                                            │
+│  正在获取工单 JIRA-456 的当前信息...                                                             │
+│  工单 JIRA-456 (Title: UI Glitch on Login Page) 当前状态为 "In Progress"。                     │
+│  确认将工单状态从 "In Progress" 更新为 "Ready For Test" 并添加评论吗？ (y/N) y                   │
+│  Jira 工单 JIRA-456 已成功更新。                                                                 │
+│  URL: https://your-company.atlassian.net/browse/JIRA-456                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+<h3>场景三：基于 GitHub Pull Request 自动生成 Linear 验收标准</h3>
+<p>你提交了一个 Pull Request，并在其描述中包含了详细的验收标准。希望 Claude 能将其提取并同步到关联的 Linear 工单中。</p>
+<pre><code>&gt; claude pm generate acceptance-criteria --pr-url "https://github.com/my-org/my-repo/pull/789" --issue-id LINEAR-567
+
+╭─ Claude ─────────────────────────────────────────────────────────────────────────────────────────╮
+│  正在从 GitHub PR #789 获取描述...                                                               │
+│  检测到 PR 描述中包含以下验收标准段落：                                                         │
+│                                                                                                  │
+│  **验收标准 (Acceptance Criteria):**                                                             │
+│  - 用户能够通过 `/profile` 路径访问个人资料页面。                                                │
+│  - 页面显示用户姓名、邮箱和头像。                                                                │
+│  - 用户可以点击头像上传新图片，并实时预览。                                                      │
+│  - 保存按钮在信息有修改时启用，点击后成功更新用户信息。                                          │
+│  - 错误提示在保存失败时正确显示。                                                                │
+│                                                                                                  │
+│  是否将这些标准添加到 Linear 工单 LINEAR-567 的验收标准字段？ (y/N) y                            │
+│  正在更新 Linear 工单 LINEAR-567...                                                              │
+│  Linear 工单 LINEAR-567 的验收标准已成功更新。                                                   │
+│  URL: https://linear.app/your-team/issue/LINEAR-567/add-user-profile-editing                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+<hr>
+<h2>💻 代码演示</h2>
+<p>这里我们将展示一些核心的配置片段和 Claude 内部可能使用的工具脚本，以实现上述功能。</p>
+<h3>1. Claude MCP 配置文件 (<code>~/.config/claude/mcp_config.yaml</code>)</h3>
+<pre><code class="language-yaml"># 第 21 章：~/.config/claude/mcp_config.yaml
+# 第 21 章：MCP (Multi-Component Project) Configuration for Claude Tools
+
+pm_tools:
+  default: linear # 或者 'jira'
+
+  linear:
+    api_key: env:LINEAR_API_KEY # 从环境变量读取 API Key，推荐方式
+    default_team_id: "your-linear-team-id-uuid" # 替换为你的 Linear Team ID
+    
+    # 将 Claude 内部的工单类型映射到 Linear 的 Issue Type ID
+    # 需要在 Linear API Explorer (https://developers.linear.app/explorer) 中查找你的 Issue Type ID
+    issue_type_map:
+      feature: "your-feature-issue-type-id" # 例如: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+      bug: "your-bug-issue-type-id"
+      task: "your-task-issue-type-id"
+      story: "your-story-issue-type-id"
+
+  jira:
+    base_url: "https://your-company.atlassian.net" # 你的 Jira Cloud 实例 URL
+    username: env:JIRA_USERNAME # Jira 注册邮箱
+    api_token: env:JIRA_API_TOKEN # 从环境变量读取 Jira API Token
+    default_project: "PROJ" # 默认的 Jira Project Key
+
+    # 将 Claude 内部的工单类型映射到 Jira 的 Issue Type Name
+    issue_type_map:
+      feature: "Story"
+      bug: "Bug"
+      task: "Task"
+      story: "Story"
+
+# 第 21 章：Claude 内部工具链配置，用于处理 PM 相关逻辑
+tools:
+  pm_diff_analyzer:
+    command: "python {{claude_home}}/scripts/pm/diff_analyzer.py"
+    description: "分析 Git 差异，生成工单描述和故事点建议"
+    args: ["--base-branch", "{{base_branch}}", "--target-branch", "{{target_branch}}"]
+
+  pm_pr_parser:
+    command: "python {{claude_home}}/scripts/pm/pr_parser.py"
+    description: "解析 Pull Request 描述，提取验收标准"
+    args: ["--pr-url", "{{pr_url}}"]
+</code></pre>
+<p><strong>环境变量设置示例 (Bash):</strong></p>
+<pre><code class="language-bash">export LINEAR_API_KEY="lin_api_xxxxxxxxxxxxxxxxxx"
+export JIRA_USERNAME="your-email@example.com"
+export JIRA_API_TOKEN="ATATT3xFfxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+</code></pre>
+<h3>2. <code>diff_analyzer.py</code> (简化版 Python 脚本示例)</h3>
+<p>这个脚本模拟了 Claude 如何分析 <code>git diff</code> 来生成工单描述和故事点。</p>
+<pre><code class="language-python"># 第 21 章：{{claude_home}}/scripts/pm/diff_analyzer.py
+import argparse
+import subprocess
+import json
+import re
+
+def run_command(cmd):
+    """Helper to run shell commands."""
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    return result.stdout.strip()
+
+def analyze_diff(base_branch, target_branch):
+    """Analyzes git diff to generate issue description and story points."""
+    try:
+        diff_output = run_command(["git", "diff", "--numstat", base_branch, target_branch])
+        # Example diff_output:
+        # 10	2	src/pages/UserProfile.tsx
+        # 5	0	src/components/Avatar.tsx
+        # 3	1	api/users.ts
+
+        files_changed = []
+        lines_added = 0
+        lines_deleted = 0
+        
+        for line in diff_output.split('\n'):
+            if not line:
+                continue
+            parts = line.split('\t')
+            if len(parts) == 3:
+                added, deleted, filename = parts
+                lines_added += int(added)
+                lines_deleted += int(deleted)
+                files_changed.append(filename)
+
+        # Heuristic for story points:
+        # 1 SP per ~20 lines changed (added + deleted)
+        # +1 SP per 5 files changed
+        # Min 1, Max 13
+        story_points = max(1, min(13, round((lines_added + lines_deleted) / 20) + round(len(files_changed) / 5)))
+
+        # Generate a simple description based on files changed
+        description = f"此工单涉及以下文件变更：\n"
+        for f in files_changed:
+            description += f"- {f}\n"
+        description += f"\n总共新增 {lines_added} 行，删除 {lines_deleted} 行。"
+        description += "\n\n请根据实际工作量调整故事点和完善描述。"
+
+        return {
+            "description": description,
+            "story_points": story_points,
+            "files_changed": files_changed,
+            "lines_added": lines_added,
+            "lines_deleted": lines_deleted
+        }
+    except subprocess.CalledProcessError as e:
+        print(f"Error running git diff: {e.stderr}")
+        return {"description": "无法生成描述，请检查 Git 仓库状态。", "story_points": 0}
+
+def main():
+    parser = argparse.ArgumentParser(description="Analyze Git diff for PM tools.")
+    parser.add_argument("--base-branch", default="main", help="Base branch for diff comparison.")
+    parser.add_argument("--target-branch", default="HEAD", help="Target branch for diff comparison.")
+    args = parser.parse_args()
+
+    analysis_result = analyze_diff(args.base_branch, args.target_branch)
+    print(json.dumps(analysis_result, ensure_ascii=False, indent=2))
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<h3>3. Linear API 调用示例 (cURL)</h3>
+<p>这是一个 Claude 内部可能用于创建 Linear Issue 的 cURL 命令示例。</p>
+<pre><code class="language-bash"># 第 21 章：Claude 内部工具会根据用户输入和 diff_analyzer.py 的输出构建此请求
+curl -X POST 'https://api.linear.app/graphql' \
+  -H 'Content-Type: application/json' \
+  -H "Authorization: Bearer $LINEAR_API_KEY" \
+  -d '{
+    "query": "mutation IssueCreate($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { id url identifier } } }",
+    "variables": {
+      "input": {
+        "teamId": "your-linear-team-id-uuid",
+        "title": "Implement User Profile Page",
+        "description": "此工单涉及以下文件变更:\n- src/pages/UserProfile.tsx\n- src/components/Avatar.tsx\n- api/users.ts\n\n总共新增 18 行，删除 3 行。\n\n请根据实际工作量调整故事点和完善描述。",
+        "assigneeId": "your-linear-user-id-uuid", # 需要提前获取用户ID
+        "issueTypeIds": ["your-feature-issue-type-id"],
+        "storyPoints": 5
+      }
+    }
+  }'
+</code></pre>
+<hr>
+<h2>🔧 涉及的 Tools / Commands</h2>
+<table>
+<thead>
+<tr>
+<th align="left">工具名称 / 命令</th>
+<th align="left">用途</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>claude pm create issue</code></td>
+<td align="left">从终端创建 Jira/Linear 工单</td>
+<td align="left">根据代码差异、用户输入创建新工单，可自动填充描述、故事点等。</td>
+</tr>
+<tr>
+<td align="left"><code>claude pm update issue</code></td>
+<td align="left">更新现有 Jira/Linear 工单</td>
+<td align="left">更改工单状态、添加评论、修改字段。</td>
+</tr>
+<tr>
+<td align="left"><code>claude pm generate acceptance-criteria</code></td>
+<td align="left">从外部资源（如 PR）生成并同步验收标准</td>
+<td align="left">解析 GitHub PR 描述或其他文档，提取并更新到 PM 工单的验收标准字段。</td>
+</tr>
+<tr>
+<td align="left"><code>git diff</code></td>
+<td align="left">比较代码差异</td>
+<td align="left">Claude 内部工具利用 <code>git diff --numstat</code> 获取文件变更和行数统计，用于估算故事点和生成描述。</td>
+</tr>
+<tr>
+<td align="left"><code>Linear API</code></td>
+<td align="left">Linear GraphQL API 接口</td>
+<td align="left">Claude 通过此 API 与 Linear 进行数据交互，实现工单的增删改查。</td>
+</tr>
+<tr>
+<td align="left"><code>Jira REST API</code></td>
+<td align="left">Jira Cloud REST API 接口</td>
+<td align="left">Claude 通过此 API 与 Jira 进行数据交互，实现工单的增删改查。</td>
+</tr>
+<tr>
+<td align="left"><code>python</code> / <code>bash</code> 脚本</td>
+<td align="left">自定义自动化逻辑</td>
+<td align="left">用于实现更复杂的逻辑，例如分析 <code>git diff</code>、解析 PR 文本等。</td>
+</tr>
+<tr>
+<td align="left"><code>jq</code> (可选)</td>
+<td align="left">JSON 处理器</td>
+<td align="left">在 <code>bash</code> 脚本中处理 API 返回的 JSON 数据时非常有用。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 本期要点回顾</h2>
+<ol>
+<li><strong>MCP 是核心枢纽：</strong> Claude 的 MCP 架构为开发与项目管理工具的无缝集成提供了统一的接口和编排能力。</li>
+<li><strong>减少上下文切换：</strong> 通过终端直接操作 Jira/Linear，显著提升开发人员的工作效率，避免频繁切换应用。</li>
+<li><strong>代码即真相：</strong> 充分利用 Git 代码仓库的变更信息（<code>git diff</code>、PR 描述）作为工单信息（描述、故事点、验收标准）的自动化生成依据。</li>
+<li><strong>API 驱动集成：</strong> Jira 和 Linear 提供的强大 API 是实现自动化和深度集成的基础，所有操作都通过这些 API 完成。</li>
+<li><strong>可配置与可扩展：</strong> <code>mcp_config.yaml</code> 提供了灵活的配置选项，而外部脚本（如 Python）则允许我们根据团队需求定制更复杂的自动化逻辑。</li>
+<li><strong>智能辅助决策：</strong> Claude 可以根据代码变更量等启发式规则，为故事点和验收标准提供智能建议，但最终仍需人工确认。</li>
+</ol>
+<hr>
+<h2>🔗 参考资料</h2>
+<ol>
+<li><strong>Linear API Documentation:</strong> 深入了解 Linear 的 GraphQL API，包括认证、查询和变更操作。<ul>
+<li><a href="https://developers.linear.app/docs/">https://developers.linear.app/docs/</a></li>
+</ul>
+</li>
+<li><strong>Jira Cloud REST API Documentation:</strong> 学习 Jira Cloud 的 REST API，涵盖工单、项目、用户等资源。<ul>
+<li><a href="https://developer.atlassian.com/cloud/jira/platform/rest/v3/">https://developer.atlassian.com/cloud/jira/platform/rest/v3/</a></li>
+</ul>
+</li>
+<li><strong>Git <code>diff</code> 命令详解:</strong> 掌握 <code>git diff</code> 的各种用法，特别是 <code>numstat</code> 参数，对于代码变更分析至关重要。<ul>
+<li><a href="https://git-scm.com/docs/git-diff">https://git-scm.com/docs/git-diff</a></li>
+</ul>
+</li>
+</ol>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-p7qzptk4> <div class="pag-item prev" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-20" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>← 上一课时</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 20 章 | 官方内置连接器配置与启用</span> </a> </div> <div class="pag-item next" data-astro-cid-p7qzptk4> <a href="/zh/tutorial/claude-code-tutorial/lesson-22" class="pag-btn" data-astro-cid-p7qzptk4> <span class="pag-label" data-astro-cid-p7qzptk4>下一课时 →</span> <span class="pag-title" data-astro-cid-p7qzptk4>第 22 章 | Slack 消息的监控与自动化分发 MCP</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-p7qzptk4></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>
