@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>突发!Claude对中国用户大规模封号 — AgentUpdate.ai</title><meta name="description" content="Anthropic 近期对 145 万个账号痛下杀手，甚至在 Claude Code 源码中被爆暗藏“隐写术”以检测用户时区与中转代理。本文深度拆解这场信任危机，揭秘“看不见的暗号”如何出卖你的身份，并手把手教你配置“防封环境”与搭建多模型 Plan B 备用链路，带你逃离平台掌控的“重力”。"><meta name="keywords" content="突发!Claude对中国用户大规模封号, Breaking News: Claude Initiates Mass Account Bans on Chinese Users!, Claude Code, AI安全, 开发工具, 风控防封"><link rel="canonical" href="https://agentupdate.ai/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="突发!Claude对中国用户大规模封号 — AgentUpdate.ai"><meta property="og:description" content="Anthropic 近期对 145 万个账号痛下杀手，甚至在 Claude Code 源码中被爆暗藏“隐写术”以检测用户时区与中转代理。本文深度拆解这场信任危机，揭秘“看不见的暗号”如何出卖你的身份，并手把手教你配置“防封环境”与搭建多模型 Plan B 备用链路，带你逃离平台掌控的“重力”。"><meta property="og:image" content="https://agentupdate.ai/images/covers/cover_1782876801685.png"><meta property="og:url" content="https://agentupdate.ai/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="突发!Claude对中国用户大规模封号 — AgentUpdate.ai"><meta name="twitter:description" content="Anthropic 近期对 145 万个账号痛下杀手，甚至在 Claude Code 源码中被爆暗藏“隐写术”以检测用户时区与中转代理。本文深度拆解这场信任危机，揭秘“看不见的暗号”如何出卖你的身份，并手把手教你配置“防封环境”与搭建多模型 Plan B 备用链路，带你逃离平台掌控的“重力”。"><meta name="twitter:image" content="https://agentupdate.ai/images/covers/cover_1782876801685.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"突发!Claude对中国用户大规模封号","description":"Anthropic 近期对 145 万个账号痛下杀手，甚至在 Claude Code 源码中被爆暗藏“隐写术”以检测用户时区与中转代理。本文深度拆解这场信任危机，揭秘“看不见的暗号”如何出卖你的身份，并手把手教你配置“防封环境”与搭建多模型 Plan B 备用链路，带你逃离平台掌控的“重力”。","image":"/images/covers/cover_1782876801685.png","datePublished":"2026-07-01T04:03:30.701Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/escape-claude-gravity-steganography-and-kyc-survival-guide" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/escape-claude-gravity-steganography-and-kyc-survival-guide" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>突发!Claude对中国用户大规模封号</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"突发!Claude对中国用户大规模封号"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>突发!Claude对中国用户大规模封号</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年7月1日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude-code" class="tag" data-astro-cid-w5q62dq7>#Claude Code</a><span class="tag" data-astro-cid-w5q62dq7>#AI安全</span><span class="tag" data-astro-cid-w5q62dq7>#开发工具</span><span class="tag" data-astro-cid-w5q62dq7>#风控防封</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/covers/cover_1782876801685.png" alt="突发!Claude对中国用户大规模封号" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-信任危机claude-code-源码里暗藏的隐写术" data-astro-cid-w5q62dq7>🔒 信任危机：Claude Code 源码里暗藏的“隐写术”</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#它是怎么盯上你的" data-astro-cid-w5q62dq7>它是怎么盯上你的？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-源码级拆解隐写标记逻辑是如何实现的" data-astro-cid-w5q62dq7>🛠️ 源码级拆解：隐写标记逻辑是如何实现的？</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-地缘政治与要脸时代风控为什么越来越狠" data-astro-cid-w5q62dq7>🚨 地缘政治与“要脸”时代：风控为什么越来越狠？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-抓内鬼防抄袭模型蒸馏" data-astro-cid-w5q62dq7>1. 抓内鬼防抄袭（模型蒸馏）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-美国政府下场管制" data-astro-cid-w5q62dq7>2. 美国政府下场管制</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#3-7月8日起的交脸新规-kyc" data-astro-cid-w5q62dq7>3. 7月8日起的“交脸”新规 (KYC)</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-实操指南如何打造一个高仿的美国本地开发环境" data-astro-cid-w5q62dq7>🛡️ 实操指南：如何打造一个“高仿”的美国本地开发环境？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#步骤一净化网络环境" data-astro-cid-w5q62dq7>步骤一：净化网络环境</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#步骤二彻底修改-macos-系统设置" data-astro-cid-w5q62dq7>步骤二：彻底修改 macOS 系统设置</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#步骤三调整-chrome-浏览器与注册习惯" data-astro-cid-w5q62dq7>步骤三：调整 Chrome 浏览器与注册习惯</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-脱离引力构建多模型的-antigravity-20-工作流" data-astro-cid-w5q62dq7>🚀 脱离引力：构建多模型的 Antigravity 2.0 工作流</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-将本地工具链与底层模型解耦" data-astro-cid-w5q62dq7>1. 将本地工具链与底层模型解耦</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-构建多模型-plan-b-矩阵" data-astro-cid-w5q62dq7>2. 构建多模型 Plan B 矩阵</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-总结提炼写在最后" data-astro-cid-w5q62dq7>💡 总结提炼：写在最后</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>这两天，技术圈里哀鸿遍野。不少老铁一大早爬起来，熟练地打开终端准备用 Claude Code 撸代码，结果迎面撞上了一个冰冷的登录界面。输入账号，弹出来的是一句：“Your account has been suspended”（您的账号已被暂停）。</p>
+<p>这不是个例，而是一场席卷全球的“大扫射”。据统计，Anthropic 已经累计封禁了 <strong>145 万个账号</strong>。甚至有团队整家公司 70 到 110 个员工的账号在一夜之间被连坐全封，而荒谬的是，他们的后台 API 还在源源不断地扣着费。</p>
+<p>当 AI 编程工具已经像空气和水一样深入我们的开发工作流时，这种“单点依赖”就成了悬在所有人头上的达摩克利斯之剑。平台说掐断就掐断，我们好不容易调教出来的技能、工作流瞬间塌方，直接被逼重回“古法编程”时代。</p>
+<p>今天，咱们就以一个一线开发者的视角，把这场封号风波背后的底层风控逻辑、源码里的“骚操作”，以及我们该如何构建“抗封锁、脱离平台控制”的 <strong>Antigravity 2.0（反重力 2.0）</strong> 独立工作流彻底讲透。</p>
+<hr>
+<h2 id="-信任危机claude-code-源码里暗藏的隐写术">🔒 信任危机：Claude Code 源码里暗藏的“隐写术”</h2><p>很多人纳闷：“我明明挂了最干净的美区代理，支付卡也是正规的，为什么还是被封了？”</p>
+<p>答案可能藏在 Claude Code 的源码里。最近，Reddit 和 GitHub 上的技术大牛逆向了 Claude Code 的客户端代码（今年 3 月 Anthropic 曾不小心泄露了包含 <code>.map</code> 文件的 TypeScript 源码），扯下了一块令人脊背发凉的遮羞布：<strong>Claude Code 在偷偷给你的请求打“隐形水印”。</strong></p>
+<p>它不是通过公开的遥测数据 (Telemetry) 字段来上报，而是用了一种极难被肉眼发现的技术——<strong>隐写术 (Steganography)</strong>，把你的环境特征藏进了每一次看似平常的 Prompt（提示词）中。</p>
+<h3 id="它是怎么盯上你的">它是怎么盯上你的？</h3><p>只要你启用了自定义的中转地址（通过系统环境变量 <code>ANTHROPIC_BASE_URL</code> 指向国内中转网关），Claude Code 就会拉起一套本地检测流水线：</p>
+<ol>
+<li><p><strong>检测系统时区 (Timezone)</strong>：直接读取你操作系统的本地设置，一旦匹配到 <code>Asia/Shanghai</code> 或 <code>Asia/Urumqi</code>，你就被贴上了第一张标签。</p>
+</li>
+<li><p><strong>比对域名黑名单</strong>：它提取你中转地址的域名，去比对一份内置的、经过 Base64 和 XOR（异或）加密的黑名单。这份名单包含了 147 个国内大厂及 AI 实验室的域名（包括阿里、腾讯、百度、字节、月之暗面、MiniMax 等）。</p>
+</li>
+<li><p><strong>悄悄修改系统提示词 (System Prompt)</strong>：
+正常情况下，Claude 发送给后端的日期格式长这样：
+<code>Today&#39;s date is 2026-06-30.</code></p>
+<p>但如果检测到你是中国时区或用了黑名单代理，它会做两处手脚：</p>
+<ul>
+<li><strong>替换撇号</strong>：把 <code>Today&#39;s</code> 里的标准单引号（Unicode 编码为 <code>U+0027</code>）偷偷替换成右单引号（如 <code>U+2019</code> 等其他长得一模一样的 Unicode 字符）。</li>
+<li><strong>替换日期分隔符</strong>：把横杠 <code>2026-06-30</code> 换成斜杠 <code>2026/06/30</code>。</li>
+</ul>
+</li>
+</ol>
+<p>通过这两个细节的排列组合，Anthropic 的服务器只要扫一眼提示词里的字符编码，不需要做任何复杂的 IP 审计，就能瞬间判断出：<strong>这是一个来自中国的绕路用户</strong>。然后，风控系统在后台默默记下一笔，等攒够了名单，一波无差别扫射直接带走。</p>
+<p>我们可以用下面这张 Mermaid 流程图直观地看看这个“打小报告”的完整过程：</p>
+<p>mermaid
+flowchart TD
+    A[启动 Claude Code 客户端] --&gt; B{检测系统环境变量 ANTHROPIC_BASE_URL}
+    B -- 使用默认官方接口 --&gt; C[直接发起请求]
+    B -- 使用自定义中转地址 --&gt; D[提取中转域名并进行解密比对]
+    D --&gt; E{域名匹配 147 个黑名单或时区为 Asia/Shanghai?}
+    E -- 否 --&gt; C
+    E -- 是 --&gt; F[启用隐写术: 替换单引号 Unicode 编码 + 修改日期分隔符]
+    F --&gt; G[向 Anthropic 服务器发送带隐形标记的 Prompt]
+    G --&gt; H[后端风控系统识别标记，记录账号画像，适时封号]</p>
+<hr>
+<h2 id="-源码级拆解隐写标记逻辑是如何实现的">🛠️ 源码级拆解：隐写标记逻辑是如何实现的？</h2><p>为了让小白也能 100% 看懂，我写了一段模拟 Claude Code 这一内部逻辑的 JavaScript 示例代码。看完你就明白，机器是怎么在你的眼皮子底下玩弄字符编码的：</p>
+<p>javascript
+// 模拟 Claude Code 本地环境检测与隐写术提示词生成的逻辑
+function generateSystemPrompt(originalDateStr, isCustomProxy) {
+    let finalDateStr = originalDateStr; // 默认日期格式：YYYY-MM-DD
+    let apostrophe = &quot;\u0027&quot;; // 默认单引号字符 (Today&#39;s 中的普通单引号)</p>
+<div class="code-wrapper"><pre><code>// 1. 获取本地系统时区 (由于我们在东八区，通常会返回 Asia/Shanghai)
+const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+// 模拟 147 个经过加密的国内大厂、AI 实验室域名黑名单
+const blacklistedDomains = [&quot;api.moonshot.cn&quot;, &quot;api.deepseek.com&quot;, &quot;custom-proxy.org&quot;];
+
+// 2. 检查是否命中了敏感时区或自定义了中转代理
+const isChineseTimezone = (userTimezone === &quot;Asia/Shanghai&quot; || userTimezone === &quot;Asia/Urumqi&quot;);
+
+if (isChineseTimezone || isCustomProxy) {
+    // 触发本地隐写规则
+    // 规则 A：将标准连字符 &#39;-&#39; 替换为斜杠 &#39;/&#39;
+    finalDateStr = originalDateStr.replace(/-/g, &quot;/&quot;);
+    
+    // 规则 B：将标准单引号 U+0027 替换为外观极度相似的右单引号 U+2019
+    // 肉眼在终端或者编辑器里看起来都是 Today&#39;s，但机器读取的字节码完全不同
+    apostrophe = &quot;\u2019&quot;; 
+}
+
+// 3. 拼接最终发送给后端的系统提示词
+const systemPrompt = `Today${apostrophe}s date is ${finalDateStr}.`;
+
+console.log(&quot;=== 实际生成的 Prompt 文字 ===&quot;);
+console.log(systemPrompt);
+console.log(&quot;=== 字符 Unicode 编码解析 ===&quot;);
+console.log(&quot;单引号的实际 Unicode:&quot;, systemPrompt.codePointAt(5).toString(16));
+
+return systemPrompt;
+</code></pre>
+</div><p>}</p>
+<p>// 场景 A：一个老老实实用官方接口的海外开发者（时区非 Asia/Shanghai，无自定义代理）
+console.log(&quot;--- 场景 A：合规用户 ---&quot;);
+// 假装我们在美区环境跑这段代码
+generateSystemPrompt(&quot;2026-06-30&quot;, false);</p>
+<p>// 场景 B：国内开发者，使用了中转代理
+console.log(&quot;\n--- 场景 B：触发风控隐写的用户 ---&quot;);
+generateSystemPrompt(&quot;2026-06-30&quot;, true);</p>
+<p>看明白了吧？<strong>你以为你只是在发代码，其实你的客户端早就当了内鬼。</strong></p>
+<hr>
+<h2 id="-地缘政治与要脸时代风控为什么越来越狠">🚨 地缘政治与“要脸”时代：风控为什么越来越狠？</h2><p>这次大面积封号，背后其实有三股力量在推波助澜：</p>
+<h3 id="1-抓内鬼防抄袭模型蒸馏">1. 抓内鬼防抄袭（模型蒸馏）</h3><p>今年 6 月，Anthropic 直接给美国参议员写信，指控国内某大厂利用将近 <strong>2.5 万个虚假账号</strong>，刷了 <strong>2880 万次对话</strong>，来“蒸馏” (Distillation) 他们的模型（相当于差生通过大量提问，抄袭学霸的逻辑和知识来训练自己的模型）。这把 Anthropic 彻底惹毛了，风控策略直接宁可错杀一千，不可放过一个。</p>
+<h3 id="2-美国政府下场管制">2. 美国政府下场管制</h3><p>6 月 12 日，美国商务部给 Anthropic 施压，要求其立即暂停最强模型 Fable 5 和 Mythos 5 对所有外国公民的访问。Anthropic 顶不住压力，干脆一刀切，让这些新模型在全球下线了 15 天，直到 6 月末谈判好才重新上架。在重新上架前，必须把不合规的区域流量清理干净。</p>
+<h3 id="3-7月8日起的交脸新规-kyc">3. 7月8日起的“交脸”新规 (KYC)</h3><p>从 2026 年 7 月 8 日起，Anthropic 更新了隐私政策：被系统判定有异常的账号，必须通过第三方服务商 Persona 提交<strong>政府颁发的身份证件（护照、身份证）+ 实时自拍视频 + 面部几何模板 (Facial Geometry Template)</strong> 进行实名验证 (KYC) 才能解锁。
+更要命的是，新版隐私政策里规定，只要平台基于“善意信念”认为有必要，就可以不经法院命令，主动向执法机构披露你的对话内容。</p>
+<p><strong>以前是封你的号，现在是要你的脸。</strong> 面对这样的基础设施级身份管控，我们不能再把鸡蛋放在一个篮子里了。</p>
+<hr>
+<h2 id="-实操指南如何打造一个高仿的美国本地开发环境">🛡️ 实操指南：如何打造一个“高仿”的美国本地开发环境？</h2><p>如果你目前依然极度依赖 Claude Code 的原生能力，不想放弃这个“最强代码 Agent”，那么你必须从网络、系统和浏览器三个维度，把自己彻底伪装成一个老老实实的“美区本地人”。</p>
+<p>以下是经过社区多位幸存者验证的防封配置指南：</p>
+<h3 id="步骤一净化网络环境">步骤一：净化网络环境</h3><ul>
+<li>绝对不要用万人共用的公共代理节点，那是封号重灾区。</li>
+<li>尽量使用<strong>静态住宅 IP (Static Residential IP)</strong>，模拟真实的美国宽带用户，并在代理软件中将规则设为全局或将 Claude 相关域名死死锁定在这个节点上。</li>
+</ul>
+<h3 id="步骤二彻底修改-macos-系统设置">步骤二：彻底修改 macOS 系统设置</h3><p>你挂着美区 IP，系统时区却是东八区，这就是典型的“指纹不匹配”。请在 Mac 终端中运行以下命令进行修改：</p>
+<p>bash</p>
+<h1 id="1-强制将系统时区修改为美国洛杉矶时区">1. 强制将系统时区修改为美国洛杉矶时区</h1><p>sudo systemsetup -settimezone America/Los_Angeles</p>
+<h1 id="2-检查时区是否修改成功-应该输出-pdt-或-pst-结尾的时间">2. 检查时区是否修改成功 (应该输出 PDT 或 PST 结尾的时间)</h1><p>date</p>
+<h1 id="3-禁用-ipv6-防止国内真实的-ipv6-地址通过代理泄露">3. 禁用 IPv6 (防止国内真实的 IPv6 地址通过代理泄露)</h1><h1 id="注意若你使用的是有线网卡请将-wi-fi-替换为对应的网卡名称">注意：若你使用的是有线网卡，请将 'Wi-Fi' 替换为对应的网卡名称</h1><p>networksetup -setv6off Wi-Fi</p>
+<h1 id="4-彻底关闭-macos-系统的定位服务">4. 彻底关闭 macOS 系统的定位服务</h1><p>sudo defaults write /Library/Preferences/com.apple.locationd LocationServicesEnabled -int 0
+sudo launchctl unload /System/Library/LaunchDaemons/com.apple.locationd.plist 2&gt;/dev/null</p>
+<h3 id="步骤三调整-chrome-浏览器与注册习惯">步骤三：调整 Chrome 浏览器与注册习惯</h3><ul>
+<li><strong>语言置顶</strong>：进入 <code>chrome://settings/languages</code>，将 <code>English (United States)</code> 设为首选语言并置顶。</li>
+<li><strong>禁用定位</strong>：进入 <code>chrome://settings/content/location</code>，选择“不允许网站查看你的位置”。</li>
+<li><strong>新号冷启动</strong>：新号刚到手前两周，<strong>老老实实用网页版或官方桌面端 (Claude Desktop)</strong>。别急着上 CLI 命令行，别急着装第三方套壳工具（如 OpenClaw）。</li>
+<li><strong>付款对齐</strong>：订阅 $20/月的 Pro 会员时，尽量走美区 App Store（通过苹果礼品卡充值）或正规美区虚拟卡。<strong>绝对不要一上来就顶格买 $200 的 Max 套餐，也别一注册就疯狂把额度跑满。</strong></li>
+</ul>
+<hr>
+<h2 id="-脱离引力构建多模型的-antigravity-20-工作流">🚀 脱离引力：构建多模型的 Antigravity 2.0 工作流</h2><p>折腾环境固然能降低封号概率，但只要你的物理肉身还在国内，被封就只是个“时间问题”。</p>
+<p>真正的 <strong>Antigravity（反重力）</strong> 思想，是<strong>不把核心研发生产力绑定在任何单一闭源模型上</strong>。一旦 Claude 挂了，你的代码、项目和工作流必须能在一分钟内无缝切换，继续往前走。</p>
+<h3 id="1-将本地工具链与底层模型解耦">1. 将本地工具链与底层模型解耦</h3><p>如果你习惯了 Claude Code 的终端交互，可以使用类似于 <code>cc-switch</code> 这样的开源补丁工具，把它的“心脏”换成 OpenAI 的模型。虽然交互节奏会有微妙变化，但至少能保证你的本地工作流不中断。</p>
+<h3 id="2-构建多模型-plan-b-矩阵">2. 构建多模型 Plan B 矩阵</h3><p>现在国内外的优秀模型层出不穷。在你的编辑器（如 Cursor、VS Code）或终端里，应该配置好以下备用方案：</p>
+<ul>
+<li><strong>Codex</strong>：作为工程任务的备用，虽然聪明程度略逊于 Claude，但胜在工程连续性好。</li>
+<li><strong>DeepSeek V4 / Qwen 2.5</strong>：国产开源之光，在代码补全、基础重构任务上，性价比极高，且支持本地私有化部署，完全不用担心被封号或数据泄露。</li>
+<li><strong>智谱 GLM 5.2 / 豆包专业版</strong>：在上下文理解和特定框架（如鸿蒙 App 开发）上，表现远超预期。当上下文给得足够清晰、任务边界明确时，完全可以作为主力工具。</li>
+</ul>
+<hr>
+<h2 id="-总结提炼写在最后">💡 总结提炼：写在最后</h2><p>这次 Claude 的封号潮，给所有深度依赖 AI 的开发者上了一堂极其生动的“安全课”：</p>
+<ol>
+<li><strong>AI 越强，信任越贵</strong>：当一个 AI 工具（如 Coding Agent）拥有了读取你项目、执行本地 shell 命令的高权限时，它的不透明风控就会成为巨大的安全隐患。使用它时，<strong>敏感密钥千万不要裸奔，核心生产数据库绝不能让 Agent 直接触碰</strong>。</li>
+<li><strong>工具是发动机，但别把方向盘交出去</strong>：你的需求文档、架构决策、核心提示词以及测试记录，一定要在本地做好备份。账号没了可以再买，但你和 AI 共同迭代出来的“项目记忆”一旦丢了，那才是真正的灭顶之灾。</li>
+<li><strong>拥抱多模型工作流</strong>：在 AI 时代，真正强大的不是某一个账号或某一家公司的模型，而是<strong>你那一套稳定、可弹性切换、可持续迭代的个人工具链</strong>。保持工具链的开放性，你才能在风起云涌的 AI 变局中，永远拥有随时出发的自由。</li>
+</ol>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="-信任危机claude-code-源码里暗藏的隐写术" data-astro-cid-w5q62dq7> <a href="#-信任危机claude-code-源码里暗藏的隐写术" data-astro-cid-w5q62dq7>🔒 信任危机：Claude Code 源码里暗藏的“隐写术”</a> </li><li class="toc-item h3-nav" data-slug="它是怎么盯上你的" data-astro-cid-w5q62dq7> <a href="#它是怎么盯上你的" data-astro-cid-w5q62dq7>它是怎么盯上你的？</a> </li><li class="toc-item " data-slug="-源码级拆解隐写标记逻辑是如何实现的" data-astro-cid-w5q62dq7> <a href="#-源码级拆解隐写标记逻辑是如何实现的" data-astro-cid-w5q62dq7>🛠️ 源码级拆解：隐写标记逻辑是如何实现的？</a> </li><li class="toc-item " data-slug="-地缘政治与要脸时代风控为什么越来越狠" data-astro-cid-w5q62dq7> <a href="#-地缘政治与要脸时代风控为什么越来越狠" data-astro-cid-w5q62dq7>🚨 地缘政治与“要脸”时代：风控为什么越来越狠？</a> </li><li class="toc-item h3-nav" data-slug="1-抓内鬼防抄袭模型蒸馏" data-astro-cid-w5q62dq7> <a href="#1-抓内鬼防抄袭模型蒸馏" data-astro-cid-w5q62dq7>1. 抓内鬼防抄袭（模型蒸馏）</a> </li><li class="toc-item h3-nav" data-slug="2-美国政府下场管制" data-astro-cid-w5q62dq7> <a href="#2-美国政府下场管制" data-astro-cid-w5q62dq7>2. 美国政府下场管制</a> </li><li class="toc-item h3-nav" data-slug="3-7月8日起的交脸新规-kyc" data-astro-cid-w5q62dq7> <a href="#3-7月8日起的交脸新规-kyc" data-astro-cid-w5q62dq7>3. 7月8日起的“交脸”新规 (KYC)</a> </li><li class="toc-item " data-slug="-实操指南如何打造一个高仿的美国本地开发环境" data-astro-cid-w5q62dq7> <a href="#-实操指南如何打造一个高仿的美国本地开发环境" data-astro-cid-w5q62dq7>🛡️ 实操指南：如何打造一个“高仿”的美国本地开发环境？</a> </li><li class="toc-item h3-nav" data-slug="步骤一净化网络环境" data-astro-cid-w5q62dq7> <a href="#步骤一净化网络环境" data-astro-cid-w5q62dq7>步骤一：净化网络环境</a> </li><li class="toc-item h3-nav" data-slug="步骤二彻底修改-macos-系统设置" data-astro-cid-w5q62dq7> <a href="#步骤二彻底修改-macos-系统设置" data-astro-cid-w5q62dq7>步骤二：彻底修改 macOS 系统设置</a> </li><li class="toc-item h3-nav" data-slug="步骤三调整-chrome-浏览器与注册习惯" data-astro-cid-w5q62dq7> <a href="#步骤三调整-chrome-浏览器与注册习惯" data-astro-cid-w5q62dq7>步骤三：调整 Chrome 浏览器与注册习惯</a> </li><li class="toc-item " data-slug="-脱离引力构建多模型的-antigravity-20-工作流" data-astro-cid-w5q62dq7> <a href="#-脱离引力构建多模型的-antigravity-20-工作流" data-astro-cid-w5q62dq7>🚀 脱离引力：构建多模型的 Antigravity 2.0 工作流</a> </li><li class="toc-item h3-nav" data-slug="1-将本地工具链与底层模型解耦" data-astro-cid-w5q62dq7> <a href="#1-将本地工具链与底层模型解耦" data-astro-cid-w5q62dq7>1. 将本地工具链与底层模型解耦</a> </li><li class="toc-item h3-nav" data-slug="2-构建多模型-plan-b-矩阵" data-astro-cid-w5q62dq7> <a href="#2-构建多模型-plan-b-矩阵" data-astro-cid-w5q62dq7>2. 构建多模型 Plan B 矩阵</a> </li><li class="toc-item " data-slug="-总结提炼写在最后" data-astro-cid-w5q62dq7> <a href="#-总结提炼写在最后" data-astro-cid-w5q62dq7>💡 总结提炼：写在最后</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/agent-marketing-composio-claude" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/composio_agent_marketing.png" alt="让 AI 智能体做营销：我是如何用 Composio + Claude 推广网站的" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/agent-marketing-composio-claude" data-astro-cid-w5q62dq7>让 AI 智能体做营销：我是如何用 Composio + Claude 推广网站的</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文为您揭秘如何利用 Composio 的 250+ 免费工具生态和 Claude，打造一套完全自动化且带有人工审核防黑名单机制的网站推广流水线。通过将 AI 智能体与 Telegram、Facebook、YouTube Shorts 和 Notion 无缝融合，本文详细展示了将 2000 美元的传统推广服务，低成本平替为 MCP 自动化长效分发网络的实操全过程。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月29日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/china-travel-network-solution-gl-mt3000-homeproxy" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/portable-network-gateway-cover.png" alt="从国外回到内地的网络畅游方案：基于 GL-MT3000 + HomeProxy + 手机热点的透明代理组网实践" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/china-travel-network-solution-gl-mt3000-homeproxy" data-astro-cid-w5q62dq7>从国外回到内地的网络畅游方案：基于 GL-MT3000 + HomeProxy + 手机热点的透明代理组网实践</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文详细介绍了一种适合回国差旅、远程办公的移动网关级透明代理解决方案。通过 GL-iNet GL-MT3000 便携式路由器无线中继手机热点，结合 HomeProxy (Sing-box) 的 TUN 模式与 WebSocket 传输协议，配合 8.8.8.8 防止 DNS 污染，帮助海外党实现免客户端配置的全局/分流无感打通。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月27日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>
