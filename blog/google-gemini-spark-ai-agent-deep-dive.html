@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Google&#39;s own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents — AgentUpdate.ai</title><meta name="description" content="AI has finally evolved from chatting to working. This article breaks down Google's Gemini Spark, an always-on AI agent running on cloud VMs. Learn its core..."><meta name="keywords" content="谷歌自己的龙虾Gemini Spark:真正替你上班的24小时虚拟员工, Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents, Gemini Spark, AI Agent, 自动化工作流, Google I/O 2026, MCP协议"><link rel="canonical" href="https://agentupdate.ai/blog/google-gemini-spark-ai-agent-deep-dive"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/google-gemini-spark-ai-agent-deep-dive"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/google-gemini-spark-ai-agent-deep-dive"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/google-gemini-spark-ai-agent-deep-dive"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents — AgentUpdate.ai"><meta property="og:description" content="AI has finally evolved from chatting to working. This article breaks down Google's Gemini Spark, an always-on AI agent running on cloud VMs. Learn its core..."><meta property="og:image" content="https://agentupdate.ai/images/blog/ai-cover-d65c443d.jpg"><meta property="og:url" content="https://agentupdate.ai/blog/google-gemini-spark-ai-agent-deep-dive"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents — AgentUpdate.ai"><meta name="twitter:description" content="AI has finally evolved from chatting to working. This article breaks down Google's Gemini Spark, an always-on AI agent running on cloud VMs. Learn its core..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/ai-cover-d65c443d.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents","description":"AI has finally evolved from chatting to working. This article breaks down Google's Gemini Spark, an always-on AI agent running on cloud VMs. Learn its core architecture, the MCP protocol, and practical tips for building your automated workflows.","image":"/images/blog/ai-cover-d65c443d.jpg","datePublished":"2026-05-22T08:02:23.362Z","author":{"@type":"Person","name":"Eric W"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/blog/google-gemini-spark-ai-agent-deep-dive"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/google-gemini-spark-ai-agent-deep-dive" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/google-gemini-spark-ai-agent-deep-dive" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Google&#39;s own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Google&#39;s own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>May 22, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By Eric W</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <span class="tag" data-astro-cid-4sn4zg3r>#Gemini Spark</span><a href="/tags/ai-agent" class="tag" data-astro-cid-4sn4zg3r>#AI Agent</a><span class="tag" data-astro-cid-4sn4zg3r>#自动化工作流</span><span class="tag" data-astro-cid-4sn4zg3r>#Google I/O 2026</span><span class="tag" data-astro-cid-4sn4zg3r>#MCP协议</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/ai-cover-d65c443d.jpg" alt="Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#chatting-vs-working-a-fundamental-paradigm-shift-in-ai" data-astro-cid-4sn4zg3r>Chatting vs. Working: A Fundamental Paradigm Shift in AI</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#deconstructing-spark-three-pillars-and-underlying-architecture" data-astro-cid-4sn4zg3r>Deconstructing Spark: Three Pillars and Underlying Architecture</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#1-tasks-one-off-assignments" data-astro-cid-4sn4zg3r>1. Tasks (One-off Assignments)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#2-skills-train-once-use-forever" data-astro-cid-4sn4zg3r>2. Skills (Train Once, Use Forever)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#3-schedules-time-or-condition-triggered-plans" data-astro-cid-4sn4zg3r>3. Schedules (Time or Condition-Triggered Plans)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#how-does-it-run-under-the-hood-dont-be-fooled-by-big-tech-jargon" data-astro-cid-4sn4zg3r>How Does It Run Under the Hood? Don&#39;t Be Fooled by Big Tech Jargon</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#a-hardcore-bonus-for-developers-what-does-it-look-like-at-the-code-level" data-astro-cid-4sn4zg3r>A Hardcore Bonus for Developers: What Does It Look Like at the Code Level?</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#high-risk-actions-require-human-approval" data-astro-cid-4sn4zg3r>High-Risk Actions Require &quot;Human&quot; Approval</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#global-tech-titans-clash-why-hasnt-a-similar-product-emerged-in-china" data-astro-cid-4sn4zg3r>Global Tech Titans Clash: Why Hasn&#39;t a Similar Product Emerged in China?</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-summary-final-thoughts" data-astro-cid-4sn4zg3r>💡 Summary / Final Thoughts</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p>Yesterday, I closed my laptop and prepared for bed. However, on a Google Cloud virtual machine, an entity named Spark continued to &quot;run errands&quot; on my behalf. It was parsing through dozens of my past emails, extracting my writing tone, and preparing to schedule this week&#39;s to-do list into my calendar before 9:00 AM the next day.</p>
+<p>In all my years of writing code and utilizing various tools, this was the first time I truly experienced the formidable power of &quot;delegation.&quot; It was no longer a case of &quot;I ask the AI a question, and it returns a snippet of code or text.&quot; Instead, it was: &quot;I assign a task, and while I sleep, the AI navigates across multiple software applications to complete the work on my behalf.&quot;</p>
+<p>At the 2026 Google I/O conference, Google dropped a bombshell: <strong>Gemini Spark</strong>. In this article, we will explore what this AI Agent—claiming to operate 24/7—actually is, how its underlying architecture functions, and how everyday users can leverage it to save immense amounts of time and effort.</p>
+<h2 id="chatting-vs-working-a-fundamental-paradigm-shift-in-ai">Chatting vs. Working: A Fundamental Paradigm Shift in AI</h2><p>Many beginners&#39; understanding of AI remains stuck in the era when ChatGPT was first released. Let us establish a straightforward comparison:</p>
+<ul>
+<li><strong>Traditional AI (Chat Mode)</strong>: You input a Prompt -&gt; It outputs a block of text -&gt; The conversation ends. This is a <strong>Chatbox</strong>. You still have to manually copy the text, send the email, or create the document. Ultimately, you are the one doing the work.</li>
+<li><strong>Gemini Spark (Work Mode)</strong>: You set an objective -&gt; It autonomously breaks down the steps -&gt; It accesses your email, documents, and calendar -&gt; It sends you a notification once the task is complete. This is a <strong>Virtual Employee</strong>. During this process, it does not matter if your computer is powered off.</li>
+</ul>
+<p>Google refers to this as &quot;Long-horizon Execution.&quot; To support this capability, Spark relies on a highly robust combination of hardware and architectural design.</p>
+<h2 id="deconstructing-spark-three-pillars-and-underlying-architecture">Deconstructing Spark: Three Pillars and Underlying Architecture</h2><p>Spark&#39;s evolution from a mere &quot;tool&quot; to an &quot;employee&quot; relies entirely on its three core pillars: <strong>Tasks</strong>, <strong>Skills</strong>, and <strong>Schedules</strong>.</p>
+<h3 id="1-tasks-one-off-assignments">1. Tasks (One-off Assignments)</h3><p>These are ad-hoc, one-time errands you assign casually. For example: &quot;Find the most important invoice files from the past 30 days in my Google Drive and categorize them into a spreadsheet.&quot;</p>
+<h3 id="2-skills-train-once-use-forever">2. Skills (Train Once, Use Forever)</h3><p>This is the killer feature I find most compelling. Previously, the biggest pain point of using AI to write emails was the &quot;lack of soul&quot;—the output clearly looked machine-generated, requiring extensive manual editing every time. </p>
+<p>With Skills, you can approach it like this: feed Spark 50 emails you have personally written, allowing it to analyze your sentence structures, vocabulary habits, and even the rhythm of your punctuation. You can then name this skill &quot;Ghostwriter.&quot; From then on, whenever you ask it to draft an email, it will write directly in your tone, requiring only a quick glance before sending. This is a classic &quot;one-time investment, lifelong compound interest&quot; strategy.</p>
+<h3 id="3-schedules-time-or-condition-triggered-plans">3. Schedules (Time or Condition-Triggered Plans)</h3><p>You can think of this as an advanced Cron Job. For instance: Every Monday at 8:55 AM, scan last week&#39;s inbox, extract urgent emails that must be replied to this week, prioritize them, and automatically block out two hours of &quot;Deep Work&quot; time on your calendar.</p>
+<p>To help beginners visualize this process more intuitively, I have mapped out a business workflow diagram:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">sequenceDiagram
+    participant User as Programmer Wang (User)
+    participant Trigger as Schedules (Timer Trigger)
+    participant Spark as Gemini Spark (Agent)
+    participant Gmail as Google Mail (Gmail)
+    participant Calendar as Google Calendar (Calendar)
+
+    User->>Trigger: Set rule: Execute "Weekly Schedule" every Monday at 8:55
+    loop Every Monday Morning
+        Trigger->>Spark: Wake up Spark VM
+        Spark->>Gmail: Scan last week's unread/important emails
+        Gmail-->>Spark: Return 50 email records
+        Spark->>Spark: Invoke "Ghostwriter" skill, extract priorities
+        Spark->>Calendar: Avoid existing meetings, block 10:00-12:00 for deep work
+        Calendar-->>Spark: Calendar successfully blocked
+        Spark-->>User: 9:00 Push notification: Wang, tasks are scheduled, awaiting your confirmation
+    end
+</pre></div><h2 id="how-does-it-run-under-the-hood-dont-be-fooled-by-big-tech-jargon">How Does It Run Under the Hood? Don't Be Fooled by Big Tech Jargon</h2><p>As technical professionals, we need to look under the hood. How exactly does Spark manage to keep running even when your computer is turned off?</p>
+<ol>
+<li><strong>The Brain: Gemini 3.5 Flash</strong>. This is Google&#39;s newly released large language model (LLM). It is characterized by extreme speed and support for very long context memory. It even outperforms its older sibling, the Pro version, in benchmark scores for processing actual business tasks.</li>
+<li><strong>The Body: Dedicated Cloud VM (Virtual Machine)</strong>. Your Spark instance runs in an isolated sandbox on Google Cloud, ensuring it remains online 24/7. This also means it holds your Login State, allowing it to genuinely access your accounts to perform work.</li>
+<li><strong>The Nervous System: <a href="/tutorial/antigravity-masterclass" class="seo-autolink-keyword">Antigravity</a> Harness</strong>. This is an execution framework specifically developed by Google for Agents. It is responsible for breaking down complex tasks into smaller steps and can recover the state if an interruption occurs midway.</li>
+<li><strong>The Hands: MCP (Model Context Protocol)</strong>. This is the most impressive part of the entire system. MCP is an open-source interface standard introduced by Anthropic (the parent company of Claude). Through MCP, Spark can not only navigate the Google ecosystem but also directly connect to GitHub to check errors, read documents in Notion, or even buy groceries on Instacart.</li>
+</ol>
+<h3 id="a-hardcore-bonus-for-developers-what-does-it-look-like-at-the-code-level">A Hardcore Bonus for Developers: What Does It Look Like at the Code Level?</h3><p>Although Spark provides a graphical user interface for general users, Google offers developers the Go-based Antigravity CLI (Command Line Interface). To help you understand the configuration logic of the Agent, I have simulated a configuration file that registers a &quot;Skill&quot; and a &quot;Schedule,&quot; complete with highly detailed comments to ensure it is easily understood at a glance:</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  // This is a simulated Spark Agent task configuration file
+  &quot;agent_config&quot;: {
+    &quot;name&quot;: &quot;Monday_Morning_Routine&quot;,
+    &quot;model&quot;: &quot;gemini-3.5-flash&quot;, // Specifies the underlying brain model to use
+    
+    // Defines the trigger (Schedules), using a Cron-like expression here
+    &quot;trigger&quot;: {
+      &quot;type&quot;: &quot;schedule&quot;,
+      &quot;cron&quot;: &quot;55 8 * * 1&quot;, // Meaning: Triggers exactly at 8:55 AM every Monday
+      &quot;timezone&quot;: &quot;Asia/Shanghai&quot;
+    },
+
+    // Defines the task workflow (Tasks)
+    &quot;workflow&quot;: [
+      {
+        &quot;step_id&quot;: &quot;read_emails&quot;,
+        &quot;action&quot;: &quot;mcp.gmail.search&quot;, // Calls the Gmail search API via the MCP protocol
+        &quot;params&quot;: {
+          &quot;query&quot;: &quot;is:unread OR label:important newer_than:7d&quot; // Fetches unread or important emails from the past 7 days
+        }
+      },
+      {
+        &quot;step_id&quot;: &quot;generate_todo&quot;,
+        &quot;action&quot;: &quot;antigravity.reasoning&quot;, // Invokes the reasoning engine of the Antigravity framework
+        &quot;depends_on&quot;: [&quot;read_emails&quot;], // Must wait for the previous email-reading step to complete before executing
+        &quot;prompt_template&quot;: &quot;Please generate this week&#39;s To-Do list based on the retrieved emails, sorted by urgency.&quot;
+      },
+      {
+        &quot;step_id&quot;: &quot;block_calendar&quot;,
+        &quot;action&quot;: &quot;mcp.calendar.create_event&quot;, // Calls the Calendar API
+        &quot;depends_on&quot;: [&quot;generate_todo&quot;],
+        &quot;params&quot;: {
+          &quot;summary&quot;: &quot;Deep Work Time - AI Auto-Scheduled&quot;,
+          &quot;duration_minutes&quot;: 120, // Automatically reserves 120 minutes
+          &quot;require_human_approval&quot;: true // [Critical Security Setting] Involves modifying the schedule; requires manual click confirmation!
+        }
+      }
+    ]
+  }
+}
+</code></pre>
+</div><h2 id="high-risk-actions-require-human-approval">High-Risk Actions Require "Human" Approval</h2><p>Did you notice <code>require_human_approval</code> in the code above? This is the most critical security boundary in the Agent era.</p>
+<p>Many people might worry: &quot;What if it maxes out my credit card in the middle of the night? What if it randomly sends a resignation letter?&quot;</p>
+<p>Google did one thing exceptionally well here: <strong>For all irreversible, high-risk operations involving spending money or sending external messages, Spark will forcefully pause and send a pop-up notification to your phone.</strong> For example: &quot;Preparing to send a confirmation email to Client X. Confirm?&quot; Only after you click Yes will it complete the final step. You are the boss; the AI is always just an assistant holding a letter of authorization.</p>
+<h2 id="global-tech-titans-clash-why-hasnt-a-similar-product-emerged-in-china">Global Tech Titans Clash: Why Hasn't a Similar Product Emerged in China?</h2><p>The current landscape is quite clear:</p>
+<ul>
+<li><strong>Google (Spark)</strong>: Relying on the data advantage of its entire ecosystem (Gmail, Docs, the complete Android ecosystem), it directly integrates the Agent into your daily routine.</li>
+<li><strong>Anthropic (Conway/<a href="/tutorial/claude-code-tutorial" class="seo-autolink-keyword">Claude Code</a>)</strong>: Possesses exceptionally strong reasoning capabilities, making it a favorite among programmers for handling ultra-long, complex tasks.</li>
+<li><strong>OpenAI (Codex/Operator)</strong>: Relying on a massive base of 600 million users, it is pursuing a route of mass popularization.</li>
+</ul>
+<p>What about China? Why do domestic Agents like ByteDance&#39;s Coze or Zhipu&#39;s AutoGLM always feel like they are missing something when used?</p>
+<p><strong>The core pain point is not that domestic LLMs lack intelligence, but rather that the &quot;data silo&quot; problem is too severe.</strong>
+Google succeeds because your emails, calendars, and documents are already entirely within its ecosystem. In China, however, your social networking is on WeChat, your calendar might be on WeChat Work, your documents on Feishu (Lark), and your approvals on DingTalk. Each software application is isolated from the others. The AI simply cannot access the global context, naturally making it impossible to seamlessly perform cross-application tasks on your behalf. Therefore, future opportunities in China will highly likely lie in &quot;Vertical Agents&quot; deeply rooted in specific industries (e.g., Agents specialized in medical imaging or e-commerce customer service).</p>
+<h2 id="-summary-final-thoughts">💡 Summary / Final Thoughts</h2><p>The AI race has officially shifted from &quot;who chats better&quot; to &quot;who works better for you.&quot; Currently, Spark is only available to Google AI Ultra subscribers in the US ($100 per month), so the barrier to entry is indeed high. However, whether you have access to it or not, these 8 &quot;Agent Usage Guidelines&quot; summarized from frontline practical experience can help you shift your mindset right now:</p>
+<ol>
+<li><strong>Inventory &quot;Repetitive Labor&quot; First</strong>: Make a list of the tasks that consistently waste your time every week. This is the primary battlefield that AI should take over.</li>
+<li><strong>Do Not Aim for Full Automation Immediately</strong>: Start by selecting one small skill (like helping you write a weekly report) and get it running smoothly. Build trust before adding the next one.</li>
+<li><strong>Use &quot;Samples&quot; Instead of &quot;Descriptions&quot;</strong>: If you want the AI to imitate you, directly feed it 50 historical articles you have written. This is ten times more effective than using hundreds of words to describe &quot;my style is humorous and witty.&quot;</li>
+<li><strong>Write Prompts like an Employee JD (Job Description)</strong>: Clearly tell it what the input is, what the output should be, and where the absolute untouchable boundaries lie.</li>
+<li><strong>Hold the Final Line of Defense</strong>: Any operation involving &quot;spending money&quot; or &quot;sending externally for others to see&quot; must be configured with manual secondary confirmation. Never cut corners here.</li>
+<li><strong>Role Transition</strong>: Stop treating yourself as an &quot;executor.&quot; Starting today, you must view yourself as a &quot;Project Manager.&quot; The AI is responsible for doing the work; you are responsible for reviewing it.</li>
+</ol>
+<p>The technological tide rolls ever forward. The next time you open your computer, try asking yourself: <strong>&quot;Do I really have to type this out myself?&quot;</strong></p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="chatting-vs-working-a-fundamental-paradigm-shift-in-ai" data-astro-cid-4sn4zg3r> <a href="#chatting-vs-working-a-fundamental-paradigm-shift-in-ai" data-astro-cid-4sn4zg3r>Chatting vs. Working: A Fundamental Paradigm Shift in AI</a> </li><li class="toc-item " data-slug="deconstructing-spark-three-pillars-and-underlying-architecture" data-astro-cid-4sn4zg3r> <a href="#deconstructing-spark-three-pillars-and-underlying-architecture" data-astro-cid-4sn4zg3r>Deconstructing Spark: Three Pillars and Underlying Architecture</a> </li><li class="toc-item h3-nav" data-slug="1-tasks-one-off-assignments" data-astro-cid-4sn4zg3r> <a href="#1-tasks-one-off-assignments" data-astro-cid-4sn4zg3r>1. Tasks (One-off Assignments)</a> </li><li class="toc-item h3-nav" data-slug="2-skills-train-once-use-forever" data-astro-cid-4sn4zg3r> <a href="#2-skills-train-once-use-forever" data-astro-cid-4sn4zg3r>2. Skills (Train Once, Use Forever)</a> </li><li class="toc-item h3-nav" data-slug="3-schedules-time-or-condition-triggered-plans" data-astro-cid-4sn4zg3r> <a href="#3-schedules-time-or-condition-triggered-plans" data-astro-cid-4sn4zg3r>3. Schedules (Time or Condition-Triggered Plans)</a> </li><li class="toc-item " data-slug="how-does-it-run-under-the-hood-dont-be-fooled-by-big-tech-jargon" data-astro-cid-4sn4zg3r> <a href="#how-does-it-run-under-the-hood-dont-be-fooled-by-big-tech-jargon" data-astro-cid-4sn4zg3r>How Does It Run Under the Hood? Don&#39;t Be Fooled by Big Tech Jargon</a> </li><li class="toc-item h3-nav" data-slug="a-hardcore-bonus-for-developers-what-does-it-look-like-at-the-code-level" data-astro-cid-4sn4zg3r> <a href="#a-hardcore-bonus-for-developers-what-does-it-look-like-at-the-code-level" data-astro-cid-4sn4zg3r>A Hardcore Bonus for Developers: What Does It Look Like at the Code Level?</a> </li><li class="toc-item " data-slug="high-risk-actions-require-human-approval" data-astro-cid-4sn4zg3r> <a href="#high-risk-actions-require-human-approval" data-astro-cid-4sn4zg3r>High-Risk Actions Require &quot;Human&quot; Approval</a> </li><li class="toc-item " data-slug="global-tech-titans-clash-why-hasnt-a-similar-product-emerged-in-china" data-astro-cid-4sn4zg3r> <a href="#global-tech-titans-clash-why-hasnt-a-similar-product-emerged-in-china" data-astro-cid-4sn4zg3r>Global Tech Titans Clash: Why Hasn&#39;t a Similar Product Emerged in China?</a> </li><li class="toc-item " data-slug="-summary-final-thoughts" data-astro-cid-4sn4zg3r> <a href="#-summary-final-thoughts" data-astro-cid-4sn4zg3r>💡 Summary / Final Thoughts</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/google-io-antigravity-2-coding-agent-platform" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-6f64d6c5.jpg" alt="Google I/O Antigravity 2.0: The Paradigm Shift from IDE to Agent-First Platform &amp; Developer Gotchas" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/google-io-antigravity-2-coding-agent-platform" data-astro-cid-4sn4zg3r>Google I/O Antigravity 2.0: The Paradigm Shift from IDE to Agent-First Platform &amp; Developer Gotchas</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>Antigravity 2.0 abandons the traditional IDE architecture for an Agent-First platform. Explore dynamic subagents, the new CLI, pricing, and critical developer pain points.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 22, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/google-antigravity-2-0-explained" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-f484600f.jpg" alt="Google Antigravity 2.0 Explained: Ditching the IDE to Manage an AI Coding Team" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/google-antigravity-2-0-explained" data-astro-cid-4sn4zg3r>Google Antigravity 2.0 Explained: Ditching the IDE to Manage an AI Coding Team</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A deep dive into Google Antigravity 2.0 announced at I/O 2026. It&#39;s no longer an IDE plugin, but a standalone Agent workstation. This article explains multi-agent parallelism, Gemini 3.5 Flash performance, and Vibe Coding in plain English.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 20, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric w</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

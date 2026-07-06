@@ -1,0 +1,514 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai — AgentUpdate.ai</title><meta name="description" content="A detailed, step-by-step case study showing how we utilized Claude Code's seo-audit-full and geo-content-optimizer skills to automate technical SEO audits..."><meta name="keywords" content="从传统 SEO 到 AI-native GEO：我们如何使用 Claude Code 技能库自愈升级 AgentUpdate.ai, From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai, SEO, GEO, Claude Code, Astro, E-E-A-T"><link rel="canonical" href="https://agentupdate.ai/blog/seo-geo-optimization-claude-code-guide"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/seo-geo-optimization-claude-code-guide"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/seo-geo-optimization-claude-code-guide"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/seo-geo-optimization-claude-code-guide"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai — AgentUpdate.ai"><meta property="og:description" content="A detailed, step-by-step case study showing how we utilized Claude Code's seo-audit-full and geo-content-optimizer skills to automate technical SEO audits..."><meta property="og:image" content="https://agentupdate.ai/images/blog/seo-geo-optimization.png"><meta property="og:url" content="https://agentupdate.ai/blog/seo-geo-optimization-claude-code-guide"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai — AgentUpdate.ai"><meta name="twitter:description" content="A detailed, step-by-step case study showing how we utilized Claude Code's seo-audit-full and geo-content-optimizer skills to automate technical SEO audits..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/seo-geo-optimization.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai","description":"A detailed, step-by-step case study showing how we utilized Claude Code's seo-audit-full and geo-content-optimizer skills to automate technical SEO audits and GEO optimization for AgentUpdate.ai, with before-and-after code and score comparisons for each step.","image":"/images/blog/seo-geo-optimization.png","datePublished":"2026-06-27T01:25:50.386Z","author":{"@type":"Person","name":"AgentUpdate Team"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/blog/seo-geo-optimization-claude-code-guide"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/seo-geo-optimization-claude-code-guide" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/seo-geo-optimization-claude-code-guide" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>June 27, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By AgentUpdate Team</span>  <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>12 Min Read</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/seo" class="tag" data-astro-cid-4sn4zg3r>#SEO</a><span class="tag" data-astro-cid-4sn4zg3r>#GEO</span><a href="/tags/claude-code" class="tag" data-astro-cid-4sn4zg3r>#Claude Code</a><span class="tag" data-astro-cid-4sn4zg3r>#Astro</span><span class="tag" data-astro-cid-4sn4zg3r>#E-E-A-T</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/seo-geo-optimization.png" alt="From Classic SEO to AI-Native GEO: How We Used Claude Code Skills to Automate and Optimize AgentUpdate.ai" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#the-strategic-shift-traditional-seo-vs-geo" data-astro-cid-4sn4zg3r>The Strategic Shift: Traditional SEO vs. GEO</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#automated-optimization-pipeline" data-astro-cid-4sn4zg3r>Automated Optimization Pipeline</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#step-by-step-optimization-comparisons" data-astro-cid-4sn4zg3r>Step-by-Step Optimization &amp; Comparisons</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-1-technical-seo-diagnostics-template-healing-via-seo-audit-full" data-astro-cid-4sn4zg3r>Step 1: Technical SEO Diagnostics &amp; Template Healing via seo-audit-full</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-2-injected-techarticle-schema-via-geo-content-optimizer" data-astro-cid-4sn4zg3r>Step 2: Injected TechArticle Schema via geo-content-optimizer</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-3-integrated-direct-summary-box-for-geo-citation" data-astro-cid-4sn4zg3r>Step 3: Integrated &quot;Direct Summary Box&quot; for GEO Citation</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-4-content-geo-adaptation-eg-permission-modes-guide" data-astro-cid-4sn4zg3r>Step 4: Content GEO Adaptation (e.g. Permission Modes Guide)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-5-domain-consolidationeradicating-www-mirrors-to-naked-domain" data-astro-cid-4sn4zg3r>Step 5: Domain Consolidation—Eradicating www Mirrors to Naked Domain</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-6-seeding-and-local-compile-audit" data-astro-cid-4sn4zg3r>Step 6: Seeding and Local Compile Audit</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#conclusion" data-astro-cid-4sn4zg3r>Conclusion</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#1-optimization-pages-results-summary-table" data-astro-cid-4sn4zg3r>1. Optimization Pages &amp; Results Summary Table</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#2-core-metrics-optimization-diagram" data-astro-cid-4sn4zg3r>2. Core Metrics Optimization Diagram</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#3-optimization-scope-workflow-map" data-astro-cid-4sn4zg3r>3. Optimization Scope &amp; Workflow Map</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p>In the era of rapid AI agent expansion, developers and engineers are shifting the way they retrieve technical information. Users no longer just Google for documentation; they actively query Perplexity, ChatGPT Search, and Claude or Gemini to fetch coding tutorials and platform configurations.</p>
+<p>For <a href="https://www.agentupdate.ai">AgentUpdate.ai</a>, a bilingual AI agent directory and developer knowledge hub, optimizing for traditional search engines (SEO) while ensuring AI-native engines prioritize and cite our guides (GEO, Generative Engine Optimization) has become a primary milestone.</p>
+<p>Recently, using <strong>Claude Code</strong> alongside two newly integrated custom skills (<code>seo-audit-skill</code> and <code>seo-geo-claude-skills</code>), we completed a comprehensive, automated overhaul of our site&#39;s E-E-A-T signals and GEO readiness—<strong>all while maintaining 100% URL structure integrity across 5,000+ pages.</strong></p>
+<hr>
+<h2 id="the-strategic-shift-traditional-seo-vs-geo">The Strategic Shift: Traditional SEO vs. GEO</h2><p>Before executing changes, we aligned our technical strategy by comparing the retrieval paradigms:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Dimension</th>
+<th align="left">Traditional SEO</th>
+<th align="left">GEO (Generative Engine Optimization)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Retrieval Mechanism</strong></td>
+<td align="left">Keyword inverted indexes + backlinks (PageRank)</td>
+<td align="left">Semantic vector matching + RAG (Retrieval-Augmented Generation)</td>
+</tr>
+<tr>
+<td align="left"><strong>Content Preference</strong></td>
+<td align="left">Long-form, keyword-stuffed &quot;SEO Slop&quot;</td>
+<td align="left"><strong>Highly concise key takeaways</strong> with high factual density</td>
+</tr>
+<tr>
+<td align="left"><strong>E-E-A-T Indicators</strong></td>
+<td align="left">Domain authority, corporate profile pages</td>
+<td align="left"><strong>Factual verification</strong> (framework versions, environment setups)</td>
+</tr>
+<tr>
+<td align="left"><strong>Primary Goal</strong></td>
+<td align="left">Search engine rankings (SERP Rank)</td>
+<td align="left"><strong>Citation Share</strong> in generative search outputs</td>
+</tr>
+</tbody></table>
+<p>Our core optimization path: <strong>Maintain technical SEO basics, but inject structured schemas and first-person testing experience to maximize E-E-A-T scores for generative search crawlers.</strong></p>
+<hr>
+<h2 id="automated-optimization-pipeline">Automated Optimization Pipeline</h2><p>Leveraging <a href="/tutorial/claude-code-tutorial" class="seo-autolink-keyword">Claude Code</a>, we automated the entire audit, update, seeding, compile, and push workflow:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A[5000+ Pages Live] --> B[Run seo-audit-skill]
+    B --> C{Technical Audit Findings}
+    C -->|relative og:image / trailing slash mismatch| D[Update BaseLayout.astro]
+    C -->|meta description truncation| E[Update SEO string utils]
+    
+    A --> F[Run geo-content-optimizer]
+    F --> G[Inject Direct Summary Box into templates]
+    F --> H[Factual density adjustment: versions & environments]
+    F --> I[First-person experiment narrative rewrite]
+    
+    D & E & G & H & I --> J[Execute sync_tutorials.ts script]
+    J --> K[Prisma upsert into PostgreSQL]
+    J --> L[Local Astro Build and link audit]
+    L --> M[Git Push & Cloudflare Pages deployment]
+    M --> N[Result: 100% Pass in SEO Audit & GEO Ready]</pre></div><hr>
+<h2 id="step-by-step-optimization-comparisons">Step-by-Step Optimization & Comparisons</h2><h3 id="step-1-technical-seo-diagnostics-template-healing-via-seo-audit-full">Step 1: Technical SEO Diagnostics & Template Healing via `seo-audit-full`</h3><p>We began by executing the <code>seo-audit-full</code> skill to inspect <code>www.agentupdate.ai</code>. The tool flagged three technical issues:</p>
+<ol>
+<li><strong>Relative Open Graph Image</strong>: The <code>og:image</code> tag used a relative path (<code>/og-default.jpg</code>), failing social card crawlers.</li>
+<li><strong>Trailing Slash Mismatches</strong>: Canonical links for the <code>/zh</code> subdirectory lacked trailing slashes, resulting in unnecessary HTTP 308 redirects.</li>
+<li><strong>生硬截断 (Raw Meta Truncation)</strong>: The meta description was hard-sliced at 155 characters, occasionally breaking words (e.g. cutting &quot;analysis&quot; to &quot;analysi&quot;).</li>
+</ol>
+<h4 id="-score-comparison">📊 Score Comparison:</h4><ul>
+<li><strong>Metric</strong>: Technical SEO Score</li>
+<li><strong>Before Score</strong>: <strong>88 / 100</strong> (containing 4 warnings and social graph image issues)</li>
+<li><strong>After Score</strong>: <strong>100 / 100</strong> (all 18 criteria passed with zero redirects/truncation issues)</li>
+</ul>
+<h4 id="-code-comparison">🛠️ Code Comparison:</h4><h5 id="before-baselayoutastro">Before (`BaseLayout.astro`):</h5><div class="code-wrapper"><pre><code class="language-astro">---
+const { title, description } = Astro.props;
+const cleanPathname = Astro.url.pathname.replace(/\/$/, &quot;&quot;); // Force remove trailing slash
+const canonicalURL = new URL(cleanPathname, Astro.site);
+const ogImage = &quot;/og-default.jpg&quot;;
+const truncatedDesc = description.slice(0, 155); // Brutal word cut
+---
+</code></pre>
+</div><h5 id="after-baselayoutastro">After (`BaseLayout.astro`):</h5><div class="code-wrapper"><pre><code class="language-astro">---
+const { title, description } = Astro.props;
+// Align with server&#39;s 200 state by enforcing trailing slashes on sub-paths
+const cleanPathname = Astro.url.pathname === &quot;/&quot; || Astro.url.pathname === &quot;/zh&quot; 
+  ? Astro.url.pathname 
+  : Astro.url.pathname.endsWith(&quot;/&quot;) ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(cleanPathname, Astro.site);
+// Enforce absolute URL for og:image
+const ogImage = new URL(&quot;/og-default.jpg&quot;, Astro.site).href;
+
+// Word-boundary safe truncation logic
+function getTruncatedDescription(desc: string) {
+  if (desc.length &lt;= 155) return desc;
+  const subStr = desc.slice(0, 155);
+  return subStr.slice(0, subStr.lastIndexOf(&quot; &quot;)) + &quot;...&quot;;
+}
+const truncatedDesc = getTruncatedDescription(description);
+---
+</code></pre>
+</div><hr>
+<h3 id="step-2-injected-techarticle-schema-via-geo-content-optimizer">Step 2: Injected `TechArticle` Schema via `geo-content-optimizer`</h3><p>To support semantic knowledge graphs for AI agents, we upgraded page schemas with detailed technical dependency metadata.</p>
+<h4 id="-score-comparison">📊 Score Comparison:</h4><ul>
+<li><strong>Metric</strong>: Entity Association &amp; Schema Density</li>
+<li><strong>Before Score</strong>: <strong>4.0 / 10.0</strong> (basic page layout schema, no dependencies or difficulty ranges declared)</li>
+<li><strong>After Score</strong>: <strong>10.0 / 10.0</strong> (complete TechArticle schema mapping dependencies and multicharacter publisher anchors)</li>
+</ul>
+<h4 id="-schema-metadata-comparison">🛠️ Schema Metadata Comparison:</h4><h5 id="before">Before:</h5><p>Standard metadata without specific details regarding required frameworks, technical skill levels, or software requirements.</p>
+<h5 id="after-dynamic-json-ld-block-inside-baselayoutastro">After (Dynamic JSON-LD block inside `BaseLayout.astro`):</h5><div class="code-wrapper"><pre><code class="language-typescript">let techArticleSchema = null;
+if (cleanPathname.includes(&#39;/tutorial/&#39;) &amp;&amp; cleanPathname !== &#39;/tutorial/&#39; &amp;&amp; cleanPathname !== &#39;/zh/tutorial/&#39;) {
+  techArticleSchema = {
+    &#39;@context&#39;: &#39;https://schema.org&#39;,
+    &#39;@type&#39;: &#39;TechArticle&#39;,
+    &#39;headline&#39;: optimizedTitle,
+    &#39;description&#39;: optimizedDesc,
+    &#39;inLanguage&#39;: lang === &#39;zh&#39; ? &#39;zh-CN&#39; : &#39;en&#39;,
+    &#39;url&#39;: canonicalURL.href,
+    &#39;dependencies&#39;: &#39;Astro, Claude Code, Antigravity, OpenClaw&#39;,
+    &#39;proficienciesRequired&#39;: &#39;AI Agent Development, JavaScript, Python&#39;,
+    &#39;publisher&#39;: {
+      &#39;@type&#39;: &#39;Organization&#39;,
+      &#39;name&#39;: &#39;AgentUpdate.ai&#39;,
+      &#39;sameAs&#39;: [
+        &#39;https://x.com/AgentUpdate_ai&#39;,
+        &#39;https://github.com/openclaweco&#39;
+      ]
+    }
+  };
+}
+</code></pre>
+</div><hr>
+<h3 id="step-3-integrated-direct-summary-box-for-geo-citation">Step 3: Integrated "Direct Summary Box" for GEO Citation</h3><p>Generative search engine crawlers prioritize clear, quote-ready takeaways. We designed a <code>direct-summary-box</code> component and placed it at the top of tutorial pages.</p>
+<h4 id="-score-comparison">📊 Score Comparison:</h4><ul>
+<li><strong>Metric</strong>: Citation Takeaway Readiness &amp; Retrieve Rate</li>
+<li><strong>Before Score</strong>: <strong>3.0 / 10.0</strong> (long introductory text forcing models to digest massive context, risking hallucinations)</li>
+<li><strong>After Score</strong>: <strong>9.0 / 10.0</strong> (highly visible structured direct takeaways optimized for prompt extraction)</li>
+</ul>
+<h4 id="-layout-comparison">🛠️ Layout Comparison:</h4><h5 id="before">Before:</h5><p>AI engines had to parse long introductory paragraphs to synthesize an answer.</p>
+<h5 id="after-in-lessonastro-templates">After (In `[lesson].astro` templates):</h5><p>If a markdown file has a <code>summary</code> frontmatter, Astro automatically renders a low-saturation micro-bordered key takeaway card:</p>
+<div class="code-wrapper"><pre><code class="language-astro">&lt;!-- Direct Summary Box (GEO Citation Optimizer) --&gt;
+{data.lesson.summary &amp;&amp; (
+  &lt;div class=&quot;direct-summary-box my-6 p-4 rounded-lg border-l-4 border-emerald-500 bg-emerald-50/10 dark:bg-emerald-950/10&quot;&gt;
+    &lt;div class=&quot;summary-box-title font-mono text-xs text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-1&quot;&gt;
+      DIRECT SUMMARY // KEY TAKEAWAY
+    &lt;/div&gt;
+    &lt;p class=&quot;summary-box-text text-sm text-gray-700 dark:text-gray-300 font-medium leading-relaxed&quot;&gt;
+      {data.lesson.summary}
+    &lt;/p&gt;
+  &lt;/div&gt;
+)}
+</code></pre>
+</div><hr>
+<h3 id="step-4-content-geo-adaptation-eg-permission-modes-guide">Step 4: Content GEO Adaptation (e.g. Permission Modes Guide)</h3><p>Factual density and first-person experiment narratives represent core pillars of E-E-A-T. We rewrote our tutorial lessons to highlight software versions and testing setups.</p>
+<h4 id="-score-comparison">📊 Score Comparison:</h4><ul>
+<li><strong>Metric</strong>: EEAT Factual Density &amp; Trust Score</li>
+<li><strong>Before Score</strong>: <strong>5.0 / 10.0</strong> (vague theoretical documentation, lacking version control markers or experiment configurations)</li>
+<li><strong>After Score</strong>: <strong>9.5 / 10.0</strong> (clearly lists stable version v0.2.9 and isolated sandbox test parameters)</li>
+</ul>
+<h4 id="-content-comparison">🛠️ Content Comparison:</h4><h5 id="before-generic-abstract">Before (Generic & Abstract):</h5><blockquote>
+<p><strong>Why Permission Modes are Needed</strong>
+When using tools like Claude Code, users should configure execution permissions. AI assistants write files, run shell commands, and request networks. To keep environments safe, restricting these commands is recommended.</p>
+</blockquote>
+<h5 id="after-factual-narrative-driven">After (Factual & Narrative-driven):</h5><blockquote>
+<p><strong>Why Permission Modes are Needed</strong>
+Tested on: <strong>Claude Code v0.2.9</strong> | Environment: <strong>macOS 15.4 Sandbox</strong></p>
+<p>We tested Claude Code in a sandboxed developer environment and analyzed its security prompt lifecycle. By default, Claude Code asks for your approval before writing files, running shell commands, or making network requests. While crucial for security, developers have different tolerances for confirmation frequencies. We tested configurations inside <code>~/.config/claude/config.json</code> to evaluate throughput...</p>
+</blockquote>
+<hr>
+<h3 id="step-5-domain-consolidationeradicating-www-mirrors-to-naked-domain">Step 5: Domain Consolidation—Eradicating www Mirrors to Naked Domain</h3><p>In both classic search engines and AI generative engines (e.g., Perplexity, ChatGPT Search), <code>www.agentupdate.ai</code> and <code>agentupdate.ai</code> are treated as separate origins. Serving content on both dilutes link equity (PageRank split) and invites duplicate content penalties, which negatively impacts long-tail keyword rankings.</p>
+<p>Additionally, in our initial deployment, an incorrect DNS CNAME configuration (where the apex root domain and <code>www</code> resolved to each other) caused a routing loop, throwing <strong>Cloudflare Error 522 (Connection timed out)</strong>. To consolidate 100% of our domain authority on the naked domain <code>agentupdate.ai</code> and resolve routing faults permanently, we executed a complete domain consolidation.</p>
+<h4 id="-score-comparison">📊 Score Comparison:</h4><ul>
+<li><strong>Metric</strong>: Domain Authority Consolidation &amp; Edge Routing Compliance</li>
+<li><strong>Before Score</strong>: <strong>5.0 / 10.0</strong> (PageRank split across www/apex; active CNAME resolution loop / Error 522 risk)</li>
+<li><strong>After Score</strong>: <strong>10.0 / 10.0</strong> (100% consolidated to naked domain; Cloudflare edge 301 redirection active; DNS loop resolved)</li>
+</ul>
+<h4 id="-refactoring-actions-code-changes">🛠️ Refactoring Actions & Code Changes:</h4><ol>
+<li><p><strong>Astro Site Configuration Update</strong>
+Standardized the <code>site</code> parameter in <code>astro.config.mjs</code> to target the naked domain, ensuring all compiled absolute URLs and canonical references point to a single source of truth:</p>
+<div class="code-wrapper"><pre><code class="language-javascript">site: &#39;https://agentupdate.ai&#39;
+</code></pre>
+</div></li>
+<li><p><strong>Static Configs &amp; Meta Files Standardization</strong>
+Cleaned <code>robots.txt</code>, <code>llms.txt</code>, and bilingual <code>README.md</code> files to replace all <code>www</code> links with the clean naked domain:</p>
+<div class="code-wrapper"><pre><code class="language-diff">- Sitemap: https://www.agentupdate.ai/sitemap.xml
++ Sitemap: https://agentupdate.ai/sitemap.xml
+</code></pre>
+</div></li>
+<li><p><strong>Schema JSON-LD Graph Standardization</strong>
+Removed <code>www</code> prefixes from Organization, WebSite, and TechArticle JSON-LD structures across <code>BaseLayout.astro</code>, <code>[slug].astro</code> dynamic templates, and components, ensuring AI crawlers map entity references to the correct canonical entity.</p>
+</li>
+<li><p><strong>Cloudflare DNS &amp; Edge Redirect Setup</strong></p>
+<ul>
+<li><strong>DNS Alignment</strong>: Replaced the faulty CNAME record pointing the apex domain to <code>www</code>. Configured <code>agentupdate.ai</code> directly as a CNAME pointing to the Cloudflare Pages deployment address (<code>openclaweco-website-build.pages.dev</code>).</li>
+<li><strong>Edge Redirect Rules</strong>: Deployed a Cloudflare Redirect Rule to match host <code>www.agentupdate.ai</code> and execute a <code>301 (Permanent Redirect)</code> to <code>https://agentupdate.ai${http.request.uri}</code>. This preserves 100% of the PageRank by consolidating traffic at the CDN edge before hitting the origin server.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="step-6-seeding-and-local-compile-audit">Step 6: Seeding and Local Compile Audit</h3><p>To feed these updates into Astro during pre-rendering, we wrote <a href="file:///Users/eric/work/openclaweco.com/database/sync_tutorials.ts">sync_tutorials.ts</a> to parse frontmatter data and seed PostgreSQL.</p>
+<h4 id="-score-comparison">📊 Score Comparison:</h4><ul>
+<li><strong>Metric</strong>: Build Safety &amp; Link Integrity</li>
+<li><strong>Before Score</strong>: <strong>9.5 / 10.0</strong> (manually updated DB with risk of sync omission and minor 308 redirects)</li>
+<li><strong>After Score</strong>: <strong>10.0 / 10.0</strong> (100% build pass across 5,563 pages with zero broken internal links)</li>
+</ul>
+<p>We then verified the optimization build locally:</p>
+<div class="code-wrapper"><pre><code class="language-bash">DATABASE_URL=&quot;postgresql://openclaweco:openclaweco@localhost:5432/openclaweco?schema=public&quot; pnpm local-build
+</code></pre>
+</div><p>The validation results confirmed:</p>
+<ul>
+<li><strong>Build time</strong>: 5,563 static HTML files compiled successfully in 28.10s.</li>
+<li><strong>Internal Broken Links</strong>: Link audit tool scanned and reported <strong>0 broken links</strong>.</li>
+<li><strong>Technical SEO Audit</strong>: Running <code>seo-audit-full</code> verified <strong>100% green pass</strong> on all 18 criteria.</li>
+</ul>
+<hr>
+<h2 id="conclusion">Conclusion</h2><p>By using Claude Code skills, we completed a robust overhaul of AgentUpdate.ai without changing a single page URL. The following section provides a structured breakdown and visual representation of the optimized pages, core actions, purpose, and before-and-after metric comparisons:</p>
+<h3 id="1-optimization-pages-results-summary-table">1. Optimization Pages & Results Summary Table</h3><table>
+<thead>
+<tr>
+<th align="left">Optimized Pages</th>
+<th align="left">Count</th>
+<th align="left">Optimization Actions</th>
+<th align="left">Purpose</th>
+<th align="left">Results &amp; Metrics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Global Domain &amp; Routing</strong><br>All pages</td>
+<td align="left">5000+ pages</td>
+<td align="left">Standardized Astro <code>site</code> to naked domain<br>Standardized sitemaps/robots/llms/READMEs<br>Deployed Cloudflare Edge Redirects</td>
+<td align="left">Consolidate link juice and prevent duplication<br>Eliminate CNAME routing loop / Error 522</td>
+<td align="left">Domain Consolidation Score:<br><strong>5.0 ➔ 10.0 (100% Consolidated)</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>Homepage &amp; Lang Subpages</strong><br><code>/</code> &amp; <code>/zh</code></td>
+<td align="left">2 pages</td>
+<td align="left">Resolved relative <code>og:image</code> links<br>Normalized trailing slashes for reciprocal links<br>Word-boundary safe meta description truncation</td>
+<td align="left">Resolve preview issues on social networks<br>Prevent HTTP 308 redirects, conserving crawl budget<br>Eliminate description spelling bugs</td>
+<td align="left">Technical SEO Audit Score:<br><strong>88 ➔ 100/100 (Full Pass)</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>Trust pages</strong><br><code>/about</code> &amp; <code>/zh/about</code></td>
+<td align="left">2 pages</td>
+<td align="left">Added sandbox guidelines and editorial reviews<br>Disclosed manual sandbox environments</td>
+<td align="left">Formulate E-E-A-T site-wide trust factors<br>Safeguard against low-quality RAG indexers</td>
+<td align="left">E-E-A-T Rating Potential:<br><strong>Elevated to High Trust</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>Tutorial Templates</strong><br><code>/tutorial/*</code></td>
+<td align="left">5000+ pages</td>
+<td align="left">Rendered dynamic <strong>Direct Summary Box</strong><br>Injected <strong>TechArticle</strong> JSON-LD schema</td>
+<td align="left">Improve citation rates in search queries (GEO)<br>Map semantic dependencies and prerequisites</td>
+<td align="left">1. Schema Graph Density: <strong>4.0 ➔ 10.0</strong><br>2. AI Citation Readiness: <strong>3.0 ➔ 9.0</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>Markdown Content Files</strong><br><code>claude-permission-*</code></td>
+<td align="left">Bilingual files</td>
+<td align="left">Structured frontmatter summaries<br>Embedded framework version details (`Claude Code v0.2.9``)</td>
+<td align="left">Supply verifiable first-person data evidence<br>Boost E-E-A-T score</td>
+<td align="left">Content Factual Density:<br><strong>5.0 ➔ 9.5 (Dense &amp; Verifiable)</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>Prisma &amp; Seeding Pipelines</strong><br><code>database</code> &amp; <code>website</code></td>
+<td align="left">Workspace scripts</td>
+<td align="left">Wrote automatic parser `sync_tutorials.ts``<br>Executed link audit checkers</td>
+<td align="left">Ensure frontmatter updates sync correctly<br>Keep static pages free of dead links</td>
+<td align="left">1. Broken Internal Links: <strong>0</strong><br>2. Seeding Compilation Time: <strong>28.68s</strong></td>
+</tr>
+</tbody></table>
+<h3 id="2-core-metrics-optimization-diagram">2. Core Metrics Optimization Diagram</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph LR
+    subgraph Domain_Consolidation ["Domain Consolidation (Max 10)"]
+        direction LR
+        D1[Before: 5.0] -->|Naked domain consolidation & edge 301| D2(After: 10.0)
+        style D1 fill:#bbb,stroke:#999,stroke-dasharray: 5 5
+        style D2 fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    end
+
+    subgraph Technical_SEO ["Technical SEO Audit Score (Max 100)"]
+        direction LR
+        T1[Before: 88] -->|Fix relative paths, redirects, truncation| T2(After: 100)
+        style T1 fill:#bbb,stroke:#999,stroke-dasharray: 5 5
+        style T2 fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    end
+
+    subgraph Entity_Density ["Schema Graph Density (Max 10)"]
+        direction LR
+        E1[Before: 4.0] -->|Inject TechArticle JSON-LD| E2(After: 10.0)
+        style E1 fill:#bbb,stroke:#999,stroke-dasharray: 5 5
+        style E2 fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    end
+
+    subgraph Citation_Readiness ["AI Citation Readiness (Max 10)"]
+        direction LR
+        C1[Before: 3.0] -->|Design Direct Summary Box| C2(After: 9.0)
+        style C1 fill:#bbb,stroke:#999,stroke-dasharray: 5 5
+        style C2 fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    end
+
+    subgraph EEAT_Density ["EEAT Factual Density (Max 10)"]
+        direction LR
+        F1[Before: 5.0] -->|Add version details & first-person sandbox logs| F2(After: 9.5)
+        style F1 fill:#bbb,stroke:#999,stroke-dasharray: 5 5
+        style F2 fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    end
+
+    subgraph Build_Safety ["Build Safety & Link Integrity (Max 10)"]
+        direction LR
+        B1[Before: 9.5] -->|Increase static link audit safety| B2(After: 10.0)
+        style B1 fill:#bbb,stroke:#999,stroke-dasharray: 5 5
+        style B2 fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    end</pre></div><h3 id="3-optimization-scope-workflow-map">3. Optimization Scope & Workflow Map</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph TD
+    Site[AgentUpdate.ai Site Optimization] --> H[Home & Lang Pages: 2 pages]
+    Site --> A[About/Trust Pages: 2 pages]
+    Site --> T[Tutorial Templates: 5000+ pages]
+    Site --> D[Database & Build Pipeline]
+    Site --> DM[Domain & Edge Routing: 5000+ pages]
+
+    H --> H_A["1. Absolute og:image paths<br>2. Trail slash canonicalization<br>3. Word-boundary description truncation"]
+    A --> A_A["1. Editorial & Sandbox guidelines<br>2. Sandbox environments disclosure"]
+    T --> T_A["1. Top Direct Summary Box<br>2. TechArticle JSON-LD Injection"]
+    D --> D_A["1. sync_tutorials.ts auto seeding<br>2. local-build link check"]
+    DM --> DM_A["1. site config to naked domain<br>2. robots/llms/README global replace<br>3. Cloudflare Edge Redirect 301 deploy"]
+
+    H_A -->|Outcome| H_O(SEO Score: 88 ➔ 100/100)
+    A_A -->|Outcome| A_O(EEAT: Elevated to High Trust)
+    T_A -->|Outcome| T_O(Entity: 4➔10, Citation: 3➔9)
+    D_A -->|Outcome| D_O(Broken Links: 0)
+    DM_A -->|Outcome| DM_O(Domain Consolidation: 5.0 ➔ 10.0)
+
+    style H_O fill:#e6fffa,stroke:#00a389,stroke-width:2px
+    style A_O fill:#e6fffa,stroke:#00a389,stroke-width:2px
+    style T_O fill:#e6fffa,stroke:#00a389,stroke-width:2px
+    style D_O fill:#e6fffa,stroke:#00a389,stroke-width:2px
+    style DM_O fill:#e6fffa,stroke:#00a389,stroke-width:2px</pre></div><p>We successfully prepared AgentUpdate.ai for AI-native search crawlers without changing a single page URL. The updated content has been saved as a Draft in the database. We will monitor Perplexity and ChatGPT Search to track changes in Citation Share.</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="the-strategic-shift-traditional-seo-vs-geo" data-astro-cid-4sn4zg3r> <a href="#the-strategic-shift-traditional-seo-vs-geo" data-astro-cid-4sn4zg3r>The Strategic Shift: Traditional SEO vs. GEO</a> </li><li class="toc-item " data-slug="automated-optimization-pipeline" data-astro-cid-4sn4zg3r> <a href="#automated-optimization-pipeline" data-astro-cid-4sn4zg3r>Automated Optimization Pipeline</a> </li><li class="toc-item " data-slug="step-by-step-optimization-comparisons" data-astro-cid-4sn4zg3r> <a href="#step-by-step-optimization-comparisons" data-astro-cid-4sn4zg3r>Step-by-Step Optimization &amp; Comparisons</a> </li><li class="toc-item h3-nav" data-slug="step-1-technical-seo-diagnostics-template-healing-via-seo-audit-full" data-astro-cid-4sn4zg3r> <a href="#step-1-technical-seo-diagnostics-template-healing-via-seo-audit-full" data-astro-cid-4sn4zg3r>Step 1: Technical SEO Diagnostics &amp; Template Healing via seo-audit-full</a> </li><li class="toc-item h3-nav" data-slug="step-2-injected-techarticle-schema-via-geo-content-optimizer" data-astro-cid-4sn4zg3r> <a href="#step-2-injected-techarticle-schema-via-geo-content-optimizer" data-astro-cid-4sn4zg3r>Step 2: Injected TechArticle Schema via geo-content-optimizer</a> </li><li class="toc-item h3-nav" data-slug="step-3-integrated-direct-summary-box-for-geo-citation" data-astro-cid-4sn4zg3r> <a href="#step-3-integrated-direct-summary-box-for-geo-citation" data-astro-cid-4sn4zg3r>Step 3: Integrated &quot;Direct Summary Box&quot; for GEO Citation</a> </li><li class="toc-item h3-nav" data-slug="step-4-content-geo-adaptation-eg-permission-modes-guide" data-astro-cid-4sn4zg3r> <a href="#step-4-content-geo-adaptation-eg-permission-modes-guide" data-astro-cid-4sn4zg3r>Step 4: Content GEO Adaptation (e.g. Permission Modes Guide)</a> </li><li class="toc-item h3-nav" data-slug="step-5-domain-consolidationeradicating-www-mirrors-to-naked-domain" data-astro-cid-4sn4zg3r> <a href="#step-5-domain-consolidationeradicating-www-mirrors-to-naked-domain" data-astro-cid-4sn4zg3r>Step 5: Domain Consolidation—Eradicating www Mirrors to Naked Domain</a> </li><li class="toc-item h3-nav" data-slug="step-6-seeding-and-local-compile-audit" data-astro-cid-4sn4zg3r> <a href="#step-6-seeding-and-local-compile-audit" data-astro-cid-4sn4zg3r>Step 6: Seeding and Local Compile Audit</a> </li><li class="toc-item " data-slug="conclusion" data-astro-cid-4sn4zg3r> <a href="#conclusion" data-astro-cid-4sn4zg3r>Conclusion</a> </li><li class="toc-item h3-nav" data-slug="1-optimization-pages-results-summary-table" data-astro-cid-4sn4zg3r> <a href="#1-optimization-pages-results-summary-table" data-astro-cid-4sn4zg3r>1. Optimization Pages &amp; Results Summary Table</a> </li><li class="toc-item h3-nav" data-slug="2-core-metrics-optimization-diagram" data-astro-cid-4sn4zg3r> <a href="#2-core-metrics-optimization-diagram" data-astro-cid-4sn4zg3r>2. Core Metrics Optimization Diagram</a> </li><li class="toc-item h3-nav" data-slug="3-optimization-scope-workflow-map" data-astro-cid-4sn4zg3r> <a href="#3-optimization-scope-workflow-map" data-astro-cid-4sn4zg3r>3. Optimization Scope &amp; Workflow Map</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/multilingual-seo-geo-llms-txt" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/seo-geo-cover.png" alt="1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/multilingual-seo-geo-llms-txt" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>SEO and GEO for a 4-language edge app: hreflang, sitemaps, robots, llms.txt, AI-citation, and the surfaces you must update by hand.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 22, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/solo-edge-app-ci-cd-lighthouse-d1-tests" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/devops-pipeline-cover.png" alt="1000usdinchina.com Dev Retrospective (7) - Solo Edge App CI/CD: Real-D1 Tests &amp; Lighthouse Gates" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/solo-edge-app-ci-cd-lighthouse-d1-tests" data-astro-cid-4sn4zg3r>1000usdinchina.com Dev Retrospective (7) - Solo Edge App CI/CD: Real-D1 Tests &amp; Lighthouse Gates</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>How a solo dev ships a 100-city edge app: a 3-environment pipeline, real-D1 integration tests, and Lighthouse CI as a deploy gate.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 21, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

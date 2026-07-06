@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Breaking News: Claude Initiates Mass Account Bans on Chinese Users! — AgentUpdate.ai</title><meta name="description" content="Anthropic recently banned 1.45M accounts and was caught embedding steganography in Claude Code to detect Chinese users. This article dissects the trust..."><meta name="keywords" content="突发!Claude对中国用户大规模封号, Breaking News: Claude Initiates Mass Account Bans on Chinese Users!, Claude Code, AI安全, 开发工具, 风控防封"><link rel="canonical" href="https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Breaking News: Claude Initiates Mass Account Bans on Chinese Users! — AgentUpdate.ai"><meta property="og:description" content="Anthropic recently banned 1.45M accounts and was caught embedding steganography in Claude Code to detect Chinese users. This article dissects the trust..."><meta property="og:image" content="https://agentupdate.ai/images/covers/cover_1782876801685.png"><meta property="og:url" content="https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Breaking News: Claude Initiates Mass Account Bans on Chinese Users! — AgentUpdate.ai"><meta name="twitter:description" content="Anthropic recently banned 1.45M accounts and was caught embedding steganography in Claude Code to detect Chinese users. This article dissects the trust..."><meta name="twitter:image" content="https://agentupdate.ai/images/covers/cover_1782876801685.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Breaking News: Claude Initiates Mass Account Bans on Chinese Users!","description":"Anthropic recently banned 1.45M accounts and was caught embedding steganography in Claude Code to detect Chinese users. This article dissects the trust crisis, uncovers the hidden tracking mechanism, and provides a hands-on guide to configuring a bulletproof environment and building a multi-model backup workflow.","image":"/images/covers/cover_1782876801685.png","datePublished":"2026-07-01T22:49:06.605Z","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/blog/escape-claude-gravity-steganography-and-kyc-survival-guide"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Breaking News: Claude Initiates Mass Account Bans on Chinese Users!</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Breaking News: Claude Initiates Mass Account Bans on Chinese Users!"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Breaking News: Claude Initiates Mass Account Bans on Chinese Users!</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>July 2, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By AgentUpdate</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/claude-code" class="tag" data-astro-cid-4sn4zg3r>#Claude Code</a><span class="tag" data-astro-cid-4sn4zg3r>#AI安全</span><span class="tag" data-astro-cid-4sn4zg3r>#开发工具</span><span class="tag" data-astro-cid-4sn4zg3r>#风控防封</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/covers/cover_1782876801685.png" alt="Breaking News: Claude Initiates Mass Account Bans on Chinese Users!" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-the-trust-crisis-hidden-steganography-inside-claude-code-source-code" data-astro-cid-4sn4zg3r>🔒 The Trust Crisis: Hidden &quot;Steganography&quot; Inside Claude Code Source Code</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#how-does-it-target-you" data-astro-cid-4sn4zg3r>How Does It Target You?</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-code-level-breakdown-how-the-steganography-is-implemented" data-astro-cid-4sn4zg3r>🛠️ Code-Level Breakdown: How the Steganography is Implemented</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-geopolitics-and-the-know-your-customer-era-why-risk-control-is-getting-stricter" data-astro-cid-4sn4zg3r>🚨 Geopolitics and the &quot;Know Your Customer&quot; Era: Why Risk Control is Getting Stricter</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#1-preventing-model-distillation" data-astro-cid-4sn4zg3r>1. Preventing Model Distillation</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#2-us-government-export-controls" data-astro-cid-4sn4zg3r>2. US Government Export Controls</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#3-mandatory-face-matching-kyc-policies-from-july-8" data-astro-cid-4sn4zg3r>3. Mandatory Face-Matching KYC Policies from July 8</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-hands-on-guide-how-to-configure-a-mock-us-local-development-environment" data-astro-cid-4sn4zg3r>🛡️ Hands-on Guide: How to Configure a Mock US Local Development Environment</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-1-clean-up-your-network" data-astro-cid-4sn4zg3r>Step 1: Clean Up Your Network</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-2-adjust-macos-system-settings" data-astro-cid-4sn4zg3r>Step 2: Adjust macOS System Settings</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-3-align-chrome-settings-and-usage-habits" data-astro-cid-4sn4zg3r>Step 3: Align Chrome Settings and Usage Habits</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-escaping-gravity-building-the-multi-model-antigravity-20-workflow" data-astro-cid-4sn4zg3r>🚀 Escaping Gravity: Building the Multi-Model Antigravity 2.0 Workflow</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#1-decouple-local-toolchains-from-underlying-models" data-astro-cid-4sn4zg3r>1. Decouple Local Toolchains from Underlying Models</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#2-build-a-multi-model-plan-b-matrix" data-astro-cid-4sn4zg3r>2. Build a Multi-Model Plan B Matrix</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-summary-and-final-thoughts" data-astro-cid-4sn4zg3r>💡 Summary and Final Thoughts</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p>In the past few days, the tech community has been filled with grief. Many developers woke up in the morning, opened their terminals to write code using <a href="/tutorial/claude-code-tutorial" class="seo-autolink-keyword">Claude Code</a> as usual, only to find a cold login interface. Upon entering their credentials, they were greeted with a blunt message: &quot;Your account has been suspended&quot;.</p>
+<p>This is not an isolated case, but a sweeping global ban. According to statistics, Anthropic has suspended a total of <strong>1.45 million accounts</strong>. Some teams reported that the accounts of all 70 to 110 employees in their entire company were banned overnight, and absurdly, their backend API was still actively charging their cards.</p>
+<p>When AI coding tools have become as essential as air and water in our development workflows, this &quot;single point of dependence&quot; becomes a sword of Damocles hanging over everyone. The platform can cut you off at any moment, instantly collapsing the skills and workflows you painstakingly fine-tuned, forcing you straight back to the era of &quot;traditional coding&quot;.</p>
+<p>Today, from the perspective of a frontline developer, we will dissect the underlying risk control logic behind this ban wave, reveal the hidden mechanisms in the source code, and demonstrate how to build an &quot;anti-ban, platform-independent&quot; <strong>Antigravity 2.0</strong> workflow.</p>
+<hr>
+<h2 id="-the-trust-crisis-hidden-steganography-inside-claude-code-source-code">🔒 The Trust Crisis: Hidden "Steganography" Inside Claude Code Source Code</h2><p>Many are puzzled: &quot;I used a clean US proxy, paid with a legitimate US card, so why was I still banned?&quot;</p>
+<p>The answer might lie in the source code of Claude Code. Recently, technical experts on Reddit and GitHub reverse-engineered the Claude Code client code (Anthropic accidentally leaked TypeScript source files containing <code>.map</code> files in March). They pulled back a chilling veil: <strong>Claude Code is secretly watermarking your requests with invisible signatures.</strong></p>
+<p>Instead of reporting via standard telemetry fields, it employs <strong>Steganography</strong>—a technique highly resistant to visual detection—to embed your environmental fingerprints into every seemingly ordinary prompt.</p>
+<h3 id="how-does-it-target-you">How Does It Target You?</h3><p>As long as you configure a custom API endpoint (via the environment variable <code>ANTHROPIC_BASE_URL</code>), Claude Code initiates a local detection pipeline:</p>
+<ol>
+<li><strong>Detect System Timezone</strong>: It directly queries your operating system&#39;s local settings. If it detects <code>Asia/Shanghai</code> or <code>Asia/Urumqi</code>, you are immediately tagged.</li>
+<li><strong>Compare Domain Against Blacklist</strong>: It extracts the domain of your custom proxy endpoint and compares it against an embedded blacklist encrypted with Base64 and XOR. This list contains 147 domains of domestic tech giants and AI laboratories (including Alibaba, Tencent, Baidu, ByteDance, Moonshot, MiniMax, etc.).</li>
+<li><strong>Silently Modify System Prompt</strong>:</li>
+</ol>
+<p>Under normal circumstances, the date string Claude sends to the backend looks like this:
+<code>Today&#39;s date is 2026-06-30.</code></p>
+<p>However, if a domestic timezone or a blacklisted proxy is detected, it alters the string in two ways:</p>
+<ul>
+<li><strong>Replace the Apostrophe</strong>: It secretly replaces the standard single quote (<code>U+0027</code>) in <code>Today&#39;s</code> with a right single quotation mark (<code>U+2019</code>), which looks identical to the naked eye.</li>
+<li><strong>Replace the Date Separators</strong>: It changes the hyphens in the date format (<code>2026-06-30</code>) to slashes (<code>2026/06/30</code>).</li>
+</ul>
+<p>Through the combination of these subtle details, Anthropic&#39;s servers can instantly determine: <strong>&quot;This is a bypassed user from China&quot;</strong> just by checking the character encodings in the prompt, without any complex IP auditing. The risk system logs the account, and when the list grows long enough, a ban wave takes care of the rest.</p>
+<p>Through the following Mermaid flow chart, we can visualize the entire process:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart TD
+    A["Launch Claude Code Client"] --> B{"Check env variable ANTHROPIC_BASE_URL"}
+    B -->|"Use default official API"| C["Initiate request directly"]
+    B -->|"Use custom proxy address"| D["Extract domain and perform decrypted comparison"]
+    D --> E{"Domain matches 147 domains or timezone is Asia/Shanghai?"}
+    E -->|"No"| C
+    E -->|"Yes"| F["Enable Steganography: Replace single quote Unicode and edit date separator"]
+    F --> G["Send Prompt with invisible markers to Anthropic server"]
+    G --> H["Backend risk control detects markers, logs profile, bans account eventually"]</pre></div><hr>
+<h2 id="-code-level-breakdown-how-the-steganography-is-implemented">🛠️ Code-Level Breakdown: How the Steganography is Implemented</h2><p>To make this transparent for everyone, here is a mock JavaScript implementation replicating Claude Code&#39;s internal detection and prompt manipulation logic. This shows exactly how the machine alters character encodings right under your nose:</p>
+<div class="code-wrapper"><pre><code class="language-javascript">// Mock logic of Claude Code&#39;s local environment check and steganographic prompt generation
+function generateSystemPrompt(originalDateStr, isCustomProxy) {
+    let finalDateStr = originalDateStr; // Default date format: YYYY-MM-DD
+    let apostrophe = &quot;\u0027&quot;; // Default apostrophe character (standard single quote)
+    
+    // 1. Get local timezone (returns Asia/Shanghai in GMT+8)
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Mock blacklist of 147 domestic tech domains
+    const blacklistedDomains = [&quot;api.moonshot.cn&quot;, &quot;api.deepseek.com&quot;, &quot;custom-proxy.org&quot;];
+    
+    // 2. Check if timezone is sensitive or custom proxy is used
+    const isChineseTimezone = (userTimezone === &quot;Asia/Shanghai&quot; || userTimezone === &quot;Asia/Urumqi&quot;);
+    
+    if (isChineseTimezone || isCustomProxy) {
+        // Trigger local steganography rules
+        // Rule A: Replace hyphens &#39;-&#39; with slashes &#39;/&#39;
+        finalDateStr = originalDateStr.replace(/-/g, &quot;/&quot;);
+        
+        // Rule B: Replace standard apostrophe U+0027 with right single quote U+2019
+        // They look identical in terminal, but machine bytes are completely different
+        apostrophe = &quot;\u2019&quot;; 
+    }
+    
+    // 3. Assemble system prompt sent to backend
+    const systemPrompt = `Today${apostrophe}s date is ${finalDateStr}.`;
+    
+    console.log(&quot;=== Generated Prompt ===&quot;);
+    console.log(systemPrompt);
+    console.log(&quot;=== Character Code Points ===&quot;);
+    console.log(&quot;Apostrophe Code Point:&quot;, systemPrompt.codePointAt(5).toString(16));
+    
+    return systemPrompt;
+}
+
+// Case A: A developer using official API directly from supported region
+console.log(&quot;--- Case A: Compliant User ---&quot;);
+generateSystemPrompt(&quot;2026-06-30&quot;, false);
+
+// Case B: A domestic developer routing through custom proxies
+console.log(&quot;\n--- Case B: Flagged User ---&quot;);
+generateSystemPrompt(&quot;2026-06-30&quot;, true);
+</code></pre>
+</div><p>See what&#39;s happening? <strong>You think you are just typing code, but your client has already betrayed you.</strong></p>
+<hr>
+<h2 id="-geopolitics-and-the-know-your-customer-era-why-risk-control-is-getting-stricter">🚨 Geopolitics and the "Know Your Customer" Era: Why Risk Control is Getting Stricter</h2><p>Behind this massive ban wave are three driving forces:</p>
+<h3 id="1-preventing-model-distillation">1. Preventing Model Distillation</h3><p>This June, Anthropic wrote directly to US senators, accusing a domestic tech giant of using nearly <strong>25,000 fake accounts</strong> to run <strong>28.8 million conversations</strong> to &quot;distill&quot; their models (leveraging high-volume queries to steal the logic and knowledge of proprietary models to train their own). This prompted Anthropic to adopt a &quot;ban first, ask later&quot; posture.</p>
+<h3 id="2-us-government-export-controls">2. US Government Export Controls</h3><p>On June 12, the US Department of Commerce pressured Anthropic to suspend access to its most powerful models, Fable 5 and Mythos 5, for foreign entities. Unable to resist the pressure, Anthropic temporarily removed these models globally for 15 days, reinstating them in late June after negotiations. Cleaning up non-compliant geographic traffic was a prerequisite for their return.</p>
+<h3 id="3-mandatory-face-matching-kyc-policies-from-july-8">3. Mandatory Face-Matching KYC Policies from July 8</h3><p>Starting July 8, 2026, Anthropic&#39;s updated privacy policy mandates that flagged accounts submit a <strong>government-issued ID (passport or national ID) + a live video selfie + a facial geometry template</strong> via third-party provider Persona to verify their identity. Furthermore, the policy states that Anthropic can voluntarily disclose your conversations to law enforcement agencies under &quot;good faith belief&quot; without a court subpoena.</p>
+<p><strong>Before, they wanted your account. Now, they want your face.</strong> Facing such aggressive identity controls, we can no longer afford to put all our eggs in one basket.</p>
+<hr>
+<h2 id="-hands-on-guide-how-to-configure-a-mock-us-local-development-environment">🛡️ Hands-on Guide: How to Configure a Mock US Local Development Environment</h2><p>If you still rely heavily on Claude Code&#39;s native capabilities, you must disguise yourself as a domestic US developer across network, OS, and browser layers.</p>
+<p>Here is a config guide verified by survivors in the community:</p>
+<h3 id="step-1-clean-up-your-network">Step 1: Clean Up Your Network</h3><ul>
+<li>Avoid shared public proxy nodes; they are prime targets for bans.</li>
+<li>Use a <strong>Static Residential IP</strong> to mimic a real US home broadband user, and lock all Claude-related domains to this node.</li>
+</ul>
+<h3 id="step-2-adjust-macos-system-settings">Step 2: Adjust macOS System Settings</h3><p>If your IP is in the US but your system timezone is in GMT+8, it triggers a critical fingerprint mismatch. Run the following terminal commands to fix this:</p>
+<div class="code-wrapper"><pre><code class="language-bash"># 1. Force the system timezone to US Pacific Time
+sudo systemsetup -settimezone America/Los_Angeles
+
+# 2. Verify timezone is modified successfully
+date
+
+# 3. Disable IPv6 to prevent real domestic IPv6 addresses from leaking
+networksetup -setv6off Wi-Fi
+
+# 4. Turn off macOS Location Services
+sudo defaults write /Library/Preferences/com.apple.locationd LocationServicesEnabled -int 0
+sudo launchctl unload /System/Library/LaunchDaemons/com.apple.locationd.plist 2&gt;/dev/null
+</code></pre>
+</div><h3 id="step-3-align-chrome-settings-and-usage-habits">Step 3: Align Chrome Settings and Usage Habits</h3><ul>
+<li><strong>Prioritize Language</strong>: Set <code>English (United States)</code> as your preferred language in <code>chrome://settings/languages</code> and drag it to the top.</li>
+<li><strong>Disable Location</strong>: Select &#39;Don&#39;t allow sites to see your location&#39; in <code>chrome://settings/content/location</code>.</li>
+<li><strong>Warm Up New Accounts</strong>: For the first two weeks, <strong>strictly stick to the Web UI or official Claude Desktop app</strong>. Do not connect to CLI terminals or wrap them in third-party proxies (like <a href="/product/openclaw" class="seo-autolink-keyword">OpenClaw</a>) right away.</li>
+<li><strong>Align Billing</strong>: Pay for the $20/mo Pro subscription via the US App Store (gift cards) or clean virtual cards. <strong>Never upgrade immediately to the $200 Max tier right after registering, and do not max out your daily quotas on day one.</strong></li>
+</ul>
+<hr>
+<h2 id="-escaping-gravity-building-the-multi-model-antigravity-20-workflow">🚀 Escaping Gravity: Building the Multi-Model Antigravity 2.0 Workflow</h2><p>Configuring your local environment reduces ban rates, but as long as your physical presence is overseas, a ban is ultimately a matter of time.</p>
+<p>The true <strong>Antigravity</strong> philosophy is <strong>refusing to bind your core development pipeline to any single closed-source model</strong>. If Claude goes down, your code, projects, and agent workflows must switch within a minute to continue moving forward.</p>
+<h3 id="1-decouple-local-toolchains-from-underlying-models">1. Decouple Local Toolchains from Underlying Models</h3><p>If you are accustomed to Claude Code&#39;s terminal interaction, you can utilize patch utilities like <code>cc-switch</code> to replace its engine with OpenAI&#39;s models. While the interaction feel varies, it keeps your local workflow uninterrupted.</p>
+<h3 id="2-build-a-multi-model-plan-b-matrix">2. Build a Multi-Model Plan B Matrix</h3><p>Excellent open and closed-source models are emerging constantly. In your editor (Cursor, VS Code) or terminal, configure the following fallbacks:</p>
+<ul>
+<li><strong>Codex</strong>: Ideal for general engineering tasks, offering great workflow continuity.</li>
+<li><strong>DeepSeek V4 / Qwen 2.5</strong>: The gold standards of open-source models. Excellent for code autocompletion and refactoring, and supporting 100% local deployment, removing ban and data leakage concerns.</li>
+<li><strong>GLM 5.2 / Doubao Pro</strong>: Excel in context comprehension and specific frameworks (such as HarmonyOS development). With clean contexts and clear task boundaries, they can easily act as primary drivers.</li>
+</ul>
+<hr>
+<h2 id="-summary-and-final-thoughts">💡 Summary and Final Thoughts</h2><p>This recent Claude ban wave teaches all developers relying on AI a vital lesson:</p>
+<ol>
+<li><strong>Smarter AI Demands Greater Precaution</strong>: When an AI agent is granted access to read projects and run local shell commands, opaque risk control is a hazard. When using them, <strong>never leave API keys unencrypted, and never let agents directly access production databases</strong>.</li>
+<li><strong>Tools are Engines, but You Hold the Steering Wheel</strong>: Keep local backups of specifications, architectural decisions, and testing records. Accounts can be replaced, but losing the &#39;shared project memory&#39; you built with the AI is catastrophic.</li>
+<li><strong>Embrace Multi-Model Pipelines</strong>: In the AI era, true strength lies not in any single model or account, but in <strong>your personal, robust, and dynamically switchable toolchain</strong>. By maintaining an open toolchain, you preserve your freedom to create, regardless of platform volatility.</li>
+</ol>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="-the-trust-crisis-hidden-steganography-inside-claude-code-source-code" data-astro-cid-4sn4zg3r> <a href="#-the-trust-crisis-hidden-steganography-inside-claude-code-source-code" data-astro-cid-4sn4zg3r>🔒 The Trust Crisis: Hidden &quot;Steganography&quot; Inside Claude Code Source Code</a> </li><li class="toc-item h3-nav" data-slug="how-does-it-target-you" data-astro-cid-4sn4zg3r> <a href="#how-does-it-target-you" data-astro-cid-4sn4zg3r>How Does It Target You?</a> </li><li class="toc-item " data-slug="-code-level-breakdown-how-the-steganography-is-implemented" data-astro-cid-4sn4zg3r> <a href="#-code-level-breakdown-how-the-steganography-is-implemented" data-astro-cid-4sn4zg3r>🛠️ Code-Level Breakdown: How the Steganography is Implemented</a> </li><li class="toc-item " data-slug="-geopolitics-and-the-know-your-customer-era-why-risk-control-is-getting-stricter" data-astro-cid-4sn4zg3r> <a href="#-geopolitics-and-the-know-your-customer-era-why-risk-control-is-getting-stricter" data-astro-cid-4sn4zg3r>🚨 Geopolitics and the &quot;Know Your Customer&quot; Era: Why Risk Control is Getting Stricter</a> </li><li class="toc-item h3-nav" data-slug="1-preventing-model-distillation" data-astro-cid-4sn4zg3r> <a href="#1-preventing-model-distillation" data-astro-cid-4sn4zg3r>1. Preventing Model Distillation</a> </li><li class="toc-item h3-nav" data-slug="2-us-government-export-controls" data-astro-cid-4sn4zg3r> <a href="#2-us-government-export-controls" data-astro-cid-4sn4zg3r>2. US Government Export Controls</a> </li><li class="toc-item h3-nav" data-slug="3-mandatory-face-matching-kyc-policies-from-july-8" data-astro-cid-4sn4zg3r> <a href="#3-mandatory-face-matching-kyc-policies-from-july-8" data-astro-cid-4sn4zg3r>3. Mandatory Face-Matching KYC Policies from July 8</a> </li><li class="toc-item " data-slug="-hands-on-guide-how-to-configure-a-mock-us-local-development-environment" data-astro-cid-4sn4zg3r> <a href="#-hands-on-guide-how-to-configure-a-mock-us-local-development-environment" data-astro-cid-4sn4zg3r>🛡️ Hands-on Guide: How to Configure a Mock US Local Development Environment</a> </li><li class="toc-item h3-nav" data-slug="step-1-clean-up-your-network" data-astro-cid-4sn4zg3r> <a href="#step-1-clean-up-your-network" data-astro-cid-4sn4zg3r>Step 1: Clean Up Your Network</a> </li><li class="toc-item h3-nav" data-slug="step-2-adjust-macos-system-settings" data-astro-cid-4sn4zg3r> <a href="#step-2-adjust-macos-system-settings" data-astro-cid-4sn4zg3r>Step 2: Adjust macOS System Settings</a> </li><li class="toc-item h3-nav" data-slug="step-3-align-chrome-settings-and-usage-habits" data-astro-cid-4sn4zg3r> <a href="#step-3-align-chrome-settings-and-usage-habits" data-astro-cid-4sn4zg3r>Step 3: Align Chrome Settings and Usage Habits</a> </li><li class="toc-item " data-slug="-escaping-gravity-building-the-multi-model-antigravity-20-workflow" data-astro-cid-4sn4zg3r> <a href="#-escaping-gravity-building-the-multi-model-antigravity-20-workflow" data-astro-cid-4sn4zg3r>🚀 Escaping Gravity: Building the Multi-Model Antigravity 2.0 Workflow</a> </li><li class="toc-item h3-nav" data-slug="1-decouple-local-toolchains-from-underlying-models" data-astro-cid-4sn4zg3r> <a href="#1-decouple-local-toolchains-from-underlying-models" data-astro-cid-4sn4zg3r>1. Decouple Local Toolchains from Underlying Models</a> </li><li class="toc-item h3-nav" data-slug="2-build-a-multi-model-plan-b-matrix" data-astro-cid-4sn4zg3r> <a href="#2-build-a-multi-model-plan-b-matrix" data-astro-cid-4sn4zg3r>2. Build a Multi-Model Plan B Matrix</a> </li><li class="toc-item " data-slug="-summary-and-final-thoughts" data-astro-cid-4sn4zg3r> <a href="#-summary-and-final-thoughts" data-astro-cid-4sn4zg3r>💡 Summary and Final Thoughts</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/agent-marketing-composio-claude" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/composio_agent_marketing.png" alt="Letting an Agent Do the Marketing: How I Promote a Website with Composio + Claude" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/agent-marketing-composio-claude" data-astro-cid-4sn4zg3r>Letting an Agent Do the Marketing: How I Promote a Website with Composio + Claude</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>How to replace a costly traditional marketing stack with one MCP server and a Claude session. This article showcases the step-by-step setup using Composio&#39;s free tier and Claude to build backlinks, owned distribution channels, and a self-running content loop with a human-gated queue for 1000usdinchina.com.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 29, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/china-travel-network-solution-gl-mt3000-homeproxy" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/portable-network-gateway-cover.png" alt="Seamless Remote Access in China: A Portable Gateway Solution Using GL-MT3000, HomeProxy, and Mobile Hotspot" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/china-travel-network-solution-gl-mt3000-homeproxy" data-astro-cid-4sn4zg3r>Seamless Remote Access in China: A Portable Gateway Solution Using GL-MT3000, HomeProxy, and Mobile Hotspot</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>A practical, portable gateway-level network solution for remote professionals traveling back to China. By leveraging the GL-iNet GL-MT3000 router tethered to a mobile hotspot, HomeProxy (Sing-box) in TUN mode, and a WebSocket-based remote node, you can set up a client-free transparent proxy that bypasses local DNS pollution.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>June 27, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

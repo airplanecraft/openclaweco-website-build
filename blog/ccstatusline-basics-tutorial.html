@@ -1,0 +1,1122 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Complete Guide to ccstatusline: Mastering Claude Code Status Bars — AgentUpdate.ai</title><meta name="description" content="A progressive tutorial for Claude Code users on ccstatusline, covering installation, TUI configuration, technical principles, Powerline styling, and..."><meta name="keywords" content="ccstatusline零基础教程, Complete Guide to ccstatusline: Mastering Claude Code Status Bars, Claude Code, ccstatusline, CLI, TUI, Tutorial"><link rel="canonical" href="https://agentupdate.ai/blog/ccstatusline-basics-tutorial"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/ccstatusline-basics-tutorial"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/ccstatusline-basics-tutorial"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/ccstatusline-basics-tutorial"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Complete Guide to ccstatusline: Mastering Claude Code Status Bars — AgentUpdate.ai"><meta property="og:description" content="A progressive tutorial for Claude Code users on ccstatusline, covering installation, TUI configuration, technical principles, Powerline styling, and..."><meta property="og:image" content="https://agentupdate.ai/images/blog/ai-cover-80c6bd44.jpg"><meta property="og:url" content="https://agentupdate.ai/blog/ccstatusline-basics-tutorial"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Complete Guide to ccstatusline: Mastering Claude Code Status Bars — AgentUpdate.ai"><meta name="twitter:description" content="A progressive tutorial for Claude Code users on ccstatusline, covering installation, TUI configuration, technical principles, Powerline styling, and..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/ai-cover-80c6bd44.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Complete Guide to ccstatusline: Mastering Claude Code Status Bars","description":"A progressive tutorial for Claude Code users on ccstatusline, covering installation, TUI configuration, technical principles, Powerline styling, and external data integration for status bar mastery.","image":"/images/blog/ai-cover-80c6bd44.jpg","datePublished":"2026-05-24T01:40:12.382Z","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/blog/ccstatusline-basics-tutorial"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/ccstatusline-basics-tutorial" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/ccstatusline-basics-tutorial" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Complete Guide to ccstatusline: Mastering Claude Code Status Bars</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Complete Guide to ccstatusline: Mastering Claude Code Status Bars"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Complete Guide to ccstatusline: Mastering Claude Code Status Bars</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>May 24, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By AgentUpdate</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/claude-code" class="tag" data-astro-cid-4sn4zg3r>#Claude Code</a><span class="tag" data-astro-cid-4sn4zg3r>#ccstatusline</span><a href="/tags/cli" class="tag" data-astro-cid-4sn4zg3r>#CLI</a><span class="tag" data-astro-cid-4sn4zg3r>#TUI</span><span class="tag" data-astro-cid-4sn4zg3r>#Tutorial</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/ai-cover-80c6bd44.jpg" alt="Complete Guide to ccstatusline: Mastering Claude Code Status Bars" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of Contents</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#i-what-is-ccstatusline" data-astro-cid-4sn4zg3r>I. What is ccstatusline</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#ii-technical-principles-claude-codes-statusline-hook" data-astro-cid-4sn4zg3r>II. Technical Principles: Claude Code&#39;s statusLine Hook</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#21-hook-registration-claude-code-side" data-astro-cid-4sn4zg3r>2.1 Hook Registration: Claude Code Side</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#22-invocation-lifecycle" data-astro-cid-4sn4zg3r>2.2 Invocation Lifecycle</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#23-payload-schema-what-claude-code-transmits" data-astro-cid-4sn4zg3r>2.3 Payload Schema: What Claude Code Transmits</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#24-where-additional-information-comes-from" data-astro-cid-4sn4zg3r>2.4 Where Additional Information Comes From</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#25-rendering-flow" data-astro-cid-4sn4zg3r>2.5 Rendering Flow</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#iii-installation" data-astro-cid-4sn4zg3r>III. Installation</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#31-prerequisites" data-astro-cid-4sn4zg3r>3.1 Prerequisites</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#32-three-installation-methods" data-astro-cid-4sn4zg3r>3.2 Three Installation Methods</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#33-upgrading-and-uninstalling" data-astro-cid-4sn4zg3r>3.3 Upgrading and Uninstalling</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#iv-tui-operations-quick-reference" data-astro-cid-4sn4zg3r>IV. TUI Operations Quick Reference</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#v-12-step-beginner-tutorial" data-astro-cid-4sn4zg3r>V. 12-Step Beginner Tutorial</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-0-verify-prerequisites" data-astro-cid-4sn4zg3r>Step 0: Verify Prerequisites</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-1-first-launch" data-astro-cid-4sn4zg3r>Step 1: First Launch</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-2-see-the-default-status-line" data-astro-cid-4sn4zg3r>Step 2: See the Default Status Line</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-3-install-to-claude-code" data-astro-cid-4sn4zg3r>Step 3: Install to Claude Code</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-4-understand-widgets" data-astro-cid-4sn4zg3r>Step 4: Understand Widgets</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-5-add-a-widget" data-astro-cid-4sn4zg3r>Step 5: Add a Widget</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-6-apply-colors" data-astro-cid-4sn4zg3r>Step 6: Apply Colors</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-7-add-a-second-line" data-astro-cid-4sn4zg3r>Step 7: Add a Second Line</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-8-surprise-widgets-worth-adding" data-astro-cid-4sn4zg3r>Step 8: &quot;Surprise&quot; Widgets Worth Adding</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-9-custom-text" data-astro-cid-4sn4zg3r>Step 9: Custom Text</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-10-adaptive-width-understand-first-tune-later" data-astro-cid-4sn4zg3r>Step 10: Adaptive Width (Understand First, Tune Later)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-11-test-and-understand-saving" data-astro-cid-4sn4zg3r>Step 11: Test and Understand Saving</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#step-12-backup" data-astro-cid-4sn4zg3r>Step 12: Backup</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#vi-all-available-widgets-overview" data-astro-cid-4sn4zg3r>VI. All Available Widgets Overview</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#61-sessions-models" data-astro-cid-4sn4zg3r>6.1 Sessions &amp; Models</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#62-context-tokens" data-astro-cid-4sn4zg3r>6.2 Context &amp; Tokens</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#63-quotas-rate-limits" data-astro-cid-4sn4zg3r>6.3 Quotas &amp; Rate Limits</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#64-git" data-astro-cid-4sn4zg3r>6.4 Git</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#65-system-others" data-astro-cid-4sn4zg3r>6.5 System &amp; Others</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#vii-complete-settingsjson-field-breakdown" data-astro-cid-4sn4zg3r>VII. Complete settings.json Field Breakdown</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#top-level-fields" data-astro-cid-4sn4zg3r>Top-Level Fields</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#common-widget-fields" data-astro-cid-4sn4zg3r>Common Widget Fields</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#widget-specific-fields" data-astro-cid-4sn4zg3r>Widget-Specific Fields</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#viii-advanced-usage" data-astro-cid-4sn4zg3r>VIII. Advanced Usage</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#81-toggling-used-left-for-widgets" data-astro-cid-4sn4zg3r>8.1 Toggling &quot;Used / Left&quot; for Widgets</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#82-short-long-progress-bars" data-astro-cid-4sn4zg3r>8.2 Short / Long Progress Bars</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#83-timestamp-display" data-astro-cid-4sn4zg3r>8.3 Timestamp Display</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#84-clickable-links" data-astro-cid-4sn4zg3r>8.4 Clickable Links</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#85-hiding-empty-values" data-astro-cid-4sn4zg3r>8.5 Hiding Empty Values</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#86-minimalist-mode" data-astro-cid-4sn4zg3r>8.6 Minimalist Mode</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#ix-custom-commands-integrating-external-scripts" data-astro-cid-4sn4zg3r>IX. Custom Commands: Integrating External Scripts</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#91-working-mechanism" data-astro-cid-4sn4zg3r>9.1 Working Mechanism</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#92-how-to-add" data-astro-cid-4sn4zg3r>9.2 How to Add</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#93-example-scripts" data-astro-cid-4sn4zg3r>9.3 Example Scripts</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#94-ansi-color-escapes" data-astro-cid-4sn4zg3r>9.4 ANSI Color Escapes</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#x-powerline-beautification" data-astro-cid-4sn4zg3r>X. Powerline Beautification</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#101-prerequisites" data-astro-cid-4sn4zg3r>10.1 Prerequisites</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#102-enable-steps" data-astro-cid-4sn4zg3r>10.2 Enable Steps</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#103-custom-separators" data-astro-cid-4sn4zg3r>10.3 Custom Separators</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#104-built-in-themes" data-astro-cid-4sn4zg3r>10.4 Built-in Themes</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#xi-performance-caching-mechanisms" data-astro-cid-4sn4zg3r>XI. Performance &amp; Caching Mechanisms</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#111-git-cache-v2216" data-astro-cid-4sn4zg3r>11.1 Git Cache (v2.2.16+)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#112-block-timer-cache-v2028" data-astro-cid-4sn4zg3r>11.2 Block Timer Cache (v2.0.28+)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#113-token-deduplication-v2212" data-astro-cid-4sn4zg3r>11.3 Token Deduplication (v2.2.12+)</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#114-subagent-awareness" data-astro-cid-4sn4zg3r>11.4 Subagent Awareness</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#115-terminal-width-detection" data-astro-cid-4sn4zg3r>11.5 Terminal Width Detection</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#116-hidden-subprocesses-windows" data-astro-cid-4sn4zg3r>11.6 Hidden Subprocesses (Windows)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#xii-debugging-troubleshooting" data-astro-cid-4sn4zg3r>XII. Debugging &amp; Troubleshooting</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#121-manually-running-the-hook-flow" data-astro-cid-4sn4zg3r>12.1 Manually Running the Hook Flow</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#122-using-a-custom-configuration-file" data-astro-cid-4sn4zg3r>12.2 Using a Custom Configuration File</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#123-hook-mode" data-astro-cid-4sn4zg3r>12.3 Hook Mode</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#124-common-errors-reference" data-astro-cid-4sn4zg3r>12.4 Common Errors Reference</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#125-force-reset" data-astro-cid-4sn4zg3r>12.5 Force Reset</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#xiii-qa-quick-reference" data-astro-cid-4sn4zg3r>XIII. Q&amp;A Quick Reference</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#xiv-backup-multi-machine-synchronization" data-astro-cid-4sn4zg3r>XIV. Backup &amp; Multi-Machine Synchronization</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#141-files-to-backup" data-astro-cid-4sn4zg3r>14.1 Files to Backup</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#142-dotfiles-integration-example" data-astro-cid-4sn4zg3r>14.2 Dotfiles Integration Example</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#143-switching-between-multiple-configurations" data-astro-cid-4sn4zg3r>14.3 Switching Between Multiple Configurations</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#recommended-starter-configuration" data-astro-cid-4sn4zg3r>Recommended Starter Configuration</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#resource-links" data-astro-cid-4sn4zg3r>Resource Links</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><blockquote>
+<p>A progressive tutorial for <a href="/tutorial/claude-code-tutorial" class="seo-autolink-keyword">Claude Code</a> users. The first half is beginner-friendly, explaining exactly &quot;what to press and what to expect&quot; at each step; the second half equips intermediate users with technical principles, hook protocols, payload schemas, caching mechanisms, Custom Commands, Powerline integration, and troubleshooting. By the end, you will upgrade from merely &quot;knowing how to use it&quot; to &quot;knowing how to modify, tune, and connect external data.&quot;</p>
+</blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2><ul>
+<li><a href="#i-what-is-ccstatusline">I. What is ccstatusline</a></li>
+<li><a href="#ii-technical-principles-claude-codes-statusline-hook">II. Technical Principles: Claude Code&#39;s statusLine Hook</a></li>
+<li><a href="#iii-installation">III. Installation</a></li>
+<li><a href="#iv-tui-operations-quick-reference">IV. TUI Operations Quick Reference</a></li>
+<li><a href="#v-12-step-beginner-tutorial">V. 12-Step Beginner Tutorial</a></li>
+<li><a href="#vi-all-available-widgets-overview">VI. All Available Widgets Overview</a></li>
+<li><a href="#vii-complete-settingsjson-field-breakdown">VII. Complete settings.json Field Breakdown</a></li>
+<li><a href="#viii-advanced-usage">VIII. Advanced Usage</a></li>
+<li><a href="#ix-custom-commands-integrating-external-scripts">IX. Custom Commands: Integrating External Scripts</a></li>
+<li><a href="#x-powerline-beautification">X. Powerline Beautification</a></li>
+<li><a href="#xi-performance--caching-mechanisms">XI. Performance &amp; Caching Mechanisms</a></li>
+<li><a href="#xii-debugging--troubleshooting">XII. Debugging &amp; Troubleshooting</a></li>
+<li><a href="#xiii-qa-quick-reference">XIII. Q&amp;A Quick Reference</a></li>
+<li><a href="#xiv-backup--multi-machine-synchronization">XIV. Backup &amp; Multi-Machine Synchronization</a></li>
+</ul>
+<hr>
+<h2 id="i-what-is-ccstatusline">I. What is ccstatusline</h2><p><code>ccstatusline</code> is an open-source status line formatter created by Matthew Breedlove (<a href="https://github.com/sirmalloc">@sirmalloc</a>), specifically designed for the Claude Code CLI. Its core concept is:</p>
+<ul>
+<li>Claude Code supports a <code>statusLine</code> command hook in <code>settings.json</code>, which sends the current session&#39;s JSON information to your command via <strong>stdin</strong>;</li>
+<li><code>ccstatusline</code> receives this JSON, renders one or more lines of status text based on your preset &quot;widgets,&quot; and returns it to Claude Code via <strong>stdout</strong> to be displayed at the bottom status bar.</li>
+</ul>
+<p>Key features:</p>
+<ul>
+<li><strong>40+ Built-in Widgets</strong>: Model name, total tokens, Git branch/changes, session duration, session cost, 5-hour block timer, weekly usage, memory usage, custom text, etc.</li>
+<li><strong>Multi-line Layout</strong>: Originally capped at 3 lines, the line limit has been removed since v2.0.11.</li>
+<li><strong>Powerline Style</strong>: Arrow separators, start/end caps, auto-alignment.</li>
+<li><strong>TUI Configuration Interface</strong>: An interactive terminal UI based on React/Ink, allowing instant previews as you configure.</li>
+<li><strong>Zero-Config Ready</strong>: Run <code>npx ccstatusline</code> directly. All changes are made through the TUI, requiring no manual JSON editing.</li>
+<li><strong>Cross-Platform</strong>: macOS / Linux / Windows / WSL; compatible with both Node and Bun.</li>
+</ul>
+<hr>
+<p><img src="http://localhost:4322//images/blog/upload_1779518613243_image.png" alt=""></p>
+<h2 id="ii-technical-principles-claude-codes-statusline-hook">II. Technical Principles: Claude Code's statusLine Hook</h2><p>Before understanding <code>ccstatusline</code>, it is essential to understand how it is &quot;invoked.&quot; This section is highly recommended for intermediate users; beginners can skip it for now and return later.</p>
+<h3 id="21-hook-registration-claude-code-side">2.1 Hook Registration: Claude Code Side</h3><p>Claude Code reads <code>~/.claude/settings.json</code> and identifies the <code>statusLine</code> field:</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;statusLine&quot;: {
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;command&quot;: &quot;ccstatusline&quot;,
+    &quot;padding&quot;: 0,
+    &quot;refreshInterval&quot;: 10
+  }
+}
+
+Field definitions:
+
+| Field | Type | Description |
+|------|------|------|
+| `type` | `&quot;command&quot;` | The only supported type, indicating execution via a child process. |
+| `command` | string | The shell command; can be `ccstatusline`, `npx -y ccstatusline@latest`, or `bunx -y ccstatusline@latest`. |
+| `padding` | number | Number of blank columns on the left, default is 0. |
+| `refreshInterval` | 1–60 (seconds) | Refresh interval, supported only in Claude Code ≥ 2.1.97. |
+
+### 2.2 Invocation Lifecycle
+
+Every time Claude Code needs to refresh the status line (triggered by an event or timer), it will:
+
+1. Spawn a child process to execute your `command`;
+2. Pipe the current session&#39;s JSON data into it via **stdin**;
+3. Wait for the child process&#39;s **stdout** text output to display as the status line content;
+4. Terminate the child process.
+
+The `main()` entry function of `ccstatusline` checks `process.stdin.isTTY`:
+
+- **Not a TTY** (data is piped in) → Parses JSON, renders the status line.
+- **Is a TTY** (you run `ccstatusline` directly in the terminal) → Launches the TUI configuration interface.
+
+This is why the same binary functions as both a hook and a configuration tool.
+
+### 2.3 Payload Schema: What Claude Code Transmits
+
+Derived from the `StatusJSONSchema` in the `ccstatusline` source code, this is the complete JSON structure transmitted by Claude Code via stdin:
+
+```typescript
+{
+  hook_event_name?: string;          // Trigger event name (e.g., &quot;UserPromptSubmit&quot;)
+  session_id?: string;               // Session ID
+  transcript_path?: string;          // Path to the session&#39;s JSONL transcript file
+  cwd?: string;                      // Current working directory
+  version?: string;                  // Claude Code version
+
+  model?: string | {                 // Model information
+    id?: string;
+    display_name?: string;
+  };
+
+  workspace?: {
+    current_dir?: string;
+    project_dir?: string;
+  };
+
+  output_style?: { name?: string };  // Output style name (e.g., &quot;concise&quot;)
+  effort?: { level?: string };       // Thinking effort (low/medium/high/xhigh)
+  vim?:    { mode?: string };        // Vim mode (normal/insert, etc.)
+
+  cost?: {                           // Session cost
+    total_cost_usd?: number;
+    total_duration_ms?: number;
+    total_api_duration_ms?: number;
+    total_lines_added?: number;
+    total_lines_removed?: number;
+  };
+
+  context_window?: {                 // Context window
+    context_window_size?: number;
+    total_input_tokens?: number;
+    total_output_tokens?: number;
+    current_usage?: number | {
+      input_tokens?: number;
+      output_tokens?: number;
+      cache_creation_input_tokens?: number;
+      cache_read_input_tokens?: number;
+    };
+    used_percentage?: number;
+    remaining_percentage?: number;
+  };
+
+  worktree?: {                       // Git worktree information
+    name?: string;
+    path?: string;
+    branch?: string;
+    original_cwd?: string;
+    original_branch?: string;
+  };
+
+  rate_limits?: {                    // Rate limit buckets
+    five_hour?:        { used_percentage?: number; resets_at?: number };
+    seven_day?:        { used_percentage?: number; resets_at?: number };
+    seven_day_sonnet?: { used_percentage?: number; resets_at?: number };
+    seven_day_opus?:   { used_percentage?: number; resets_at?: number };
+  };
+}
+</code></pre>
+</div><blockquote>
+<p>💡 This is a <code>looseObject</code>, meaning Claude Code might transmit more fields, and <code>ccstatusline</code> will not throw an error because of them.</p>
+</blockquote>
+<h3 id="24-where-additional-information-comes-from">2.4 Where Additional Information Comes From</h3><p>Some information displayed by <code>ccstatusline</code> is not present in the payload above. It actively fetches data from these sources:</p>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Historical token rates, session duration</td>
+<td>Parses the JSONL pointed to by <code>transcript_path</code></td>
+</tr>
+<tr>
+<td>Block timer (5-hour block)</td>
+<td>Parses JSONL + caches to <code>~/.cache/ccstatusline/block-timer-cache/</code></td>
+</tr>
+<tr>
+<td>Git information</td>
+<td>Invokes <code>git</code> subcommands + caches to <code>~/.cache/ccstatusline/git-cache/</code></td>
+</tr>
+<tr>
+<td>Weekly / Session usage</td>
+<td>Directly calls the Anthropic usage API</td>
+</tr>
+<tr>
+<td>Claude account email</td>
+<td>Reads <code>~/.claude.json</code></td>
+</tr>
+<tr>
+<td>System memory</td>
+<td>Calls OS APIs</td>
+</tr>
+</tbody></table>
+<h3 id="25-rendering-flow">2.5 Rendering Flow</h3><p>Once <code>renderMultipleLines(data)</code> is entered, the process roughly follows:</p>
+<ol>
+<li>Loads <code>~/.config/ccstatusline/settings.json</code>;</li>
+<li>Asynchronously and in parallel collects token metrics, speed metrics, and session duration (if related widgets are enabled in the config);</li>
+<li>Iterates over <code>lines</code>, rendering widgets sequentially for each line:<ul>
+<li>Each widget instance retrieves values from the payload + external data sources;</li>
+<li>Applies colors, padding, raw mode, and bold styling;</li>
+<li>Appends separators;</li>
+</ul>
+</li>
+<li>Processes flex separators (expanding to fill the terminal width);</li>
+<li>Applies Powerline decorations (if enabled);</li>
+<li>Outputs to stdout.</li>
+</ol>
+<p>The entire process typically completes within tens to hundreds of milliseconds. The Git cache (5-second TTL) and Block Timer cache (invalidated per 5-hour block) are critical for performance.</p>
+<hr>
+<h2 id="iii-installation">III. Installation</h2><h3 id="31-prerequisites">3.1 Prerequisites</h3><ul>
+<li>Node.js ≥ 14</li>
+<li>Claude Code CLI installed and logged in</li>
+<li>(Optional) A terminal supporting Powerline fonts (iTerm2, Windows Terminal, Alacritty, etc.)</li>
+</ul>
+<h3 id="32-three-installation-methods">3.2 Three Installation Methods</h3><p><code>ccstatusline</code> does not mandate a global installation. It is a lightweight tool that can be launched directly via <code>npx</code>/<code>bunx</code>:</p>
+<p><strong>Method A: Temporary Execution (Fastest Onboarding)</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash"># Using npm
+npx -y ccstatusline@latest
+
+# Or using bun (faster)
+bunx -y ccstatusline@latest
+</code></pre>
+</div><p>Executing this will directly enter the TUI configuration interface.</p>
+<p><strong>Method B: Pinned Global Installation (Recommended for Long-term Use)</strong></p>
+<p>Enter the TUI and select <strong>Pinned global install</strong>. It will:</p>
+<ol>
+<li>Install the current <code>ccstatusline</code> version globally on your machine via npm/bun;</li>
+<li>Write <code>&quot;command&quot;: &quot;ccstatusline&quot;</code> (without <code>@latest</code>) into Claude Code&#39;s <code>settings.json</code>.</li>
+</ol>
+<p>This ensures Claude Code always uses the specific version you confirmed. To open the configuration interface again later, simply run:</p>
+<div class="code-wrapper"><pre><code class="language-bash">ccstatusline
+</code></pre>
+</div><p><strong>Method C: Auto-follow Latest Version</strong></p>
+<p>During TUI installation, you can choose to write the command as <code>npx -y ccstatusline@latest</code>. Every time Claude Code triggers a status line render, it will run an npx resolution (incurs a cold start delay, but guarantees the latest version).</p>
+<h3 id="33-upgrading-and-uninstalling">3.3 Upgrading and Uninstalling</h3><ul>
+<li>Upgrading a Pinned version: Select <strong>Uninstall</strong> in the TUI, re-enter the TUI, and select <strong>Pinned global install</strong>; local <code>settings.json</code> configurations will not be cleared by the uninstall process.</li>
+<li>Complete removal: Select <strong>Uninstall</strong> in the TUI + run <code>npm uninstall -g ccstatusline</code>.</li>
+</ul>
+<hr>
+<h2 id="iv-tui-operations-quick-reference">IV. TUI Operations Quick Reference</h2><p>Entering <code>ccstatusline</code> presents a keyboard-driven menu:</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lines</strong></td>
+<td>Configure multi-line status bars: add/remove lines, add widgets to each line</td>
+</tr>
+<tr>
+<td><strong>Global Overrides</strong></td>
+<td>Global styling: bold, minimalist mode, color levels, separator color inheritance</td>
+</tr>
+<tr>
+<td><strong>Powerline Setup</strong></td>
+<td>Enable Powerline, configure separators, start/end caps, auto-alignment</td>
+</tr>
+<tr>
+<td><strong>Flex Separator</strong></td>
+<td>How flex separators expand when widgets on a line do not fill the terminal width</td>
+</tr>
+<tr>
+<td><strong>Install / Uninstall</strong></td>
+<td>Write <code>statusLine</code> to or remove it from Claude Code settings</td>
+</tr>
+<tr>
+<td><strong>Refresh Interval</strong></td>
+<td>Set the frequency at which Claude Code pulls the status line</td>
+</tr>
+</tbody></table>
+<p>Once inside a specific line:</p>
+<ul>
+<li><code>a</code>: Add widget (features a selector with search/fuzzy match/initialism match, since v2.2.8)</li>
+<li><code>k</code>: Clone (clones the current widget; assigns a new color in Powerline mode)</li>
+<li>Arrow keys: Move cursor; rearrange widgets when in move mode</li>
+<li><code>w</code>: Enter widget editor (detailed settings for each widget)</li>
+<li><code>u</code>: Toggle between &quot;Used / Left&quot; (for percentage widgets like Context %, Session Usage, etc.)</li>
+<li><code>h</code>: Hide (e.g., Git widget hides &quot;no git&quot; when not in a repository)</li>
+<li><code>d</code>: Delete current widget</li>
+<li><code>q</code> / <code>Esc</code>: Quit / Return</li>
+</ul>
+<p>General: Menu/list navigation supports wrap-around (v2.2.10+).</p>
+<hr>
+<h2 id="v-12-step-beginner-tutorial">V. 12-Step Beginner Tutorial</h2><h3 id="step-0-verify-prerequisites">Step 0: Verify Prerequisites</h3><p>In your terminal:</p>
+<div class="code-wrapper"><pre><code class="language-bash">claude --version    # Ensure you can see the Claude Code version number
+node -v             # ≥ v14 (v18+ recommended)
+</code></pre>
+</div><h3 id="step-1-first-launch">Step 1: First Launch</h3><div class="code-wrapper"><pre><code class="language-bash">npx -y ccstatusline@latest
+</code></pre>
+</div><p>Press Enter, wait a few seconds for the download, and you will enter the TUI main menu.</p>
+<h3 id="step-2-see-the-default-status-line">Step 2: See the Default Status Line</h3><p>Enter the <strong>Lines</strong> menu. There is a Preview area at the bottom rendering in real-time. Upon first entry, there are usually a few default widgets (e.g., <code>Model</code>, <code>Git Branch</code>).</p>
+<p>Small text at the bottom hints at available shortcuts; remember to glance at it frequently.</p>
+<h3 id="step-3-install-to-claude-code">Step 3: Install to Claude Code</h3><ol>
+<li>Press <code>Esc</code> to return to the main menu → Move to <strong>Install</strong> → Press <code>Enter</code>;</li>
+<li>Select <strong>Pinned global install</strong> (Recommended);</li>
+<li>Once you see ✅, press <code>q</code> to quit;</li>
+<li>Verify:</li>
+</ol>
+<div class="code-wrapper"><pre><code class="language-bash">cat ~/.claude/settings.json | grep -A 3 statusLine
+</code></pre>
+</div><p>You should see:</p>
+<div class="code-wrapper"><pre><code class="language-json">&quot;statusLine&quot;: {
+  &quot;type&quot;: &quot;command&quot;,
+  &quot;command&quot;: &quot;ccstatusline&quot;
+}
+</code></pre>
+</div><ol start="5">
+<li>Restart Claude Code, and the status line will appear. 🎉</li>
+</ol>
+<h3 id="step-4-understand-widgets">Step 4: Understand Widgets</h3><p>The status line is composed of widgets. Typical widgets include:</p>
+<table>
+<thead>
+<tr>
+<th>Widget Name</th>
+<th>Appearance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>model</code></td>
+<td><code>Model: Opus 4.7</code></td>
+</tr>
+<tr>
+<td><code>context-length</code></td>
+<td><code>Ctx: 12345</code></td>
+</tr>
+<tr>
+<td><code>git-branch</code></td>
+<td><code> main</code></td>
+</tr>
+<tr>
+<td><code>session-cost</code></td>
+<td><code>Cost: $0.12</code></td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td><code>|</code> (Manual separator)</td>
+</tr>
+<tr>
+<td><code>custom-text</code></td>
+<td>Any text you want to write</td>
+</tr>
+</tbody></table>
+<h3 id="step-5-add-a-widget">Step 5: Add a Widget</h3><p>Return to the TUI (<code>ccstatusline</code>) → <strong>Lines → Line 1</strong>:</p>
+<ol>
+<li>Press <code>a</code> (add);</li>
+<li>Type <code>cost</code> to filter out <code>Session Cost</code>;</li>
+<li>Press <code>Enter</code> to select; the Preview will immediately show <code>Cost: $0.00</code>;</li>
+<li>To add a separator: Press <code>a</code> again → search <code>separator</code> → select.</li>
+</ol>
+<p>Don&#39;t like the position? Hover over the widget, press <code>m</code> to enter move mode, use arrow keys to shift it, and press <code>Enter</code> to confirm.</p>
+<h3 id="step-6-apply-colors">Step 6: Apply Colors</h3><p>Hover over <code>Model</code> → Press <code>w</code> to enter the widget editor → Find <code>Color</code> → Press <code>Enter</code> and select <code>cyan</code>. The preview instantly turns cyan.</p>
+<p>Three color tiers:</p>
+<ul>
+<li><strong>Basic 16 Colors</strong> (<code>cyan</code> / <code>yellow</code> / <code>magenta</code>) — Best compatibility, <strong>recommended for beginners</strong>.</li>
+<li><strong>256 Colors</strong> (Numbers 0–255) — Supported by most terminals.</li>
+<li><strong>Truecolor</strong> (<code>#a1b2c3</code>) — Modern terminals, richest colors.</li>
+</ul>
+<p>If you only use basic colors, you don&#39;t need to touch the <code>colorLevel</code> setting.</p>
+<h3 id="step-7-add-a-second-line">Step 7: Add a Second Line</h3><p>Press <code>Esc</code> to return to <strong>Lines</strong> → Press <code>a</code> to add a new line → Enter Line 2 → Add widgets.</p>
+<p>Beginner two-line template:</p>
+<div class="code-wrapper"><pre><code>Line 1: Model | Ctx | Git Branch | Git Changes
+Line 2: Session Cost | Session Clock | Block Timer
+</code></pre>
+</div><h3 id="step-8-surprise-widgets-worth-adding">Step 8: "Surprise" Widgets Worth Adding</h3><table>
+<thead>
+<tr>
+<th>Widget</th>
+<th>What it tells you</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>block-timer</code></td>
+<td>Time used in the current 5-hour quota block</td>
+</tr>
+<tr>
+<td><code>weekly-usage</code></td>
+<td>Percentage of weekly quota used</td>
+</tr>
+<tr>
+<td><code>context-percentage-usable</code></td>
+<td>Usable percentage of the context window (<strong>prevents context overflow in long chats</strong>)</td>
+</tr>
+<tr>
+<td><code>free-memory</code></td>
+<td>System memory usage</td>
+</tr>
+<tr>
+<td><code>tokens-total</code></td>
+<td>Cumulative tokens for this session</td>
+</tr>
+</tbody></table>
+<h3 id="step-9-custom-text">Step 9: Custom Text</h3><p>Press <code>a</code> → Search <code>custom</code> → Select <code>Custom Text</code> → Press <code>w</code> to edit → Enter text (supports emojis) → Press <code>Ctrl+S</code> to save.</p>
+<h3 id="step-10-adaptive-width-understand-first-tune-later">Step 10: Adaptive Width (Understand First, Tune Later)</h3><ul>
+<li><strong>Flex Separator</strong>: Inserts a flex separator between two widgets, automatically expanding to fill remaining space;</li>
+<li><strong>Compact Threshold</strong> (Default 60): When terminal width is below this value, widgets supporting compact display will automatically shorten.</li>
+</ul>
+<p>Beginners can leave this at default.</p>
+<h3 id="step-11-test-and-understand-saving">Step 11: Test and Understand Saving</h3><p><code>ccstatusline</code> <strong>auto-saves</strong>. Every change updates <code>~/.config/ccstatusline/settings.json</code> immediately.</p>
+<p>How to test:</p>
+<ol>
+<li>Press <code>q</code> to quit the TUI;</li>
+<li>Close and reopen Claude Code (or trigger a status line refresh);</li>
+<li>Check if the bottom reflects your new configuration.</li>
+</ol>
+<p>Refreshing too slow? Main menu → <strong>Refresh Interval</strong> → Set to 5 seconds (requires Claude Code ≥ 2.1.97).</p>
+<h3 id="step-12-backup">Step 12: Backup</h3><div class="code-wrapper"><pre><code class="language-bash"># Configuration file location
+~/.config/ccstatusline/settings.json
+</code></pre>
+</div><p>Place it in your dotfiles or cloud drive. On a new machine, copy it back and run the TUI Install once to restore.</p>
+<hr>
+<h2 id="vi-all-available-widgets-overview">VI. All Available Widgets Overview</h2><p>Categorized list (v2.2.19):</p>
+<h3 id="61-sessions-models">6.1 Sessions & Models</h3><ul>
+<li><code>model</code> — Model display name (automatically strips the <code>(1M context)</code> suffix)</li>
+<li><code>model-display</code> — Alias for the above</li>
+<li><code>session-id</code> — Session ID</li>
+<li><code>session-name</code> — Session name set via <code>/rename</code></li>
+<li><code>session-clock</code> — Session running duration</li>
+<li><code>session-cost</code> — Cumulative session cost (USD)</li>
+<li><code>session-usage</code> — 5-hour block usage percentage for this session (includes short bar mode)</li>
+<li><code>claude-account-email</code> — Login email read from <code>~/.claude.json</code></li>
+<li><code>compaction-counter</code> — Context compaction count (includes hide-when-zero)</li>
+<li><code>thinking-effort</code> — Thinking effort (low/medium/high/xhigh)</li>
+<li><code>voice-status</code> — Voice Input status</li>
+<li><code>vim-mode</code> — Vim mode</li>
+<li><code>output-style</code> — Current output style</li>
+</ul>
+<h3 id="62-context-tokens">6.2 Context & Tokens</h3><ul>
+<li><code>context-length</code> — Current context token count</li>
+<li><code>context-percentage</code> — Context usage percentage</li>
+<li><code>context-percentage-usable</code> — Usable percentage (with <code>(u)</code> indicator, press <code>u</code> to toggle used/left)</li>
+<li><code>context-bar</code> — Context progress bar</li>
+<li><code>context-window</code> — Full model window size</li>
+<li><code>tokens-input</code> / <code>tokens-output</code> / <code>tokens-total</code> — Input / Output / Total tokens</li>
+<li><code>tokens-cache-creation</code> / <code>tokens-cache-read</code> — Cache write / read tokens</li>
+<li><code>input-speed</code> / <code>output-speed</code> / <code>total-speed</code> — Three token rates (rolling window 0–120s adjustable)</li>
+</ul>
+<h3 id="63-quotas-rate-limits">6.3 Quotas & Rate Limits</h3><ul>
+<li><code>block-timer</code> — Time used in the 5-hour block (includes progress bar / short bar)</li>
+<li><code>reset-timer</code> — Time remaining until next quota reset (can display exact timestamp, supports timezone/locale)</li>
+<li><code>weekly-usage</code> — 7-day total usage percentage</li>
+<li><code>weekly-usage-sonnet</code> / <code>weekly-usage-opus</code> — 7-day usage per model</li>
+<li><code>weekly-reset-timer</code> — Time remaining until 7-day quota reset</li>
+<li><code>extra-usage-utilization</code> / <code>extra-usage-remaining</code> — Monthly pay-as-you-go overage usage</li>
+</ul>
+<h3 id="64-git">6.4 Git</h3><ul>
+<li><code>git-branch</code> — Branch name (can render as clickable GitHub/GitLab link)</li>
+<li><code>git-changes</code> — Change statistics</li>
+<li><code>git-insertions</code> / <code>git-deletions</code> — Insertions only / Deletions only</li>
+<li><code>git-status</code> — Short status</li>
+<li><code>git-staged</code> / <code>git-unstaged</code> / <code>git-untracked</code> — Various file counts</li>
+<li><code>git-staged-files</code> / <code>git-unstaged-files</code> / <code>git-untracked-files</code> — Detailed file counts</li>
+<li><code>git-clean-status</code> — Clean / Dirty flag</li>
+<li><code>git-conflicts</code> — Conflicting file count</li>
+<li><code>git-ahead-behind</code> — Local vs. remote ahead/behind</li>
+<li><code>git-sha</code> — Current commit SHA</li>
+<li><code>git-origin-owner</code> / <code>git-origin-repo</code> / <code>git-origin-ownerrepo</code> — Origin repository info</li>
+<li><code>git-upstream-owner</code> / <code>git-upstream-repo</code> / <code>git-upstream-ownerrepo</code> — Upstream repository</li>
+<li><code>git-is-fork</code> — Is fork flag</li>
+<li><code>git-pr</code> — PR/MR corresponding to the current branch (includes status, title, clickable link)</li>
+<li><code>git-root-dir</code> — Repository root directory name (can generate <code>vscode://</code>/<code>cursor://</code> clickable links)</li>
+<li><code>git-worktree-mode</code> / <code>git-worktree-name</code> / <code>git-worktree-branch</code> / <code>git-worktree-original-branch</code></li>
+</ul>
+<h3 id="65-system-others">6.5 System & Others</h3><ul>
+<li><code>free-memory</code> — System memory usage (<code>Mem: 8.5G/16.0G</code>)</li>
+<li><code>current-working-directory</code> — CWD (supports path truncation, <code>~</code> abbreviation, fish-style abbreviation)</li>
+<li><code>custom-text</code> — Arbitrary text (includes emojis)</li>
+<li><code>custom-symbol</code> — Single character / icon</li>
+<li><code>custom-command</code> — Executes arbitrary shell commands and displays stdout</li>
+<li><code>link</code> — OSC8 clickable link</li>
+<li><code>skills</code> — List of currently available skills (last/count/list modes)</li>
+<li><code>separator</code> — Manual separator</li>
+<li><code>flex-separator</code> — Adaptive separator</li>
+<li><code>time</code> / <code>date</code> — Current time / date</li>
+<li><code>truncate</code> — Truncation marker</li>
+</ul>
+<p>Press <code>a</code> and input keywords, acronyms, or use fuzzy matching to find them.</p>
+<hr>
+<h2 id="vii-complete-settingsjson-field-breakdown">VII. Complete settings.json Field Breakdown</h2><p>Using this real configuration as an example (the one used in this article):</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;version&quot;: 3,
+  &quot;lines&quot;: [
+    [
+      { &quot;id&quot;: &quot;1&quot;, &quot;type&quot;: &quot;model&quot;,          &quot;color&quot;: &quot;cyan&quot; },
+      { &quot;id&quot;: &quot;2&quot;, &quot;type&quot;: &quot;separator&quot; },
+      { &quot;id&quot;: &quot;3&quot;, &quot;type&quot;: &quot;context-length&quot;, &quot;color&quot;: &quot;brightBlack&quot; },
+      { &quot;id&quot;: &quot;4&quot;, &quot;type&quot;: &quot;separator&quot; },
+      { &quot;id&quot;: &quot;5&quot;, &quot;type&quot;: &quot;git-branch&quot;,     &quot;color&quot;: &quot;magenta&quot; },
+      { &quot;id&quot;: &quot;6&quot;, &quot;type&quot;: &quot;separator&quot; },
+      { &quot;id&quot;: &quot;7&quot;, &quot;type&quot;: &quot;git-changes&quot;,    &quot;color&quot;: &quot;yellow&quot; }
+    ],
+    [
+      { &quot;type&quot;: &quot;reset-timer&quot; },
+      { &quot;type&quot;: &quot;context-percentage-usable&quot; },
+      { &quot;type&quot;: &quot;block-timer&quot; },
+      { &quot;type&quot;: &quot;weekly-usage&quot; },
+      { &quot;type&quot;: &quot;session-usage&quot; },
+      { &quot;type&quot;: &quot;tokens-total&quot; },
+      { &quot;type&quot;: &quot;total-speed&quot; }
+    ],
+    [
+      { &quot;type&quot;: &quot;free-memory&quot; },
+      { &quot;type&quot;: &quot;custom-text&quot; },
+      { &quot;type&quot;: &quot;model&quot; },
+      { &quot;type&quot;: &quot;session-clock&quot; },
+      { &quot;type&quot;: &quot;session-cost&quot; }
+    ],
+    []
+  ],
+  &quot;flexMode&quot;: &quot;full-minus-40&quot;,
+  &quot;compactThreshold&quot;: 60,
+  &quot;colorLevel&quot;: 2,
+  &quot;inheritSeparatorColors&quot;: false,
+  &quot;globalBold&quot;: false,
+  &quot;gitCacheTtlSeconds&quot;: 5,
+  &quot;minimalistMode&quot;: false,
+  &quot;powerline&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;separators&quot;: [&quot;&quot;],
+    &quot;separatorInvertBackground&quot;: [false],
+    &quot;startCaps&quot;: [],
+    &quot;endCaps&quot;: [],
+    &quot;autoAlign&quot;: false,
+    &quot;continueThemeAcrossLines&quot;: false
+  }
+}
+</code></pre>
+</div><h3 id="top-level-fields">Top-Level Fields</h3><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>version</code></td>
+<td>Configuration schema version, currently <code>3</code></td>
+</tr>
+<tr>
+<td><code>lines</code></td>
+<td>2D array: outer elements represent lines, inner elements are widget arrays per line</td>
+</tr>
+<tr>
+<td><code>flexMode</code></td>
+<td>Flex separator strategy: <code>full</code> / <code>full-minus-40</code> / <code>full-until-compact</code>, etc.</td>
+</tr>
+<tr>
+<td><code>compactThreshold</code></td>
+<td>Enters compact mode when terminal width is below this value</td>
+</tr>
+<tr>
+<td><code>colorLevel</code></td>
+<td><code>0</code> Off / <code>1</code> 16 Colors / <code>2</code> 256 Colors / <code>3</code> Truecolor</td>
+</tr>
+<tr>
+<td><code>inheritSeparatorColors</code></td>
+<td>Whether separators inherit colors from adjacent widgets</td>
+</tr>
+<tr>
+<td><code>globalBold</code></td>
+<td>Whether all widgets are bolded</td>
+</tr>
+<tr>
+<td><code>gitCacheTtlSeconds</code></td>
+<td>Git command cache TTL (v2.2.16+)</td>
+</tr>
+<tr>
+<td><code>minimalistMode</code></td>
+<td>Global minimalist mode (forces all widgets into raw mode)</td>
+</tr>
+<tr>
+<td><code>powerline</code></td>
+<td>Powerline sub-configuration</td>
+</tr>
+</tbody></table>
+<h3 id="common-widget-fields">Common Widget Fields</h3><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td>Auto-generated UUID or incremental number</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Widget type, see Section VI</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>Foreground color (basic name / number / hex)</td>
+</tr>
+<tr>
+<td><code>bgColor</code></td>
+<td>Background color (commonly used in Powerline mode)</td>
+</tr>
+<tr>
+<td><code>bold</code></td>
+<td>Bold text</td>
+</tr>
+<tr>
+<td><code>rawValue</code></td>
+<td>Displays only the value, without the label prefix</td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td>Whether to merge with the left widget (no separation)</td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td>Internal padding</td>
+</tr>
+</tbody></table>
+<h3 id="widget-specific-fields">Widget-Specific Fields</h3><p>A few examples:</p>
+<div class="code-wrapper"><pre><code class="language-json">// Custom Text
+{ &quot;type&quot;: &quot;custom-text&quot;, &quot;text&quot;: &quot;📦 my-project&quot; }
+
+// Custom Command
+{
+  &quot;type&quot;: &quot;custom-command&quot;,
+  &quot;commandPath&quot;: &quot;/usr/local/bin/my-status.sh&quot;,
+  &quot;preserveColors&quot;: true,
+  &quot;timeoutMs&quot;: 1000
+}
+
+// Git Branch with link
+{ &quot;type&quot;: &quot;git-branch&quot;, &quot;linkMode&quot;: &quot;github&quot; }
+
+// Reset Timer with timestamp
+{
+  &quot;type&quot;: &quot;reset-timer&quot;,
+  &quot;displayMode&quot;: &quot;timestamp&quot;,
+  &quot;use24Hour&quot;: true,
+  &quot;timezone&quot;: &quot;Asia/Shanghai&quot;,
+  &quot;locale&quot;: &quot;zh-CN&quot;
+}
+
+// Speed widget with rolling window
+{ &quot;type&quot;: &quot;total-speed&quot;, &quot;windowSeconds&quot;: 30 }
+</code></pre>
+</div><hr>
+<h2 id="viii-advanced-usage">VIII. Advanced Usage</h2><h3 id="81-toggling-used-left-for-widgets">8.1 Toggling "Used / Left" for Widgets</h3><p>For percentage widgets like <code>Context %</code>, <code>Context % (usable)</code>, <code>Session Usage</code>, <code>Weekly Usage</code>, press <code>u</code> in the editor to toggle between used and left.</p>
+<ul>
+<li>Used mode: <code>Ctx Used: 35%</code></li>
+<li>Left mode: <code>Ctx Left: 65%</code></li>
+</ul>
+<h3 id="82-short-long-progress-bars">8.2 Short / Long Progress Bars</h3><p><code>Block Timer</code>, <code>Block Reset Timer</code>, <code>Weekly Reset Timer</code>, <code>Context Bar</code>, <code>Session Usage</code>, and <code>Weekly Usage</code> all support:</p>
+<ul>
+<li>Numeric mode (<code>Block: 3hr 45m</code>)</li>
+<li>Long progress bar (32 characters)</li>
+<li>Short progress bar (16 characters, compact)</li>
+</ul>
+<h3 id="83-timestamp-display">8.3 Timestamp Display</h3><p><code>Reset Timer</code> / <code>Weekly Reset Timer</code> can be switched from &quot;time remaining&quot; to &quot;exact reset time&quot;:</p>
+<ul>
+<li>12 / 24-hour format</li>
+<li>Custom IANA timezone (<code>Asia/Shanghai</code>, <code>America/New_York</code>)</li>
+<li>Custom locale</li>
+</ul>
+<h3 id="84-clickable-links">8.4 Clickable Links</h3><ul>
+<li><code>Git Branch</code>: When link mode is enabled, renders as <code>https://github.com/owner/repo/tree/branch</code></li>
+<li><code>Git Root Dir</code>: Can generate <code>vscode://</code> or <code>cursor://</code> protocol links</li>
+<li><code>Link</code> widget: Arbitrary OSC8 links, clickable in supported terminals</li>
+</ul>
+<h3 id="85-hiding-empty-values">8.5 Hiding Empty Values</h3><p>Many widgets support hide-when-empty / hide-when-zero:</p>
+<ul>
+<li>Git widgets default to <code>no git</code> when not in a repository; press <code>h</code> to hide.</li>
+<li><code>Compaction Counter</code> can be hidden when the count is zero.</li>
+</ul>
+<h3 id="86-minimalist-mode">8.6 Minimalist Mode</h3><p>Main menu → <strong>Global Overrides</strong> → Enable Minimalist Mode.
+Forces all widgets into raw mode: <code>Cost: $0.12</code> → <code>$0.12</code>, <code>Model: Opus 4.7</code> → <code>Opus 4.7</code>.</p>
+<hr>
+<h2 id="ix-custom-commands-integrating-external-scripts">IX. Custom Commands: Integrating External Scripts</h2><p>This is the &quot;escape hatch&quot; of <code>ccstatusline</code>—if built-in widgets aren&#39;t enough, write a script to fill the gap.</p>
+<h3 id="91-working-mechanism">9.1 Working Mechanism</h3><p>On every status line refresh, <code>ccstatusline</code> uses the shell to execute your specified command, taking the first line of stdout (or all of it, depending on implementation) as the display text. The command must be <strong>fast</strong> and <strong>idempotent</strong>.</p>
+<h3 id="92-how-to-add">9.2 How to Add</h3><ol>
+<li>TUI → Lines → Select a line → <code>a</code> → Search <code>custom command</code> → Select;</li>
+<li>Press <code>w</code> to edit:<ul>
+<li><strong>Command Path</strong>: Absolute path to the script</li>
+<li><strong>Preserve Colors</strong>: Retain ANSI color codes (otherwise overridden by global colors)</li>
+<li><strong>Timeout</strong>: Abort after timeout (500–1000ms recommended)</li>
+</ul>
+</li>
+</ol>
+<h3 id="93-example-scripts">9.3 Example Scripts</h3><p><strong>Show current PR count (requires <code>gh</code>):</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">#!/usr/bin/env bash
+n=$(gh pr list --author &quot;@me&quot; --json number | jq length 2&gt;/dev/null)
+echo &quot;PRs: ${n:-0}&quot;
+</code></pre>
+</div><p><strong>Show CI status:</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">#!/usr/bin/env bash
+status=$(gh run list --branch &quot;$(git branch --show-current 2&gt;/dev/null)&quot; \
+  --limit 1 --json conclusion -q &#39;.[0].conclusion&#39; 2&gt;/dev/null)
+case &quot;$status&quot; in
+  success) echo -e &quot;\033[32mCI:✓\033[0m&quot; ;;
+  failure) echo -e &quot;\033[31mCI:✗\033[0m&quot; ;;
+  *)       echo &quot;CI:?&quot; ;;
+esac
+</code></pre>
+</div><p><strong>Show weather:</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">#!/usr/bin/env bash
+curl -s &quot;wttr.in/Beijing?format=%c+%t&quot; --max-time 1
+</code></pre>
+</div><blockquote>
+<p>⚠️ Custom Commands execute on every refresh. Increase <code>refreshInterval</code> or add caching to your script (file writing + mtime checks); otherwise, it will slow down the status line and consume resources.</p>
+</blockquote>
+<h3 id="94-ansi-color-escapes">9.4 ANSI Color Escapes</h3><p>If <code>preserveColors: true</code>, <code>\033[3Xm</code> color codes output by the script will be preserved exactly; otherwise, they will be overridden by <code>ccstatusline</code>&#39;s global colors.</p>
+<hr>
+<h2 id="x-powerline-beautification">X. Powerline Beautification</h2><h3 id="101-prerequisites">10.1 Prerequisites</h3><ul>
+<li>Terminal font must be a Nerd Font (Recommended: <em>FiraCode Nerd Font</em>, <em>JetBrainsMono Nerd Font</em>)</li>
+<li>Terminal must have truecolor enabled (mostly standard nowadays)</li>
+</ul>
+<p><code>ccstatusline</code> provides an automated Powerline font installation process, requiring user consent.</p>
+<h3 id="102-enable-steps">10.2 Enable Steps</h3><ol>
+<li>TUI → <strong>Powerline Setup</strong> → Enable;</li>
+<li>Select separators (default is ``);</li>
+<li>Add startCaps / endCaps to wrap the entire line in a &quot;capsule&quot; (optional);</li>
+<li><strong>Auto-Align</strong>: Aligns multi-line widgets into columns like a report (v2.0.8+);</li>
+<li><strong>Continue theme across lines</strong>: Maintains continuous Powerline colors across multiple lines (v2.2.8+).</li>
+</ol>
+<h3 id="103-custom-separators">10.3 Custom Separators</h3><p>Supports direct input of 4–6 digit Unicode hex (v2.1.9+), allowing any Powerline character:</p>
+<ul>
+<li><code>E0B0</code> Solid right arrow</li>
+<li><code>E0B1</code> Hollow right arrow</li>
+<li><code>E0B2</code> Solid left arrow</li>
+<li><code>E0B4</code> Rounded head</li>
+<li><code>E0BC</code> Slash</li>
+</ul>
+<h3 id="104-built-in-themes">10.4 Built-in Themes</h3><p><strong>Powerline Setup → Built-in Themes</strong> provides several presets. Enter, copy, and modify colors as needed.</p>
+<hr>
+<h2 id="xi-performance-caching-mechanisms">XI. Performance & Caching Mechanisms</h2><p>Key performance optimizations in <code>ccstatusline</code>:</p>
+<h3 id="111-git-cache-v2216">11.1 Git Cache (v2.2.16+)</h3><ul>
+<li>Path: <code>~/.cache/ccstatusline/git-cache/</code></li>
+<li>TTL: <code>gitCacheTtlSeconds</code> (default 5s)</li>
+<li>Invalidation signal: Detects mtime changes in <code>.git/HEAD</code> and <code>.git/index</code></li>
+<li>Git commands uniformly append <code>--no-optional-locks</code> to avoid competing for <code>index.lock</code> with parallel commands like <code>git status</code>.</li>
+</ul>
+<h3 id="112-block-timer-cache-v2028">11.2 Block Timer Cache (v2.0.28+)</h3><ul>
+<li>Path: <code>~/.cache/ccstatusline/block-timer-cache/</code></li>
+<li>Files separated by configuration hash</li>
+<li>Automatically invalidates when the 5-hour block expires</li>
+<li>Significantly reduces full JSONL parsing</li>
+</ul>
+<h3 id="113-token-deduplication-v2212">11.3 Token Deduplication (v2.2.12+)</h3><p>Duplicate entries in streaming JSONL are deduplicated, preventing artificially inflated token counts during high-frequency refreshes.</p>
+<h3 id="114-subagent-awareness">11.4 Subagent Awareness</h3><p>Token speed calculations include subagent activities, ensuring displayed speeds reflect the true concurrent workload.</p>
+<h3 id="115-terminal-width-detection">11.5 Terminal Width Detection</h3><ul>
+<li>Defaults to querying via TTY</li>
+<li>May fail under nested PTY / tmux → Manually override using an environment variable:</li>
+</ul>
+<div class="code-wrapper"><pre><code class="language-bash">export CCSTATUSLINE_WIDTH=200
+</code></pre>
+</div><h3 id="116-hidden-subprocesses-windows">11.6 Hidden Subprocesses (Windows)</h3><p>All helper subprocesses are set with <code>windowsHide</code>, preventing extra windows from popping up on Windows.</p>
+<hr>
+<h2 id="xii-debugging-troubleshooting">XII. Debugging & Troubleshooting</h2><h3 id="121-manually-running-the-hook-flow">12.1 Manually Running the Hook Flow</h3><p>Simulate Claude Code&#39;s invocation:</p>
+<div class="code-wrapper"><pre><code class="language-bash">echo &#39;{
+  &quot;session_id&quot;: &quot;test&quot;,
+  &quot;model&quot;: {&quot;display_name&quot;: &quot;Opus 4.7&quot;},
+  &quot;cwd&quot;: &quot;/tmp&quot;,
+  &quot;transcript_path&quot;: &quot;/tmp/none.jsonl&quot;,
+  &quot;cost&quot;: {&quot;total_cost_usd&quot;: 0.12},
+  &quot;context_window&quot;: {
+    &quot;context_window_size&quot;: 200000,
+    &quot;current_usage&quot;: 35000,
+    &quot;used_percentage&quot;: 17.5
+  }
+}&#39; | ccstatusline
+</code></pre>
+</div><p>You should directly see the rendered status line string (with ANSI colors).</p>
+<h3 id="122-using-a-custom-configuration-file">12.2 Using a Custom Configuration File</h3><div class="code-wrapper"><pre><code class="language-bash">ccstatusline --config /tmp/test-settings.json
+</code></pre>
+</div><p>Allows maintaining multiple configuration sets for experimentation.</p>
+<h3 id="123-hook-mode">12.3 Hook Mode</h3><div class="code-wrapper"><pre><code class="language-bash">echo &#39;&lt;payload&gt;&#39; | ccstatusline --hook
+</code></pre>
+</div><p>Explicitly forces the hook branch, avoiding ambiguity caused by <code>isTTY</code> checks.</p>
+<h3 id="124-common-errors-reference">12.4 Common Errors Reference</h3><table>
+<thead>
+<tr>
+<th>Error Message</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Invalid status JSON format</code></td>
+<td>stdin received invalid JSON</td>
+</tr>
+<tr>
+<td><code>No input received</code></td>
+<td>No content read from stdin; command might have been executed directly</td>
+</tr>
+<tr>
+<td>Status line is completely blank</td>
+<td>Incorrect command path or permissions</td>
+</tr>
+<tr>
+<td><code>EACCES</code></td>
+<td>Binary file is not executable → <code>chmod +x</code></td>
+</tr>
+</tbody></table>
+<h3 id="125-force-reset">12.5 Force Reset</h3><div class="code-wrapper"><pre><code class="language-bash"># Backup
+cp ~/.config/ccstatusline/settings.json ~/ccstatusline-backup.json
+
+# Delete config; it will rebuild with defaults on next launch
+rm ~/.config/ccstatusline/settings.json
+ccstatusline
+</code></pre>
+</div><hr>
+<h2 id="xiii-qa-quick-reference">XIII. Q&A Quick Reference</h2><p><strong>Q1: Should I choose Pinned or npx for the first run?</strong>
+For long-term use, choose <strong>Pinned global install</strong> so remote version changes won&#39;t affect behavior; if you just want to test it, choose npx.</p>
+<p><strong>Q2: The status line never appears at the bottom of Claude Code?</strong>
+Check sequentially:</p>
+<ol>
+<li><code>statusLine</code> field exists in <code>~/.claude/settings.json</code>;</li>
+<li><code>which ccstatusline</code> can locate the binary;</li>
+<li>Restart Claude Code;</li>
+<li>Set <code>Refresh Interval</code> lower (5–10 seconds).</li>
+</ol>
+<p><strong>Q3: Git info always shows <code>no git</code>?</strong>
+Claude Code&#39;s session CWD is not inside a Git repository. The <code>cwd</code> field comes from the directory where Claude Code was launched and does not follow the files you edit. Launch Claude Code inside the repository.</p>
+<p><strong>Q4: Powerline characters turn into squares/question marks?</strong>
+Your terminal font does not support Powerline. Install a Nerd Font, or disable it in Powerline Setup.</p>
+<p><strong>Q5: Status line gets truncated when the terminal is narrow?</strong></p>
+<ul>
+<li>Reduce the number of widgets</li>
+<li>Enable <code>compactThreshold</code> (default 60) and select widgets that support short modes</li>
+<li>Move secondary information to a second line</li>
+</ul>
+<p><strong>Q6: Terminal width detection is inaccurate (nested PTY / tmux)?</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">export CCSTATUSLINE_WIDTH=200
+</code></pre>
+</div><p><strong>Q7: Need a proxy to access the Anthropic usage API?</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">export HTTPS_PROXY=http://your-proxy:port
+</code></pre>
+</div><p>Usage-related widgets will read this variable (v2.2.2+).</p>
+<p><strong>Q8: Claude Code config directory is not in the default location?</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">export CLAUDE_CONFIG_DIR=/custom/path/to/.claude
+</code></pre>
+</div><p><code>ccstatusline</code> and all widgets will use this variable.</p>
+<p><strong>Q9: Should I Uninstall before upgrading ccstatusline?</strong>
+If you are currently using <code>npx -y ccstatusline@latest</code>, it is recommended to TUI Uninstall first before switching to Pinned to avoid behavioral drift. Local settings will not be cleared by the uninstall process.</p>
+<p><strong>Q10: Status line is lagging?</strong></p>
+<ul>
+<li>Increase <code>refreshInterval</code> (e.g., 15 seconds)</li>
+<li>Reduce the number of Custom Commands, add caching to scripts</li>
+<li>Ensure Git cache is enabled (<code>gitCacheTtlSeconds: 5</code> or higher)</li>
+<li>Block Timer cache takes effect automatically, no configuration needed</li>
+</ul>
+<p><strong>Q11: Session Cost isn&#39;t refreshing?</strong>
+Requires Claude Code ≥ 1.0.85; when resuming historical sessions via <code>/resume</code>, it might not update (a limitation on Claude Code&#39;s side).</p>
+<p><strong>Q12: Can I use it in WSL?</strong>
+Absolutely. See <code>docs/WINDOWS.md</code> for detailed Windows instructions.</p>
+<p><strong>Q13: Can I use different configs for different Claude Code projects?</strong>
+By default, they share <code>~/.config/ccstatusline/settings.json</code>. You can use <code>--config</code> to specify different files, but you need to modify the command in Claude Code&#39;s settings:</p>
+<div class="code-wrapper"><pre><code class="language-json">&quot;command&quot;: &quot;ccstatusline --config ~/.config/ccstatusline/project-a.json&quot;
+</code></pre>
+</div><p><strong>Q14: Can I use multiple hooks simultaneously (statusLine + others)?</strong>
+Yes, <code>statusLine</code> is just one of Claude Code&#39;s many hooks, independent of PreToolUse, UserPromptSubmit, etc. See Claude Code documentation for details.</p>
+<p><strong>Q15: Status line text has ANSI colors but the terminal doesn&#39;t display them?</strong></p>
+<ul>
+<li>Check that <code>colorLevel</code> is not <code>0</code></li>
+<li>Ensure the terminal supports truecolor (<code>tput colors</code> ≥ 256)</li>
+<li>SSH connections might drop colors; verify <code>$TERM</code> (e.g., <code>xterm-256color</code>)</li>
+</ul>
+<p><strong>Q16: How to completely uninstall?</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash"># Run Uninstall in TUI (removes statusLine from settings.json)
+ccstatusline
+# Then
+npm uninstall -g ccstatusline
+rm -rf ~/.config/ccstatusline
+rm -rf ~/.cache/ccstatusline
+</code></pre>
+</div><p><strong>Q17: Can it be used for tools other than Claude Code?</strong>
+<code>ccstatusline</code> is a generic stdin→stdout status line renderer. As long as you can construct a valid JSON payload and pipe it in, theoretically any tool can integrate it. Of course, the field conventions are based on Claude Code.</p>
+<p><strong>Q18: Can I contribute new widgets?</strong>
+Yes. The project is under the MIT license, repository at <a href="https://github.com/sirmalloc/ccstatusline">github.com/sirmalloc/ccstatusline</a>. Adding a new widget requires: implementing the <code>Widget</code> interface, registering it to the widget map, adding a TUI editor, and writing tests.</p>
+<p><strong>Q19: How to debug for local development?</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">git clone https://github.com/sirmalloc/ccstatusline
+cd ccstatusline
+bun install
+bun start              # Launch TUI
+bun run example        # Render once using example payload
+</code></pre>
+</div><p><strong>Q20: Status line data privacy?</strong>
+<code>ccstatusline</code> runs locally and does not upload your session content. It only calls the Anthropic usage API when using widgets like weekly/session usage (homologous to Claude Code&#39;s own <code>/usage</code> call). Everything is cached in <code>~/.cache/ccstatusline</code>.</p>
+<hr>
+<h2 id="xiv-backup-multi-machine-synchronization">XIV. Backup & Multi-Machine Synchronization</h2><h3 id="141-files-to-backup">14.1 Files to Backup</h3><div class="code-wrapper"><pre><code>~/.config/ccstatusline/settings.json          # All widget configurations
+~/.claude/settings.json (statusLine field)    # The hook for Claude Code
+</code></pre>
+</div><h3 id="142-dotfiles-integration-example">14.2 Dotfiles Integration Example</h3><div class="code-wrapper"><pre><code class="language-bash"># Inside your dotfiles repository
+mkdir -p config/ccstatusline
+cp ~/.config/ccstatusline/settings.json config/ccstatusline/
+
+# Restore on a new machine
+mkdir -p ~/.config/ccstatusline
+ln -sf &quot;$PWD/config/ccstatusline/settings.json&quot; ~/.config/ccstatusline/settings.json
+
+# Run TUI once more to write Claude Code settings
+npx -y ccstatusline@latest
+# Enter → Install → Pinned global install
+</code></pre>
+</div><h3 id="143-switching-between-multiple-configurations">14.3 Switching Between Multiple Configurations</h3><div class="code-wrapper"><pre><code class="language-bash"># Development environment
+ccstatusline --config ~/.config/ccstatusline/dev.json
+
+# Demo mode (minimalist)
+ccstatusline --config ~/.config/ccstatusline/demo.json
+</code></pre>
+</div><p>Write these commands into aliases like <code>claude-dev</code> / <code>claude-demo</code> to switch based on your scenario.</p>
+<hr>
+<h2 id="recommended-starter-configuration">Recommended Starter Configuration</h2><p>If you don&#39;t want to think about it, just copy this:</p>
+<div class="code-wrapper"><pre><code>Line 1: Model | Context Length | Git Branch | Git Changes
+Line 2: Block Timer | Weekly Usage | Session Cost | Session Clock
+</code></pre>
+</div><p>Color suggestions:</p>
+<ul>
+<li><code>Model</code> → cyan</li>
+<li><code>Git Branch</code> → magenta</li>
+<li><code>Git Changes</code> → yellow</li>
+<li><code>Weekly Usage</code> → green</li>
+<li>Leave the rest as default</li>
+</ul>
+<p>After a week of use, you will likely want to add:</p>
+<ul>
+<li><code>context-percentage-usable</code> (prevents context overflow)</li>
+<li><code>free-memory</code> (monitor machine status)</li>
+<li><code>compaction-counter</code> (monitor compaction counts)</li>
+<li>Custom Commands (integrate CI/PR/Weather, etc.)</li>
+</ul>
+<p>By then, you will be proficient enough not to need the tutorial.</p>
+<hr>
+<h2 id="resource-links">Resource Links</h2><ul>
+<li>Project Homepage: <a href="https://github.com/sirmalloc/ccstatusline">https://github.com/sirmalloc/ccstatusline</a></li>
+<li>npm Package: <a href="https://www.npmjs.com/package/ccstatusline">https://www.npmjs.com/package/ccstatusline</a></li>
+<li>Detailed Windows Docs: <code>docs/WINDOWS.md</code> in the repository</li>
+<li>Complete Usage Docs: <code>docs/USAGE.md</code> in the repository</li>
+<li>Development Docs: <code>docs/DEVELOPMENT.md</code> in the repository</li>
+<li>Related Projects:<ul>
+<li><a href="https://github.com/Piebald-AI/tweakcc">tweakcc</a> — Custom Claude Code themes/thinking verbs</li>
+<li><a href="https://github.com/ryoppippi/ccusage">ccusage</a> — Claude Code usage tracking</li>
+<li><a href="https://github.com/vincent-k2026/codachi">codachi</a> — Status line pet</li>
+<li><a href="https://ai-watch.dev">AIWatch</a> — Real-time status monitoring for 30+ AI APIs</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Happy hacking. ✨</strong></p>
+<p>If you want to:</p>
+<ul>
+<li>Overhaul your <code>settings.json</code> → Tell me your requirements</li>
+<li>Integrate a Custom Command to run a specific script → Paste the script</li>
+<li>Design a Powerline theme → Describe your desired visual style</li>
+</ul>
+<p>I can help you push further based on this tutorial.</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="table-of-contents" data-astro-cid-4sn4zg3r> <a href="#table-of-contents" data-astro-cid-4sn4zg3r>Table of Contents</a> </li><li class="toc-item " data-slug="i-what-is-ccstatusline" data-astro-cid-4sn4zg3r> <a href="#i-what-is-ccstatusline" data-astro-cid-4sn4zg3r>I. What is ccstatusline</a> </li><li class="toc-item " data-slug="ii-technical-principles-claude-codes-statusline-hook" data-astro-cid-4sn4zg3r> <a href="#ii-technical-principles-claude-codes-statusline-hook" data-astro-cid-4sn4zg3r>II. Technical Principles: Claude Code&#39;s statusLine Hook</a> </li><li class="toc-item h3-nav" data-slug="21-hook-registration-claude-code-side" data-astro-cid-4sn4zg3r> <a href="#21-hook-registration-claude-code-side" data-astro-cid-4sn4zg3r>2.1 Hook Registration: Claude Code Side</a> </li><li class="toc-item h3-nav" data-slug="22-invocation-lifecycle" data-astro-cid-4sn4zg3r> <a href="#22-invocation-lifecycle" data-astro-cid-4sn4zg3r>2.2 Invocation Lifecycle</a> </li><li class="toc-item h3-nav" data-slug="23-payload-schema-what-claude-code-transmits" data-astro-cid-4sn4zg3r> <a href="#23-payload-schema-what-claude-code-transmits" data-astro-cid-4sn4zg3r>2.3 Payload Schema: What Claude Code Transmits</a> </li><li class="toc-item h3-nav" data-slug="24-where-additional-information-comes-from" data-astro-cid-4sn4zg3r> <a href="#24-where-additional-information-comes-from" data-astro-cid-4sn4zg3r>2.4 Where Additional Information Comes From</a> </li><li class="toc-item h3-nav" data-slug="25-rendering-flow" data-astro-cid-4sn4zg3r> <a href="#25-rendering-flow" data-astro-cid-4sn4zg3r>2.5 Rendering Flow</a> </li><li class="toc-item " data-slug="iii-installation" data-astro-cid-4sn4zg3r> <a href="#iii-installation" data-astro-cid-4sn4zg3r>III. Installation</a> </li><li class="toc-item h3-nav" data-slug="31-prerequisites" data-astro-cid-4sn4zg3r> <a href="#31-prerequisites" data-astro-cid-4sn4zg3r>3.1 Prerequisites</a> </li><li class="toc-item h3-nav" data-slug="32-three-installation-methods" data-astro-cid-4sn4zg3r> <a href="#32-three-installation-methods" data-astro-cid-4sn4zg3r>3.2 Three Installation Methods</a> </li><li class="toc-item h3-nav" data-slug="33-upgrading-and-uninstalling" data-astro-cid-4sn4zg3r> <a href="#33-upgrading-and-uninstalling" data-astro-cid-4sn4zg3r>3.3 Upgrading and Uninstalling</a> </li><li class="toc-item " data-slug="iv-tui-operations-quick-reference" data-astro-cid-4sn4zg3r> <a href="#iv-tui-operations-quick-reference" data-astro-cid-4sn4zg3r>IV. TUI Operations Quick Reference</a> </li><li class="toc-item " data-slug="v-12-step-beginner-tutorial" data-astro-cid-4sn4zg3r> <a href="#v-12-step-beginner-tutorial" data-astro-cid-4sn4zg3r>V. 12-Step Beginner Tutorial</a> </li><li class="toc-item h3-nav" data-slug="step-0-verify-prerequisites" data-astro-cid-4sn4zg3r> <a href="#step-0-verify-prerequisites" data-astro-cid-4sn4zg3r>Step 0: Verify Prerequisites</a> </li><li class="toc-item h3-nav" data-slug="step-1-first-launch" data-astro-cid-4sn4zg3r> <a href="#step-1-first-launch" data-astro-cid-4sn4zg3r>Step 1: First Launch</a> </li><li class="toc-item h3-nav" data-slug="step-2-see-the-default-status-line" data-astro-cid-4sn4zg3r> <a href="#step-2-see-the-default-status-line" data-astro-cid-4sn4zg3r>Step 2: See the Default Status Line</a> </li><li class="toc-item h3-nav" data-slug="step-3-install-to-claude-code" data-astro-cid-4sn4zg3r> <a href="#step-3-install-to-claude-code" data-astro-cid-4sn4zg3r>Step 3: Install to Claude Code</a> </li><li class="toc-item h3-nav" data-slug="step-4-understand-widgets" data-astro-cid-4sn4zg3r> <a href="#step-4-understand-widgets" data-astro-cid-4sn4zg3r>Step 4: Understand Widgets</a> </li><li class="toc-item h3-nav" data-slug="step-5-add-a-widget" data-astro-cid-4sn4zg3r> <a href="#step-5-add-a-widget" data-astro-cid-4sn4zg3r>Step 5: Add a Widget</a> </li><li class="toc-item h3-nav" data-slug="step-6-apply-colors" data-astro-cid-4sn4zg3r> <a href="#step-6-apply-colors" data-astro-cid-4sn4zg3r>Step 6: Apply Colors</a> </li><li class="toc-item h3-nav" data-slug="step-7-add-a-second-line" data-astro-cid-4sn4zg3r> <a href="#step-7-add-a-second-line" data-astro-cid-4sn4zg3r>Step 7: Add a Second Line</a> </li><li class="toc-item h3-nav" data-slug="step-8-surprise-widgets-worth-adding" data-astro-cid-4sn4zg3r> <a href="#step-8-surprise-widgets-worth-adding" data-astro-cid-4sn4zg3r>Step 8: &quot;Surprise&quot; Widgets Worth Adding</a> </li><li class="toc-item h3-nav" data-slug="step-9-custom-text" data-astro-cid-4sn4zg3r> <a href="#step-9-custom-text" data-astro-cid-4sn4zg3r>Step 9: Custom Text</a> </li><li class="toc-item h3-nav" data-slug="step-10-adaptive-width-understand-first-tune-later" data-astro-cid-4sn4zg3r> <a href="#step-10-adaptive-width-understand-first-tune-later" data-astro-cid-4sn4zg3r>Step 10: Adaptive Width (Understand First, Tune Later)</a> </li><li class="toc-item h3-nav" data-slug="step-11-test-and-understand-saving" data-astro-cid-4sn4zg3r> <a href="#step-11-test-and-understand-saving" data-astro-cid-4sn4zg3r>Step 11: Test and Understand Saving</a> </li><li class="toc-item h3-nav" data-slug="step-12-backup" data-astro-cid-4sn4zg3r> <a href="#step-12-backup" data-astro-cid-4sn4zg3r>Step 12: Backup</a> </li><li class="toc-item " data-slug="vi-all-available-widgets-overview" data-astro-cid-4sn4zg3r> <a href="#vi-all-available-widgets-overview" data-astro-cid-4sn4zg3r>VI. All Available Widgets Overview</a> </li><li class="toc-item h3-nav" data-slug="61-sessions-models" data-astro-cid-4sn4zg3r> <a href="#61-sessions-models" data-astro-cid-4sn4zg3r>6.1 Sessions &amp; Models</a> </li><li class="toc-item h3-nav" data-slug="62-context-tokens" data-astro-cid-4sn4zg3r> <a href="#62-context-tokens" data-astro-cid-4sn4zg3r>6.2 Context &amp; Tokens</a> </li><li class="toc-item h3-nav" data-slug="63-quotas-rate-limits" data-astro-cid-4sn4zg3r> <a href="#63-quotas-rate-limits" data-astro-cid-4sn4zg3r>6.3 Quotas &amp; Rate Limits</a> </li><li class="toc-item h3-nav" data-slug="64-git" data-astro-cid-4sn4zg3r> <a href="#64-git" data-astro-cid-4sn4zg3r>6.4 Git</a> </li><li class="toc-item h3-nav" data-slug="65-system-others" data-astro-cid-4sn4zg3r> <a href="#65-system-others" data-astro-cid-4sn4zg3r>6.5 System &amp; Others</a> </li><li class="toc-item " data-slug="vii-complete-settingsjson-field-breakdown" data-astro-cid-4sn4zg3r> <a href="#vii-complete-settingsjson-field-breakdown" data-astro-cid-4sn4zg3r>VII. Complete settings.json Field Breakdown</a> </li><li class="toc-item h3-nav" data-slug="top-level-fields" data-astro-cid-4sn4zg3r> <a href="#top-level-fields" data-astro-cid-4sn4zg3r>Top-Level Fields</a> </li><li class="toc-item h3-nav" data-slug="common-widget-fields" data-astro-cid-4sn4zg3r> <a href="#common-widget-fields" data-astro-cid-4sn4zg3r>Common Widget Fields</a> </li><li class="toc-item h3-nav" data-slug="widget-specific-fields" data-astro-cid-4sn4zg3r> <a href="#widget-specific-fields" data-astro-cid-4sn4zg3r>Widget-Specific Fields</a> </li><li class="toc-item " data-slug="viii-advanced-usage" data-astro-cid-4sn4zg3r> <a href="#viii-advanced-usage" data-astro-cid-4sn4zg3r>VIII. Advanced Usage</a> </li><li class="toc-item h3-nav" data-slug="81-toggling-used-left-for-widgets" data-astro-cid-4sn4zg3r> <a href="#81-toggling-used-left-for-widgets" data-astro-cid-4sn4zg3r>8.1 Toggling &quot;Used / Left&quot; for Widgets</a> </li><li class="toc-item h3-nav" data-slug="82-short-long-progress-bars" data-astro-cid-4sn4zg3r> <a href="#82-short-long-progress-bars" data-astro-cid-4sn4zg3r>8.2 Short / Long Progress Bars</a> </li><li class="toc-item h3-nav" data-slug="83-timestamp-display" data-astro-cid-4sn4zg3r> <a href="#83-timestamp-display" data-astro-cid-4sn4zg3r>8.3 Timestamp Display</a> </li><li class="toc-item h3-nav" data-slug="84-clickable-links" data-astro-cid-4sn4zg3r> <a href="#84-clickable-links" data-astro-cid-4sn4zg3r>8.4 Clickable Links</a> </li><li class="toc-item h3-nav" data-slug="85-hiding-empty-values" data-astro-cid-4sn4zg3r> <a href="#85-hiding-empty-values" data-astro-cid-4sn4zg3r>8.5 Hiding Empty Values</a> </li><li class="toc-item h3-nav" data-slug="86-minimalist-mode" data-astro-cid-4sn4zg3r> <a href="#86-minimalist-mode" data-astro-cid-4sn4zg3r>8.6 Minimalist Mode</a> </li><li class="toc-item " data-slug="ix-custom-commands-integrating-external-scripts" data-astro-cid-4sn4zg3r> <a href="#ix-custom-commands-integrating-external-scripts" data-astro-cid-4sn4zg3r>IX. Custom Commands: Integrating External Scripts</a> </li><li class="toc-item h3-nav" data-slug="91-working-mechanism" data-astro-cid-4sn4zg3r> <a href="#91-working-mechanism" data-astro-cid-4sn4zg3r>9.1 Working Mechanism</a> </li><li class="toc-item h3-nav" data-slug="92-how-to-add" data-astro-cid-4sn4zg3r> <a href="#92-how-to-add" data-astro-cid-4sn4zg3r>9.2 How to Add</a> </li><li class="toc-item h3-nav" data-slug="93-example-scripts" data-astro-cid-4sn4zg3r> <a href="#93-example-scripts" data-astro-cid-4sn4zg3r>9.3 Example Scripts</a> </li><li class="toc-item h3-nav" data-slug="94-ansi-color-escapes" data-astro-cid-4sn4zg3r> <a href="#94-ansi-color-escapes" data-astro-cid-4sn4zg3r>9.4 ANSI Color Escapes</a> </li><li class="toc-item " data-slug="x-powerline-beautification" data-astro-cid-4sn4zg3r> <a href="#x-powerline-beautification" data-astro-cid-4sn4zg3r>X. Powerline Beautification</a> </li><li class="toc-item h3-nav" data-slug="101-prerequisites" data-astro-cid-4sn4zg3r> <a href="#101-prerequisites" data-astro-cid-4sn4zg3r>10.1 Prerequisites</a> </li><li class="toc-item h3-nav" data-slug="102-enable-steps" data-astro-cid-4sn4zg3r> <a href="#102-enable-steps" data-astro-cid-4sn4zg3r>10.2 Enable Steps</a> </li><li class="toc-item h3-nav" data-slug="103-custom-separators" data-astro-cid-4sn4zg3r> <a href="#103-custom-separators" data-astro-cid-4sn4zg3r>10.3 Custom Separators</a> </li><li class="toc-item h3-nav" data-slug="104-built-in-themes" data-astro-cid-4sn4zg3r> <a href="#104-built-in-themes" data-astro-cid-4sn4zg3r>10.4 Built-in Themes</a> </li><li class="toc-item " data-slug="xi-performance-caching-mechanisms" data-astro-cid-4sn4zg3r> <a href="#xi-performance-caching-mechanisms" data-astro-cid-4sn4zg3r>XI. Performance &amp; Caching Mechanisms</a> </li><li class="toc-item h3-nav" data-slug="111-git-cache-v2216" data-astro-cid-4sn4zg3r> <a href="#111-git-cache-v2216" data-astro-cid-4sn4zg3r>11.1 Git Cache (v2.2.16+)</a> </li><li class="toc-item h3-nav" data-slug="112-block-timer-cache-v2028" data-astro-cid-4sn4zg3r> <a href="#112-block-timer-cache-v2028" data-astro-cid-4sn4zg3r>11.2 Block Timer Cache (v2.0.28+)</a> </li><li class="toc-item h3-nav" data-slug="113-token-deduplication-v2212" data-astro-cid-4sn4zg3r> <a href="#113-token-deduplication-v2212" data-astro-cid-4sn4zg3r>11.3 Token Deduplication (v2.2.12+)</a> </li><li class="toc-item h3-nav" data-slug="114-subagent-awareness" data-astro-cid-4sn4zg3r> <a href="#114-subagent-awareness" data-astro-cid-4sn4zg3r>11.4 Subagent Awareness</a> </li><li class="toc-item h3-nav" data-slug="115-terminal-width-detection" data-astro-cid-4sn4zg3r> <a href="#115-terminal-width-detection" data-astro-cid-4sn4zg3r>11.5 Terminal Width Detection</a> </li><li class="toc-item h3-nav" data-slug="116-hidden-subprocesses-windows" data-astro-cid-4sn4zg3r> <a href="#116-hidden-subprocesses-windows" data-astro-cid-4sn4zg3r>11.6 Hidden Subprocesses (Windows)</a> </li><li class="toc-item " data-slug="xii-debugging-troubleshooting" data-astro-cid-4sn4zg3r> <a href="#xii-debugging-troubleshooting" data-astro-cid-4sn4zg3r>XII. Debugging &amp; Troubleshooting</a> </li><li class="toc-item h3-nav" data-slug="121-manually-running-the-hook-flow" data-astro-cid-4sn4zg3r> <a href="#121-manually-running-the-hook-flow" data-astro-cid-4sn4zg3r>12.1 Manually Running the Hook Flow</a> </li><li class="toc-item h3-nav" data-slug="122-using-a-custom-configuration-file" data-astro-cid-4sn4zg3r> <a href="#122-using-a-custom-configuration-file" data-astro-cid-4sn4zg3r>12.2 Using a Custom Configuration File</a> </li><li class="toc-item h3-nav" data-slug="123-hook-mode" data-astro-cid-4sn4zg3r> <a href="#123-hook-mode" data-astro-cid-4sn4zg3r>12.3 Hook Mode</a> </li><li class="toc-item h3-nav" data-slug="124-common-errors-reference" data-astro-cid-4sn4zg3r> <a href="#124-common-errors-reference" data-astro-cid-4sn4zg3r>12.4 Common Errors Reference</a> </li><li class="toc-item h3-nav" data-slug="125-force-reset" data-astro-cid-4sn4zg3r> <a href="#125-force-reset" data-astro-cid-4sn4zg3r>12.5 Force Reset</a> </li><li class="toc-item " data-slug="xiii-qa-quick-reference" data-astro-cid-4sn4zg3r> <a href="#xiii-qa-quick-reference" data-astro-cid-4sn4zg3r>XIII. Q&amp;A Quick Reference</a> </li><li class="toc-item " data-slug="xiv-backup-multi-machine-synchronization" data-astro-cid-4sn4zg3r> <a href="#xiv-backup-multi-machine-synchronization" data-astro-cid-4sn4zg3r>XIV. Backup &amp; Multi-Machine Synchronization</a> </li><li class="toc-item h3-nav" data-slug="141-files-to-backup" data-astro-cid-4sn4zg3r> <a href="#141-files-to-backup" data-astro-cid-4sn4zg3r>14.1 Files to Backup</a> </li><li class="toc-item h3-nav" data-slug="142-dotfiles-integration-example" data-astro-cid-4sn4zg3r> <a href="#142-dotfiles-integration-example" data-astro-cid-4sn4zg3r>14.2 Dotfiles Integration Example</a> </li><li class="toc-item h3-nav" data-slug="143-switching-between-multiple-configurations" data-astro-cid-4sn4zg3r> <a href="#143-switching-between-multiple-configurations" data-astro-cid-4sn4zg3r>14.3 Switching Between Multiple Configurations</a> </li><li class="toc-item " data-slug="recommended-starter-configuration" data-astro-cid-4sn4zg3r> <a href="#recommended-starter-configuration" data-astro-cid-4sn4zg3r>Recommended Starter Configuration</a> </li><li class="toc-item " data-slug="resource-links" data-astro-cid-4sn4zg3r> <a href="#resource-links" data-astro-cid-4sn4zg3r>Resource Links</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/google-antigravity-cli-review-and-troubleshooting" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-99f013f1.jpg" alt="Google Antigravity CLI Review and Troubleshooting Guide: The Gemini CLI Successor" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/google-antigravity-cli-review-and-troubleshooting" data-astro-cid-4sn4zg3r>Google Antigravity CLI Review and Troubleshooting Guide: The Gemini CLI Successor</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>Google is replacing Gemini CLI with the new Go-based Antigravity CLI. This article provides a hands-on review, migration guide, and troubleshooting tips for network and login issues, helping you master this new multi-agent AI coding tool.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 23, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/google-gemini-spark-ai-agent-deep-dive" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-d65c443d.jpg" alt="Google's own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/google-gemini-spark-ai-agent-deep-dive" data-astro-cid-4sn4zg3r>Google&#39;s own claw Gemini Spark:A Deep Dive into Google Gemini Spark and 24/7 AI Agents</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>AI has finally evolved from chatting to working. This article breaks down Google&#39;s Gemini Spark, an always-on AI agent running on cloud VMs. Learn its core architecture, the MCP protocol, and practical tips for building your automated workflows.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 22, 2026</span> <span data-astro-cid-4sn4zg3r>By Eric W</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

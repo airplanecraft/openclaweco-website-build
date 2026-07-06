@@ -1,0 +1,598 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow — 🪨 Caveman Complete Guide: The Ultimate Weapon for AI Agents to Save 75% Tokens — AgentUpdate.ai</title><meta name="description" content="Demonstrate Caveman's compression performance using real-world data, running official Benchmark and Eval suites. Build a complete Caveman daily development..."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://agentupdate.ai/tutorial/caveman-tutorial/lesson-10"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/tutorial/caveman-tutorial/lesson-10"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/tutorial/caveman-tutorial/lesson-10"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/tutorial/caveman-tutorial/lesson-10"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow — 🪨 Caveman Complete Guide: The Ultimate Weapon for AI Agents to Save 75% Tokens — AgentUpdate.ai"><meta property="og:description" content="Demonstrate Caveman's compression performance using real-world data, running official Benchmark and Eval suites. Build a complete Caveman daily development..."><meta property="og:image" content="https://agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://agentupdate.ai/tutorial/caveman-tutorial/lesson-10"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow — 🪨 Caveman Complete Guide: The Ultimate Weapon for AI Agents to Save 75% Tokens — AgentUpdate.ai"><meta name="twitter:description" content="Demonstrate Caveman's compression performance using real-world data, running official Benchmark and Eval suites. Build a complete Caveman daily development..."><meta name="twitter:image" content="https://agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow — 🪨 Caveman Complete Guide: The Ultimate Weapon for AI Agents to Save 75% Tokens — AgentUpdate.ai","description":"Demonstrate Caveman's compression performance using real-world data, running official Benchmark and Eval suites. Build a complete Caveman daily development...","inLanguage":"en","url":"https://agentupdate.ai/tutorial/caveman-tutorial/lesson-10","mainEntityOfPage":{"@type":"WebPage","@id":"https://agentupdate.ai/tutorial/caveman-tutorial/lesson-10"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/caveman-tutorial/lesson-10" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/caveman-tutorial/lesson-10" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/caveman-tutorial" class="series-title-link" data-astro-cid-vma7orrt> 🪨 CAVEMAN COMPLETE GUIDE: THE ULTIMATE WEAPON FOR AI AGENTS TO SAVE 75% TOKENS </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-1" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 01 | What is Caveman — The Philosophy of Token Compression and the Ecosystem Landscape</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-2" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 02 | Practical Installation of Five Major Platforms — Claude Code / Antigravity / Gemini CLI / Codex / OpenCode</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-3" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 03 | Hooks Deep Dive — Caveman&#39;s Automatic Activation Engine</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-4" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 04 | Four-level Shifting — From Lite to Ultra to Classical Chinese</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-5" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 05 | /caveman Core Skill — Powerful Compression Tool for Daily Development</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-6" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 06 | /caveman-commit — Bringing Git Commit Messages Back to Basics</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-7" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 07 | /caveman-review — Single-line Code Review</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-8" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 08 | /caveman:compress — Compress your CLAUDE.md, saving 46% input tokens each time</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-9" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 09 | /caveman-help and Always-On Configuration — Making Caveman Ubiquitous</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-10" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/caveman-tutorial" data-astro-cid-ilhxcym7>🪨 Caveman Complete Guide: The Ultimate Weapon for AI Agents to Save 75% Tokens</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"🪨 Caveman Complete Guide: The Ultimate Weapon for AI Agents to Save 75% Tokens","item":"https://agentupdate.ai/tutorial/caveman-tutorial"},{"@type":"ListItem","position":4,"name":"Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Issue 10 | Performance Benchmarks and Best Practices — Integrating Caveman into Your Development Workflow</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>17 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) --> <div class="direct-summary-box" data-astro-cid-vma7orrt> <div class="summary-box-title" data-astro-cid-vma7orrt>DIRECT SUMMARY // KEY TAKEAWAY</div> <p class="summary-box-text" data-astro-cid-vma7orrt>Demonstrate Caveman&#39;s compression performance using real-world data, running official Benchmark and Eval suites. Build a complete Caveman daily development workflow: covering end-to-end best practices from session initiation to code review to Git commit.</p> </div> <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><h2>🎯 Learning Objectives</h2>
+<p>After completing this issue, you will master:</p>
+<ol>
+<li>How to run Caveman's official Benchmark and Eval suites</li>
+<li>The Three-Arm Evaluation methodology: Why Caveman is better than "please answer briefly"</li>
+<li>A complete daily development workflow: The full chain from startup to commit</li>
+<li>Optimal mode selection strategies for different scenarios</li>
+</ol>
+<hr>
+<h2>📖 Core Content</h2>
+<h3>10.1 Official Benchmark Data</h3>
+<p>Caveman's token compression effect isn't self-proclaimed—it's backed by real Claude API token count data.</p>
+<table>
+<thead>
+<tr>
+<th>Test Prompt</th>
+<th>Normal Tokens</th>
+<th>Caveman Tokens</th>
+<th>Compression Rate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>React re-render explanation</td>
+<td>69</td>
+<td>19</td>
+<td>72%</td>
+</tr>
+<tr>
+<td>Auth middleware Bug</td>
+<td>89</td>
+<td>23</td>
+<td>74%</td>
+</tr>
+<tr>
+<td>TypeScript generics tutorial</td>
+<td>156</td>
+<td>42</td>
+<td>73%</td>
+</tr>
+<tr>
+<td>Express performance optimization advice</td>
+<td>203</td>
+<td>51</td>
+<td>75%</td>
+</tr>
+<tr>
+<td>Docker deployment troubleshooting</td>
+<td>178</td>
+<td>38</td>
+<td>79%</td>
+</tr>
+<tr>
+<td>Database index optimization</td>
+<td>145</td>
+<td>33</td>
+<td>77%</td>
+</tr>
+<tr>
+<td>CSS Grid layout guide</td>
+<td>112</td>
+<td>28</td>
+<td>75%</td>
+</tr>
+<tr>
+<td>Git branching strategy advice</td>
+<td>98</td>
+<td>24</td>
+<td>76%</td>
+</tr>
+</tbody></table>
+<p><strong>Statistical Summary:</strong></p>
+<ul>
+<li>Range: 22% — 87%</li>
+<li>Average: ~71-75%</li>
+<li>Median: ~75%</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Important</strong>: Caveman only affects <strong>output tokens</strong>. Thinking/reasoning tokens are completely unaffected. Caveman doesn't shrink the brain, it just shrinks the mouth.</p>
+</blockquote>
+<h3>10.2 Running Official Benchmarks</h3>
+<p>You can reproduce this data yourself:</p>
+<pre><code class="language-bash"># Clone the repository
+git clone https://github.com/JuliusBrussee/caveman.git
+cd caveman
+
+# Run LLM evaluation (requires Claude CLI and a valid API Key)
+uv run python evals/llm_run.py
+
+# Analyze results offline (no API Key needed)
+uv run --with tiktoken python evals/measure.py
+</code></pre>
+<h4>Three-Arm Evaluation Design (Three-Arm Eval)</h4>
+<p>Caveman's Eval doesn't simply compare "Normal vs Caveman"—that would conflate Caveman's effect with "generic brief instructions."</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    A["Three-Arm Evaluation Design"]
+    
+    A --&gt; B["Arm 1: Verbose<br>(No Constraints)<br>Claude Normal Response"]
+    A --&gt; C["Arm 2: Terse<br>(Only 'be brief')<br>General Brief Instruction"]
+    A --&gt; D["Arm 3: Caveman<br>(Full Skill Rules)<br>Structured Compression"]
+    
+    B --&gt; E["Baseline Comparison"]
+    C --&gt; F["Proves Caveman ≠ Simply 'be brief'"]
+    D --&gt; G["Actual Compression Effect"]
+    
+    F -.-&gt;|"Comparison"| G</pre></div><p><strong>Why a Three-Arm Design?</strong></p>
+<p>If you only compare Verbose vs Caveman, you cannot distinguish whether the compression effect comes from:</p>
+<ul>
+<li>Caveman's structured rules (<code>[thing] [action] [reason]</code> pattern)</li>
+<li>Or simply because you told the Agent "please answer briefly"</li>
+</ul>
+<p>In the three-arm design, Arm 2 (Terse) is the control group—it only says "be brief." If Caveman saves more tokens than Terse and maintains higher accuracy, it proves that <strong>Caveman's rule design itself has value</strong>, and is not just "asking for brevity."</p>
+<p>Actual results: Caveman saves an additional 15-25% tokens compared to Terse mode, with higher technical accuracy.</p>
+<h3>10.3 Academic Background: Brevity ≠ Coarseness</h3>
+<p>A March 2026 paper, <a href="https://arxiv.org/abs/2604.00025"><em>"Brevity Constraints Reverse Performance Hierarchies in Language Models"</em></a>, found:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph LR
+    A["Traditional Assumption<br>More Tokens = Better Answer"] --&gt;|"❌ Paper Disproved"| B["Experimental Results<br>Brevity Constraint Improves Accuracy by 26%"]
+    
+    C["Large Models (Verbose)"] --&gt;|"Add Brevity Constraint"| D["Accuracy Improvement"]
+    E["Small Models (Concise)"] --&gt;|"No Constraint"| F["Accuracy Even Higher"]
+    
+    D --&gt; G["Conclusion: Verbosity is Noise<br>Not Signal"]
+    F --&gt; G</pre></div><p>Key Findings:</p>
+<ol>
+<li><strong>Brevity constraints improve accuracy by 26 percentage points</strong> (on specific benchmarks)</li>
+<li><strong>Reverses model rankings</strong>: Smaller models that originally performed worse surpassed larger models under brevity constraints</li>
+<li><strong>Verbosity is noise</strong>: The computational power models spend on rhetoric could be used for reasoning</li>
+</ol>
+<p>This academically validates Caveman's core hypothesis: <strong>Remove the fluff, and reasoning becomes more accurate.</strong></p>
+<h3>10.4 Complete Caveman Daily Workflow</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">graph TD
+    A["🚀 Start Agent Session"] --&gt; B["Hook Automatically Activates Caveman<br>[CAVEMAN] Badge Lights Up"]
+    
+    B --&gt; C{"Development Phase"}
+    
+    C --&gt;|"🔨 Coding"| D["🪨 /caveman full<br>Concise Technical Answers<br>Troubleshooting, Writing Code"]
+    
+    C --&gt;|"🐛 Debugging"| E["🔥 /caveman ultra<br>Rapid Troubleshooting<br>Minimal Text to Core Issue"]
+    
+    C --&gt;|"📖 Learning"| F["🪶 /caveman lite<br>Retains Full Sentences<br>Easier Concept Understanding"]
+    
+    C --&gt;|"🇨🇳 Chinese Projects"| G["📜 /caveman wenyan<br>Classical Chinese Mode<br>Most Token-Efficient for Chinese"]
+    
+    D --&gt; H["✅ Code Modification Complete"]
+    E --&gt; H
+    F --&gt; H
+    G --&gt; H
+    
+    H --&gt; I["🔍 /caveman-review<br>One-Line Code Review<br>L42: 🔴 bug: ..."]
+    
+    I --&gt; J{"Review Passed?"}
+    J --&gt;|"❌ Issues Found"| K["Fix Issues"]
+    K --&gt; I
+    
+    J --&gt;|"✅ Passed"| L["📝 /caveman-commit<br>Refined Commit Message<br>fix(auth): token &lt;= not &lt;"]
+    
+    L --&gt; M["📦 git push"]
+    
+    M --&gt; N["🗜️ /caveman:compress<br>Compress CLAUDE.md<br>Saves Tokens for Next Session"]
+    
+    N --&gt; O["🎉 Done!"]
+    
+    style B fill:#FFD700
+    style I fill:#87CEEB
+    style L fill:#90EE90
+    style N fill:#DDA0DD</pre></div><h3>10.5 Scenario × Mode Selection Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Work Scenario</th>
+<th>Recommended Mode</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Daily Coding</strong></td>
+<td><code>full</code></td>
+<td>Balances readability and compression rate</td>
+</tr>
+<tr>
+<td><strong>Rapid Debugging</strong></td>
+<td><code>ultra</code></td>
+<td>Minimal text to pinpoint root cause</td>
+</tr>
+<tr>
+<td><strong>Learning New Tech</strong></td>
+<td><code>lite</code></td>
+<td>Requires more explanatory context</td>
+</tr>
+<tr>
+<td><strong>Code Review</strong></td>
+<td><code>/caveman-review</code></td>
+<td>Dedicated review format</td>
+</tr>
+<tr>
+<td><strong>Git Commit</strong></td>
+<td><code>/caveman-commit</code></td>
+<td>Dedicated commit format</td>
+</tr>
+<tr>
+<td><strong>Writing Documentation</strong></td>
+<td>Normal mode</td>
+<td>Documentation requires full expression</td>
+</tr>
+<tr>
+<td><strong>Chinese Projects</strong></td>
+<td><code>wenyan</code></td>
+<td>More token-efficient for Chinese</td>
+</tr>
+<tr>
+<td><strong>Pair Programming</strong></td>
+<td><code>lite</code></td>
+<td>Colleagues also need to understand</td>
+</tr>
+<tr>
+<td><strong>CI/CD Review</strong></td>
+<td><code>ultra</code> + <code>review</code></td>
+<td>Machine consumption, shorter is better</td>
+</tr>
+<tr>
+<td><strong>Context Compression</strong></td>
+<td><code>/caveman:compress</code></td>
+<td>Compresses CLAUDE.md</td>
+</tr>
+</tbody></table>
+<h3>10.6 Full Workflow Comparison Across Platforms</h3>
+<table>
+<thead>
+<tr>
+<th>Workflow Step</th>
+<th>Claude Code</th>
+<th>Antigravity</th>
+<th>Gemini CLI</th>
+<th>Codex</th>
+<th>OpenCode</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Session Start</strong></td>
+<td>Hook auto-activates</td>
+<td>GEMINI.md rules</td>
+<td>Extension auto</td>
+<td>hooks.json</td>
+<td>AGENTS.md</td>
+</tr>
+<tr>
+<td><strong>2. Mode Switching</strong></td>
+<td><code>/caveman ultra</code></td>
+<td>Natural language</td>
+<td><code>/caveman ultra</code></td>
+<td><code>$caveman ultra</code></td>
+<td>Natural language</td>
+</tr>
+<tr>
+<td><strong>3. Coding Interaction</strong></td>
+<td>✅ Full Tool Calling</td>
+<td>✅ Full Tool Calling</td>
+<td>✅ Full Tool Calling</td>
+<td>✅ Full Tool Calling</td>
+<td>✅ Full Tool Calling</td>
+</tr>
+<tr>
+<td><strong>4. Code Review</strong></td>
+<td><code>/caveman-review</code></td>
+<td>Natural language</td>
+<td><code>/caveman-review</code></td>
+<td><code>$caveman-review</code></td>
+<td>Natural language</td>
+</tr>
+<tr>
+<td><strong>5. Committing Code</strong></td>
+<td><code>/caveman-commit</code></td>
+<td>Natural language</td>
+<td><code>/caveman-commit</code></td>
+<td><code>$caveman-commit</code></td>
+<td>Natural language</td>
+</tr>
+<tr>
+<td><strong>6. Context Compression</strong></td>
+<td><code>/caveman:compress</code></td>
+<td>Natural language</td>
+<td><code>/caveman:compress</code></td>
+<td><code>$caveman-compress</code></td>
+<td>Natural language</td>
+</tr>
+<tr>
+<td><strong>7. Status Monitoring</strong></td>
+<td>✅ <code>[CAVEMAN:MODE]</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>8. Exiting Caveman</strong></td>
+<td>"stop caveman"</td>
+<td>"stop caveman"</td>
+<td>"stop caveman"</td>
+<td>"stop caveman"</td>
+<td>"stop caveman"</td>
+</tr>
+</tbody></table>
+<h3>10.7 Advanced Best Practices</h3>
+<h4>Practice 1: CLAUDE.md Layered Strategy</h4>
+<pre><code>~/.claude/CLAUDE.md          ← Global Caveman always-on (applies to all projects)
+&lt;project&gt;/CLAUDE.md          ← Project-specific rules (already compressed)
+&lt;project&gt;/CLAUDE.original.md ← Human-readable original (edit this)
+</code></pre>
+<h4>Practice 2: Team-wide Unified Configuration</h4>
+<pre><code class="language-bash"># Commit Caveman configuration in the project root
+echo 'Terse like caveman. Technical substance exact...' &gt;&gt; CLAUDE.md
+echo 'Terse like caveman. Technical substance exact...' &gt;&gt; GEMINI.md
+
+# Ensure all team members use the same Caveman behavior
+git add CLAUDE.md GEMINI.md
+git commit -m "chore: add caveman always-on for team"
+</code></pre>
+<h4>Practice 3: CI/CD Integration</h4>
+<pre><code class="language-yaml"># .github/workflows/pr-review.yml
+- name: Caveman Code Review
+  run: |
+    # Use Claude Code Action + caveman-review rules
+    # Each PR automatically gets a one-line review
+</code></pre>
+<h4>Practice 4: Combining with cavemem</h4>
+<pre><code class="language-bash"># Install cavemem (memory compression)
+# Combine with caveman (output compression) for dual optimization
+npm install -g cavemem
+
+# caveman compresses output → saves output tokens
+# cavemem compresses memory → saves input tokens  
+# Combined → total token consumption reduced by 60%+
+</code></pre>
+<h4>Practice 5: Customizing Caveman Rules</h4>
+<p>If you need domain-specific Caveman rules, you can create custom Skills:</p>
+<pre><code class="language-markdown">&lt;!-- .claude/skills/my-caveman/SKILL.md --&gt;
+## My Custom Caveman Rules
+
+Base: Terse like caveman. Technical substance exact.
+
+Additional rules for this project:
+- Always mention file paths in full
+- Include line numbers when discussing bugs
+- Use Chinese for variable name explanations
+- Keep API endpoint paths in backticks
+</code></pre>
+<hr>
+<h2>📊 Return on Investment Summary</h2>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph LR
+    subgraph Investment["💰 Investment"]
+        A1["Installation: 1 min"]
+        A2["Configuration: 5 min"]
+        A3["Learning: This 10-part tutorial"]
+    end
+    
+    subgraph Return["📈 Return"]
+        B1["Output Tokens: -75%"]
+        B2["Input Tokens: -46%"]
+        B3["Response Speed: +3x"]
+        B4["Monthly Cost: -$46"]
+        B5["Readability: ↑"]
+    end
+    
+    Investment --&gt; Return</pre></div><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Without Caveman</th>
+<th>With Caveman</th>
+<th>Improvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Avg. Tokens per Response</td>
+<td>~300</td>
+<td>~80</td>
+<td><strong>-73%</strong></td>
+</tr>
+<tr>
+<td>Input Tokens per Session</td>
+<td>~2800</td>
+<td>~1500</td>
+<td><strong>-46%</strong></td>
+</tr>
+<tr>
+<td>Daily Token Consumption</td>
+<td>~68,000</td>
+<td>~19,200</td>
+<td><strong>-72%</strong></td>
+</tr>
+<tr>
+<td>Monthly Cost (Est.)</td>
+<td>~$63</td>
+<td>~$17</td>
+<td><strong>-$46/month</strong></td>
+</tr>
+<tr>
+<td>Response Reading Time</td>
+<td>~15 sec</td>
+<td>~5 sec</td>
+<td><strong>-66%</strong></td>
+</tr>
+<tr>
+<td>Technical Accuracy</td>
+<td>100%</td>
+<td>100%</td>
+<td><strong>Unchanged</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>📝 Full Series Review</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Topic</th>
+<th>Key Takeaways</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>01</td>
+<td>What is Caveman</td>
+<td>Token Compression Philosophy + Ecosystem Overview</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Installation on Three Platforms</td>
+<td>Claude Code / <a href="/tutorial/antigravity-masterclass" class="seo-autolink-keyword">Antigravity</a> / Gemini CLI Installation Comparison</td>
+</tr>
+<tr>
+<td>03</td>
+<td>In-depth Hooks Analysis</td>
+<td>Auto-activation Engine + Flag File Mechanism</td>
+</tr>
+<tr>
+<td>04</td>
+<td>Four-Speed Modes</td>
+<td>Lite / Full / Ultra / Classical Chinese + Switching Methods</td>
+</tr>
+<tr>
+<td>05</td>
+<td>/caveman Core Skill</td>
+<td>Daily Development Practice + Response Modes</td>
+</tr>
+<tr>
+<td>06</td>
+<td>/caveman-commit</td>
+<td>Refined Git Commits + Git Hook Integration</td>
+</tr>
+<tr>
+<td>07</td>
+<td>/caveman-review</td>
+<td>One-Line Code Review + GitHub Actions</td>
+</tr>
+<tr>
+<td>08</td>
+<td>/caveman:compress</td>
+<td>Compress CLAUDE.md + Input Token Optimization</td>
+</tr>
+<tr>
+<td>09</td>
+<td>Always-On Configuration</td>
+<td>Five Platform Rule Files + Team Sharing</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Benchmarks + Best Practices</td>
+<td>Complete Workflow + Return on Investment</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🎓 Graduation Tasks</h2>
+<p>Complete the following tasks to become a qualified Caveman user:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Install Caveman on your primary Agent</li>
+<li><input disabled="" type="checkbox"> Complete a full feature development using <code>full</code> mode</li>
+<li><input disabled="" type="checkbox"> Review your own code using <code>/caveman-review</code></li>
+<li><input disabled="" type="checkbox"> Generate a commit message using <code>/caveman-commit</code></li>
+<li><input disabled="" type="checkbox"> Compress your CLAUDE.md using <code>/caveman:compress</code></li>
+<li><input disabled="" type="checkbox"> Configure Always-On to ensure automatic activation in the next session</li>
+<li><input disabled="" type="checkbox"> (Bonus) Commit the configuration to Git so your team can also use Caveman</li>
+</ul>
+<hr>
+<h2>🔗 References</h2>
+<ul>
+<li><a href="https://github.com/JuliusBrussee/caveman">Caveman Official Repository (42.9k ⭐)</a></li>
+<li><a href="https://github.com/JuliusBrussee/caveman/tree/main/benchmarks">Caveman Benchmarks</a></li>
+<li><a href="https://github.com/JuliusBrussee/caveman/tree/main/evals">Caveman Evals</a></li>
+<li><a href="https://arxiv.org/abs/2604.00025">Paper: Brevity Constraints Reverse Performance Hierarchies</a></li>
+<li><a href="https://github.com/JuliusBrussee/cavemem">cavemem - Memory Compression</a></li>
+<li><a href="https://github.com/JuliusBrussee/cavekit">cavekit - Build Optimization</a></li>
+<li><a href="https://github.com/vercel-labs/skills">npx skills tool</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code Official Documentation</a></li>
+</ul>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/caveman-tutorial/lesson-9" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Issue 09 | /caveman-help and Always-On Configuration — Making Caveman Ubiquitous</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt>  </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

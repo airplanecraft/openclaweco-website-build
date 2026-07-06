@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践 — AgentUpdate.ai</title><meta name="description" content="本文详细介绍了一款纯本地运行、基于 Composio 和 MCP 的开源社交媒体营销运营系统。通过将 Composio 的多网站 OAuth 连接、MCP 本地接口映射以及本地 SQLite 策略引擎相结合，该系统实现了在零 API 费用、零机密泄露风险的前提下，进行高风控安全的跨平台自动化营销和养号防封管理。"><meta name="keywords" content="基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践, Building a Purely Local Marketing Ops System with Composio + MCP: A Deep Dive into Content Gen, Publishing Strategies, and Multi-Channel Management, Composio, MCP, 智能体营销, 开源项目, 本地风控"><link rel="canonical" href="https://agentupdate.ai/zh/blog/composio-mcp-local-marketing-ops"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/composio-mcp-local-marketing-ops"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/composio-mcp-local-marketing-ops"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/composio-mcp-local-marketing-ops"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践 — AgentUpdate.ai"><meta property="og:description" content="本文详细介绍了一款纯本地运行、基于 Composio 和 MCP 的开源社交媒体营销运营系统。通过将 Composio 的多网站 OAuth 连接、MCP 本地接口映射以及本地 SQLite 策略引擎相结合，该系统实现了在零 API 费用、零机密泄露风险的前提下，进行高风控安全的跨平台自动化营销和养号防封管理。"><meta property="og:image" content="https://agentupdate.ai/images/blog/composio_marketing_ops.jpg"><meta property="og:url" content="https://agentupdate.ai/zh/blog/composio-mcp-local-marketing-ops"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践 — AgentUpdate.ai"><meta name="twitter:description" content="本文详细介绍了一款纯本地运行、基于 Composio 和 MCP 的开源社交媒体营销运营系统。通过将 Composio 的多网站 OAuth 连接、MCP 本地接口映射以及本地 SQLite 策略引擎相结合，该系统实现了在零 API 费用、零机密泄露风险的前提下，进行高风控安全的跨平台自动化营销和养号防封管理。"><meta name="twitter:image" content="https://agentupdate.ai/images/blog/composio_marketing_ops.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践","description":"本文详细介绍了一款纯本地运行、基于 Composio 和 MCP 的开源社交媒体营销运营系统。通过将 Composio 的多网站 OAuth 连接、MCP 本地接口映射以及本地 SQLite 策略引擎相结合，该系统实现了在零 API 费用、零机密泄露风险的前提下，进行高风控安全的跨平台自动化营销和养号防封管理。","image":"/images/blog/composio_marketing_ops.jpg","datePublished":"2026-07-03T02:15:35.980Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/composio-mcp-local-marketing-ops"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/composio-mcp-local-marketing-ops" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/composio-mcp-local-marketing-ops" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年7月3日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>15 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#Composio</span><a href="/zh/tags/mcp" class="tag" data-astro-cid-w5q62dq7>#MCP</a><span class="tag" data-astro-cid-w5q62dq7>#智能体营销</span><span class="tag" data-astro-cid-w5q62dq7>#开源项目</span><span class="tag" data-astro-cid-w5q62dq7>#本地风控</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/composio_marketing_ops.jpg" alt="基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-一-核心痛点与三层分工定位" data-astro-cid-w5q62dq7>🧭 一、 核心痛点与三层分工定位</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-二-系统架构与省钱防泄露铁律" data-astro-cid-w5q62dq7>🏗️ 二、 系统架构与“省钱防泄露”铁律</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-web-面板nextjs" data-astro-cid-w5q62dq7>1. Web 面板（Next.js）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-cli-命令行工具promogen-命令" data-astro-cid-w5q62dq7>2. CLI / 命令行工具（/promo:gen 命令）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#3-桥接层sqlite" data-astro-cid-w5q62dq7>3. 桥接层（SQLite）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-三-核心数据流与发帖状态机" data-astro-cid-w5q62dq7>🔁 三、 核心数据流与发帖状态机</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-四-特色智能防封策略引擎" data-astro-cid-w5q62dq7>🛡️ 四、 特色：智能防封策略引擎</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-规则结构与账号评估" data-astro-cid-w5q62dq7>1. 规则结构与账号评估</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-双重策略应用源头合规-临门阻断" data-astro-cid-w5q62dq7>2. 双重策略应用（源头合规 + 临门阻断）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-五-后续开源与生态规划" data-astro-cid-w5q62dq7>🚀 五、 后续开源与生态规划</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>在 AI 智能体（Agent）和生长黑客（Growth Hacking）风靡的今天，多渠道跨平台营销（如在 Reddit、Telegram、Facebook、YouTube、Twitter 等平台发布内容和监测动态）已经成为独立开发者和初创团队的标配。</p>
+<p>然而，市面上的营销 SaaS 通常面临三大痛点：</p>
+<ol>
+<li><strong>隐私与安全风险</strong>：你需要将各大社交媒体的敏感 API Key 或 OAuth 授权托付给云端第三方平台。</li>
+<li><strong>昂贵的 LLM API 账单</strong>：云端自动生成内容会持续消耗大量 API Token 费用。</li>
+<li><strong>封号风险（风控敏感）</strong>：新注册的账号或权重较低的社交账号，一旦被 AI 批量发送带链接的广告，极易被平台瞬间封杀。</li>
+</ol>
+<p>为了彻底解决这些痛点，我开发了一款<strong>纯本地运行、基于 Composio 与 Model Context Protocol (MCP) 的开源营销运营系统</strong>（<a href="https://github.com/airplanecraft/composio-marketing-ops">composio-marketing-ops</a>）。</p>
+<p>该系统与我们之前介绍的 <strong><a href="/zh/releases/openclaw">OpenClaw 本地智能体运行环境</a></strong> 和 <strong><a href="/zh/tutorial/antigravity-masterclass/">Antigravity 智能体团队协作框架</a></strong> 一脉相承，旨在为开发者提供安全、私密、可控且低成本的自动化增长方案。</p>
+<p>本文将详细解构这个系统的设计需求、技术架构、核心数据流以及它独特的“养号防封”策略引擎。</p>
+<hr>
+<h2 id="-一-核心痛点与三层分工定位">🧭 一、 核心痛点与三层分工定位</h2><p>在传统跨平台营销工具的开发中，开发者必须为每个社交平台单独编写 API 适配器和处理授权。这是一个巨大的重复性工作。</p>
+<p>在我们的系统中，我们通过 <strong><a href="https://composio.dev">Composio</a></strong> 和 <strong><a href="https://modelcontextprotocol.io">Model Context Protocol (MCP)</a></strong> 的组合，将这一跨平台发帖链路进行了优雅的三层解耦：</p>
+<div class="code-wrapper"><pre><code>+-------------------------------------------------------------+
+|               Composio Marketing Ops (本项目)                |
+|  解决：营销策略、Campaign 简报、内容审批管理、任务调度、防封策略   |
++-------------------------------------------------------------+
+                              ▲
+                              │ MCP (Model Context Protocol)
+                              ▼
++-------------------------------------------------------------+
+|                 Composio MCP 客户端 / 网关                  |
+|  解决：本地开发环境与 Composio 云端服务接口的连接和动作映射       |
++-------------------------------------------------------------+
+                              ▲
+                              │ 安全隧道
+                              ▼
++-------------------------------------------------------------+
+|                 Composio Connect (服务端)                   |
+|  解决：全网 200+ 社交和应用网站的 API 连接、OAuth 托管与统一调用  |
++-------------------------------------------------------------+
+</code></pre>
+</div><ol>
+<li><strong>Composio 服务端（Connect）</strong>：解决了<strong>网站链接与 OAuth 授权</strong>的问题。它负责安全地连接和托管 Reddit、Telegram 等 200 多个平台的 API，我们不需要写一行对接具体平台 API 的适配代码。</li>
+<li><strong>MCP (Model Context Protocol) 层</strong>：解决了<strong>本地环境与 Composio 服务通信</strong>的问题。它将云端连接好的站点转化为本地标准化的工具调用接口（Tools）。</li>
+<li><strong>我们的营销系统（composio-marketing-ops）</strong>：解决了<strong>各个平台的营销策略、内容生成、审批与发布管理</strong>的问题。这正是营销人员和独立开发者的业务逻辑核心。</li>
+</ol>
+<hr>
+<h2 id="-二-系统架构与省钱防泄露铁律">🏗️ 二、 系统架构与“省钱防泄露”铁律</h2><p>该系统采用 <strong>本地 Web 面板（Next.js） + CLI 命令行工具（基于终端 Agent 会话）</strong> 的 A+B 架构，本地数据存储统一采用 <strong><a href="https://github.com/WiseLibs/better-sqlite3">better-sqlite3</a></strong>，不部署在任何云端，确保密钥与数据 100% 留在本地。</p>
+<p>为了帮独立开发者省去昂贵的 API 调用费用，同时保证架构清洁，我们基于 <strong><a href="https://nextjs.org/docs">Next.js App Router</a></strong> 制定了以下<strong>架构铁律</strong>：</p>
+<div class="code-wrapper"><pre><code>       Web UI 面板 (Next.js, :3000)   ◄───共享 SQLite───►  CLI 命令行工具 (Terminal Agent)
+  [职责]: 策略管理、同步站点、任务调度、                      [职责]: 只读 due tasks → LLM 生成内容
+          发帖审批、历史审计、实时发布                          → 写回 posts (draft)
+               │                                                    │
+               └──────────────────► data/promo.db ◄─────────────────┘
+                                   (单一事实源，无内存态)
+</code></pre>
+</div><h3 id="1-web-面板nextjs">1. Web 面板（Next.js）</h3><ul>
+<li><strong>职责</strong>：除生成外的一切事务。同步站点、任务发现、发帖动作执行、历史记录审计、营销策略配置、用户 UI 交互。</li>
+<li><strong>铁律</strong>：<strong>Web 端永不主动调用任何外部 LLM API。</strong> 这不仅防止了前端阻塞，更在源头上杜绝了 API Token 的持续付费消耗。</li>
+</ul>
+<h3 id="2-cli-命令行工具promogen-命令">2. CLI / 命令行工具（`/promo:gen` 命令）</h3><ul>
+<li><strong>职责</strong>：<strong>只负责读取到期的内容生成任务（due gen task），调用 LLM 生成符合策略的推广草稿，并写入数据库。</strong></li>
+<li><strong>铁律</strong>：在实际开发中，这一步直接通过我们的**本会话智能体命令行环境（如搭载了 GLM 订阅的终端会话）**触发。生成内容使用会话自带的订阅额度，<strong>API Token 消耗为 $0</strong>。生成完毕后以 <code>status=draft</code>（草稿状态）写入 SQLite 桥，由人类在 Web UI 面板进行最终审批验收。</li>
+</ul>
+<h3 id="3-桥接层sqlite">3. 桥接层（SQLite）</h3><ul>
+<li>所有 Web 面板和 CLI 进程的通信完全通过本地 SQLite 数据库（<code>data/promo.db</code>）作为唯一的“共享存储和状态桥”，没有任何内存态开销，备份只需复制单个 DB 文件。</li>
+</ul>
+<hr>
+<h2 id="-三-核心数据流与发帖状态机">🔁 三、 核心数据流与发帖状态机</h2><p>系统的数据处理逻辑和发帖流转非常清晰，主要分为三个核心循环：</p>
+<div class="code-wrapper"><pre><code>               [ connected_sites (Active) ]
+                            ▲
+                            │ sync-sites
+                            │
++-------------------------------------------------------+
+|  1. 站点同步 (sync-sites)                              |
+|     通过 Composio MCP 同步已连站点，断连标为 disconnected |
++-------------------------------------------------------+
+                            │
+                            ▼
++-------------------------------------------------------+
+|  2. 内容生成 (gen task)                                |
+|     CLI 读 Task -&gt; 结合 Brief &amp; 平台策略 -&gt; LLM 生成内容 |
++-------------------------------------------------------+
+                            │
+                            ▼
+                    [ posts (Draft) ]
+                            │
+                            ├─► [ rejected ]
+                            ▼
+                  [ posts (Approved) ]
+                            │
+                            ▼
++-------------------------------------------------------+
+|  3. 调度发布 (publish task)                            |
+|     Web Cron 读 Approved posts -&gt; 策略复查 -&gt; MCP 发帖  |
++-------------------------------------------------------+
+                            │
+                            ├─► 失败: [ queued + error ] (重试)
+                            ▼
+                    [ posts (Posted) ]
+                            │
+                            ▼
+                 [ publish_history (Posted) ]
+</code></pre>
+</div><ol>
+<li><strong>站点同步 (<code>sync-sites</code>)</strong>：
+调度器或管理员触发同步，通过 Composio MCP 列出所有已连接的社交账号并拉取账号元数据（如 Reddit 的 Karma 值、注册时长，YouTube 订阅数等），UPSERT 到本地数据库。如账号在云端被解除连接，本地状态会置为 <code>disconnected</code>，但其关联的发布历史和数据审计<strong>永不删除</strong>。</li>
+<li><strong>内容生成 (<code>gen</code>)</strong>：
+命令行工具检测到期内容生成任务，读取关联 Campaign 的推广简报（Brief）、目标平台要求，以及该账号命中的安全策略规则，输入给 LLM 生成文案，并作为草稿（<code>draft</code>）写入数据库。</li>
+<li><strong>审核与发布 (<code>publish</code>)</strong>：
+管理员在 Web 面板上审核草稿。通过审批（<code>approved</code>）的帖子将进入发布队列（<code>queued</code>）。Web 端的定时任务 <code>/api/cron/run</code> 定期扫描队列，在发布前夕再次进行策略复查（Pre-flight check），确保无误后通过 Composio MCP 执行发帖。成功后写入 <code>publish_history</code> 归档。</li>
+</ol>
+<hr>
+<h2 id="-四-特色智能防封策略引擎">🛡️ 四、 特色：智能防封策略引擎</h2><p>社交平台对自动机器人营销极其敏感，特别是针对新账号或者带有外部导流链接的帖子。</p>
+<p>为了在自动化营销和账号安全之间取得完美平衡，本系统内置了一套<strong>双重防御的策略引擎（Strategy Engine）</strong>。它将<strong>账号元数据</strong>（Connected Site Meta）与<strong>发布规则</strong>（Strategy Rules）进行求值运算：</p>
+<h3 id="1-规则结构与账号评估">1. 规则结构与账号评估</h3><p>我们在 SQLite 中定义了多条安全规则（<code>strategy_rules</code>）：</p>
+<ul>
+<li><strong>参数维度</strong>：<code>account_age_days</code> (注册时长), <code>karma</code> (社区积分/活跃度), <code>followers</code> (粉丝数)。</li>
+<li><strong>限制策略</strong>：<ul>
+<li><code>link_policy</code>: <code>allow</code> (允许带链接) / <code>deny</code> (全面禁止外链，只允许纯干货内容) / <code>allow_if_relevant</code> (只允许带一条高度相关的链接)。</li>
+<li><code>ad_policy</code>: <code>allow</code> (允许软广告语气) / <code>deny</code> (只允许纯干货分享，禁止任何营销词汇)。</li>
+<li><code>max_per_day</code>: 每日最高发帖上限，防触发频率风控。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-双重策略应用源头合规-临门阻断">2. 双重策略应用（源头合规 + 临门阻断）</h3><p>策略在发布流中被应用了两次，构成了极强的风控闭环：</p>
+<ul>
+<li><strong>源头合规 (Gen Prompt Injection)</strong>：
+当 CLI 工具调用 LLM 生成内容时，系统会自动将该账号当前的 Policy 注入到 System Prompt 中。例如：如果该 Reddit 账号是注册不到 10 天的新号，LLM 接收到的指令将是：<code>&quot;当前为新账号，禁止包含任何链接或营销倾向，仅以专业角度提供纯干货解答。&quot;</code> 从源头上杜绝生成违规垃圾内容。</li>
+<li><strong>临门阻断 (Pre-flight Verification)</strong>：
+在 Web UI 的 Cron 定时器执行 MCP 发布动作前的最后一毫秒，系统会再次用纯函数策略引擎对即将发送的文本进行静态匹配。如果发现文案里包含了链接（例如 LLM 幻觉生成了链接），但当前账号策略禁止链接，系统会强行阻断发布，将帖子打回 <code>queued</code> 并记录安全警报，彻底保障账号安全。</li>
+</ul>
+<hr>
+<h2 id="-五-后续开源与生态规划">🚀 五、 后续开源与生态规划</h2><p>这套本地跨平台营销工具解决了**“连接在云端，控制在本地，策略可防封，生成零成本”**的核心诉求。</p>
+<p>目前，整个项目的核心底层数据模型设计和测试套件（SQLite 数据层、策略引擎 TDD 等）均已顺利落地，后续我们将围绕以下方向进一步推进并正式开源：</p>
+<ol>
+<li><strong>评论与主题发现流 (Phase 2)</strong>：结合我们在 <strong><a href="/zh/tutorial/firecrawl-tutorial/">Firecrawl 网页爬取教程</a></strong> 中学到的结构化数据抓取，基于 Composio 自动监听各大社区最新的相关主题帖（如 Reddit 上关于 &quot;Which AI coding tool is best&quot; 的提问），自动起草专业回复草稿并推送到 Web 审批流，实现精准引流。</li>
+<li><strong>富媒体与视频生成 (Phase 3)</strong>：集成开源的本地视频渲染工作流，自动根据 Campaign Brief 生成短视频和配音，并通过 Composio 发布到 YouTube Shorts 和 TikTok。</li>
+</ol>
+<p>希望这套架构思路能为正在探索 AI 自动化增长的独立开发者们提供一些有价值的参考！欢迎在下方留言探讨您的看法。</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="-一-核心痛点与三层分工定位" data-astro-cid-w5q62dq7> <a href="#-一-核心痛点与三层分工定位" data-astro-cid-w5q62dq7>🧭 一、 核心痛点与三层分工定位</a> </li><li class="toc-item " data-slug="-二-系统架构与省钱防泄露铁律" data-astro-cid-w5q62dq7> <a href="#-二-系统架构与省钱防泄露铁律" data-astro-cid-w5q62dq7>🏗️ 二、 系统架构与“省钱防泄露”铁律</a> </li><li class="toc-item h3-nav" data-slug="1-web-面板nextjs" data-astro-cid-w5q62dq7> <a href="#1-web-面板nextjs" data-astro-cid-w5q62dq7>1. Web 面板（Next.js）</a> </li><li class="toc-item h3-nav" data-slug="2-cli-命令行工具promogen-命令" data-astro-cid-w5q62dq7> <a href="#2-cli-命令行工具promogen-命令" data-astro-cid-w5q62dq7>2. CLI / 命令行工具（/promo:gen 命令）</a> </li><li class="toc-item h3-nav" data-slug="3-桥接层sqlite" data-astro-cid-w5q62dq7> <a href="#3-桥接层sqlite" data-astro-cid-w5q62dq7>3. 桥接层（SQLite）</a> </li><li class="toc-item " data-slug="-三-核心数据流与发帖状态机" data-astro-cid-w5q62dq7> <a href="#-三-核心数据流与发帖状态机" data-astro-cid-w5q62dq7>🔁 三、 核心数据流与发帖状态机</a> </li><li class="toc-item " data-slug="-四-特色智能防封策略引擎" data-astro-cid-w5q62dq7> <a href="#-四-特色智能防封策略引擎" data-astro-cid-w5q62dq7>🛡️ 四、 特色：智能防封策略引擎</a> </li><li class="toc-item h3-nav" data-slug="1-规则结构与账号评估" data-astro-cid-w5q62dq7> <a href="#1-规则结构与账号评估" data-astro-cid-w5q62dq7>1. 规则结构与账号评估</a> </li><li class="toc-item h3-nav" data-slug="2-双重策略应用源头合规-临门阻断" data-astro-cid-w5q62dq7> <a href="#2-双重策略应用源头合规-临门阻断" data-astro-cid-w5q62dq7>2. 双重策略应用（源头合规 + 临门阻断）</a> </li><li class="toc-item " data-slug="-五-后续开源与生态规划" data-astro-cid-w5q62dq7> <a href="#-五-后续开源与生态规划" data-astro-cid-w5q62dq7>🚀 五、 后续开源与生态规划</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-5x-max-account-banned-experience" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/claude_account_suspended.jpg" alt="真实经历：我的 Claude 5x Max 账号被封了，2周内消耗20亿 Token 触发了什么？" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-5x-max-account-banned-experience" data-astro-cid-w5q62dq7>真实经历：我的 Claude 5x Max 账号被封了，2周内消耗20亿 Token 触发了什么？</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文真实记录了笔者的 Claude 5x Max 账号于 6 月 30 日突然被封停并退款的完整遭遇。在使用了极其稳定的加拿大独立 VPS + 路由器硬件级代理（无 IP 漂移）的情况下，账号在 30 分钟内突然耗尽限额并被封。本文深度探讨了三大可疑封号诱因：两周内极高频率消耗 20 亿 Token 被怀疑用于模型蒸馏、加拿大 IP 与系统时区（中国香港）的不匹配、以及高频中文交互。同时对比了同 IP 下幸存的 Pro 账号，为 AI 开发者提供硬核风控防坑避雷指南。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年7月2日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/covers/cover_1782876801685.png" alt="突发!Claude对中国用户大规模封号" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/escape-claude-gravity-steganography-and-kyc-survival-guide" data-astro-cid-w5q62dq7>突发!Claude对中国用户大规模封号</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>Anthropic 近期对 145 万个账号痛下杀手，甚至在 Claude Code 源码中被爆暗藏“隐写术”以检测用户时区与中转代理。本文深度拆解这场信任危机，揭秘“看不见的暗号”如何出卖你的身份，并手把手教你配置“防封环境”与搭建多模型 Plan B 备用链路，带你逃离平台掌控的“重力”。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年7月2日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

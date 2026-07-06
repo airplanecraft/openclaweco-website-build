@@ -1,0 +1,1136 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ccstatusline零基础教程 — AgentUpdate.ai</title><meta name="description" content="一份面向 Claude Code 用户的渐进式教程，涵盖 ccstatusline 的基础安装、TUI 配置、技术原理、Powerline 美化及外部数据接入，助你从会用到精通。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="ccstatusline零基础教程, Complete Guide to ccstatusline: Mastering Claude Code Status Bars, Claude Code, ccstatusline, CLI, TUI, Tutorial"><link rel="canonical" href="https://agentupdate.ai/zh/blog/ccstatusline-basics-tutorial"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/ccstatusline-basics-tutorial"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/ccstatusline-basics-tutorial"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/ccstatusline-basics-tutorial"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="ccstatusline零基础教程 — AgentUpdate.ai"><meta property="og:description" content="一份面向 Claude Code 用户的渐进式教程，涵盖 ccstatusline 的基础安装、TUI 配置、技术原理、Powerline 美化及外部数据接入，助你从会用到精通。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://agentupdate.ai/images/blog/ai-cover-80c6bd44.jpg"><meta property="og:url" content="https://agentupdate.ai/zh/blog/ccstatusline-basics-tutorial"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="ccstatusline零基础教程 — AgentUpdate.ai"><meta name="twitter:description" content="一份面向 Claude Code 用户的渐进式教程，涵盖 ccstatusline 的基础安装、TUI 配置、技术原理、Powerline 美化及外部数据接入，助你从会用到精通。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://agentupdate.ai/images/blog/ai-cover-80c6bd44.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"ccstatusline零基础教程","description":"一份面向 Claude Code 用户的渐进式教程，涵盖 ccstatusline 的基础安装、TUI 配置、技术原理、Powerline 美化及外部数据接入，助你从会用到精通。","image":"/images/blog/ai-cover-80c6bd44.jpg","datePublished":"2026-05-24T01:40:12.382Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/ccstatusline-basics-tutorial"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/ccstatusline-basics-tutorial" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/ccstatusline-basics-tutorial" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>ccstatusline零基础教程</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"ccstatusline零基础教程"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>ccstatusline零基础教程</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年5月24日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/claude-code" class="tag" data-astro-cid-w5q62dq7>#Claude Code</a><span class="tag" data-astro-cid-w5q62dq7>#ccstatusline</span><a href="/zh/tags/cli" class="tag" data-astro-cid-w5q62dq7>#CLI</a><span class="tag" data-astro-cid-w5q62dq7>#TUI</span><span class="tag" data-astro-cid-w5q62dq7>#Tutorial</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-80c6bd44.jpg" alt="ccstatusline零基础教程" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#一什么是-ccstatusline" data-astro-cid-w5q62dq7>一、什么是 ccstatusline</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#二技术原理claude-code-的-statusline-hook" data-astro-cid-w5q62dq7>二、技术原理：Claude Code 的 statusLine hook</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#21-hook-注册claude-code-端" data-astro-cid-w5q62dq7>2.1 hook 注册：Claude Code 端</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#22-调用生命周期" data-astro-cid-w5q62dq7>2.2 调用生命周期</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#23-payload-schemaclaude-code-传了什么" data-astro-cid-w5q62dq7>2.3 Payload Schema：Claude Code 传了什么</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#24-额外信息从哪来" data-astro-cid-w5q62dq7>2.4 额外信息从哪来</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#25-渲染流程" data-astro-cid-w5q62dq7>2.5 渲染流程</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#三安装" data-astro-cid-w5q62dq7>三、安装</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#31-前置要求" data-astro-cid-w5q62dq7>3.1 前置要求</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#32-三种安装方式" data-astro-cid-w5q62dq7>3.2 三种安装方式</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#33-升级与卸载" data-astro-cid-w5q62dq7>3.3 升级与卸载</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#四tui-操作速查" data-astro-cid-w5q62dq7>四、TUI 操作速查</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#五零基础-12-步教程" data-astro-cid-w5q62dq7>五、零基础 12 步教程</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-0-步确认前置条件" data-astro-cid-w5q62dq7>第 0 步：确认前置条件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-1-步第一次启动" data-astro-cid-w5q62dq7>第 1 步：第一次启动</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-2-步先看默认状态栏长啥样" data-astro-cid-w5q62dq7>第 2 步：先看默认状态栏长啥样</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-3-步装到-claude-code" data-astro-cid-w5q62dq7>第 3 步：装到 Claude Code</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-4-步理解-widget" data-astro-cid-w5q62dq7>第 4 步：理解 widget</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-5-步加一个组件" data-astro-cid-w5q62dq7>第 5 步：加一个组件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-6-步上色" data-astro-cid-w5q62dq7>第 6 步：上色</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-7-步加第二行" data-astro-cid-w5q62dq7>第 7 步：加第二行</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-8-步值得加的惊喜组件" data-astro-cid-w5q62dq7>第 8 步：值得加的&quot;惊喜&quot;组件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-9-步自定义文本" data-astro-cid-w5q62dq7>第 9 步：自定义文本</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-10-步自适应宽度先了解后调" data-astro-cid-w5q62dq7>第 10 步：自适应宽度（先了解，后调）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-11-步测试并理解保存" data-astro-cid-w5q62dq7>第 11 步：测试并理解保存</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#第-12-步备份" data-astro-cid-w5q62dq7>第 12 步：备份</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#六所有可用组件一览" data-astro-cid-w5q62dq7>六、所有可用组件一览</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#61-会话与模型" data-astro-cid-w5q62dq7>6.1 会话与模型</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#62-上下文与-token" data-astro-cid-w5q62dq7>6.2 上下文与 Token</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#63-配额与限速" data-astro-cid-w5q62dq7>6.3 配额与限速</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#64-git" data-astro-cid-w5q62dq7>6.4 Git</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#65-系统与其它" data-astro-cid-w5q62dq7>6.5 系统与其它</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#七settingsjson-完整字段解析" data-astro-cid-w5q62dq7>七、settings.json 完整字段解析</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#顶层字段" data-astro-cid-w5q62dq7>顶层字段</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#widget-通用字段" data-astro-cid-w5q62dq7>widget 通用字段</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#widget-类型特有字段" data-astro-cid-w5q62dq7>widget 类型特有字段</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#八进阶玩法" data-astro-cid-w5q62dq7>八、进阶玩法</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#81-切换-widget-的已用-剩余" data-astro-cid-w5q62dq7>8.1 切换 widget 的&quot;已用 / 剩余&quot;</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#82-短条-长条进度" data-astro-cid-w5q62dq7>8.2 短条 / 长条进度</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#83-时间戳显示" data-astro-cid-w5q62dq7>8.3 时间戳显示</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#84-可点击链接" data-astro-cid-w5q62dq7>8.4 可点击链接</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#85-隐藏空值" data-astro-cid-w5q62dq7>8.5 隐藏空值</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#86-极简模式" data-astro-cid-w5q62dq7>8.6 极简模式</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#九custom-command接入外部脚本" data-astro-cid-w5q62dq7>九、Custom Command：接入外部脚本</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#91-工作机制" data-astro-cid-w5q62dq7>9.1 工作机制</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#92-添加方法" data-astro-cid-w5q62dq7>9.2 添加方法</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#93-示例脚本" data-astro-cid-w5q62dq7>9.3 示例脚本</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#94-颜色-ansi-转义" data-astro-cid-w5q62dq7>9.4 颜色 ANSI 转义</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#十powerline-美化" data-astro-cid-w5q62dq7>十、Powerline 美化</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#101-前提" data-astro-cid-w5q62dq7>10.1 前提</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#102-启用步骤" data-astro-cid-w5q62dq7>10.2 启用步骤</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#103-自定义分隔符" data-astro-cid-w5q62dq7>10.3 自定义分隔符</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#104-内建主题" data-astro-cid-w5q62dq7>10.4 内建主题</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#十一性能与缓存机制" data-astro-cid-w5q62dq7>十一、性能与缓存机制</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#111-git-缓存v2216" data-astro-cid-w5q62dq7>11.1 Git 缓存（v2.2.16+）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#112-block-timer-缓存v2028" data-astro-cid-w5q62dq7>11.2 Block Timer 缓存（v2.0.28+）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#113-token-去重v2212" data-astro-cid-w5q62dq7>11.3 Token 去重（v2.2.12+）</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#114-子代理感知" data-astro-cid-w5q62dq7>11.4 子代理感知</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#115-终端宽度探测" data-astro-cid-w5q62dq7>11.5 终端宽度探测</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#116-子进程隐藏windows" data-astro-cid-w5q62dq7>11.6 子进程隐藏（Windows）</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#十二调试与排障" data-astro-cid-w5q62dq7>十二、调试与排障</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#121-手动跑-hook-流程" data-astro-cid-w5q62dq7>12.1 手动跑 hook 流程</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#122-用自定义配置文件" data-astro-cid-w5q62dq7>12.2 用自定义配置文件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#123-hook-模式" data-astro-cid-w5q62dq7>12.3 hook 模式</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#124-常见报错对照" data-astro-cid-w5q62dq7>12.4 常见报错对照</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#125-强制重置" data-astro-cid-w5q62dq7>12.5 强制重置</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#十三qa-速查" data-astro-cid-w5q62dq7>十三、Q&amp;A 速查</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#十四备份与多机同步" data-astro-cid-w5q62dq7>十四、备份与多机同步</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#141-需要备份的文件" data-astro-cid-w5q62dq7>14.1 需要备份的文件</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#142-dotfiles-集成示例" data-astro-cid-w5q62dq7>14.2 dotfiles 集成示例</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#143-多套配置切换" data-astro-cid-w5q62dq7>14.3 多套配置切换</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#推荐起步配置" data-astro-cid-w5q62dq7>推荐起步配置</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#资源链接" data-astro-cid-w5q62dq7>资源链接</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><blockquote>
+<p>一份面向 <a href="/zh/tutorial/claude-code-command-tutorial" class="seo-autolink-keyword">Claude Code</a> 用户的渐进式教程。前半部分零基础友好，每一步都讲清楚&quot;按什么、看到什么&quot;；后半部分给中级用户准备了技术原理、hook 协议、payload schema、缓存机制、Custom Command、Powerline 与故障排查。读完你就能从&quot;会用&quot;升级到&quot;会改、会调、会接外部数据&quot;。</p>
+</blockquote>
+<hr>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#%E4%B8%80%E4%BB%80%E4%B9%88%E6%98%AF-ccstatusline">一、什么是 ccstatusline</a></li>
+<li><a href="#%E4%BA%8C%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86claude-code-%E7%9A%84-statusline-hook">二、技术原理：Claude Code 的 statusLine hook</a></li>
+<li><a href="#%E4%B8%89%E5%AE%89%E8%A3%85">三、安装</a></li>
+<li><a href="#%E5%9B%9Btui-%E6%93%8D%E4%BD%9C%E9%80%9F%E6%9F%A5">四、TUI 操作速查</a></li>
+<li><a href="#%E4%BA%94%E9%9B%B6%E5%9F%BA%E7%A1%80-12-%E6%AD%A5%E6%95%99%E7%A8%8B">五、零基础 12 步教程</a></li>
+<li><a href="#%E5%85%AD%E6%89%80%E6%9C%89%E5%8F%AF%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%80%E8%A7%88">六、所有可用组件一览</a></li>
+<li><a href="#%E4%B8%83settingsjson-%E5%AE%8C%E6%95%B4%E5%AD%97%E6%AE%B5%E8%A7%A3%E6%9E%90">七、settings.json 完整字段解析</a></li>
+<li><a href="#%E5%85%AB%E8%BF%9B%E9%98%B6%E7%8E%A9%E6%B3%95">八、进阶玩法</a></li>
+<li><a href="#%E4%B9%9Dcustom-command%E6%8E%A5%E5%85%A5%E5%A4%96%E9%83%A8%E8%84%9A%E6%9C%AC">九、Custom Command：接入外部脚本</a></li>
+<li><a href="#%E5%8D%81powerline-%E7%BE%8E%E5%8C%96">十、Powerline 美化</a></li>
+<li><a href="#%E5%8D%81%E4%B8%80%E6%80%A7%E8%83%BD%E4%B8%8E%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6">十一、性能与缓存机制</a></li>
+<li><a href="#%E5%8D%81%E4%BA%8C%E8%B0%83%E8%AF%95%E4%B8%8E%E6%8E%92%E9%9A%9C">十二、调试与排障</a></li>
+<li><a href="#%E5%8D%81%E4%B8%89qa-%E9%80%9F%E6%9F%A5">十三、Q&amp;A 速查</a></li>
+<li><a href="#%E5%8D%81%E5%9B%9B%E5%A4%87%E4%BB%BD%E4%B8%8E%E5%A4%9A%E6%9C%BA%E5%90%8C%E6%AD%A5">十四、备份与多机同步</a></li>
+</ul>
+<hr>
+<h2 id="一什么是-ccstatusline">一、什么是 ccstatusline</h2><p><code>ccstatusline</code> 是 Matthew Breedlove（<a href="https://github.com/sirmalloc">@sirmalloc</a>）开源的状态栏格式化器，专门给 Claude Code CLI 使用。它的核心思路是：</p>
+<ul>
+<li>Claude Code 在 <code>settings.json</code> 里支持一个 <code>statusLine</code> 命令钩子（hook），会把当前会话的 JSON 信息通过 <strong>stdin</strong> 送给你的命令；</li>
+<li>ccstatusline 接收这份 JSON，按你预设的&quot;组件 (widget)&quot;渲染出一行或多行状态文本，再通过 <strong>stdout</strong> 返回给 Claude Code 显示在底部状态栏。</li>
+</ul>
+<p>它的卖点：</p>
+<ul>
+<li><strong>40+ 内建组件</strong>：模型名、Token 总量、Git 分支/改动、会话耗时、会话花费、5 小时块计时、每周用量、内存占用、自定义文本…</li>
+<li><strong>多行布局</strong>：早期上限 3 行，v2.0.11 之后已无行数限制；</li>
+<li><strong>Powerline 风格</strong>：箭头分隔符、起止 cap、自动对齐；</li>
+<li><strong>TUI 配置界面</strong>：基于 React/Ink 的交互式终端 UI，配置好直接预览；</li>
+<li><strong>零配置可用</strong>：<code>npx ccstatusline</code> 直接跑，所有变更通过 TUI 完成，无需手写 JSON；</li>
+<li><strong>跨平台</strong>：macOS / Linux / Windows / WSL；同时兼容 Node 与 Bun。</li>
+</ul>
+<hr>
+<p><img src="http://localhost:4322//images/blog/upload_1779518613243_image.png" alt=""></p>
+<h2 id="二技术原理claude-code-的-statusline-hook">二、技术原理：Claude Code 的 statusLine hook</h2><p>理解 ccstatusline 之前，先理解它是怎么&quot;被调用&quot;的。这一节是中级用户必看，新手可以先跳过、用一阵再回头看。</p>
+<h3 id="21-hook-注册claude-code-端">2.1 hook 注册：Claude Code 端</h3><p>Claude Code 读取 <code>~/.claude/settings.json</code>，识别 <code>statusLine</code> 字段：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;statusLine&quot;: {
+    &quot;type&quot;: &quot;command&quot;,
+    &quot;command&quot;: &quot;ccstatusline&quot;,
+    &quot;padding&quot;: 0,
+    &quot;refreshInterval&quot;: 10
+  }
+}
+</code></pre>
+</div><p>字段含义：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>&quot;command&quot;</code></td>
+<td>唯一支持的类型，表示通过子进程执行</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>string</td>
+<td>shell 命令；可以是 <code>ccstatusline</code>、<code>npx -y ccstatusline@latest</code>、<code>bunx -y ccstatusline@latest</code></td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td>number</td>
+<td>左侧留白列数，默认 0</td>
+</tr>
+<tr>
+<td><code>refreshInterval</code></td>
+<td>1–60（秒）</td>
+<td>刷新间隔，仅 Claude Code ≥ 2.1.97 支持</td>
+</tr>
+</tbody></table>
+<h3 id="22-调用生命周期">2.2 调用生命周期</h3><p>每次 Claude Code 需要刷新状态栏时（事件触发或定时器到点），它会：</p>
+<ol>
+<li>启动一个子进程执行你的 <code>command</code>；</li>
+<li>通过 <strong>stdin</strong> 把当前会话的 JSON 数据 pipe 进去；</li>
+<li>等子进程 <strong>stdout</strong> 输出文本，作为状态栏内容显示；</li>
+<li>子进程退出。</li>
+</ol>
+<p>ccstatusline 的入口 <code>main()</code> 函数会检测 <code>process.stdin.isTTY</code>：</p>
+<ul>
+<li><strong>非 TTY</strong>（有 pipe 进来的数据）→ 解析 JSON，渲染状态栏；</li>
+<li><strong>是 TTY</strong>（你在终端里直接跑 <code>ccstatusline</code>）→ 启动 TUI 配置界面。</li>
+</ul>
+<p>这就是为什么同一个二进制既能当 hook 用又能当配置工具用。</p>
+<h3 id="23-payload-schemaclaude-code-传了什么">2.3 Payload Schema：Claude Code 传了什么</h3><p>来自 ccstatusline 源码里的 <code>StatusJSONSchema</code>，这是 Claude Code 通过 stdin 传给状态栏程序的完整 JSON 结构：</p>
+<div class="code-wrapper"><pre><code class="language-typescript">{
+  hook_event_name?: string;          // 触发事件名（如 &quot;UserPromptSubmit&quot;）
+  session_id?: string;               // 会话 ID
+  transcript_path?: string;          // 会话 JSONL 转录文件路径
+  cwd?: string;                      // 当前工作目录
+  version?: string;                  // Claude Code 版本
+
+  model?: string | {                 // 模型信息
+    id?: string;
+    display_name?: string;
+  };
+
+  workspace?: {
+    current_dir?: string;
+    project_dir?: string;
+  };
+
+  output_style?: { name?: string };  // 输出风格名（如 &quot;concise&quot;）
+  effort?: { level?: string };       // 思考强度（low/medium/high/xhigh）
+  vim?:    { mode?: string };        // Vim 模式（normal/insert 等）
+
+  cost?: {                           // 会话花费
+    total_cost_usd?: number;
+    total_duration_ms?: number;
+    total_api_duration_ms?: number;
+    total_lines_added?: number;
+    total_lines_removed?: number;
+  };
+
+  context_window?: {                 // 上下文窗口
+    context_window_size?: number;
+    total_input_tokens?: number;
+    total_output_tokens?: number;
+    current_usage?: number | {
+      input_tokens?: number;
+      output_tokens?: number;
+      cache_creation_input_tokens?: number;
+      cache_read_input_tokens?: number;
+    };
+    used_percentage?: number;
+    remaining_percentage?: number;
+  };
+
+  worktree?: {                       // Git worktree 信息
+    name?: string;
+    path?: string;
+    branch?: string;
+    original_cwd?: string;
+    original_branch?: string;
+  };
+
+  rate_limits?: {                    // 限速桶
+    five_hour?:        { used_percentage?: number; resets_at?: number };
+    seven_day?:        { used_percentage?: number; resets_at?: number };
+    seven_day_sonnet?: { used_percentage?: number; resets_at?: number };
+    seven_day_opus?:   { used_percentage?: number; resets_at?: number };
+  };
+}
+</code></pre>
+</div><blockquote>
+<p>💡 这是 <code>looseObject</code>，意味着 Claude Code 可能传更多字段，ccstatusline 不会因此报错。</p>
+</blockquote>
+<h3 id="24-额外信息从哪来">2.4 额外信息从哪来</h3><p>ccstatusline 显示的有些信息并不在上面这份 payload 里。它会主动去这些地方拿：</p>
+<table>
+<thead>
+<tr>
+<th>数据</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>历史 token 速率、会话时长</td>
+<td>解析 <code>transcript_path</code> 指向的 JSONL</td>
+</tr>
+<tr>
+<td>Block timer（5 小时块）</td>
+<td>解析 JSONL + 缓存到 <code>~/.cache/ccstatusline/block-timer-cache/</code></td>
+</tr>
+<tr>
+<td>Git 信息</td>
+<td>调用 <code>git</code> 子命令 + 缓存到 <code>~/.cache/ccstatusline/git-cache/</code></td>
+</tr>
+<tr>
+<td>Weekly / Session usage</td>
+<td>直接调用 Anthropic 用量 API</td>
+</tr>
+<tr>
+<td>Claude 账号邮箱</td>
+<td>读 <code>~/.claude.json</code></td>
+</tr>
+<tr>
+<td>系统内存</td>
+<td>调用 OS API</td>
+</tr>
+</tbody></table>
+<h3 id="25-渲染流程">2.5 渲染流程</h3><p>进入 <code>renderMultipleLines(data)</code> 后大致是这样：</p>
+<ol>
+<li>加载 <code>~/.config/ccstatusline/settings.json</code>；</li>
+<li>异步并行收集 token metrics、speed metrics、session duration（如果配置里启用了相关 widget）；</li>
+<li>遍历 <code>lines</code>，对每行依次渲染 widget：<ul>
+<li>每个 widget 实例从 payload + 外部数据源拿值；</li>
+<li>应用颜色、padding、是否 raw、是否粗体；</li>
+<li>拼接分隔符；</li>
+</ul>
+</li>
+<li>处理 flex separator（撑开占满终端宽度）；</li>
+<li>应用 Powerline 装饰（如果开启）；</li>
+<li>输出到 stdout。</li>
+</ol>
+<p>整个过程通常在几十毫秒到几百毫秒内完成。Git 缓存（5 秒 TTL）与 Block Timer 缓存（按 5 小时块失效）是性能关键。</p>
+<hr>
+<h2 id="三安装">三、安装</h2><h3 id="31-前置要求">3.1 前置要求</h3><ul>
+<li>Node.js ≥ 14</li>
+<li>已安装并登录 Claude Code CLI</li>
+<li>（可选）支持 Powerline 字体的终端（iTerm2、Windows Terminal、Alacritty 等）</li>
+</ul>
+<h3 id="32-三种安装方式">3.2 三种安装方式</h3><p>ccstatusline 不强制全局安装。它本身就是一个可以 <code>npx</code>/<code>bunx</code> 直接拉起的小工具：</p>
+<p><strong>方式 A：临时运行（最快上手）</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash"># 用 npm
+npx -y ccstatusline@latest
+
+# 或用 bun（更快）
+bunx -y ccstatusline@latest
+</code></pre>
+</div><p>执行后直接进入 TUI 配置界面。</p>
+<p><strong>方式 B：固定版本全局安装（推荐长期使用）</strong></p>
+<p>进入 TUI 后选择 <strong>Pinned global install</strong>。它会：</p>
+<ol>
+<li>把当前 <code>ccstatusline</code> 版本通过 npm/bun 全局安装到本机；</li>
+<li>在 Claude Code 的 <code>settings.json</code> 里写入 <code>&quot;command&quot;: &quot;ccstatusline&quot;</code>（不再带 <code>@latest</code>）。</li>
+</ol>
+<p>这样 Claude Code 永远使用你确认过的那个版本。之后再次想打开配置界面，直接执行：</p>
+<div class="code-wrapper"><pre><code class="language-bash">ccstatusline
+</code></pre>
+</div><p><strong>方式 C：自动跟随最新版</strong></p>
+<p>TUI 安装时可以选择把命令写成 <code>npx -y ccstatusline@latest</code>。每次 Claude Code 触发状态栏渲染时都会跑一次 npx 解析（有冷启动延迟，但永远是最新版）。</p>
+<h3 id="33-升级与卸载">3.3 升级与卸载</h3><ul>
+<li>升级 Pinned 版本：在 TUI 里 <strong>Uninstall</strong>，重新进 TUI 选 <strong>Pinned global install</strong> 即可；本地 <code>settings.json</code> 不会被卸载流程清除。</li>
+<li>完全移除：TUI 里 <strong>Uninstall</strong> + <code>npm uninstall -g ccstatusline</code>。</li>
+</ul>
+<hr>
+<h2 id="四tui-操作速查">四、TUI 操作速查</h2><p>进入 <code>ccstatusline</code> 后是一个键盘驱动的菜单：</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Lines</strong></td>
+<td>配置多行状态栏：增删行、给每行加 widget</td>
+</tr>
+<tr>
+<td><strong>Global Overrides</strong></td>
+<td>全局样式：粗体、极简模式、颜色级别、分隔符是否跟随颜色</td>
+</tr>
+<tr>
+<td><strong>Powerline Setup</strong></td>
+<td>启用 Powerline、配置分隔符、起止 cap、自动对齐</td>
+</tr>
+<tr>
+<td><strong>Flex Separator</strong></td>
+<td>当一行内组件不够撑满终端宽度时，flex 分隔符如何延展</td>
+</tr>
+<tr>
+<td><strong>Install / Uninstall</strong></td>
+<td>把 <code>statusLine</code> 写入或从 Claude Code 设置中移除</td>
+</tr>
+<tr>
+<td><strong>Refresh Interval</strong></td>
+<td>设置 Claude Code 拉取状态栏的频率</td>
+</tr>
+</tbody></table>
+<p>进入某行后：</p>
+<ul>
+<li><code>a</code>：add widget（带搜索/模糊匹配/initialism 匹配的组件选择器，v2.2.8 起）</li>
+<li><code>k</code>：clone（克隆当前组件，Powerline 模式下会给新色）</li>
+<li>方向键：移动光标；移动模式下重排</li>
+<li><code>w</code>：进入 widget editor（每个组件独立的细项）</li>
+<li><code>u</code>：在「已用 / 剩余」之间切换（用于 Context %、Session Usage 等百分比组件）</li>
+<li><code>h</code>：隐藏（如 Git 组件在非仓库下不显示 &quot;no git&quot;）</li>
+<li><code>d</code>：删除当前 widget</li>
+<li><code>q</code> / <code>Esc</code>：退出 / 返回</li>
+</ul>
+<p>通用：菜单/列表导航支持首尾环绕（v2.2.10+）。</p>
+<hr>
+<h2 id="五零基础-12-步教程">五、零基础 12 步教程</h2><h3 id="第-0-步确认前置条件">第 0 步：确认前置条件</h3><p>在终端：</p>
+<div class="code-wrapper"><pre><code class="language-bash">claude --version    # 能看到 Claude Code 版本号
+node -v             # ≥ v14（建议 v18+）
+</code></pre>
+</div><h3 id="第-1-步第一次启动">第 1 步：第一次启动</h3><div class="code-wrapper"><pre><code class="language-bash">npx -y ccstatusline@latest
+</code></pre>
+</div><p>回车，等几秒钟下载，然后进入 TUI 主菜单。</p>
+<h3 id="第-2-步先看默认状态栏长啥样">第 2 步：先看默认状态栏长啥样</h3><p>进入 <strong>Lines</strong> 菜单，下方有 Preview 区实时渲染。第一次进来通常有几个默认组件（如 <code>Model</code>、<code>Git Branch</code>）。</p>
+<p>底部小字提示当前可用快捷键，记住要随时低头看它。</p>
+<h3 id="第-3-步装到-claude-code">第 3 步：装到 Claude Code</h3><ol>
+<li><code>Esc</code> 回主菜单 → 移到 <strong>Install</strong> → <code>Enter</code>；</li>
+<li>选 <strong>Pinned global install</strong>（推荐）；</li>
+<li>看到 ✅ 后按 <code>q</code> 退出；</li>
+<li>验证：</li>
+</ol>
+<div class="code-wrapper"><pre><code class="language-bash">cat ~/.claude/settings.json | grep -A 3 statusLine
+</code></pre>
+</div><p>应能看到：</p>
+<div class="code-wrapper"><pre><code class="language-json">&quot;statusLine&quot;: {
+  &quot;type&quot;: &quot;command&quot;,
+  &quot;command&quot;: &quot;ccstatusline&quot;
+}
+</code></pre>
+</div><ol start="5">
+<li>重启 Claude Code，状态栏出现。🎉</li>
+</ol>
+<h3 id="第-4-步理解-widget">第 4 步：理解 widget</h3><p>状态栏 = 一堆 widget 拼出来的。典型 widget：</p>
+<table>
+<thead>
+<tr>
+<th>widget 名</th>
+<th>长什么样</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>model</code></td>
+<td><code>Model: Opus 4.7</code></td>
+</tr>
+<tr>
+<td><code>context-length</code></td>
+<td><code>Ctx: 12345</code></td>
+</tr>
+<tr>
+<td><code>git-branch</code></td>
+<td><code> main</code></td>
+</tr>
+<tr>
+<td><code>session-cost</code></td>
+<td><code>Cost: $0.12</code></td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td><code>|</code>（手动分隔符）</td>
+</tr>
+<tr>
+<td><code>custom-text</code></td>
+<td>任何你想写的字</td>
+</tr>
+</tbody></table>
+<h3 id="第-5-步加一个组件">第 5 步：加一个组件</h3><p>回 TUI（<code>ccstatusline</code>）→ <strong>Lines → Line 1</strong>：</p>
+<ol>
+<li>按 <code>a</code>（add）；</li>
+<li>输 <code>cost</code>，过滤出 <code>Session Cost</code>；</li>
+<li><code>Enter</code> 选中，Preview 立即出现 <code>Cost: $0.00</code>；</li>
+<li>想加分隔符：再按 <code>a</code> → 搜 <code>separator</code> → 选中。</li>
+</ol>
+<p>不喜欢位置？停在该 widget 上按 <code>m</code> 进入移动模式，方向键挪动，<code>Enter</code> 确认。</p>
+<h3 id="第-6-步上色">第 6 步：上色</h3><p>光标停在 <code>Model</code> → 按 <code>w</code> 进 widget editor → 找 <code>Color</code> → <code>Enter</code> 选 <code>cyan</code>。预览立刻变青色。</p>
+<p>颜色三档：</p>
+<ul>
+<li><strong>基础 16 色</strong>（<code>cyan</code> / <code>yellow</code> / <code>magenta</code>）—— 兼容性最好，<strong>新手选这档</strong></li>
+<li><strong>256 色</strong>（数字 0–255）—— 大多数终端都支持</li>
+<li><strong>truecolor</strong>（<code>#a1b2c3</code>）—— 现代终端，色彩最丰富</li>
+</ul>
+<p>只用基础色就不用动 <code>colorLevel</code> 设置。</p>
+<h3 id="第-7-步加第二行">第 7 步：加第二行</h3><p><code>Esc</code> 回 <strong>Lines</strong> → 按 <code>a</code> 加新行 → 进 Line 2 → 加 widget。</p>
+<p>新手两行模板：</p>
+<div class="code-wrapper"><pre><code>Line 1：Model | Ctx | Git Branch | Git Changes
+Line 2：Session Cost | Session Clock | Block Timer
+</code></pre>
+</div><h3 id="第-8-步值得加的惊喜组件">第 8 步：值得加的"惊喜"组件</h3><table>
+<thead>
+<tr>
+<th>widget</th>
+<th>它告诉你</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>block-timer</code></td>
+<td>当前 5 小时配额块已用时间</td>
+</tr>
+<tr>
+<td><code>weekly-usage</code></td>
+<td>本周配额用量百分比</td>
+</tr>
+<tr>
+<td><code>context-percentage-usable</code></td>
+<td>上下文窗口可用百分比（<strong>长对话避免爆窗口</strong>）</td>
+</tr>
+<tr>
+<td><code>free-memory</code></td>
+<td>系统内存占用</td>
+</tr>
+<tr>
+<td><code>tokens-total</code></td>
+<td>本会话累计 token</td>
+</tr>
+</tbody></table>
+<h3 id="第-9-步自定义文本">第 9 步：自定义文本</h3><p><code>a</code> → 搜 <code>custom</code> → 选 <code>Custom Text</code> → <code>w</code> 编辑 → 输入文字（支持中文/emoji）→ <code>Ctrl+S</code> 保存。</p>
+<h3 id="第-10-步自适应宽度先了解后调">第 10 步：自适应宽度（先了解，后调）</h3><ul>
+<li><strong>Flex Separator</strong>：在两个 widget 间塞一个 flex 分隔符，自动撑开剩余空间；</li>
+<li><strong>Compact Threshold</strong>（默认 60）：终端宽度小于此值时，支持紧凑显示的 widget 自动变短。</li>
+</ul>
+<p>新手保持默认即可。</p>
+<h3 id="第-11-步测试并理解保存">第 11 步：测试并理解保存</h3><p>ccstatusline <strong>自动保存</strong>。每改一处 <code>~/.config/ccstatusline/settings.json</code> 就更新一次。</p>
+<p>测试方式：</p>
+<ol>
+<li><code>q</code> 退出 TUI；</li>
+<li>关闭再打开 Claude Code（或触发一次状态栏刷新）；</li>
+<li>看底部是否变成你刚配的样子。</li>
+</ol>
+<p>刷新慢？主菜单 → <strong>Refresh Interval</strong> → 设 5 秒（需 Claude Code ≥ 2.1.97）。</p>
+<h3 id="第-12-步备份">第 12 步：备份</h3><div class="code-wrapper"><pre><code class="language-bash"># 配置文件位置
+~/.config/ccstatusline/settings.json
+</code></pre>
+</div><p>放进 dotfiles 或网盘，新机器拷回去再跑一次 TUI 的 Install 就能恢复。</p>
+<hr>
+<h2 id="六所有可用组件一览">六、所有可用组件一览</h2><p>按类别罗列（v2.2.19）：</p>
+<h3 id="61-会话与模型">6.1 会话与模型</h3><ul>
+<li><code>model</code> — 模型显示名（自动去掉 <code>(1M context)</code> 后缀）</li>
+<li><code>model-display</code> — 同上别名</li>
+<li><code>session-id</code> — 会话 ID</li>
+<li><code>session-name</code> — <code>/rename</code> 设置的会话名</li>
+<li><code>session-clock</code> — 会话已运行时长</li>
+<li><code>session-cost</code> — 会话累计花费（USD）</li>
+<li><code>session-usage</code> — 本会话 5 小时块用量百分比（含短条模式）</li>
+<li><code>claude-account-email</code> — 从 <code>~/.claude.json</code> 读取的登录邮箱</li>
+<li><code>compaction-counter</code> — 上下文压缩次数（含 hide-when-zero）</li>
+<li><code>thinking-effort</code> — 思考强度（low/medium/high/xhigh）</li>
+<li><code>voice-status</code> — Voice Input 状态</li>
+<li><code>vim-mode</code> — Vim 模式</li>
+<li><code>output-style</code> — 当前输出风格</li>
+</ul>
+<h3 id="62-上下文与-token">6.2 上下文与 Token</h3><ul>
+<li><code>context-length</code> — 当前上下文 token 数</li>
+<li><code>context-percentage</code> — 上下文使用百分比</li>
+<li><code>context-percentage-usable</code> — 可用百分比（带 <code>(u)</code> 标识，按 <code>u</code> 切 used/left）</li>
+<li><code>context-bar</code> — 上下文进度条</li>
+<li><code>context-window</code> — 模型完整窗口大小</li>
+<li><code>tokens-input</code> / <code>tokens-output</code> / <code>tokens-total</code> — 输入 / 输出 / 总 token</li>
+<li><code>tokens-cache-creation</code> / <code>tokens-cache-read</code> — 缓存写入 / 读取 token</li>
+<li><code>input-speed</code> / <code>output-speed</code> / <code>total-speed</code> — 三种 token 速率（窗口 0–120s 可调）</li>
+</ul>
+<h3 id="63-配额与限速">6.3 配额与限速</h3><ul>
+<li><code>block-timer</code> — 5 小时块已用时间（含进度条 / 短条）</li>
+<li><code>reset-timer</code> — 距下次配额重置剩余时间（可显示精确时间戳，支持时区/locale）</li>
+<li><code>weekly-usage</code> — 7 天总用量百分比</li>
+<li><code>weekly-usage-sonnet</code> / <code>weekly-usage-opus</code> — 7 天分模型用量</li>
+<li><code>weekly-reset-timer</code> — 7 天配额重置剩余时间</li>
+<li><code>extra-usage-utilization</code> / <code>extra-usage-remaining</code> — 月度 pay-as-you-go 超额使用</li>
+</ul>
+<h3 id="64-git">6.4 Git</h3><ul>
+<li><code>git-branch</code> — 分支名（可显示为 GitHub/GitLab 可点击链接）</li>
+<li><code>git-changes</code> — 改动统计</li>
+<li><code>git-insertions</code> / <code>git-deletions</code> — 仅新增 / 仅删除</li>
+<li><code>git-status</code> — 简短状态</li>
+<li><code>git-staged</code> / <code>git-unstaged</code> / <code>git-untracked</code> — 各类文件计数</li>
+<li><code>git-staged-files</code> / <code>git-unstaged-files</code> / <code>git-untracked-files</code> — 详细文件计数</li>
+<li><code>git-clean-status</code> — 干净 / 脏标志</li>
+<li><code>git-conflicts</code> — 冲突文件数</li>
+<li><code>git-ahead-behind</code> — 本地 vs 远端的 ahead/behind</li>
+<li><code>git-sha</code> — 当前 commit SHA</li>
+<li><code>git-origin-owner</code> / <code>git-origin-repo</code> / <code>git-origin-ownerrepo</code> — origin 仓库信息</li>
+<li><code>git-upstream-owner</code> / <code>git-upstream-repo</code> / <code>git-upstream-ownerrepo</code> — upstream 仓库</li>
+<li><code>git-is-fork</code> — 是否 fork</li>
+<li><code>git-pr</code> — 当前分支对应的 PR/MR（含状态、标题、可点击链接）</li>
+<li><code>git-root-dir</code> — 仓库根目录名（可显示为 VS Code/Cursor 可点击链接）</li>
+<li><code>git-worktree-mode</code> / <code>git-worktree-name</code> / <code>git-worktree-branch</code> / <code>git-worktree-original-branch</code></li>
+</ul>
+<h3 id="65-系统与其它">6.5 系统与其它</h3><ul>
+<li><code>free-memory</code> — 系统内存使用（<code>Mem: 8.5G/16.0G</code>）</li>
+<li><code>current-working-directory</code> — CWD（可缩段数、可 <code>~</code> 缩写、fish 风格缩写）</li>
+<li><code>custom-text</code> — 任意文本（含 emoji）</li>
+<li><code>custom-symbol</code> — 单字符 / 图标</li>
+<li><code>custom-command</code> — 执行任意 shell 命令并显示其 stdout</li>
+<li><code>link</code> — OSC8 可点击链接</li>
+<li><code>skills</code> — 当前可用技能列表（last/count/list 模式）</li>
+<li><code>separator</code> — 手动分隔符</li>
+<li><code>flex-separator</code> — 自适应分隔符</li>
+<li><code>time</code> / <code>date</code> — 当前时间 / 日期</li>
+<li><code>truncate</code> — 截断标记</li>
+</ul>
+<p>按 <code>a</code> 后输入关键字、首字母缩写或模糊匹配都能找到。</p>
+<hr>
+<h2 id="七settingsjson-完整字段解析">七、settings.json 完整字段解析</h2><p>以下面这份真实配置为例（即本文示例）：</p>
+<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;version&quot;: 3,
+  &quot;lines&quot;: [
+    [
+      { &quot;id&quot;: &quot;1&quot;, &quot;type&quot;: &quot;model&quot;,          &quot;color&quot;: &quot;cyan&quot; },
+      { &quot;id&quot;: &quot;2&quot;, &quot;type&quot;: &quot;separator&quot; },
+      { &quot;id&quot;: &quot;3&quot;, &quot;type&quot;: &quot;context-length&quot;, &quot;color&quot;: &quot;brightBlack&quot; },
+      { &quot;id&quot;: &quot;4&quot;, &quot;type&quot;: &quot;separator&quot; },
+      { &quot;id&quot;: &quot;5&quot;, &quot;type&quot;: &quot;git-branch&quot;,     &quot;color&quot;: &quot;magenta&quot; },
+      { &quot;id&quot;: &quot;6&quot;, &quot;type&quot;: &quot;separator&quot; },
+      { &quot;id&quot;: &quot;7&quot;, &quot;type&quot;: &quot;git-changes&quot;,    &quot;color&quot;: &quot;yellow&quot; }
+    ],
+    [
+      { &quot;type&quot;: &quot;reset-timer&quot; },
+      { &quot;type&quot;: &quot;context-percentage-usable&quot; },
+      { &quot;type&quot;: &quot;block-timer&quot; },
+      { &quot;type&quot;: &quot;weekly-usage&quot; },
+      { &quot;type&quot;: &quot;session-usage&quot; },
+      { &quot;type&quot;: &quot;tokens-total&quot; },
+      { &quot;type&quot;: &quot;total-speed&quot; }
+    ],
+    [
+      { &quot;type&quot;: &quot;free-memory&quot; },
+      { &quot;type&quot;: &quot;custom-text&quot; },
+      { &quot;type&quot;: &quot;model&quot; },
+      { &quot;type&quot;: &quot;session-clock&quot; },
+      { &quot;type&quot;: &quot;session-cost&quot; }
+    ],
+    []
+  ],
+  &quot;flexMode&quot;: &quot;full-minus-40&quot;,
+  &quot;compactThreshold&quot;: 60,
+  &quot;colorLevel&quot;: 2,
+  &quot;inheritSeparatorColors&quot;: false,
+  &quot;globalBold&quot;: false,
+  &quot;gitCacheTtlSeconds&quot;: 5,
+  &quot;minimalistMode&quot;: false,
+  &quot;powerline&quot;: {
+    &quot;enabled&quot;: false,
+    &quot;separators&quot;: [&quot;&quot;],
+    &quot;separatorInvertBackground&quot;: [false],
+    &quot;startCaps&quot;: [],
+    &quot;endCaps&quot;: [],
+    &quot;autoAlign&quot;: false,
+    &quot;continueThemeAcrossLines&quot;: false
+  }
+}
+</code></pre>
+</div><h3 id="顶层字段">顶层字段</h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>version</code></td>
+<td>配置 schema 版本，当前 <code>3</code></td>
+</tr>
+<tr>
+<td><code>lines</code></td>
+<td>二维数组：外层每个元素一行，内层每行的 widget 数组</td>
+</tr>
+<tr>
+<td><code>flexMode</code></td>
+<td>flex 分隔符策略：<code>full</code> / <code>full-minus-40</code> / <code>full-until-compact</code> 等</td>
+</tr>
+<tr>
+<td><code>compactThreshold</code></td>
+<td>终端宽度小于此值进入紧凑模式</td>
+</tr>
+<tr>
+<td><code>colorLevel</code></td>
+<td><code>0</code> 关 / <code>1</code> 16 色 / <code>2</code> 256 色 / <code>3</code> truecolor</td>
+</tr>
+<tr>
+<td><code>inheritSeparatorColors</code></td>
+<td>分隔符是否继承相邻 widget 颜色</td>
+</tr>
+<tr>
+<td><code>globalBold</code></td>
+<td>所有 widget 是否粗体</td>
+</tr>
+<tr>
+<td><code>gitCacheTtlSeconds</code></td>
+<td>Git 命令缓存 TTL（v2.2.16+）</td>
+</tr>
+<tr>
+<td><code>minimalistMode</code></td>
+<td>全局极简（强制所有 widget raw 模式）</td>
+</tr>
+<tr>
+<td><code>powerline</code></td>
+<td>Powerline 子配置</td>
+</tr>
+</tbody></table>
+<h3 id="widget-通用字段">widget 通用字段</h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td>自动生成的 UUID 或递增数字</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>widget 类型，见第六节</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>前景色（基础名 / 数字 / hex）</td>
+</tr>
+<tr>
+<td><code>bgColor</code></td>
+<td>背景色（Powerline 模式常用）</td>
+</tr>
+<tr>
+<td><code>bold</code></td>
+<td>加粗</td>
+</tr>
+<tr>
+<td><code>rawValue</code></td>
+<td>仅显示值，不带标签前缀</td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td>是否与左侧 widget 合并（无分隔）</td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td>内部空白</td>
+</tr>
+</tbody></table>
+<h3 id="widget-类型特有字段">widget 类型特有字段</h3><p>举几个例子：</p>
+<div class="code-wrapper"><pre><code class="language-json">// Custom Text
+{ &quot;type&quot;: &quot;custom-text&quot;, &quot;text&quot;: &quot;📦 my-project&quot; }
+
+// Custom Command
+{
+  &quot;type&quot;: &quot;custom-command&quot;,
+  &quot;commandPath&quot;: &quot;/usr/local/bin/my-status.sh&quot;,
+  &quot;preserveColors&quot;: true,
+  &quot;timeoutMs&quot;: 1000
+}
+
+// Git Branch with link
+{ &quot;type&quot;: &quot;git-branch&quot;, &quot;linkMode&quot;: &quot;github&quot; }
+
+// Reset Timer with timestamp
+{
+  &quot;type&quot;: &quot;reset-timer&quot;,
+  &quot;displayMode&quot;: &quot;timestamp&quot;,
+  &quot;use24Hour&quot;: true,
+  &quot;timezone&quot;: &quot;Asia/Shanghai&quot;,
+  &quot;locale&quot;: &quot;zh-CN&quot;
+}
+
+// Speed widget with rolling window
+{ &quot;type&quot;: &quot;total-speed&quot;, &quot;windowSeconds&quot;: 30 }
+</code></pre>
+</div><hr>
+<h2 id="八进阶玩法">八、进阶玩法</h2><h3 id="81-切换-widget-的已用-剩余">8.1 切换 widget 的"已用 / 剩余"</h3><p><code>Context %</code>、<code>Context % (usable)</code>、<code>Session Usage</code>、<code>Weekly Usage</code> 等百分比 widget 在编辑器里按 <code>u</code> 在 used / left 之间切换。</p>
+<ul>
+<li>Used 模式：<code>Ctx Used: 35%</code></li>
+<li>Left 模式：<code>Ctx Left: 65%</code></li>
+</ul>
+<h3 id="82-短条-长条进度">8.2 短条 / 长条进度</h3><p><code>Block Timer</code>、<code>Block Reset Timer</code>、<code>Weekly Reset Timer</code>、<code>Context Bar</code>、<code>Session Usage</code>、<code>Weekly Usage</code> 都支持：</p>
+<ul>
+<li>数字模式（<code>Block: 3hr 45m</code>）</li>
+<li>长进度条（32 字符）</li>
+<li>短进度条（16 字符，紧凑）</li>
+</ul>
+<h3 id="83-时间戳显示">8.3 时间戳显示</h3><p><code>Reset Timer</code> / <code>Weekly Reset Timer</code> 可以从&quot;剩余时间&quot;切换到&quot;具体重置时刻&quot;：</p>
+<ul>
+<li>12 / 24 制</li>
+<li>自定义 IANA 时区（<code>Asia/Shanghai</code>、<code>America/New_York</code>）</li>
+<li>自定义 locale</li>
+</ul>
+<h3 id="84-可点击链接">8.4 可点击链接</h3><ul>
+<li><code>Git Branch</code>：开启 link mode 后渲染为 <code>https://github.com/owner/repo/tree/branch</code></li>
+<li><code>Git Root Dir</code>：可生成 <code>vscode://</code>、<code>cursor://</code> 协议链接</li>
+<li><code>Link</code> widget：任意 OSC8 链接，可在支持的终端里点击跳转</li>
+</ul>
+<h3 id="85-隐藏空值">8.5 隐藏空值</h3><p>许多 widget 支持 hide-when-empty / hide-when-zero：</p>
+<ul>
+<li>Git widget 在非仓库下默认显示 <code>no git</code>，按 <code>h</code> 可隐藏</li>
+<li><code>Compaction Counter</code> 零次时可隐藏</li>
+</ul>
+<h3 id="86-极简模式">8.6 极简模式</h3><p>主菜单 → <strong>Global Overrides</strong> → 开启 Minimalist Mode。
+所有 widget 强制 raw：<code>Cost: $0.12</code> → <code>$0.12</code>，<code>Model: Opus 4.7</code> → <code>Opus 4.7</code>。</p>
+<hr>
+<h2 id="九custom-command接入外部脚本">九、Custom Command：接入外部脚本</h2><p>这是 ccstatusline 的&quot;逃生舱&quot;——内建组件不够用？写个脚本顶上。</p>
+<h3 id="91-工作机制">9.1 工作机制</h3><p>每次状态栏刷新，ccstatusline 会用 shell 执行你指定的命令，把 stdout 第一行（或全部，看实现）作为显示文本。命令必须<strong>快</strong>且<strong>幂等</strong>。</p>
+<h3 id="92-添加方法">9.2 添加方法</h3><ol>
+<li>TUI → Lines → 选行 → <code>a</code> → 搜 <code>custom command</code> → 选中；</li>
+<li><code>w</code> 编辑：<ul>
+<li><strong>Command Path</strong>：脚本绝对路径</li>
+<li><strong>Preserve Colors</strong>：保留 ANSI 颜色码（默认会被全局色覆盖）</li>
+<li><strong>Timeout</strong>：超时后放弃（建议 500–1000ms）</li>
+</ul>
+</li>
+</ol>
+<h3 id="93-示例脚本">9.3 示例脚本</h3><p><strong>显示当前 PR 数（需要 <code>gh</code>）：</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">#!/usr/bin/env bash
+n=$(gh pr list --author &quot;@me&quot; --json number | jq length 2&gt;/dev/null)
+echo &quot;PRs: ${n:-0}&quot;
+</code></pre>
+</div><p><strong>显示 CI 状态：</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">#!/usr/bin/env bash
+status=$(gh run list --branch &quot;$(git branch --show-current 2&gt;/dev/null)&quot; \
+  --limit 1 --json conclusion -q &#39;.[0].conclusion&#39; 2&gt;/dev/null)
+case &quot;$status&quot; in
+  success) echo -e &quot;\033[32mCI:✓\033[0m&quot; ;;
+  failure) echo -e &quot;\033[31mCI:✗\033[0m&quot; ;;
+  *)       echo &quot;CI:?&quot; ;;
+esac
+</code></pre>
+</div><p><strong>显示天气：</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">#!/usr/bin/env bash
+curl -s &quot;wttr.in/Beijing?format=%c+%t&quot; --max-time 1
+</code></pre>
+</div><blockquote>
+<p>⚠️ Custom Command 在每次刷新都会执行。把 <code>refreshInterval</code> 调大、给脚本加缓存（写文件 + mtime 判断），不然会拖慢状态栏并消耗资源。</p>
+</blockquote>
+<h3 id="94-颜色-ansi-转义">9.4 颜色 ANSI 转义</h3><p>如果 <code>preserveColors: true</code>，脚本输出的 <code>\033[3Xm</code> 颜色码会原样保留；否则会被 ccstatusline 的全局颜色覆盖。</p>
+<hr>
+<h2 id="十powerline-美化">十、Powerline 美化</h2><h3 id="101-前提">10.1 前提</h3><ul>
+<li>终端字体安装 Nerd Font（推荐 <em>FiraCode Nerd Font</em>、<em>JetBrainsMono Nerd Font</em>）</li>
+<li>终端启用真彩色（基本都开了）</li>
+</ul>
+<p>ccstatusline 提供自动安装 Powerline 字体的流程，需要用户同意。</p>
+<h3 id="102-启用步骤">10.2 启用步骤</h3><ol>
+<li>TUI → <strong>Powerline Setup</strong> → 开启；</li>
+<li>选择分隔符（默认 ``）；</li>
+<li>添加 startCaps / endCaps 给整行包&quot;胶囊&quot;（可选）；</li>
+<li><strong>Auto-Align</strong>：多行按列对齐成报表（v2.0.8+）；</li>
+<li><strong>Continue theme across lines</strong>：多行 Powerline 颜色连续（v2.2.8+）。</li>
+</ol>
+<h3 id="103-自定义分隔符">10.3 自定义分隔符</h3><p>支持 4–6 位 Unicode hex 直接输入（v2.1.9+），任意 Powerline 字符都行：</p>
+<ul>
+<li><code>E0B0</code> 实心右箭头</li>
+<li><code>E0B1</code> 空心右箭头</li>
+<li><code>E0B2</code> 实心左箭头</li>
+<li><code>E0B4</code> 圆头</li>
+<li><code>E0BC</code> 斜杠</li>
+</ul>
+<h3 id="104-内建主题">10.4 内建主题</h3><p><strong>Powerline Setup → Built-in Themes</strong> 提供几套预设，进去复制后改色就行。</p>
+<hr>
+<h2 id="十一性能与缓存机制">十一、性能与缓存机制</h2><p>ccstatusline 的几条关键性能优化：</p>
+<h3 id="111-git-缓存v2216">11.1 Git 缓存（v2.2.16+）</h3><ul>
+<li>路径：<code>~/.cache/ccstatusline/git-cache/</code></li>
+<li>TTL：<code>gitCacheTtlSeconds</code>（默认 5s）</li>
+<li>失效信号：检测 <code>.git/HEAD</code> 与 <code>.git/index</code> 的 mtime 变化</li>
+<li>Git 命令统一加 <code>--no-optional-locks</code>，避免与 git status 等并行命令竞争 <code>index.lock</code></li>
+</ul>
+<h3 id="112-block-timer-缓存v2028">11.2 Block Timer 缓存（v2.0.28+）</h3><ul>
+<li>路径：<code>~/.cache/ccstatusline/block-timer-cache/</code></li>
+<li>按配置 hash 分文件</li>
+<li>5 小时块到点自动失效</li>
+<li>显著减少 JSONL 全量解析</li>
+</ul>
+<h3 id="113-token-去重v2212">11.3 Token 去重（v2.2.12+）</h3><p>流式 JSONL 中重复条目会被去重，避免高频刷新时 token 计数虚高。</p>
+<h3 id="114-子代理感知">11.4 子代理感知</h3><p>Token speed 计算会包含 subagent 活动，让显示速度反映真实并发工作量。</p>
+<h3 id="115-终端宽度探测">11.5 终端宽度探测</h3><ul>
+<li>默认通过 TTY 询问</li>
+<li>嵌套 PTY / tmux 下可能失败 → 用环境变量手动覆盖：</li>
+</ul>
+<div class="code-wrapper"><pre><code class="language-bash">export CCSTATUSLINE_WIDTH=200
+</code></pre>
+</div><h3 id="116-子进程隐藏windows">11.6 子进程隐藏（Windows）</h3><p>所有 helper 子进程设置 <code>windowsHide</code>，不会在 Windows 上弹额外窗口。</p>
+<hr>
+<h2 id="十二调试与排障">十二、调试与排障</h2><h3 id="121-手动跑-hook-流程">12.1 手动跑 hook 流程</h3><p>模拟 Claude Code 的调用：</p>
+<div class="code-wrapper"><pre><code class="language-bash">echo &#39;{
+  &quot;session_id&quot;: &quot;test&quot;,
+  &quot;model&quot;: {&quot;display_name&quot;: &quot;Opus 4.7&quot;},
+  &quot;cwd&quot;: &quot;/tmp&quot;,
+  &quot;transcript_path&quot;: &quot;/tmp/none.jsonl&quot;,
+  &quot;cost&quot;: {&quot;total_cost_usd&quot;: 0.12},
+  &quot;context_window&quot;: {
+    &quot;context_window_size&quot;: 200000,
+    &quot;current_usage&quot;: 35000,
+    &quot;used_percentage&quot;: 17.5
+  }
+}&#39; | ccstatusline
+</code></pre>
+</div><p>应该直接看到渲染后的状态栏字符串（带 ANSI 颜色）。</p>
+<h3 id="122-用自定义配置文件">12.2 用自定义配置文件</h3><div class="code-wrapper"><pre><code class="language-bash">ccstatusline --config /tmp/test-settings.json
+</code></pre>
+</div><p>可以同时维护多套配置实验。</p>
+<h3 id="123-hook-模式">12.3 hook 模式</h3><div class="code-wrapper"><pre><code class="language-bash">echo &#39;&lt;payload&gt;&#39; | ccstatusline --hook
+</code></pre>
+</div><p>显式走 hook 分支，避免 isTTY 判断造成的歧义。</p>
+<h3 id="124-常见报错对照">12.4 常见报错对照</h3><table>
+<thead>
+<tr>
+<th>错误信息</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Invalid status JSON format</code></td>
+<td>stdin 收到的不是合法 JSON</td>
+</tr>
+<tr>
+<td><code>No input received</code></td>
+<td>没有从 stdin 读到内容，可能命令被直接执行</td>
+</tr>
+<tr>
+<td>状态栏完全空白</td>
+<td>command 路径错或权限错</td>
+</tr>
+<tr>
+<td><code>EACCES</code></td>
+<td>二进制文件不可执行 → <code>chmod +x</code></td>
+</tr>
+</tbody></table>
+<h3 id="125-强制重置">12.5 强制重置</h3><div class="code-wrapper"><pre><code class="language-bash"># 备份
+cp ~/.config/ccstatusline/settings.json ~/ccstatusline-backup.json
+
+# 删除配置，再次启动会以默认值重建
+rm ~/.config/ccstatusline/settings.json
+ccstatusline
+</code></pre>
+</div><hr>
+<h2 id="十三qa-速查">十三、Q&A 速查</h2><p><strong>Q1：第一次跑要选 Pinned 还是 npx 版？</strong>
+长期用选 <strong>Pinned global install</strong>，不会因为远端版本变化影响行为；只是想试试选 npx。</p>
+<p><strong>Q2：Claude Code 底部一直没出现状态栏？</strong>
+依次检查：</p>
+<ol>
+<li><code>~/.claude/settings.json</code> 里有 <code>statusLine</code> 字段；</li>
+<li><code>which ccstatusline</code> 能找到二进制；</li>
+<li>重启 Claude Code；</li>
+<li><code>Refresh Interval</code> 设小一点（5–10 秒）。</li>
+</ol>
+<p><strong>Q3：Git 信息一直是 <code>no git</code>？</strong>
+Claude Code 的会话 cwd 不在 Git 仓库内。<code>cwd</code> 字段来自 Claude Code 启动时的目录，不会跟着你编辑的文件变。在仓库里启动 Claude Code。</p>
+<p><strong>Q4：Powerline 字符变方块/问号？</strong>
+终端字体不支持 Powerline。装 Nerd Font，或在 Powerline Setup 里关闭。</p>
+<p><strong>Q5：终端窄了状态栏被截断？</strong></p>
+<ul>
+<li>减少 widget 数量</li>
+<li>启用 <code>compactThreshold</code>（默认 60）并选支持短模式的 widget</li>
+<li>把次要信息放到第二行</li>
+</ul>
+<p><strong>Q6：终端宽度检测不准（嵌套 PTY / tmux）？</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">export CCSTATUSLINE_WIDTH=200
+</code></pre>
+</div><p><strong>Q7：用了代理才能访问 Anthropic 用量 API？</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">export HTTPS_PROXY=http://your-proxy:port
+</code></pre>
+</div><p>usage 类组件会读这个变量（v2.2.2+）。</p>
+<p><strong>Q8：Claude Code 配置目录不在默认位置？</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">export CLAUDE_CONFIG_DIR=/custom/path/to/.claude
+</code></pre>
+</div><p>ccstatusline 与所有 widget 都会用这个变量。</p>
+<p><strong>Q9：升级 ccstatusline 时要不要先 Uninstall？</strong>
+如果当前是 <code>npx -y ccstatusline@latest</code>，建议先 TUI Uninstall 再切到 Pinned，避免行为漂移。本地 settings 不会被卸载流程清理。</p>
+<p><strong>Q10：状态栏卡？</strong></p>
+<ul>
+<li>调大 <code>refreshInterval</code>（如 15 秒）</li>
+<li>减少 Custom Command 数量、给脚本加缓存</li>
+<li>确认 Git 缓存开启（<code>gitCacheTtlSeconds: 5</code> 起）</li>
+<li>Block Timer 缓存自动生效，无需配置</li>
+</ul>
+<p><strong>Q11：Session Cost 没刷新？</strong>
+要求 Claude Code ≥ 1.0.85；<code>/resume</code> 恢复历史会话时可能不更新（Claude Code 侧的限制）。</p>
+<p><strong>Q12：能在 WSL 用吗？</strong>
+完全可以。Windows 详细说明见 <code>docs/WINDOWS.md</code>。</p>
+<p><strong>Q13：能在多个 Claude Code 项目用不同配置吗？</strong>
+默认共用 <code>~/.config/ccstatusline/settings.json</code>。可用 <code>--config</code> 指定不同文件，但需要修改 Claude Code 设置里的 command：</p>
+<div class="code-wrapper"><pre><code class="language-json">&quot;command&quot;: &quot;ccstatusline --config ~/.config/ccstatusline/project-a.json&quot;
+</code></pre>
+</div><p><strong>Q14：可以同时用多种 hook（statusLine + 其它）吗？</strong>
+可以，<code>statusLine</code> 只是 Claude Code 众多 hook 之一，与 PreToolUse、UserPromptSubmit 等独立。详见 Claude Code 文档。</p>
+<p><strong>Q15：状态栏文本有 ANSI 颜色但终端不显示？</strong></p>
+<ul>
+<li>检查 <code>colorLevel</code> 不是 <code>0</code></li>
+<li>终端是否支持真彩色（<code>tput colors</code> ≥ 256）</li>
+<li>SSH 连接时可能丢颜色，确认 <code>$TERM</code>（如 <code>xterm-256color</code>）</li>
+</ul>
+<p><strong>Q16：怎么彻底卸载？</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash"># TUI 里走 Uninstall（移除 settings.json 里的 statusLine）
+ccstatusline
+# 然后
+npm uninstall -g ccstatusline
+rm -rf ~/.config/ccstatusline
+rm -rf ~/.cache/ccstatusline
+</code></pre>
+</div><p><strong>Q17：能给 Claude Code 之外的工具用吗？</strong>
+ccstatusline 是通用 stdin→stdout 状态栏渲染器。只要你能构造合法的 JSON payload pipe 进去，原则上任何工具都能集成。当然字段约定都是按 Claude Code 来的。</p>
+<p><strong>Q18：能贡献新 widget 吗？</strong>
+可以。项目 MIT 协议，仓库在 <a href="https://github.com/sirmalloc/ccstatusline">github.com/sirmalloc/ccstatusline</a>。新增 widget 需要：实现 <code>Widget</code> 接口、注册到 widget map、加 TUI 编辑器、写测试。</p>
+<p><strong>Q19：本地开发怎么调试？</strong></p>
+<div class="code-wrapper"><pre><code class="language-bash">git clone https://github.com/sirmalloc/ccstatusline
+cd ccstatusline
+bun install
+bun start              # 启动 TUI
+bun run example        # 用示例 payload 渲染一次
+</code></pre>
+</div><p><strong>Q20：状态栏数据隐私？</strong>
+ccstatusline 本地运行，不会上传你的会话内容。仅在使用 weekly/session usage 等 widget 时会调用 Anthropic 用量 API（与 Claude Code 自身的 <code>/usage</code> 调用同源）。所有缓存在 <code>~/.cache/ccstatusline</code>。</p>
+<hr>
+<h2 id="十四备份与多机同步">十四、备份与多机同步</h2><h3 id="141-需要备份的文件">14.1 需要备份的文件</h3><div class="code-wrapper"><pre><code>~/.config/ccstatusline/settings.json          # 所有 widget 配置
+~/.claude/settings.json (statusLine 字段)     # 给 Claude Code 的钩子
+</code></pre>
+</div><h3 id="142-dotfiles-集成示例">14.2 dotfiles 集成示例</h3><div class="code-wrapper"><pre><code class="language-bash"># 在你的 dotfiles 仓库里
+mkdir -p config/ccstatusline
+cp ~/.config/ccstatusline/settings.json config/ccstatusline/
+
+# 新机器恢复
+mkdir -p ~/.config/ccstatusline
+ln -sf &quot;$PWD/config/ccstatusline/settings.json&quot; ~/.config/ccstatusline/settings.json
+
+# 再跑一次 TUI 写入 Claude Code 设置
+npx -y ccstatusline@latest
+# 进入 → Install → Pinned global install
+</code></pre>
+</div><h3 id="143-多套配置切换">14.3 多套配置切换</h3><div class="code-wrapper"><pre><code class="language-bash"># 开发环境
+ccstatusline --config ~/.config/ccstatusline/dev.json
+
+# 演示模式（极简）
+ccstatusline --config ~/.config/ccstatusline/demo.json
+</code></pre>
+</div><p>把这些命令写进 <code>claude-dev</code> / <code>claude-demo</code> 之类的 alias，按场景切换。</p>
+<hr>
+<h2 id="推荐起步配置">推荐起步配置</h2><p>懒得想的话，直接照抄：</p>
+<div class="code-wrapper"><pre><code>Line 1：Model | Context Length | Git Branch | Git Changes
+Line 2：Block Timer | Weekly Usage | Session Cost | Session Clock
+</code></pre>
+</div><p>颜色建议：</p>
+<ul>
+<li><code>Model</code> → cyan</li>
+<li><code>Git Branch</code> → magenta</li>
+<li><code>Git Changes</code> → yellow</li>
+<li><code>Weekly Usage</code> → green</li>
+<li>其余保留默认</li>
+</ul>
+<p>用一周后大概率会想加：</p>
+<ul>
+<li><code>context-percentage-usable</code>（防爆窗口）</li>
+<li><code>free-memory</code>（看机器状态）</li>
+<li><code>compaction-counter</code>（监控压缩次数）</li>
+<li>自定义 Custom Command（接 CI/PR/Weather 等）</li>
+</ul>
+<p>到那时你已经熟练到不用查教程了。</p>
+<hr>
+<h2 id="资源链接">资源链接</h2><ul>
+<li>项目主页：<a href="https://github.com/sirmalloc/ccstatusline">https://github.com/sirmalloc/ccstatusline</a></li>
+<li>npm 包：<a href="https://www.npmjs.com/package/ccstatusline">https://www.npmjs.com/package/ccstatusline</a></li>
+<li>Windows 详细文档：仓库内 <code>docs/WINDOWS.md</code></li>
+<li>完整用法文档：仓库内 <code>docs/USAGE.md</code></li>
+<li>开发文档：仓库内 <code>docs/DEVELOPMENT.md</code></li>
+<li>相关项目：<ul>
+<li><a href="https://github.com/Piebald-AI/tweakcc">tweakcc</a> — 自定义 Claude Code 主题/思考动词</li>
+<li><a href="https://github.com/ryoppippi/ccusage">ccusage</a> — Claude Code 用量追踪</li>
+<li><a href="https://github.com/vincent-k2026/codachi">codachi</a> — 状态栏宠物</li>
+<li><a href="https://ai-watch.dev">AIWatch</a> — 30+ AI API 实时状态监控</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>Happy hacking. ✨</strong></p>
+<p>如果你想：</p>
+<ul>
+<li>改造你的 <code>settings.json</code> → 把你的需求告诉我</li>
+<li>接入 Custom Command 跑某个具体脚本 → 把脚本贴出来</li>
+<li>设计 Powerline 主题 → 描述你想要的视觉风格</li>
+</ul>
+<p>我可以基于这份教程帮你继续往前推。</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="一什么是-ccstatusline" data-astro-cid-w5q62dq7> <a href="#一什么是-ccstatusline" data-astro-cid-w5q62dq7>一、什么是 ccstatusline</a> </li><li class="toc-item " data-slug="二技术原理claude-code-的-statusline-hook" data-astro-cid-w5q62dq7> <a href="#二技术原理claude-code-的-statusline-hook" data-astro-cid-w5q62dq7>二、技术原理：Claude Code 的 statusLine hook</a> </li><li class="toc-item h3-nav" data-slug="21-hook-注册claude-code-端" data-astro-cid-w5q62dq7> <a href="#21-hook-注册claude-code-端" data-astro-cid-w5q62dq7>2.1 hook 注册：Claude Code 端</a> </li><li class="toc-item h3-nav" data-slug="22-调用生命周期" data-astro-cid-w5q62dq7> <a href="#22-调用生命周期" data-astro-cid-w5q62dq7>2.2 调用生命周期</a> </li><li class="toc-item h3-nav" data-slug="23-payload-schemaclaude-code-传了什么" data-astro-cid-w5q62dq7> <a href="#23-payload-schemaclaude-code-传了什么" data-astro-cid-w5q62dq7>2.3 Payload Schema：Claude Code 传了什么</a> </li><li class="toc-item h3-nav" data-slug="24-额外信息从哪来" data-astro-cid-w5q62dq7> <a href="#24-额外信息从哪来" data-astro-cid-w5q62dq7>2.4 额外信息从哪来</a> </li><li class="toc-item h3-nav" data-slug="25-渲染流程" data-astro-cid-w5q62dq7> <a href="#25-渲染流程" data-astro-cid-w5q62dq7>2.5 渲染流程</a> </li><li class="toc-item " data-slug="三安装" data-astro-cid-w5q62dq7> <a href="#三安装" data-astro-cid-w5q62dq7>三、安装</a> </li><li class="toc-item h3-nav" data-slug="31-前置要求" data-astro-cid-w5q62dq7> <a href="#31-前置要求" data-astro-cid-w5q62dq7>3.1 前置要求</a> </li><li class="toc-item h3-nav" data-slug="32-三种安装方式" data-astro-cid-w5q62dq7> <a href="#32-三种安装方式" data-astro-cid-w5q62dq7>3.2 三种安装方式</a> </li><li class="toc-item h3-nav" data-slug="33-升级与卸载" data-astro-cid-w5q62dq7> <a href="#33-升级与卸载" data-astro-cid-w5q62dq7>3.3 升级与卸载</a> </li><li class="toc-item " data-slug="四tui-操作速查" data-astro-cid-w5q62dq7> <a href="#四tui-操作速查" data-astro-cid-w5q62dq7>四、TUI 操作速查</a> </li><li class="toc-item " data-slug="五零基础-12-步教程" data-astro-cid-w5q62dq7> <a href="#五零基础-12-步教程" data-astro-cid-w5q62dq7>五、零基础 12 步教程</a> </li><li class="toc-item h3-nav" data-slug="第-0-步确认前置条件" data-astro-cid-w5q62dq7> <a href="#第-0-步确认前置条件" data-astro-cid-w5q62dq7>第 0 步：确认前置条件</a> </li><li class="toc-item h3-nav" data-slug="第-1-步第一次启动" data-astro-cid-w5q62dq7> <a href="#第-1-步第一次启动" data-astro-cid-w5q62dq7>第 1 步：第一次启动</a> </li><li class="toc-item h3-nav" data-slug="第-2-步先看默认状态栏长啥样" data-astro-cid-w5q62dq7> <a href="#第-2-步先看默认状态栏长啥样" data-astro-cid-w5q62dq7>第 2 步：先看默认状态栏长啥样</a> </li><li class="toc-item h3-nav" data-slug="第-3-步装到-claude-code" data-astro-cid-w5q62dq7> <a href="#第-3-步装到-claude-code" data-astro-cid-w5q62dq7>第 3 步：装到 Claude Code</a> </li><li class="toc-item h3-nav" data-slug="第-4-步理解-widget" data-astro-cid-w5q62dq7> <a href="#第-4-步理解-widget" data-astro-cid-w5q62dq7>第 4 步：理解 widget</a> </li><li class="toc-item h3-nav" data-slug="第-5-步加一个组件" data-astro-cid-w5q62dq7> <a href="#第-5-步加一个组件" data-astro-cid-w5q62dq7>第 5 步：加一个组件</a> </li><li class="toc-item h3-nav" data-slug="第-6-步上色" data-astro-cid-w5q62dq7> <a href="#第-6-步上色" data-astro-cid-w5q62dq7>第 6 步：上色</a> </li><li class="toc-item h3-nav" data-slug="第-7-步加第二行" data-astro-cid-w5q62dq7> <a href="#第-7-步加第二行" data-astro-cid-w5q62dq7>第 7 步：加第二行</a> </li><li class="toc-item h3-nav" data-slug="第-8-步值得加的惊喜组件" data-astro-cid-w5q62dq7> <a href="#第-8-步值得加的惊喜组件" data-astro-cid-w5q62dq7>第 8 步：值得加的&quot;惊喜&quot;组件</a> </li><li class="toc-item h3-nav" data-slug="第-9-步自定义文本" data-astro-cid-w5q62dq7> <a href="#第-9-步自定义文本" data-astro-cid-w5q62dq7>第 9 步：自定义文本</a> </li><li class="toc-item h3-nav" data-slug="第-10-步自适应宽度先了解后调" data-astro-cid-w5q62dq7> <a href="#第-10-步自适应宽度先了解后调" data-astro-cid-w5q62dq7>第 10 步：自适应宽度（先了解，后调）</a> </li><li class="toc-item h3-nav" data-slug="第-11-步测试并理解保存" data-astro-cid-w5q62dq7> <a href="#第-11-步测试并理解保存" data-astro-cid-w5q62dq7>第 11 步：测试并理解保存</a> </li><li class="toc-item h3-nav" data-slug="第-12-步备份" data-astro-cid-w5q62dq7> <a href="#第-12-步备份" data-astro-cid-w5q62dq7>第 12 步：备份</a> </li><li class="toc-item " data-slug="六所有可用组件一览" data-astro-cid-w5q62dq7> <a href="#六所有可用组件一览" data-astro-cid-w5q62dq7>六、所有可用组件一览</a> </li><li class="toc-item h3-nav" data-slug="61-会话与模型" data-astro-cid-w5q62dq7> <a href="#61-会话与模型" data-astro-cid-w5q62dq7>6.1 会话与模型</a> </li><li class="toc-item h3-nav" data-slug="62-上下文与-token" data-astro-cid-w5q62dq7> <a href="#62-上下文与-token" data-astro-cid-w5q62dq7>6.2 上下文与 Token</a> </li><li class="toc-item h3-nav" data-slug="63-配额与限速" data-astro-cid-w5q62dq7> <a href="#63-配额与限速" data-astro-cid-w5q62dq7>6.3 配额与限速</a> </li><li class="toc-item h3-nav" data-slug="64-git" data-astro-cid-w5q62dq7> <a href="#64-git" data-astro-cid-w5q62dq7>6.4 Git</a> </li><li class="toc-item h3-nav" data-slug="65-系统与其它" data-astro-cid-w5q62dq7> <a href="#65-系统与其它" data-astro-cid-w5q62dq7>6.5 系统与其它</a> </li><li class="toc-item " data-slug="七settingsjson-完整字段解析" data-astro-cid-w5q62dq7> <a href="#七settingsjson-完整字段解析" data-astro-cid-w5q62dq7>七、settings.json 完整字段解析</a> </li><li class="toc-item h3-nav" data-slug="顶层字段" data-astro-cid-w5q62dq7> <a href="#顶层字段" data-astro-cid-w5q62dq7>顶层字段</a> </li><li class="toc-item h3-nav" data-slug="widget-通用字段" data-astro-cid-w5q62dq7> <a href="#widget-通用字段" data-astro-cid-w5q62dq7>widget 通用字段</a> </li><li class="toc-item h3-nav" data-slug="widget-类型特有字段" data-astro-cid-w5q62dq7> <a href="#widget-类型特有字段" data-astro-cid-w5q62dq7>widget 类型特有字段</a> </li><li class="toc-item " data-slug="八进阶玩法" data-astro-cid-w5q62dq7> <a href="#八进阶玩法" data-astro-cid-w5q62dq7>八、进阶玩法</a> </li><li class="toc-item h3-nav" data-slug="81-切换-widget-的已用-剩余" data-astro-cid-w5q62dq7> <a href="#81-切换-widget-的已用-剩余" data-astro-cid-w5q62dq7>8.1 切换 widget 的&quot;已用 / 剩余&quot;</a> </li><li class="toc-item h3-nav" data-slug="82-短条-长条进度" data-astro-cid-w5q62dq7> <a href="#82-短条-长条进度" data-astro-cid-w5q62dq7>8.2 短条 / 长条进度</a> </li><li class="toc-item h3-nav" data-slug="83-时间戳显示" data-astro-cid-w5q62dq7> <a href="#83-时间戳显示" data-astro-cid-w5q62dq7>8.3 时间戳显示</a> </li><li class="toc-item h3-nav" data-slug="84-可点击链接" data-astro-cid-w5q62dq7> <a href="#84-可点击链接" data-astro-cid-w5q62dq7>8.4 可点击链接</a> </li><li class="toc-item h3-nav" data-slug="85-隐藏空值" data-astro-cid-w5q62dq7> <a href="#85-隐藏空值" data-astro-cid-w5q62dq7>8.5 隐藏空值</a> </li><li class="toc-item h3-nav" data-slug="86-极简模式" data-astro-cid-w5q62dq7> <a href="#86-极简模式" data-astro-cid-w5q62dq7>8.6 极简模式</a> </li><li class="toc-item " data-slug="九custom-command接入外部脚本" data-astro-cid-w5q62dq7> <a href="#九custom-command接入外部脚本" data-astro-cid-w5q62dq7>九、Custom Command：接入外部脚本</a> </li><li class="toc-item h3-nav" data-slug="91-工作机制" data-astro-cid-w5q62dq7> <a href="#91-工作机制" data-astro-cid-w5q62dq7>9.1 工作机制</a> </li><li class="toc-item h3-nav" data-slug="92-添加方法" data-astro-cid-w5q62dq7> <a href="#92-添加方法" data-astro-cid-w5q62dq7>9.2 添加方法</a> </li><li class="toc-item h3-nav" data-slug="93-示例脚本" data-astro-cid-w5q62dq7> <a href="#93-示例脚本" data-astro-cid-w5q62dq7>9.3 示例脚本</a> </li><li class="toc-item h3-nav" data-slug="94-颜色-ansi-转义" data-astro-cid-w5q62dq7> <a href="#94-颜色-ansi-转义" data-astro-cid-w5q62dq7>9.4 颜色 ANSI 转义</a> </li><li class="toc-item " data-slug="十powerline-美化" data-astro-cid-w5q62dq7> <a href="#十powerline-美化" data-astro-cid-w5q62dq7>十、Powerline 美化</a> </li><li class="toc-item h3-nav" data-slug="101-前提" data-astro-cid-w5q62dq7> <a href="#101-前提" data-astro-cid-w5q62dq7>10.1 前提</a> </li><li class="toc-item h3-nav" data-slug="102-启用步骤" data-astro-cid-w5q62dq7> <a href="#102-启用步骤" data-astro-cid-w5q62dq7>10.2 启用步骤</a> </li><li class="toc-item h3-nav" data-slug="103-自定义分隔符" data-astro-cid-w5q62dq7> <a href="#103-自定义分隔符" data-astro-cid-w5q62dq7>10.3 自定义分隔符</a> </li><li class="toc-item h3-nav" data-slug="104-内建主题" data-astro-cid-w5q62dq7> <a href="#104-内建主题" data-astro-cid-w5q62dq7>10.4 内建主题</a> </li><li class="toc-item " data-slug="十一性能与缓存机制" data-astro-cid-w5q62dq7> <a href="#十一性能与缓存机制" data-astro-cid-w5q62dq7>十一、性能与缓存机制</a> </li><li class="toc-item h3-nav" data-slug="111-git-缓存v2216" data-astro-cid-w5q62dq7> <a href="#111-git-缓存v2216" data-astro-cid-w5q62dq7>11.1 Git 缓存（v2.2.16+）</a> </li><li class="toc-item h3-nav" data-slug="112-block-timer-缓存v2028" data-astro-cid-w5q62dq7> <a href="#112-block-timer-缓存v2028" data-astro-cid-w5q62dq7>11.2 Block Timer 缓存（v2.0.28+）</a> </li><li class="toc-item h3-nav" data-slug="113-token-去重v2212" data-astro-cid-w5q62dq7> <a href="#113-token-去重v2212" data-astro-cid-w5q62dq7>11.3 Token 去重（v2.2.12+）</a> </li><li class="toc-item h3-nav" data-slug="114-子代理感知" data-astro-cid-w5q62dq7> <a href="#114-子代理感知" data-astro-cid-w5q62dq7>11.4 子代理感知</a> </li><li class="toc-item h3-nav" data-slug="115-终端宽度探测" data-astro-cid-w5q62dq7> <a href="#115-终端宽度探测" data-astro-cid-w5q62dq7>11.5 终端宽度探测</a> </li><li class="toc-item h3-nav" data-slug="116-子进程隐藏windows" data-astro-cid-w5q62dq7> <a href="#116-子进程隐藏windows" data-astro-cid-w5q62dq7>11.6 子进程隐藏（Windows）</a> </li><li class="toc-item " data-slug="十二调试与排障" data-astro-cid-w5q62dq7> <a href="#十二调试与排障" data-astro-cid-w5q62dq7>十二、调试与排障</a> </li><li class="toc-item h3-nav" data-slug="121-手动跑-hook-流程" data-astro-cid-w5q62dq7> <a href="#121-手动跑-hook-流程" data-astro-cid-w5q62dq7>12.1 手动跑 hook 流程</a> </li><li class="toc-item h3-nav" data-slug="122-用自定义配置文件" data-astro-cid-w5q62dq7> <a href="#122-用自定义配置文件" data-astro-cid-w5q62dq7>12.2 用自定义配置文件</a> </li><li class="toc-item h3-nav" data-slug="123-hook-模式" data-astro-cid-w5q62dq7> <a href="#123-hook-模式" data-astro-cid-w5q62dq7>12.3 hook 模式</a> </li><li class="toc-item h3-nav" data-slug="124-常见报错对照" data-astro-cid-w5q62dq7> <a href="#124-常见报错对照" data-astro-cid-w5q62dq7>12.4 常见报错对照</a> </li><li class="toc-item h3-nav" data-slug="125-强制重置" data-astro-cid-w5q62dq7> <a href="#125-强制重置" data-astro-cid-w5q62dq7>12.5 强制重置</a> </li><li class="toc-item " data-slug="十三qa-速查" data-astro-cid-w5q62dq7> <a href="#十三qa-速查" data-astro-cid-w5q62dq7>十三、Q&amp;A 速查</a> </li><li class="toc-item " data-slug="十四备份与多机同步" data-astro-cid-w5q62dq7> <a href="#十四备份与多机同步" data-astro-cid-w5q62dq7>十四、备份与多机同步</a> </li><li class="toc-item h3-nav" data-slug="141-需要备份的文件" data-astro-cid-w5q62dq7> <a href="#141-需要备份的文件" data-astro-cid-w5q62dq7>14.1 需要备份的文件</a> </li><li class="toc-item h3-nav" data-slug="142-dotfiles-集成示例" data-astro-cid-w5q62dq7> <a href="#142-dotfiles-集成示例" data-astro-cid-w5q62dq7>14.2 dotfiles 集成示例</a> </li><li class="toc-item h3-nav" data-slug="143-多套配置切换" data-astro-cid-w5q62dq7> <a href="#143-多套配置切换" data-astro-cid-w5q62dq7>14.3 多套配置切换</a> </li><li class="toc-item " data-slug="推荐起步配置" data-astro-cid-w5q62dq7> <a href="#推荐起步配置" data-astro-cid-w5q62dq7>推荐起步配置</a> </li><li class="toc-item " data-slug="资源链接" data-astro-cid-w5q62dq7> <a href="#资源链接" data-astro-cid-w5q62dq7>资源链接</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-antigravity-cli-review-and-troubleshooting" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-99f013f1.jpg" alt="谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-antigravity-cli-review-and-troubleshooting" data-astro-cid-w5q62dq7>谷歌 Antigravity CLI 踩坑与破局全指南（Gemini CLI 替代品）</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>谷歌强推 Antigravity CLI 替代 Gemini CLI，底层用 Go 重构，速度起飞且支持多智能体并发。本文用大白话带你拆解它的核心功能、安装迁移步骤，并重点拔掉代理网络失效、反人类登录交互等深坑，帮你无痛上手这款 AI 编程新利器。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月23日</span> <span data-astro-cid-w5q62dq7>作者: Eric w</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-gemini-spark-ai-agent-deep-dive" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-d65c443d.jpg" alt="谷歌自己的龙虾Gemini Spark:真正替你上班的24小时虚拟员工" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/google-gemini-spark-ai-agent-deep-dive" data-astro-cid-w5q62dq7>谷歌自己的龙虾Gemini Spark:真正替你上班的24小时虚拟员工</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>AI终于从“陪聊”进化到了“替你打工”。本文用大白话带你拆解谷歌在2026年I/O大会抛出的王炸——Gemini Spark。它不仅能在云端24小时干活，还能跨应用帮你回邮件、做排期、整理报表。看完这篇，搞懂AI智能体（Agent）的底层逻辑与实操避坑指南。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年5月22日</span> <span data-astro-cid-w5q62dq7>作者: Eric W</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

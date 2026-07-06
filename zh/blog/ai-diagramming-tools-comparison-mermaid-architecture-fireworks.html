@@ -1,0 +1,367 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph — AgentUpdate.ai</title><meta name="description" content="在 AI 编码助手爆发的今天，技术文档与架构图的生成迎来了范式转变。本文深度拆解并对比了三款当下最受关注的开源 AI 友好型制图工具：oh-my-mermaid（代码级递归逆向）、architecture-diagram-generator（暗黑极简系统蓝图）与..."><meta name="keywords" content="AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph, AI-Era Open Source Architecture Diagramming: Comparing oh-my-mermaid, architecture-diagram-generator, and fireworks-tech-graph, diagramming, open-source, ai-agents, mcp, mermaid, architecture"><link rel="canonical" href="https://agentupdate.ai/zh/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph — AgentUpdate.ai"><meta property="og:description" content="在 AI 编码助手爆发的今天，技术文档与架构图的生成迎来了范式转变。本文深度拆解并对比了三款当下最受关注的开源 AI 友好型制图工具：oh-my-mermaid（代码级递归逆向）、architecture-diagram-generator（暗黑极简系统蓝图）与..."><meta property="og:image" content="https://agentupdate.ai/images/blog/ai-cover-diagram-tools.png"><meta property="og:url" content="https://agentupdate.ai/zh/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph — AgentUpdate.ai"><meta name="twitter:description" content="在 AI 编码助手爆发的今天，技术文档与架构图的生成迎来了范式转变。本文深度拆解并对比了三款当下最受关注的开源 AI 友好型制图工具：oh-my-mermaid（代码级递归逆向）、architecture-diagram-generator（暗黑极简系统蓝图）与..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/ai-cover-diagram-tools.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph","description":"在 AI 编码助手爆发的今天，技术文档与架构图的生成迎来了范式转变。本文深度拆解并对比了三款当下最受关注的开源 AI 友好型制图工具：oh-my-mermaid（代码级递归逆向）、architecture-diagram-generator（暗黑极简系统蓝图）与 fireworks-tech-graph（Prompt 驱动的 Agent 多模态制图），提供详尽的生成实例，解析它们的核心定位、应用场景与协同关系，助你打造高效的技术图表生成工作流。","image":"/images/blog/ai-cover-diagram-tools.png","datePublished":"2026-06-13T03:12:18.865Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/ai-diagramming-tools-comparison-mermaid-architecture-fireworks" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月13日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>10 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#diagramming</span><a href="/zh/tags/open-source" class="tag" data-astro-cid-w5q62dq7>#open-source</a><a href="/zh/tags/ai-agents" class="tag" data-astro-cid-w5q62dq7>#ai-agents</a><a href="/zh/tags/mcp" class="tag" data-astro-cid-w5q62dq7>#mcp</a><span class="tag" data-astro-cid-w5q62dq7>#mermaid</span><span class="tag" data-astro-cid-w5q62dq7>#architecture</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/ai-cover-diagram-tools.png" alt="AI 时代的开源架构作图利器：对比 oh-my-mermaid、architecture-diagram-generator 与 fireworks-tech-graph" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#引言" data-astro-cid-w5q62dq7>引言</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#三大作图工具的核心定位特性与生成实例" data-astro-cid-w5q62dq7>三大作图工具的核心定位、特性与生成实例</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#三大工具的核心差异对比" data-astro-cid-w5q62dq7>三大工具的核心差异对比</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#区别与联系如何构建你的超级制图流" data-astro-cid-w5q62dq7>区别与联系：如何构建你的“超级制图流”？</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#agentupdate-深度解析" data-astro-cid-w5q62dq7>【AgentUpdate 深度解析】</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><h3 id="引言">引言</h3><p>在软件开发与系统设计中，一图胜千言。然而，维护技术文档和架构图历来是开发者的痛点——不仅费时费力，而且代码一旦迭代，手绘的图表就会迅速落后过时。</p>
+<p>随着大语言模型（LLM）与 AI 编程助手（如 <a href="/zh/tutorial/claude-code-command-tutorial" class="seo-autolink-keyword">Claude Code</a>、Cursor、Windsurf）的爆发，**“文字/代码与图表的自动转换”**迎来了技术拐点。AI 能够以极高的效率阅读上下文，并生成结构化的图表描述，或者直接将现有代码逆向为可视化拓扑。</p>
+<p>在这一背景下，开源社区涌现出了三款极具代表性、且与 AI 深度集成的制图利器：</p>
+<ol>
+<li><strong>oh-my-mermaid (OMM)</strong>：专注于代码库的<strong>递归逆向与文档自动生成</strong>。</li>
+<li><strong>architecture-diagram-generator (ADG)</strong>：专注于高颜值、<strong>暗黑极简风格的系统级与云基础设施拓扑</strong>。</li>
+<li><strong>fireworks-tech-graph (FTG)</strong>：专注于 <strong>AI Agent 智能 Prompt 驱动的通用技术绘图与工作流可视化</strong>。</li>
+</ol>
+<p>本文将通过具体的生成实例，深度拆解这三款工具的核心机制、应用场景、技术差异，以及如何将它们协同应用到日常开发中。</p>
+<hr>
+<h3 id="三大作图工具的核心定位特性与生成实例">三大作图工具的核心定位、特性与生成实例</h3><p>为了更好地理解它们，我们来看每款工具的核心设计哲学以及实际运行输出的图表实例：</p>
+<h4 id="1-oh-my-mermaid代码库的递归式逆向透视镜">1. oh-my-mermaid：代码库的“递归式逆向透视镜”</h4><p><strong>GitHub 地址：</strong> <a href="https://github.com/oh-my-mermaid/oh-my-mermaid">oh-my-mermaid/oh-my-mermaid</a></p>
+<p>oh-my-mermaid 的核心目的是**“从现有 codebase 逆向生成可交互的 Mermaid 架构图和关联文档”<strong>。它在大型复杂项目中采用</strong>递归（Recursive）节点解析**，避免把所有目录堆在一张图里，而是允许层层向下钻取（Drill-down）。</p>
+<h5 id="-生成实例">💡 生成实例：</h5><p>当你运行 <code>/omm-scan</code> 扫描多模块项目时，它会自动在你的文档库中生成类似下面的<strong>递归导向图（Interactive Map）</strong>。在支持 Markdown 交互的阅读器中，用户可以直接点击模块跳转到更深层级的子视图中：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    subgraph Project_Root ["Project: AgentUpdate (Root)"]
+        direction LR
+        Admin["/admin (Astro API & Dashboard)"]
+        Website["/website (Astro Frontend)"]
+        Database["/database (Prisma & Schema)"]
+        Crawler["/crawler (LLM News Processor)"]
+        
+        Admin -->|Uses Client| Database
+        Website -->|Uses Client| Database
+        Crawler -->|Writes DB| Database
+    end
+    
+    click Admin href "/docs/omm/admin.md" "查看 Admin 内部架构"
+    click Crawler href "/docs/omm/crawler.md" "查看 Crawler 内部架构"</pre></div><hr>
+<h4 id="2-architecture-diagram-generator高颜值的暗黑极简蓝图">2. architecture-diagram-generator：高颜值的“暗黑极简蓝图”</h4><p><strong>GitHub 地址：</strong> <a href="https://github.com/Cocoon-AI/architecture-diagram-generator">Cocoon-AI/architecture-diagram-generator</a></p>
+<p>相较于 OMM 关注于代码逻辑，architecture-diagram-generator 则专注于**“系统物理/逻辑拓扑的高保真渲染”**。它拥有极强的视觉审美主张，默认采用现代科技感的暗黑主题，并支持免依赖的纯 HTML/SVG 矢量图导出。</p>
+<h5 id="-生成实例">💡 生成实例：</h5><p>该工具的输入是一个极简的 YAML 配置文件。例如，定义一个典型的云端 Web 服务的组件与调用流：</p>
+<div class="code-wrapper"><pre><code class="language-yaml"># ADG Input DSL Example
+title: &quot;AgentUpdate Cloud Production Topology&quot;
+theme: &quot;dark&quot;
+
+components:
+  - id: &quot;client&quot;
+    label: &quot;Web Clients (Browser)&quot;
+    type: &quot;client&quot;
+    color: &quot;cyan&quot;
+  - id: &quot;alb&quot;
+    label: &quot;AWS Load Balancer&quot;
+    type: &quot;network&quot;
+    color: &quot;amber&quot;
+  - id: &quot;api&quot;
+    label: &quot;Astro Server Container&quot;
+    type: &quot;server&quot;
+    color: &quot;cyan&quot;
+  - id: &quot;postgres&quot;
+    label: &quot;PostgreSQL Database&quot;
+    type: &quot;database&quot;
+    color: &quot;violet&quot;
+
+connections:
+  - from: &quot;client&quot;
+    to: &quot;alb&quot;
+    label: &quot;HTTPS / Route 53&quot;
+  - from: &quot;alb&quot;
+    to: &quot;api&quot;
+    label: &quot;Target Group&quot;
+  - from: &quot;api&quot;
+    to: &quot;postgres&quot;
+    label: &quot;Prisma Connection&quot;
+</code></pre>
+</div><p>ADG 引擎在读取该配置后，会应用其内置的视觉系统（青/紫/黄等语义色彩与 JetBrains Mono 字体），渲染输出一张暗黑主题的系统架构图。其渲染出的逻辑与视觉效果如下：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">graph TD
+    classDef client fill:#06b6d4,stroke:#0891b2,color:#fff;
+    classDef network fill:#f59e0b,stroke:#d97706,color:#fff;
+    classDef database fill:#8b5cf6,stroke:#7c3aed,color:#fff;
+    
+    Client["💻 Web Clients (Browser)"]:::client
+    ALB["🔀 AWS Load Balancer"]:::network
+    API["⚙️ Astro Server Container"]:::client
+    DB["🗄️ PostgreSQL Database"]:::database
+    
+    Client -->|HTTPS / Route 53| ALB
+    ALB -->|Target Group| API
+    API -->|Prisma Connection| DB</pre></div><hr>
+<h4 id="3-fireworks-tech-graphai-agent-的全能绘图师">3. fireworks-tech-graph：AI Agent 的“全能绘图师”</h4><p><strong>GitHub 地址：</strong> <a href="https://github.com/yizhiyanhua-ai/fireworks-tech-graph">yizhiyanhua-ai/fireworks-tech-graph</a></p>
+<p>fireworks-tech-graph 是一个基于 Python 开发的 <strong>Prompt-to-SVG/PNG 绘图引擎</strong>。它的核心定位是作为 AI Agent（例如 Claude Code、AutoGPT 等）的“制图外挂”，帮助 AI 将抽象的算法、协作逻辑和工作流瞬间实例化为时序图或流程图。</p>
+<h5 id="-生成实例">💡 生成实例：</h5><p>当你在终端向 AI Agent 发出一条绘图指令：</p>
+<blockquote>
+<p><strong>开发者/Agent：</strong> *&quot;画一张我们定时新闻抓取与重写（Crawler &amp; LLM Rewriter）工作流的时序图。展示 Cron 触发抓取、获取 HTML、发送给 Gemini 3.5 Flash 重写。如果遇到 429 报错，降级到 Gemini 3.1 Flash-Lite，最后把成功的内容写入 PostgreSQL。&quot; *</p>
+</blockquote>
+<p>AI Agent 就会自动组织参数并调用 FTG 引擎，自动生成并保存一张无损的矢量 SVG 图（并调用 <code>cairosvg</code> 输出高 DPI 的 PNG 图片）。生成的时序图表现如下：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-2">sequenceDiagram
+    autonumber
+    actor System as Cron Trigger
+    participant Crawler as News Crawler
+    participant LLM as Gemini Flash
+    participant Fallback as Gemini Flash-Lite
+    participant DB as PostgreSQL
+    
+    System->>Crawler: Trigger Crawl Job
+    Crawler->>Crawler: Fetch Raw HTML
+    Crawler->>LLM: Send content for rewrite (responseMimeType: JSON)
+    alt Success
+        LLM-->>Crawler: Return Clean JSON Summary
+    else 429 Rate Limit
+        Crawler->>Fallback: Retry request to Backup
+        Fallback-->>Crawler: Return Clean JSON Summary
+    end
+    Crawler->>DB: Write Upserted Article row
+    DB-->>System: Job Finished</pre></div><hr>
+<h3 id="三大工具的核心差异对比">三大工具的核心差异对比</h3><p>这三款工具在技术路线和应用侧重点上有着明显的区别：</p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">oh-my-mermaid (OMM)</th>
+<th align="left">architecture-diagram-generator (ADG)</th>
+<th align="left">fireworks-tech-graph (FTG)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>主要定位</strong></td>
+<td align="left">代码级架构逆向与静态/AI 扫描</td>
+<td align="left">系统架构物理/逻辑拓扑绘制</td>
+<td align="left">Prompt 驱动的通用技术/Agent 制图</td>
+</tr>
+<tr>
+<td align="left"><strong>输入源</strong></td>
+<td align="left">现有源代码目录 (Codebase)</td>
+<td align="left">YAML/DSL 描述文件或自然语言</td>
+<td align="left">自然语言 (Prompts) / UML 语法</td>
+</tr>
+<tr>
+<td align="left"><strong>输出格式</strong></td>
+<td align="left">交互式 HTML 页面 + Mermaid 代码</td>
+<td align="left">纯 HTML / 高画质 SVG / PNG</td>
+<td align="left">SVG 矢量图 / 管道导出高 DPI PNG</td>
+</tr>
+<tr>
+<td align="left"><strong>视觉风格</strong></td>
+<td align="left">标准白/暗色 Mermaid 风格 (可跳转)</td>
+<td align="left">极客风暗黑科技感主题 (JetBrains Mono)</td>
+<td align="left">多样式风格 (多色相、平面几何、线条风)</td>
+</tr>
+<tr>
+<td align="left"><strong>最大痛点解决</strong></td>
+<td align="left">看不懂新项目，老项目重构时架构模糊</td>
+<td align="left">手绘架构图排版凌乱，修改繁琐</td>
+<td align="left">无法在终端或 Agent 中用自然语言高效制图</td>
+</tr>
+<tr>
+<td align="left"><strong>AI 协同方式</strong></td>
+<td align="left">作为 Claude/Cursor 静态分析的逆向工具</td>
+<td align="left">AI 辅助生成结构拓扑 DSL 渲染</td>
+<td align="left">深度集成作为 Agent 的多模态制图 Skills</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="区别与联系如何构建你的超级制图流">区别与联系：如何构建你的“超级制图流”？</h3><p>这三者虽然都是“作图”工具，但它们绝非彼此对立的竞争关系，而是处于<strong>一条完整的技术图表生成价值链</strong>中。</p>
+<p>让我们通过一个具体的软件开发流程，来看看如何将它们串联使用：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-3">graph TD
+    A[系统设计阶段] -->|使用 FTG / ADG| B[绘制系统物理/逻辑拓扑]
+    B --> C[代码实现阶段: 产出 codebase]
+    C -->|使用 OMM 逆向分析| D[自动生成代码级文档与函数调用图]
+    D -->|使用 FTG| E[在 README / 博客中绘制 Agent 核心算法流与 UML]
+    E --> F[全自动、免手绘的技术文档闭环]</pre></div><ol>
+<li><strong>系统设计阶段（Topology Design）</strong>：
+在系统动工前，你和 AI 助手可以通过 <strong>architecture-diagram-generator (ADG)</strong> 确定云服务分区、微服务分布以及 VPC 网络拓扑，产出规范的暗黑风系统物理蓝图。</li>
+<li><strong>算法与流程说明（Process Detail）</strong>：
+对于系统内一些复杂的逻辑块（例如多 Agent 协作决策机制、三方支付回调时序），你可以在终端向 Claude Code 发出指令，调用 <strong>fireworks-tech-graph (FTG)</strong> 以自然语言自动输出几幅精致的工作流 SVG 插图，直接嵌入设计文档。</li>
+<li><strong>代码逆向与演进审计（Reverse Engineering &amp; Maintenance）</strong>：
+当项目真正实现并沉淀出庞大的 codebase 后，使用 <strong>oh-my-mermaid (OMM)</strong> 进行递归分析，自动为你的复杂系统梳理出数据流、调用流，并在本地生成可层层向下钻取（Drill-down）的交互式文档，告别落后于代码的“口传心授”式旧架构图。</li>
+</ol>
+<hr>
+<h3 id="agentupdate-深度解析">【AgentUpdate 深度解析】</h3><p>从 AI 编程工程化（Agentic Engineering）的发展来看，这三款制图神器的流行揭示了一个核心范式——<strong>“图表即代码”（Diagrams as Code）与“数据源透明化”的不可逆趋势</strong>。</p>
+<p>传统的作图（如使用 Visio、Draw.io、Figma）是由人类在画布上拖拽、摆放组件并进行硬编码排版。这种方式对 AI Agent 而言非常不友好，因为 AI 擅长逻辑思考与文本输出，但不擅长通过微操鼠标去对齐像素。</p>
+<ul>
+<li>OMM 解决了 <strong>“输入透明”</strong>：将不可读的二进制目录关系转化为 AI 可理解、可编辑的 Mermaid 拓扑文本。</li>
+<li>ADG 解决了 <strong>“标准输出”</strong>：通过强约束的样式和颜色，让 AI 只需生成纯数据维度的拓扑关系，剩下的排版、美化、对齐全部交给渲染器，保证了生成的图表永远具有生产环境级别的专业美感。</li>
+<li>FTG 解决了 <strong>“命令边界扩展”</strong>：让 CLI 工具（如 Claude Code）在纯终端环境下，也能随时产出直观的图片作为输出反馈。</li>
+</ul>
+<p>未来，优秀的技术项目必然走向 <strong>“文档完全自治”</strong>。随着这三类工具的融合，未来的编译器甚至可能在检测到代码变动时，自动运行逆向分析、调用主题生成器，在 CI/CD 流程中将最新的架构图默默更新到你的 README 中。这正是 AI 赋予开发运维的全新想象力。</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item h3-nav" data-slug="引言" data-astro-cid-w5q62dq7> <a href="#引言" data-astro-cid-w5q62dq7>引言</a> </li><li class="toc-item h3-nav" data-slug="三大作图工具的核心定位特性与生成实例" data-astro-cid-w5q62dq7> <a href="#三大作图工具的核心定位特性与生成实例" data-astro-cid-w5q62dq7>三大作图工具的核心定位、特性与生成实例</a> </li><li class="toc-item h3-nav" data-slug="三大工具的核心差异对比" data-astro-cid-w5q62dq7> <a href="#三大工具的核心差异对比" data-astro-cid-w5q62dq7>三大工具的核心差异对比</a> </li><li class="toc-item h3-nav" data-slug="区别与联系如何构建你的超级制图流" data-astro-cid-w5q62dq7> <a href="#区别与联系如何构建你的超级制图流" data-astro-cid-w5q62dq7>区别与联系：如何构建你的“超级制图流”？</a> </li><li class="toc-item h3-nav" data-slug="agentupdate-深度解析" data-astro-cid-w5q62dq7> <a href="#agentupdate-深度解析" data-astro-cid-w5q62dq7>【AgentUpdate 深度解析】</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/ai-agent-reach-firecrawl-composio-comparison-guide" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-agent-tools-comparison.png" alt="AI Agent 装备库的三驾马车：对比 Agent-Reach、Firecrawl 与 Composio 的定位与融合" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/ai-agent-reach-firecrawl-composio-comparison-guide" data-astro-cid-w5q62dq7>AI Agent 装备库的三驾马车：对比 Agent-Reach、Firecrawl 与 Composio 的定位与融合</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>在构建自治 AI Agent 时，阻碍其智能释放的往往不是模型参数本身，而是大模型与物理世界的信息通道。本文深度对比三款明星级 AI Agent 增强工具：零成本社媒与检索连接器 Agent-Reach、网页 LLM 排版提取器 Firecrawl、以及应用级动作与工作流引擎 Composio。探讨它们的架构差异、适用边界，以及如何融合它们搭建顶尖的 Agent 基础设施。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月12日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/odysseus-self-hosted-local-first-ai-workspace" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/ai-cover-odysseus.png" alt="本地主权 AI 的终极形态：自托管全功能 AI 工作区 Odysseus 深度指南" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/odysseus-self-hosted-local-first-ai-workspace" data-astro-cid-w5q62dq7>本地主权 AI 的终极形态：自托管全功能 AI 工作区 Odysseus 深度指南</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>在这个隐私让位于云端的时代，如何拥有一个完全属于自己的 AI 助理？本文将以朴实易懂的语言，详细介绍开源自托管 AI 工作区项目 Odysseus。无论你是电脑小白、IT 运维还是开发大佬，都能在这篇指南中找到适合自己的安装使用姿势，了解它如何统一管理本地模型、邮件、日历与自动化 Agent，真正实现“我的硬件、我的模型、我的数据、我的隐私”。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月11日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

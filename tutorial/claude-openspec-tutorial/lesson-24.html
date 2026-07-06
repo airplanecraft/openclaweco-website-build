@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Chapter 24 | Permission Mode — Developing Software Projects with Claude Code + OpenSpec + Multi-role Agents — AgentUpdate.ai</title><meta name="description" content="Prevent Claude Code from prompting you at every step, while ensuring it automatically blocks dangerous operations. Read the latest updates and in-depth..."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://agentupdate.ai/tutorial/claude-openspec-tutorial/lesson-24"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/tutorial/claude-openspec-tutorial/lesson-24"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/tutorial/claude-openspec-tutorial/lesson-24"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/tutorial/claude-openspec-tutorial/lesson-24"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Chapter 24 | Permission Mode — Developing Software Projects with Claude Code + OpenSpec + Multi-role Agents — AgentUpdate.ai"><meta property="og:description" content="Prevent Claude Code from prompting you at every step, while ensuring it automatically blocks dangerous operations. Read the latest updates and in-depth..."><meta property="og:image" content="https://agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://agentupdate.ai/tutorial/claude-openspec-tutorial/lesson-24"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Chapter 24 | Permission Mode — Developing Software Projects with Claude Code + OpenSpec + Multi-role Agents — AgentUpdate.ai"><meta name="twitter:description" content="Prevent Claude Code from prompting you at every step, while ensuring it automatically blocks dangerous operations. Read the latest updates and in-depth..."><meta name="twitter:image" content="https://agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Chapter 24 | Permission Mode — Developing Software Projects with Claude Code + OpenSpec + Multi-role Agents — AgentUpdate.ai","description":"Prevent Claude Code from prompting you at every step, while ensuring it automatically blocks dangerous operations. Read the latest updates and in-depth...","inLanguage":"en","url":"https://agentupdate.ai/tutorial/claude-openspec-tutorial/lesson-24","mainEntityOfPage":{"@type":"WebPage","@id":"https://agentupdate.ai/tutorial/claude-openspec-tutorial/lesson-24"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-6wyomtiy]{margin-top:60px;padding-top:40px;border-top:1px solid var(--border)}.mesh-header[data-astro-cid-6wyomtiy]{display:flex;align-items:center;gap:20px;margin-bottom:32px}.mesh-header[data-astro-cid-6wyomtiy] h2[data-astro-cid-6wyomtiy]{font-size:20px;font-weight:700;color:var(--text);white-space:nowrap}.mesh-line[data-astro-cid-6wyomtiy]{height:1px;background:var(--border);flex:1}.mesh-grid[data-astro-cid-6wyomtiy]{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px}.mesh-column[data-astro-cid-6wyomtiy] h3[data-astro-cid-6wyomtiy]{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}.mesh-item[data-astro-cid-6wyomtiy]{display:flex;gap:12px;padding:12px;border-radius:12px;text-decoration:none;transition:all .2s;margin-bottom:8px}.mesh-item[data-astro-cid-6wyomtiy]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-6wyomtiy],.item-img[data-astro-cid-6wyomtiy]{width:40px;height:40px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.item-img[data-astro-cid-6wyomtiy]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-6wyomtiy] h4[data-astro-cid-6wyomtiy]{font-size:15px;font-weight:600;color:var(--text);margin:0 0 4px}.item-info[data-astro-cid-6wyomtiy] p[data-astro-cid-6wyomtiy]{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+<link rel="stylesheet" href="/_astro/_lesson_.B5irjxMS.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/claude-openspec-tutorial/lesson-24" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/tutorial/claude-openspec-tutorial/lesson-24" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div>  </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>  <main class="lesson-page-wrapper" data-astro-cid-vma7orrt> <div class="container dual-layout-container" data-astro-cid-vma7orrt> <!-- Sidebar Navigation Curriculum --> <aside class="sidebar-nav-catalog" data-astro-cid-vma7orrt> <div class="sidebar-box" data-astro-cid-vma7orrt> <span class="catalog-header-tag" data-astro-cid-vma7orrt>SERIES CURRICULUM</span> <a href="/tutorial/claude-openspec-tutorial" class="series-title-link" data-astro-cid-vma7orrt> DEVELOPING SOFTWARE PROJECTS WITH CLAUDE CODE + OPENSPEC + MULTI-ROLE AGENTS </a> <ul class="nav-lesson-list" data-astro-cid-vma7orrt> <li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>01 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 01 | Why We Need AI, Specifications, and Multiple Roles</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>02 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 02 | Example Project doc2video: The Big Picture</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-03" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>03 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 03 | Mental Model — Three-tier Architecture</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>04 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 04 | Environment Setup Checklist</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>05 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 05 | Install Claude Code</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>06 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 06 | Install OpenSpec</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>07 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 07 | The Worldview of OpenSpec</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>08 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 08 | Using `/opsx:explore` to Explore Ideas</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>09 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 09 | Decisions Are Trade-offs</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>10 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 10 | Propose Changes with `/opsx:propose`</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>11 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 11 | Writing design.md</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>12 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 12 | Writing Specs — Requirements and Scenarios</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>13 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 13 | Writing tasks.md</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>14 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 14 | What is a Subagent</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>15 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 15 | Role Division — Avoiding the &#39;God Agent&#39; Trap</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>16 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 16 | Writing Agent Files</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>17 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 17 | Model Selection Strategy</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>18 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 18 | Advanced: Escalation and Architect</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-19" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>19 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 19 | CLAUDE.md — Project Constitution</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-20" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>20 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 20 | File-Based State Machine</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-21" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>21 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 21 | Customizing Slash Commands `/dev`</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-22" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>22 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 22 | Trigger Mode: Semi-manual and Fully Automatic</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-23" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>23 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 23 | settings.json: Comprehensive Overview</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-24" class="lesson-nav-link active" data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>24 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 24 | Permission Mode</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-25" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>25 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 25 | PreToolUse Hook: Dynamic Validation</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-26" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>26 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 26 | Stop hook: Notification Integration</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-27" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>27 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 27 | First Run of `/dev`</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-28" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>28 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 28 | Debugging and Troubleshooting</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-29" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>29 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 29 | Sandbox Selection</span> </a> </li><li data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-30" class="lesson-nav-link " data-astro-cid-vma7orrt> <span class="lesson-index-num" data-astro-cid-vma7orrt>30 //</span> <span class="lesson-title-text" data-astro-cid-vma7orrt>Chapter 30 | Advanced: Team, CI, Extensibility</span> </a> </li> </ul> </div> </aside> <!-- Main Lesson Content --> <article class="main-lesson-article" data-astro-cid-vma7orrt> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial" data-astro-cid-ilhxcym7>Tutorials</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/tutorial/claude-openspec-tutorial" data-astro-cid-ilhxcym7>Developing Software Projects with Claude Code + OpenSpec + Multi-role Agents</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Chapter 24 | Permission Mode</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"Developing Software Projects with Claude Code + OpenSpec + Multi-role Agents","item":"https://agentupdate.ai/tutorial/claude-openspec-tutorial"},{"@type":"ListItem","position":4,"name":"Chapter 24 | Permission Mode"}]}</script> <header class="lesson-details-header" data-astro-cid-vma7orrt> <h1 class="lesson-display-title" data-astro-cid-vma7orrt>Chapter 24 | Permission Mode</h1> <div class="lesson-meta-row" data-astro-cid-vma7orrt>  <span class="meta-item" data-astro-cid-vma7orrt>7 MIN READ</span> <span class="meta-separator" data-astro-cid-vma7orrt>|</span>  <span class="meta-item" data-astro-cid-vma7orrt>UPDATED: 2026-06-16</span> </div> </header> <!-- Direct Summary Box (GEO Citation Optimizer) --> <div class="direct-summary-box" data-astro-cid-vma7orrt> <div class="summary-box-title" data-astro-cid-vma7orrt>DIRECT SUMMARY // KEY TAKEAWAY</div> <p class="summary-box-text" data-astro-cid-vma7orrt>Prevent Claude Code from prompting you at every step, while ensuring it automatically blocks dangerous operations.</p> </div> <!-- Markdown Body --> <div class="markdown-article-body" data-astro-cid-vma7orrt><h2>Chapter 24: Permission Modes</h2>
+<h3>Learning Objectives</h3>
+<p>To configure <a href="/tutorial/claude-code-tutorial" class="seo-autolink-keyword">Claude Code</a> to stop prompting you at every step, but still automatically block dangerous actions.</p>
+<h3>Three Tiers of defaultMode</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart LR
+    Default["default<br>Prompt every time"] --&gt;|Friendly| Annoy["✗ Annoying"]
+    AcceptEdits["acceptEdits<br>Edit/Write automatic<br>Bash still prompts"] --&gt;|Balanced| Balance["✓ Balanced"]
+    Bypass["bypassPermissions<br>All automatic<br>Only deny + hook as fallback"] --&gt;|Aggressive| Free["✓ Smooth<br>⚠️ Must be paired with deny + hook"]
+
+    style Default fill:#ffcdd2
+    style AcceptEdits fill:#fff9c4
+    style Bypass fill:#c8e6c9</pre></div><p>→ Multi-agent projects typically <strong>use bypass + strict deny</strong>—otherwise, frequent prompts during dispatch render autonomy ineffective.</p>
+<h3>allow / deny Syntax</h3>
+<pre><code>Bash(&lt;prefix&gt;:*)           Matches command prefix
+Bash(&lt;exact-string&gt;)       Exact match (less common)
+Edit(&lt;glob-pattern&gt;)       Matches file path glob
+Write(&lt;glob-pattern&gt;)      Same as above
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-json">{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(pytest:*)"
+    ],
+    "deny": [
+      "Bash(sudo:*)",
+      "Bash(rm -rf /:*)",
+      "Edit(/etc/**)",
+      "Write(/Users/amanda/.ssh/**)"
+    ]
+  }
+}
+</code></pre>
+<h3>deny Takes Precedence Over allow</h3>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-1">flowchart TD
+    Tool["Claude wants to run X"] --&gt; CheckDeny{Matches deny?}
+    CheckDeny --&gt;|Yes| Block["✗ Immediately deny"]
+    CheckDeny --&gt;|No| CheckAllow{Matches allow?}
+    CheckAllow --&gt;|Yes| Pass["✓ Allow"]
+    CheckAllow --&gt;|No| Mode{defaultMode?}
+    Mode --&gt;|default| Ask["Prompt user"]
+    Mode --&gt;|acceptEdits| AskOrPass["Edit/Write allowed<br>Bash prompts"]
+    Mode --&gt;|bypass| Pass
+
+    style Block fill:#ffcdd2
+    style Pass fill:#c8e6c9</pre></div><h3>Our doc2video Project's Complete deny List</h3>
+<pre><code class="language-json">"deny": [
+  "Bash(sudo:*)",
+  "Bash(curl * | sh:*)",
+  "Bash(curl * | bash:*)",
+  "Bash(wget * | sh:*)",
+  "Bash(wget * | bash:*)",
+  "Bash(chmod 777:*)",
+  "Bash(chown:*)",
+  "Bash(eval:*)",
+  "Bash(:(){:|:&amp;};:*)",
+
+  "Edit(/etc/**)",
+  "Edit(/usr/**)",
+  "Edit(/System/**)",
+  "Edit(/Users/amanda/.ssh/**)",
+  "Edit(/Users/amanda/.aws/**)",
+  "Edit(/Users/amanda/.config/gh/**)",
+  "Edit(/Users/amanda/Library/**)",
+
+  "Write(/etc/**)",
+  ...
+]
+</code></pre>
+<h3>Hard Limitations of Bash Pattern Matching</h3>
+<p><code>Bash(rm:*)</code> blocks <strong>all</strong> commands containing <code>rm</code>—you <strong>cannot</strong> solely rely on <code>deny</code> to implement "allow <code>rm</code> within the project / deny <code>rm</code> outside the project":</p>
+<pre><code>Inside project: rm src/foo.py        ← You want to allow this
+Outside project: rm /tmp/foo          ← You want to block this
+                             
+But deny only checks the "command string prefix", both start the same way
+→ Must rely on hooks (Ch 25)
+</code></pre>
+<h3>Details of Path Globs</h3>
+<pre><code>Edit(/Users/amanda/work/openspec/**)   → Any file within the project
+Edit(/Users/amanda/.ssh/**)            → Private key directory
+Edit(*.env)                            → Any .env file (relative path)
+</code></pre>
+<p>→ Globs use <code>**</code> to match multiple directory levels.</p>
+<h3>Practical Steps: Switching from default to bypass</h3>
+<ol>
+<li>First, run a few times with <code>default</code> to identify operations that are always prompted.</li>
+<li>Add "obviously safe" operations to <code>allow</code>.</li>
+<li>Add "obviously dangerous" operations to <code>deny</code>.</li>
+<li>Switch to <code>bypassPermissions</code>.</li>
+<li>Run a test to confirm that disallowed actions are blocked by <code>deny</code>.</li>
+<li>Run production tasks.</li>
+</ol>
+<h3>Anti-Patterns</h3>
+<pre><code>❌ Enable bypass without any deny rules
+   → This disables all of Claude Code's safety nets.
+
+❌ Overly strict deny rules
+   → Legitimate operations are blocked, causing the agent to get stuck.
+
+❌ Attempting to use Bash patterns for path validation
+   → Patterns only check strings, not semantics.
+   → Use hooks (Ch 25).
+
+❌ Storing tokens in settings.json
+   → They should be in settings.local.json + env.
+</code></pre>
+<h3>What You Can Do Now</h3>
+<ul>
+<li>Configure bypass mode + a strict deny list.</li>
+<li>Explain that deny takes precedence over allow.</li>
+<li>Understand the boundaries of Bash pattern matching (command string prefix).</li>
+</ul>
+<p>The next chapter will address "path awareness" issues using PreToolUse hooks.</p>
+<hr>
+</div> <!-- Bottom Lesson Navigation --> <div class="bottom-pagination-row" data-astro-cid-vma7orrt> <div class="pag-item prev" data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-23" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>← PREVIOUS LESSON</span> <span class="pag-title" data-astro-cid-vma7orrt>Chapter 23 | settings.json: Comprehensive Overview</span> </a> </div> <div class="pag-item next" data-astro-cid-vma7orrt> <a href="/tutorial/claude-openspec-tutorial/lesson-25" class="pag-btn" data-astro-cid-vma7orrt> <span class="pag-label" data-astro-cid-vma7orrt>NEXT LESSON →</span> <span class="pag-title" data-astro-cid-vma7orrt>Chapter 25 | PreToolUse Hook: Dynamic Validation</span> </a> </div> </div> <div class="related-block-divider" data-astro-cid-vma7orrt></div>  </article> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Mermaid.js for diagram rendering --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>  <script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>

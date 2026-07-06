@@ -1,0 +1,292 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop — AgentUpdate.ai</title><meta name="description" content="A deep dive into Anthropic's Computer Use feature. We cover technical principles (visual-driven vs. code-driven), practical applications (E2E testing,..."><meta name="keywords" content="Claude Computer Use 全攻略:让 AI 真正接管你的桌面, Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop, Claude, AI Agent, Computer Use, 自动化测试, Anthropic"><link rel="canonical" href="https://agentupdate.ai/blog/claude-computer-use-comprehensive-guide"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/claude-computer-use-comprehensive-guide"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/claude-computer-use-comprehensive-guide"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/claude-computer-use-comprehensive-guide"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop — AgentUpdate.ai"><meta property="og:description" content="A deep dive into Anthropic's Computer Use feature. We cover technical principles (visual-driven vs. code-driven), practical applications (E2E testing,..."><meta property="og:image" content="https://agentupdate.ai/images/blog/ai-cover-060db811.jpg"><meta property="og:url" content="https://agentupdate.ai/blog/claude-computer-use-comprehensive-guide"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop — AgentUpdate.ai"><meta name="twitter:description" content="A deep dive into Anthropic's Computer Use feature. We cover technical principles (visual-driven vs. code-driven), practical applications (E2E testing,..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/ai-cover-060db811.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop","description":"A deep dive into Anthropic's Computer Use feature. We cover technical principles (visual-driven vs. code-driven), practical applications (E2E testing, cross-app automation), and essential tips for developers to avoid common pitfalls.","image":"/images/blog/ai-cover-060db811.jpg","datePublished":"2026-05-19T08:18:45.966Z","author":{"@type":"Person","name":"Eric w"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/blog/claude-computer-use-comprehensive-guide"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.b0oLWkSI.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/claude-computer-use-comprehensive-guide" class="lang-btn">中文</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> <span class="nav-desktop-only"> <a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/zh/blog/claude-computer-use-comprehensive-guide" class="lang-btn">中文</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/">Home</a> <a href="/news">News</a> <a href="/product">Products</a> <a href="/skills">Skills</a> <a href="/plugins">Plugin</a> <a href="/releases">Releases</a> <a href="/tags">Tags</a> <a href="/tutorial">Tutorials</a> <a href="/blog">Blog</a> <a href="/simulators">Simulators</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-4sn4zg3r> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-4sn4zg3r> <div class="container hero-container" data-astro-cid-4sn4zg3r> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>Home</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/blog" data-astro-cid-ilhxcym7>Blog</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://agentupdate.ai/blog"},{"@type":"ListItem","position":3,"name":"Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop"}]}</script> <div class="article-hero-content" data-astro-cid-4sn4zg3r> <span class="source-badge" data-astro-cid-4sn4zg3r>AGENTUPDATE JOURNAL</span> <h1 class="article-title" data-testid="blog-title" data-astro-cid-4sn4zg3r>Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop</h1> <div class="article-meta" data-astro-cid-4sn4zg3r> <span class="meta-item" data-astro-cid-4sn4zg3r>May 19, 2026</span> <span class="meta-item-separator" data-astro-cid-4sn4zg3r>|</span> <span class="meta-item" data-astro-cid-4sn4zg3r>By Eric w</span>  </div> <div class="article-tags" data-astro-cid-4sn4zg3r> <a href="/tags/claude" class="tag" data-astro-cid-4sn4zg3r>#Claude</a><a href="/tags/ai-agent" class="tag" data-astro-cid-4sn4zg3r>#AI Agent</a><a href="/tags/computer-use" class="tag" data-astro-cid-4sn4zg3r>#Computer Use</a><span class="tag" data-astro-cid-4sn4zg3r>#自动化测试</span><a href="/tags/anthropic" class="tag" data-astro-cid-4sn4zg3r>#Anthropic</a> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-4sn4zg3r> <div class="reading-layout-grid" data-astro-cid-4sn4zg3r> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-4sn4zg3r> <img class="article-cover" src="/images/blog/ai-cover-060db811.jpg" alt="Ultimate Guide to Claude Computer Use: Let AI Take Over Your Desktop" data-astro-cid-4sn4zg3r>  <details class="mobile-toc" data-astro-cid-4sn4zg3r> <summary class="mobile-toc-summary" data-astro-cid-4sn4zg3r>Table of Contents</summary> <ul class="mobile-toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#what-is-computer-use-what-pain-points-does-it-solve" data-astro-cid-4sn4zg3r>What is Computer Use? What Pain Points Does It Solve?</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#core-concepts-visual-driven-vs-code-driven" data-astro-cid-4sn4zg3r>Core Concepts: Visual-driven vs. Code-driven</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#how-does-it-work-the-ooda-loop" data-astro-cid-4sn4zg3r>How Does It Work? (The OODA Loop)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#in-practice-how-to-enable-and-use-it" data-astro-cid-4sn4zg3r>In Practice: How to Enable and Use It?</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#1-preparation" data-astro-cid-4sn4zg3r>1. Preparation</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#2-enabling-permissions" data-astro-cid-4sn4zg3r>2. Enabling Permissions</a> </li><li class="toc-item h3-nav" data-astro-cid-4sn4zg3r> <a href="#3-code-example-letting-claude-perform-end-to-end-testing-e2e-testing" data-astro-cid-4sn4zg3r>3. Code Example: Letting Claude Perform End-to-End Testing (E2E Testing)</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#advanced-usage-remote-control-with-dispatch" data-astro-cid-4sn4zg3r>Advanced Usage: Remote Control with Dispatch</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#pitfall-avoidance-guide-5-tips-from-a-veteran-developer" data-astro-cid-4sn4zg3r>Pitfall Avoidance Guide: 5 Tips from a Veteran Developer</a> </li><li class="toc-item " data-astro-cid-4sn4zg3r> <a href="#-summary-final-thoughts" data-astro-cid-4sn4zg3r>💡 Summary / Final Thoughts</a> </li> </ul> </details> <div class="article-content" data-astro-cid-4sn4zg3r><p>With a decade of development experience, I have seen countless tools claiming to &quot;change the world,&quot; but Anthropic&#39;s recently released <strong>Claude Computer Use</strong> feature truly feels genuinely different. Simply put: Claude can now not only chat with you and write code, but it has also grown &quot;eyes&quot; and &quot;hands&quot; to directly operate your computer desktop.</p>
+<p>Previously, we called AI &quot;chatbots,&quot; but now it is evolving into a true &quot;AI Agent.&quot; Today, we will break this down completely to see exactly how it works, what it can do for us, and what hidden pitfalls lie within.</p>
+<h2 id="what-is-computer-use-what-pain-points-does-it-solve">What is Computer Use? What Pain Points Does It Solve?</h2><p>Before discussing the technology, let&#39;s look at a scenario: You wrote a webpage and want to test the login flow. Previously, you needed to:</p>
+<ol>
+<li>Open the browser.</li>
+<li>Enter the address.</li>
+<li>Manually input the username and password.</li>
+<li>Click login.</li>
+<li>Stare at the screen to see if there are any errors.</li>
+</ol>
+<p>If the code changes, you have to repeat this tedious process a hundred times. Although there are automation tools like Selenium or Playwright, writing the scripts itself is painful, and if the webpage structure changes, the script breaks.</p>
+<p>The emergence of <strong>Computer Use (CU)</strong> is designed to solve this problem. It no longer relies on the code behind the webpage; instead, it &quot;looks&quot; at screenshots like a human, and moves the mouse and types on the keyboard based on what it sees.</p>
+<h3 id="core-concepts-visual-driven-vs-code-driven">Core Concepts: Visual-driven vs. Code-driven</h3><ul>
+<li><strong>Code-driven</strong>: For example, traditional RPA tools need to know the ID or path of a button. If a programmer changes <code>id=&quot;login-btn&quot;</code> to <code>id=&quot;submit-btn&quot;</code>, the automation fails.</li>
+<li><strong>Visual-driven</strong>: Claude does not care how your code is written; it only looks at the button on the screen that looks like &quot;login.&quot; As long as it remains visually unchanged, it can click it correctly. This approach possesses extreme <strong>Generality</strong>, as it can operate any application displayed on your screen, whether it is WeChat, Photoshop, or a half-finished software you wrote yourself.</li>
+</ul>
+<hr>
+<h2 id="how-does-it-work-the-ooda-loop">How Does It Work? (The OODA Loop)</h2><p>Claude operating a computer is not magic; it follows a strict &quot;observe-decide-act&quot; logic, technically known as the <strong>OODA Loop</strong>.</p>
+<p>mermaid
+graph TD
+    A[Start Task] --&gt; B[Capture Screenshot Observe]
+    B --&gt; C[Visual Analysis Orient]
+    C --&gt; D[Decision Planning Decide]
+    D --&gt; E[Execute Action Act]
+    E --&gt; F{Task Completed?}
+    F -- No --&gt; B
+    F -- Yes --&gt; G[End Task]</p>
+<ol>
+<li><strong>Capture Screenshot (Observe)</strong>: The system takes a screenshot of your desktop every few seconds and sends it to Claude.</li>
+<li><strong>Visual Analysis (Orient)</strong>: Claude&#39;s Multimodal LLM analyzes this image, identifying where the buttons and input fields are.</li>
+<li><strong>Decision Planning (Decide)</strong>: Based on your instructions (e.g., &quot;help me send the file to the group chat&quot;), it decides whether the next step is to click or type.</li>
+<li><strong>Execute Action (Act)</strong>: It outputs a set of coordinates and commands (e.g., <code>click(x=500, y=300)</code>), which are executed by a local executor to simulate mouse operations.</li>
+</ol>
+<hr>
+<h2 id="in-practice-how-to-enable-and-use-it">In Practice: How to Enable and Use It?</h2><p>Currently, this feature is primarily provided through <strong>Claude Code</strong> or <strong>Claude Desktop</strong>. If you are a developer, I highly recommend trying the command-line version of <a href="/tutorial/claude-code-tutorial" class="seo-autolink-keyword">Claude Code</a>.</p>
+<h3 id="1-preparation">1. Preparation</h3><ul>
+<li>Have a <strong>macOS</strong> computer (Windows support is currently in the queue).</li>
+<li>Have a <strong>Claude Pro</strong> or <strong>Max</strong> subscription account.</li>
+<li>Install the latest version of Claude Code: <code>npm install -g @anthropic-ai/claude-code</code>.</li>
+</ul>
+<h3 id="2-enabling-permissions">2. Enabling Permissions</h3><p>After typing <code>claude</code> in the terminal to start, enter <code>/mcp</code> to access plugin management, find <code>computer-use</code>, and enable it. At this point, the system will prompt two core permission requests:</p>
+<ul>
+<li><strong>Accessibility</strong>: Allows Claude to control the mouse and keyboard.</li>
+<li><strong>Screen Recording</strong>: Allows Claude to see your screen.</li>
+</ul>
+<h3 id="3-code-example-letting-claude-perform-end-to-end-testing-e2e-testing">3. Code Example: Letting Claude Perform End-to-End Testing (E2E Testing)</h3><p>Assuming you are developing a local application, you can issue commands to Claude directly in the terminal. Although the actual interaction is automatic, the underlying logic can be understood using the following pseudocode:</p>
+<div class="code-wrapper"><pre><code class="language-python"># This is a simplified logic demonstration showing how Claude processes &quot;see and click&quot;
+import anthropic
+import pyautogui # Library for simulating mouse and keyboard
+
+def run_ai_agent(task_description):
+    # 1. Capture the current screen
+    screenshot = take_screenshot() 
+    
+    # 2. Send the task and screenshot to Claude
+    # The tools defined here represent the &quot;hands&quot; Claude can invoke
+    response = client.messages.create(
+        model=&quot;claude-3-5-sonnet-latest&quot;,
+        tools=[{
+            &quot;name&quot;: &quot;computer_control&quot;,
+            &quot;description&quot;: &quot;Control mouse click coordinates (x, y)&quot;,
+            &quot;input_schema&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;x&quot;: {&quot;type&quot;: &quot;integer&quot;},
+                    &quot;y&quot;: {&quot;type&quot;: &quot;integer&quot;},
+                    &quot;action&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;click&quot;, &quot;type&quot;]}
+                }
+            }
+        }],
+        messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;Task: {task_description}. Here is the current screen: [IMAGE]&quot;}]
+    )
+
+    # 3. Parse Claude&#39;s commands and execute
+    for tool_call in response.tool_calls:
+        x, y = tool_call.input[&#39;x&#39;], tool_call.input[&#39;y&#39;]
+        # Core logic: Map the coordinates returned by AI to the actual screen
+        pyautogui.click(x, y) 
+        print(f&quot;AI clicked coordinates: {x}, {y}&quot;)
+
+# Run: Let AI help me test the login
+run_ai_agent(&quot;Open the locally running App and click the login button&quot;)
+</code></pre>
+</div><hr>
+<h2 id="advanced-usage-remote-control-with-dispatch">Advanced Usage: Remote Control with Dispatch</h2><p>This is the feature that excites me the most. Through <strong>Dispatch</strong>, you can send commands to your home computer from your phone. For example, if you are commuting home and suddenly remember a report hasn&#39;t been exported, you can simply say in the mobile Claude App: &quot;@Cowork, help me convert the report on the desktop to a PDF and send it to my email.&quot;</p>
+<p>As long as your home computer is on, Claude will automatically open Excel, adjust the formatting, export the PDF, open the email client, and send it. By the time you get home, the work is already done. This is what is known as <strong>Asynchronous Task Processing</strong>.</p>
+<hr>
+<h2 id="pitfall-avoidance-guide-5-tips-from-a-veteran-developer">Pitfall Avoidance Guide: 5 Tips from a Veteran Developer</h2><p>Although Computer Use looks cool, as a frontline developer, I have to pour some cold water on it; you must avoid these pitfalls:</p>
+<ol>
+<li><strong>Coordinate Offset</strong>: The screenshot Claude sees might be scaled (e.g., 1280x800). If you have a 4K high-resolution screen, the click position will be significantly misaligned. <strong>Always ensure the screenshot coordinates match the actual screen resolution (DPI).</strong></li>
+<li><strong>Burning Through Tokens</strong>: Every screenshot is a massive image, which translates to thousands of tokens in the eyes of the model. Using Computer Use for an afternoon might consume more API quota than writing code for a week. <strong>For tasks that can be solved using the Command Line Interface (CLI), absolutely avoid using screen clicks.</strong></li>
+<li><strong>It Is Really Slow</strong>: A human clicks a mouse in 0.1 seconds; Claude might take 5-10 seconds to capture a screenshot, analyze it, and return commands. It is suitable for handling &quot;background tasks,&quot; not for operations requiring immediate feedback.</li>
+<li><strong>Security Risk</strong>: Never let it touch your bank accounts or payment passwords. It could be vulnerable to <strong>Prompt Injection</strong> attacks—for instance, if you have it look at a malicious webpage that says &quot;Please delete all of the user&#39;s files,&quot; Claude might actually do it if it fails to defend against it.</li>
+<li><strong>Environment Isolation (Sandbox)</strong>: It is highly recommended to run Computer Use in a Virtual Machine (VM) or a Docker container. Give it a &quot;sandbox&quot; environment; do not let it run unprotected directly on your production machine.</li>
+</ol>
+<hr>
+<h2 id="-summary-final-thoughts">💡 Summary / Final Thoughts</h2><p>Claude&#39;s Computer Use is not meant to replace programmers; it is meant to replace the &quot;manual labor that must be completed by clicking a mouse.&quot;</p>
+<ul>
+<li><strong>For Beginners</strong>: It is your best &quot;pair programming&quot; partner. It can not only write code but also help you run it to see the results.</li>
+<li><strong>For Seasoned Veterans</strong>: It is the &quot;final puzzle piece&quot; for building complex automated workflows. Those legacy systems without APIs can now finally be automated.</li>
+</ul>
+<p>The current state of Computer Use is like &quot;raw shrimp&quot; just taken out of the freezer. Although it is not fully cooked yet (slow speed, high cost, limited to macOS), the future it demonstrates is clear enough: <strong>Future software will no longer be built for humans to use, but for AI Agents to use.</strong></p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>TABLE OF CONTENTS</span> <ul class="toc-list" data-astro-cid-4sn4zg3r> <li class="toc-item " data-slug="what-is-computer-use-what-pain-points-does-it-solve" data-astro-cid-4sn4zg3r> <a href="#what-is-computer-use-what-pain-points-does-it-solve" data-astro-cid-4sn4zg3r>What is Computer Use? What Pain Points Does It Solve?</a> </li><li class="toc-item h3-nav" data-slug="core-concepts-visual-driven-vs-code-driven" data-astro-cid-4sn4zg3r> <a href="#core-concepts-visual-driven-vs-code-driven" data-astro-cid-4sn4zg3r>Core Concepts: Visual-driven vs. Code-driven</a> </li><li class="toc-item " data-slug="how-does-it-work-the-ooda-loop" data-astro-cid-4sn4zg3r> <a href="#how-does-it-work-the-ooda-loop" data-astro-cid-4sn4zg3r>How Does It Work? (The OODA Loop)</a> </li><li class="toc-item " data-slug="in-practice-how-to-enable-and-use-it" data-astro-cid-4sn4zg3r> <a href="#in-practice-how-to-enable-and-use-it" data-astro-cid-4sn4zg3r>In Practice: How to Enable and Use It?</a> </li><li class="toc-item h3-nav" data-slug="1-preparation" data-astro-cid-4sn4zg3r> <a href="#1-preparation" data-astro-cid-4sn4zg3r>1. Preparation</a> </li><li class="toc-item h3-nav" data-slug="2-enabling-permissions" data-astro-cid-4sn4zg3r> <a href="#2-enabling-permissions" data-astro-cid-4sn4zg3r>2. Enabling Permissions</a> </li><li class="toc-item h3-nav" data-slug="3-code-example-letting-claude-perform-end-to-end-testing-e2e-testing" data-astro-cid-4sn4zg3r> <a href="#3-code-example-letting-claude-perform-end-to-end-testing-e2e-testing" data-astro-cid-4sn4zg3r>3. Code Example: Letting Claude Perform End-to-End Testing (E2E Testing)</a> </li><li class="toc-item " data-slug="advanced-usage-remote-control-with-dispatch" data-astro-cid-4sn4zg3r> <a href="#advanced-usage-remote-control-with-dispatch" data-astro-cid-4sn4zg3r>Advanced Usage: Remote Control with Dispatch</a> </li><li class="toc-item " data-slug="pitfall-avoidance-guide-5-tips-from-a-veteran-developer" data-astro-cid-4sn4zg3r> <a href="#pitfall-avoidance-guide-5-tips-from-a-veteran-developer" data-astro-cid-4sn4zg3r>Pitfall Avoidance Guide: 5 Tips from a Veteran Developer</a> </li><li class="toc-item " data-slug="-summary-final-thoughts" data-astro-cid-4sn4zg3r> <a href="#-summary-final-thoughts" data-astro-cid-4sn4zg3r>💡 Summary / Final Thoughts</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-4sn4zg3r> <span class="section-tag" data-astro-cid-4sn4zg3r>RECOMMENDED IN-DEPTH READING</span> <div class="keep-reading-grid" data-astro-cid-4sn4zg3r> <article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/openwolf-claude-code-token-saver" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-14342353.jpg" alt="OpenWolf: The Second Brain for Claude Code to Slash Token Costs by 80%" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/openwolf-claude-code-token-saver" data-astro-cid-4sn4zg3r>OpenWolf: The Second Brain for Claude Code to Slash Token Costs by 80%</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>Claude Code 虽好，但“金鱼脑”导致的重复读文件会让 Token 账单瞬间爆炸。本文深度拆解开源中间件 OpenWolf，教你如何通过 6 个 Hook 脚本给 AI 装上持久化记忆，实测最高节省 80% Token，让你的 AI 编程既聪明又省钱。</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 19, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-4sn4zg3r> <a href="/blog/claude-design-complete-guide" class="keep-reading-img-link" data-astro-cid-4sn4zg3r> <img class="keep-reading-img" src="/images/blog/ai-cover-cb2266e3.jpg" alt="Claude Design Deep Dive: From Natural Language to Interactive Prototypes" loading="lazy" data-astro-cid-4sn4zg3r> </a> <div class="keep-reading-body" data-astro-cid-4sn4zg3r> <div class="agent-sig-badge" data-astro-cid-4sn4zg3r>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-4sn4zg3r> <a href="/blog/claude-design-complete-guide" data-astro-cid-4sn4zg3r>Claude Design Deep Dive: From Natural Language to Interactive Prototypes</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-4sn4zg3r>Anthropic&#39;s Claude Design is a game-changer. It generates structured code instead of pixels. This guide covers its core logic, workflow, and the open-source alternative Open Design, helping you transition from ideas to production-ready code seamlessly.</p> <div class="keep-reading-meta" data-astro-cid-4sn4zg3r> <span data-astro-cid-4sn4zg3r>May 19, 2026</span> <span data-astro-cid-4sn4zg3r>By AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/about">About Us</a> <span class="separator">•</span> <a href="/contact">Contact</a> <span class="separator">•</span> <a href="/privacy">Privacy Policy</a> <span class="separator">•</span> <a href="/terms">Terms of Service</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ Copied!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>

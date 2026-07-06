@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用 — AgentUpdate.ai</title><meta name="description" content="给 4 语言边缘应用做 SEO 和 GEO:hreflang、sitemap、robots、llms.txt、AI 引用就绪、Lighthouse 进 loop —— 以及那些必须手动更新的面。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="keywords" content="1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用, 1000usdinchina.com Dev Retrospective (8) - Multilingual SEO &amp; GEO: Sitemaps, llms.txt and AI-Citation, seo, geo, i18n, llms-txt, hreflang"><link rel="canonical" href="https://agentupdate.ai/zh/blog/multilingual-seo-geo-llms-txt"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/multilingual-seo-geo-llms-txt"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/multilingual-seo-geo-llms-txt"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/multilingual-seo-geo-llms-txt"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用 — AgentUpdate.ai"><meta property="og:description" content="给 4 语言边缘应用做 SEO 和 GEO:hreflang、sitemap、robots、llms.txt、AI 引用就绪、Lighthouse 进 loop —— 以及那些必须手动更新的面。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta property="og:image" content="https://agentupdate.ai/images/blog/seo-geo-cover.png"><meta property="og:url" content="https://agentupdate.ai/zh/blog/multilingual-seo-geo-llms-txt"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用 — AgentUpdate.ai"><meta name="twitter:description" content="给 4 语言边缘应用做 SEO 和 GEO:hreflang、sitemap、robots、llms.txt、AI 引用就绪、Lighthouse 进 loop —— 以及那些必须手动更新的面。 阅读 AgentUpdate.ai 带来的深度分析，为您提供最新的 AI 智能体技术、开源工具及开发教程。"><meta name="twitter:image" content="https://agentupdate.ai/images/blog/seo-geo-cover.png"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用","description":"给 4 语言边缘应用做 SEO 和 GEO:hreflang、sitemap、robots、llms.txt、AI 引用就绪、Lighthouse 进 loop —— 以及那些必须手动更新的面。","image":"/images/blog/seo-geo-cover.png","datePublished":"2026-06-22T00:00:00.000Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"Eric"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/multilingual-seo-geo-llms-txt"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/multilingual-seo-geo-llms-txt" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/multilingual-seo-geo-llms-txt" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年6月22日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: Eric</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>10 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/seo" class="tag" data-astro-cid-w5q62dq7>#seo</a><span class="tag" data-astro-cid-w5q62dq7>#geo</span><span class="tag" data-astro-cid-w5q62dq7>#i18n</span><span class="tag" data-astro-cid-w5q62dq7>#llms-txt</span><span class="tag" data-astro-cid-w5q62dq7>#hreflang</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/seo-geo-cover.png" alt="1000usdinchina.com开发总结(8)-多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#多语言-seo-基建" data-astro-cid-w5q62dq7>多语言 SEO 基建</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#sitemaprobotsllmstxt" data-astro-cid-w5q62dq7>sitemap、robots、llms.txt</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#geo被-ai-引擎引用" data-astro-cid-w5q62dq7>GEO:被 AI 引擎引用</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#用-seo-skill-审计" data-astro-cid-w5q62dq7>用 SEO skill 审计</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#手动维护的面" data-astro-cid-w5q62dq7>手动维护的面</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#分析与搜索控制台提交" data-astro-cid-w5q62dq7>分析与搜索控制台提交</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>上线前的最后一步不是功能 —— 是<strong>被找到</strong>。不只被 Google,还要被 ChatGPT、Perplexity、AI Overviews。
+这篇讲一个四语言边缘应用的<strong>多语言 SEO</strong> 和 <strong>GEO</strong>(生成式引擎优化):hreflang、<a href="/sitemap.xml" class="seo-autolink-keyword">sitemap</a>、robots、
+<strong>llms.txt</strong>、AI 引用就绪、分析,以及让这一切保持同步的维护纪律。</p>
+<p>这是<a href="/zh/blog/china-travel-budget-100-cities/">系列</a>第 8 篇 —— 终篇。</p>
+<h2 id="目录">目录</h2><ul>
+<li><a href="#foundations">多语言 SEO 基建</a></li>
+<li><a href="#files">sitemap、robots、llms.txt</a></li>
+<li><a href="#geo">GEO:被 AI 引擎引用</a></li>
+<li><a href="#audit">用 SEO skill 审计</a></li>
+<li><a href="#surfaces">手动维护的面</a></li>
+<li><a href="#analytics">分析与搜索控制台提交</a></li>
+<li><a href="#faq">常见问题</a></li>
+</ul>
+<p><a id="foundations"></a></p>
+<h2 id="多语言-seo-基建">多语言 SEO 基建</h2><p>四语言意味着每个页面有四个变体,搜索引擎需要知道它们是翻译,不是重复。<strong>hreflang</strong> 声明这层关系:</p>
+<div class="code-wrapper"><pre><code class="language-html">&lt;link rel=&quot;alternate&quot; hreflang=&quot;en&quot; href=&quot;https://1000usdinchina.com/en/...&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; hreflang=&quot;ja&quot; href=&quot;https://1000usdinchina.com/ja/...&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; hreflang=&quot;ko&quot; href=&quot;https://1000usdinchina.com/ko/...&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; hreflang=&quot;x-default&quot; href=&quot;https://1000usdinchina.com/en/...&quot; /&gt;
+</code></pre>
+</div><p><a href="/zh/blog/edge-serverless-nextjs-cloudflare-d1/">第 2 篇</a>的货币耦合在这也关键:每个本地化页面显示
+本地货币,这让翻译对该受众是真有用的 —— 一个真实信号,而不是机翻空壳。</p>
+<p><a id="files"></a></p>
+<h2 id="sitemaprobotsllmstxt">sitemap、robots、llms.txt</h2><p>三个文件告诉爬虫有什么、怎么读:</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart LR
+    C[内容:100 城 × 4 语] --> SM[sitemap.xml]
+    C --> RB[robots.txt]
+    C --> LT[llms.txt + llms-full.txt]
+    SM --> G[Google / Bing]
+    RB --> G
+    LT --> AI[ChatGPT / Perplexity / AI Overviews]</pre></div><ul>
+<li><strong>sitemap.xml</strong> —— 每种语言的每条路由,自动生成。</li>
+<li><strong>robots.txt</strong> —— 爬取规则;middleware 把对的根路径加白名单(包括搜索控制台验证文件)。</li>
+<li><strong>llms.txt + llms-full.txt</strong> —— <em>给 AI 爬虫</em>的、策展过的机器可读站点摘要。<code>llms.txt</code> 是简洁索引;
+<code>llms-full.txt</code> 是展开版。这是 GEO 版的 sitemap:它告诉 LLM 你的站是什么、什么值得引用。</li>
+</ul>
+<p><a id="geo"></a></p>
+<h2 id="geo被-ai-引擎引用">GEO:被 AI 引擎引用</h2><p>SEO 让你被排名;<strong>GEO 让你被引用。</strong> 当有人问 AI「在中国玩一周多少钱」,你希望你的数字成为被引用的
+答案。有帮助的:</p>
+<ul>
+<li><strong>结构化数据</strong>(FAQ、Article schema),让引擎能抽出干净的问答对 —— 正是本系列每篇结尾做的。</li>
+<li><strong>可引用、自包含的陈述</strong> —— 一句清楚、不依赖周围页面就能回答问题的话。</li>
+<li><strong>llms.txt</strong> 指向规范的聚合事实(<a href="/zh/blog/travel-data-etl-compliant-json/">第 3 篇</a>的合规数据)。</li>
+</ul>
+<p>GEO 和 SEO 互相加固:干净结构 + 清晰答案,在 Google 排名<em>同时</em>被 AI 引用。</p>
+<p><a id="audit"></a></p>
+<h2 id="用-seo-skill-审计">用 SEO skill 审计</h2><p>审计用 <strong>SEO skill</strong> 跑,而不是临时检查,两条教训塑造了做法:</p>
+<ul>
+<li><strong>抓原始 HTML,不抓渲染代理。</strong> 朴素的抓取会吞掉 <code>&lt;head&gt;</code> 标签 —— 正是你要审的 title、meta、
+hreflang。读原始 HTML,让审计看到爬虫看到的。</li>
+<li><strong>用项目自己的 Lighthouse CI 测性能</strong>,而不是需要 key 的外部 API。
+<a href="/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests/">第 7 篇</a>的性能卡口兼作 SEO 性能检查。</li>
+</ul>
+<p><a id="surfaces"></a></p>
+<h2 id="手动维护的面">手动维护的面</h2><p>这是维护陷阱。加一座城或一个模块时,有些 SEO 面自动更新,有些<strong>必须手动改</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>自动更新</th>
+<th>必须手动更</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sitemap.xml</td>
+<td>llms.txt / llms-full.txt</td>
+</tr>
+<tr>
+<td>robots.txt</td>
+<td>site-stats / hero 统计</td>
+</tr>
+<tr>
+<td>RSS</td>
+<td>4 个 locale 文案文件(如「100 城」)</td>
+</tr>
+<tr>
+<td></td>
+<td>meta 描述</td>
+</tr>
+</tbody></table>
+<p>漏一个就 ship 出一个矛盾 —— 首页英文说「100 城」,日文还停在「67 城」,被 CI surfaces-check 抓红。
+纪律是:一份手动维护面的清单,每次城数或模块集变化都跑一遍。(这正是住在
+<a href="/zh/blog/claude-code-prompt-context-harness-loop-engineering/">skill</a> 里的那种制度知识。)</p>
+<p><a id="analytics"></a></p>
+<h2 id="分析与搜索控制台提交">分析与搜索控制台提交</h2><p>上线清单以测量和提交收尾:</p>
+<ul>
+<li><strong>Google Analytics 4</strong> 经 gtag.js,用 <code>lazyOnload</code> 策略加载,不撑爆 Total Blocking Time 预算
+(第 7 篇那场 GA-vs-TBT 之战)。</li>
+<li><strong>提交到 Google Search Console</strong> 和 <strong>Bing Webmaster Tools</strong>,验证文件在站点根加白名单,让爬虫确认归属。</li>
+</ul>
+<p>sitemap 提交、分析上线后,网站正式可被找到 —— 从内容 → sitemap/llms.txt → Google + AI 引擎的
+闭环合上了。</p>
+<h2 id="要点">要点</h2><ul>
+<li>多语言 SEO:用 hreflang 声明翻译,让每个 locale 真有用(本地货币),而不是机翻空壳。</li>
+<li>sitemap + robots 服务搜索引擎;llms.txt + llms-full.txt 服务 AI 爬虫。</li>
+<li>GEO 是 SEO 的姊妹:结构化数据和可引用陈述让你被 AI 引擎引用。</li>
+<li>在原始 HTML 上审计(不用吞 head 的代理),性能复用 Lighthouse CI。</li>
+<li>维护一份手动面清单(llms.txt、locale 文案、meta),让各语言计数永不矛盾。</li>
+<li>以 GA4(懒加载)和 Search Console / Bing 提交收尾。</li>
+</ul>
+<p><a id="faq"></a></p>
+<h2 id="常见问题">常见问题</h2><p><strong>llms.txt 是什么,我需要吗?</strong>
+一个告诉 AI 爬虫你的站是什么、什么值得引用的机器可读文件 —— GEO 版的 sitemap.xml。如果你想让
+AI 引擎准确呈现你的内容,值得有,搭配展开版 llms-full.txt。</p>
+<p><strong>GEO(生成式引擎优化)是什么?</strong>
+优化内容使其被 ChatGPT、Perplexity、AI Overviews 等 AI 引擎引用 —— 通过结构化数据、可引用的
+自包含陈述、llms.txt —— 而不只是在经典搜索里排名。</p>
+<p><strong>多语言站点怎么做 SEO?</strong>
+用 hreflang(加 x-default)声明翻译,生成覆盖每种语言的 sitemap,有意义地本地化(含货币),
+并让手动维护的面跨 locale 同步。</p>
+<p><strong>怎么把站点提交给 Google 和 Bing?</strong>
+加验证文件(在站点根加白名单),然后在 Google Search Console 和 Bing Webmaster Tools 提交 sitemap。</p>
+<hr>
+<p><em>回到开头 → <a href="/zh/blog/china-travel-budget-100-cities/">产品与商业故事</a> ·
+试用:<a href="https://1000usdinchina.com">1000usdinchina.com</a></em></p>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "多语言 SEO 与 GEO:sitemap、llms.txt 与 AI 引用",
+  "image": "https://www.agentupdate.ai/blog/images/seo-geo-cover.png",
+  "author": { "@type": "Person", "name": "Eric" },
+  "datePublished": "2026-06-22",
+  "inLanguage": "zh",
+  "mainEntityOfPage": "https://www.agentupdate.ai/blog/zh/multilingual-seo-geo-llms-txt"
+}
+</script></div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="目录" data-astro-cid-w5q62dq7> <a href="#目录" data-astro-cid-w5q62dq7>目录</a> </li><li class="toc-item " data-slug="多语言-seo-基建" data-astro-cid-w5q62dq7> <a href="#多语言-seo-基建" data-astro-cid-w5q62dq7>多语言 SEO 基建</a> </li><li class="toc-item " data-slug="sitemaprobotsllmstxt" data-astro-cid-w5q62dq7> <a href="#sitemaprobotsllmstxt" data-astro-cid-w5q62dq7>sitemap、robots、llms.txt</a> </li><li class="toc-item " data-slug="geo被-ai-引擎引用" data-astro-cid-w5q62dq7> <a href="#geo被-ai-引擎引用" data-astro-cid-w5q62dq7>GEO:被 AI 引擎引用</a> </li><li class="toc-item " data-slug="用-seo-skill-审计" data-astro-cid-w5q62dq7> <a href="#用-seo-skill-审计" data-astro-cid-w5q62dq7>用 SEO skill 审计</a> </li><li class="toc-item " data-slug="手动维护的面" data-astro-cid-w5q62dq7> <a href="#手动维护的面" data-astro-cid-w5q62dq7>手动维护的面</a> </li><li class="toc-item " data-slug="分析与搜索控制台提交" data-astro-cid-w5q62dq7> <a href="#分析与搜索控制台提交" data-astro-cid-w5q62dq7>分析与搜索控制台提交</a> </li><li class="toc-item " data-slug="要点" data-astro-cid-w5q62dq7> <a href="#要点" data-astro-cid-w5q62dq7>要点</a> </li><li class="toc-item " data-slug="常见问题" data-astro-cid-w5q62dq7> <a href="#常见问题" data-astro-cid-w5q62dq7>常见问题</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/devops-pipeline-cover.png" alt="1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/solo-edge-app-ci-cd-lighthouse-d1-tests" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(7)-放心 ship 单人边缘应用:CI/CD、真 D1 测试、Lighthouse 卡口</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>一个单人开发者如何放心 ship 一个 100 城边缘应用:3 段环境链路、不 mock 的真 D1 集成测试、Lighthouse CI 当部署卡口。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月21日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/workers-ai-cover.png" alt="1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/llm-trip-planner-free-tier-qwen-workers-ai" data-astro-cid-w5q62dq7>1000usdinchina.com开发总结(6)-在免费额度上做 LLM 行程规划:Qwen + Workers AI</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>我如何用 Cloudflare Workers AI + Qwen 做一个 AI 行程规划器,月成本约 $0 —— 以及那个 dev 测试烧光 prod 当天额度的免费额度坑。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年6月20日</span> <span data-astro-cid-w5q62dq7>作者: Eric</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>
