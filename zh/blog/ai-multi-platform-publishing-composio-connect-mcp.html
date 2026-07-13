@@ -1,0 +1,453 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计 — AgentUpdate.ai</title><meta name="description" content="本文深入探讨了在 AI 时代进行多平台内容发布（如 Reddit、YouTube、Telegram 等）的核心痛点，详细介绍如何通过 Composio Connect（管理认证身份）、Composio MCP（管理调用动作）与多 Agent..."><meta name="keywords" content="AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计, AI-Powered Multi-Platform Publishing: A 3-Layer Decoupled Architecture with Composio Connect and MCP, Composio, MCP, 多平台发布, AI分发, 架构设计"><link rel="canonical" href="https://agentupdate.ai/zh/blog/ai-multi-platform-publishing-composio-connect-mcp"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/ai-multi-platform-publishing-composio-connect-mcp"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/ai-multi-platform-publishing-composio-connect-mcp"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/ai-multi-platform-publishing-composio-connect-mcp"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计 — AgentUpdate.ai"><meta property="og:description" content="本文深入探讨了在 AI 时代进行多平台内容发布（如 Reddit、YouTube、Telegram 等）的核心痛点，详细介绍如何通过 Composio Connect（管理认证身份）、Composio MCP（管理调用动作）与多 Agent..."><meta property="og:image" content="https://agentupdate.ai/images/blog/composio_multi_publishing.jpg"><meta property="og:url" content="https://agentupdate.ai/zh/blog/ai-multi-platform-publishing-composio-connect-mcp"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计 — AgentUpdate.ai"><meta name="twitter:description" content="本文深入探讨了在 AI 时代进行多平台内容发布（如 Reddit、YouTube、Telegram 等）的核心痛点，详细介绍如何通过 Composio Connect（管理认证身份）、Composio MCP（管理调用动作）与多 Agent..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/composio_multi_publishing.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计","description":"本文深入探讨了在 AI 时代进行多平台内容发布（如 Reddit、YouTube、Telegram 等）的核心痛点，详细介绍如何通过 Composio Connect（管理认证身份）、Composio MCP（管理调用动作）与多 Agent 角色策略（内容层与规则层）进行三层解耦。文章提供了详细的系统流图与伪代码落地实践，帮助开发者构建合规、高效、防封禁的内容自动分发系统。","image":"/images/blog/composio_multi_publishing.jpg","datePublished":"2026-07-11T02:40:13.390Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/ai-multi-platform-publishing-composio-connect-mcp"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/ai-multi-platform-publishing-composio-connect-mcp" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/ai-multi-platform-publishing-composio-connect-mcp" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年7月11日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>16 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <a href="/zh/tags/composio" class="tag" data-astro-cid-w5q62dq7>#Composio</a><a href="/zh/tags/mcp" class="tag" data-astro-cid-w5q62dq7>#MCP</a><span class="tag" data-astro-cid-w5q62dq7>#多平台发布</span><span class="tag" data-astro-cid-w5q62dq7>#AI分发</span><span class="tag" data-astro-cid-w5q62dq7>#架构设计</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/composio_multi_publishing.jpg" alt="AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-一-核心痛点多平台-复制粘贴" data-astro-cid-w5q62dq7>🏗️ 一、 核心痛点：多平台 ≠ 复制粘贴</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#关键洞察账号状态是一等公民" data-astro-cid-w5q62dq7>关键洞察：账号状态是一等公民</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-二-架构解法三层解耦设计" data-astro-cid-w5q62dq7>🛠️ 二、 架构解法：三层解耦设计</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-三-系统架构流程图" data-astro-cid-w5q62dq7>📊 三、 系统架构流程图</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-四-composio-connect-与-mcp-的关键区别" data-astro-cid-w5q62dq7>🔍 四、 Composio Connect 与 MCP 的关键区别</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-五-多-agent-设计同一个内容内核n-种表现形态" data-astro-cid-w5q62dq7>🤖 五、 多 Agent 设计：同一个内容内核，N 种表现形态</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-六-落地实践三层解耦的伪代码实现" data-astro-cid-w5q62dq7>💻 六、 落地实践：三层解耦的伪代码实现</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-agent-层根据账号元数据路由-role-evaluate" data-astro-cid-w5q62dq7>1. Agent 层：根据账号元数据路由 Role (evaluate)</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-skill-逻辑层以-reddit-发布为例调用-composio-mcp" data-astro-cid-w5q62dq7>2. Skill 逻辑层：以 Reddit 发布为例，调用 Composio MCP</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-七-传统群发工具-vs-三层架构多平台发布对比" data-astro-cid-w5q62dq7>📈 七、 传统群发工具 vs 三层架构多平台发布对比</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#-八-团队落地建议" data-astro-cid-w5q62dq7>🏁 八、 团队落地建议</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>随着生成式 AI 的爆发，自动化内容分发已经进入了全新的阶段。然而，很多出海开发者和运营团队对“<strong>AI多平台发布</strong>”的认知仍停留在：写好一篇内容，然后一键“复制粘贴”到所有平台上。</p>
+<p><strong>这种一键群发的做法在现代 SEO 和反垃圾机制面前，注定会失败。</strong> 每个平台（如 Reddit、YouTube、Telegram、Facebook 等）都有着截然不同的游戏规则和受众偏好。为了彻底解决这一问题，我们需要使用 <strong>Composio Connect</strong> + <strong>Composio MCP</strong> + <strong>多 Agent</strong> 架构，将发布流程进行<strong>三层解耦</strong>。</p>
+<hr>
+<h2 id="-一-核心痛点多平台-复制粘贴">🏗️ 一、 核心痛点：多平台 ≠ 复制粘贴</h2><p>不同的社交平台规则天差地别，以下是针对主流平台发布限制的深度剖析：</p>
+<table>
+<thead>
+<tr>
+<th align="left">平台</th>
+<th align="left">链接政策</th>
+<th align="left">内容形态偏好</th>
+<th align="left">广告容忍度</th>
+<th align="left">账号状态权重</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Reddit</strong></td>
+<td align="left">新号带外链极易 shadowban；高 Karma 老号方可带链。</td>
+<td align="left">优先纯文本经验贴，严禁营销辞令。</td>
+<td align="left">极低（一有广告味就会被踩/删）。</td>
+<td align="left">⚠️ <strong>极强</strong>（视 Karma 与账号龄决定政策）。</td>
+</tr>
+<tr>
+<td align="left"><strong>YouTube</strong></td>
+<td align="left">描述区或置顶评论区可带链接。</td>
+<td align="left">必须是视频（Shorts/长视频）。</td>
+<td align="left">中等（自然流量发布忌硬广）。</td>
+<td align="left">弱。</td>
+</tr>
+<tr>
+<td align="left"><strong>Telegram</strong></td>
+<td align="left">频道与群组带链接自由度极高。</td>
+<td align="left">图文卡片、视频、文件均可。</td>
+<td align="left">视具体群规而定，频道内自由。</td>
+<td align="left">无。</td>
+</tr>
+<tr>
+<td align="left"><strong>Facebook</strong></td>
+<td align="left">主页或群组发帖，算法天然限流外链。</td>
+<td align="left">图文、Reels、长视频均可。</td>
+<td align="left">广告得分低则被算法限流。</td>
+<td align="left">弱。</td>
+</tr>
+</tbody></table>
+<h3 id="关键洞察账号状态是一等公民">关键洞察：账号状态是一等公民</h3><p>在进行 <strong>AI多平台发布</strong> 时，即便针对同一个平台（如 Reddit），新号与老号的发布策略也必须完全分流。Reddit 新号（低 Karma）发带 URL 的帖子大概率会被系统自动过滤；老号虽然能发，但也必须严格控制发帖频率，否则同样会被限流。</p>
+<p>这意味着“多平台分发”的复杂度其实是三维的：
+$$\text{平台差异} \times \text{内容形态差异} \times \text{账号状态差异}$$</p>
+<p>这绝非简单的复制粘贴所能解决，必须从系统架构层面进行解耦。</p>
+<hr>
+<h2 id="-二-架构解法三层解耦设计">🛠️ 二、 架构解法：三层解耦设计</h2><p>为了实现安全、灵活的 <strong>AI多平台发布</strong>，我们可以将上述三维度的复杂度解耦到三个相互正交的层级中：</p>
+<table>
+<thead>
+<tr>
+<th align="left">解决维度</th>
+<th align="left">承担角色</th>
+<th align="left">核心职责与分工</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>如何连接平台授权？</strong></td>
+<td align="left"><strong>Composio Connect</strong></td>
+<td align="left">在 <code>composio.dev</code> 云端一键连接第三方账号（OAuth），保障授权的合规性与高可用。</td>
+</tr>
+<tr>
+<td align="left"><strong>服务端如何安全调用 API？</strong></td>
+<td align="left"><strong>Composio MCP</strong></td>
+<td align="left">基于标准的 Model Context Protocol (MCP) 协议，暴露出统一的工具集，供服务端安全调用动作。</td>
+</tr>
+<tr>
+<td align="left"><strong>不同平台发什么内容？</strong></td>
+<td align="left"><strong>多 Agent 策略 (Multi-Agent)</strong></td>
+<td align="left">针对不同平台分发不同 Agent，并根据账号状态注入不同的 <strong>Role（规则策略行）</strong> 来调整发帖内容。</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>Composio Connect</strong> 管 <strong>“认证/谁能发”</strong>；</li>
+<li><strong>Composio MCP</strong> 管 <strong>“工具/怎么发”</strong>；</li>
+<li><strong>多 Agent + Role</strong> 管 <strong>“内容与规则/发什么”</strong>。</li>
+</ul>
+<p>这三者各司其职，互不耦合。当我们需要增加一个分发平台时，只需新增一个 Agent；而当我们需要微调发帖策略（如提高 Reddit 过滤门槛）时，只需在数据库中修改 Role 参数即可，发布底层的 Skill 和 Agent 代码完全不需要做任何改动。</p>
+<hr>
+<h2 id="-三-系统架构流程图">📊 三、 系统架构流程图</h2><p>以下是完整的 <strong>AI多平台发布</strong> 架构运行逻辑图，直观展现了从身份认证、规则路由、到最终 MCP 执行发布动作的全生命周期：</p>
+<div class="mermaid-block"><pre class="mermaid" id="mermaid-0">flowchart TB
+    subgraph L1["① Composio Connect · 认证层 (身份认证)"]
+        CC["已连账号元数据<br/>获取 Karma / 账号龄 / 关注者数<br/>Sync 时动态拉取"]
+    end
+
+    subgraph L2["② Agent · 编排层 (Role 选择逻辑)"]
+        R{"Router 路由策略<br/>评估 account.meta 匹配 Role"}
+        GA["生成式 Agent<br/>执行多轮草稿生成与规则校验"]
+    end
+
+    subgraph L3["③ Role · 内容规则层 (策略控制)<br/>由 strategy_rules 数据库行控制"]
+        R1["Role: 养号<br/>Karma &lt; 50<br/>禁止带链 · 纯干货 · 无 CTA"]
+        R2["Role: 成熟<br/>Karma ≥ 50<br/>允许相关性外链 · 软引导"]
+        R3["Role: 自有运营<br/>Own Page<br/>允许带链 + 强 CTA 转化"]
+    end
+
+    subgraph L4["④ Skill · 技能代码层 (程序模板)<br/>封装各平台发布特有逻辑"]
+        S1["reddit-publish<br/>版规校验 · 限制重试"]
+        S2["youtube-publish<br/>本地资源临时上传桥接"]
+        S3["telegram-publish<br/>富文本卡片 + 预览生成"]
+        S4["facebook-publish<br/>主页发帖/首评放链接"]
+    end
+
+    subgraph L5["⑤ Composio MCP · 工具层 (动作执行)"]
+        M["REDDIT_CREATE_POST<br/>YOUTUBE_MULTIPART_UPLOAD<br/>TELEGRAM_SEND_MESSAGE<br/>FACEBOOK_CREATE_POST"]
+    end
+
+    CC --> R
+    R -->|Karma &lt; 50| R1
+    R -->|Karma ≥ 50| R2
+    R -->|自有渠道| R3
+    R1 --> GA
+    R2 --> GA
+    R3 --> GA
+    GA -->|Reddit 文本| S1
+    GA -->|YT Short 视频| S2
+    GA -->|TG 图文卡片| S3
+    GA -->|FB Reels 竖屏| S4
+    S1 --> M
+    S2 --> M
+    S3 --> M
+    S4 --> M
+
+    style L1 fill:#e8f4f2,stroke:#0f766e
+    style L2 fill:#fef3c7,stroke:#92400e
+    style L3 fill:#fff7e6,stroke:#a15c07
+    style L4 fill:#f3e8ff,stroke:#7e22ce
+    style L5 fill:#eff6ff,stroke:#175cd3</pre></div><hr>
+<h2 id="-四-composio-connect-与-mcp-的关键区别">🔍 四、 Composio Connect 与 MCP 的关键区别</h2><p>很多开发者在设计 <strong>AI多平台发布</strong> 系统时，极易混淆 <strong>Composio Connect</strong> 与 <strong>Composio MCP</strong>，导致接口频繁报错。它们的本质差异如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">Composio Connect</th>
+<th align="left">Composio MCP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>解决问题</strong></td>
+<td align="left"><strong>授权身份认证 (Auth)</strong>：解决用户怎么把 YouTube / Reddit 等账号授权给你的应用。</td>
+<td align="left"><strong>动作执行工具 (Tools)</strong>：解决服务端如何去调用该平台的 API 动作。</td>
+</tr>
+<tr>
+<td align="left"><strong>外在形态</strong></td>
+<td align="left">托管在 <code>composio.dev</code> 上的 OAuth 流程界面。</td>
+<td align="left">标准的 MCP Server，对外暴露可调用工具。</td>
+</tr>
+<tr>
+<td align="left"><strong>核心产物</strong></td>
+<td align="left">一组 <strong>“已连接的账号” (Connected Accounts)</strong>。</td>
+<td align="left">一组可由 LLM/Agent 直接调用的 <strong>“发布工具集”</strong>。</td>
+</tr>
+<tr>
+<td align="left"><strong>使用对象</strong></td>
+<td align="left">终端用户（点击按钮完成第三方平台绑定）。</td>
+<td align="left">你的后台发布服务（获取工具并发送 Payload）。</td>
+</tr>
+<tr>
+<td align="left"><strong>典型比喻</strong></td>
+<td align="left">插上电源插座。</td>
+<td align="left">按下电器开关。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>⚠️ <strong>避坑指南</strong>：如果您的系统仅集成了 Composio Connect，您虽然可以在管理后台看到用户成功绑定了账号，但由于缺乏工具，Agent 将<strong>无法发帖</strong>。反之，若仅配置了 Composio MCP，则会因缺少账号授权（无 valid token）而调用报错。因此，在进行 <strong>AI多平台发布</strong> 建设时，二者缺一不可。</p>
+</blockquote>
+<hr>
+<h2 id="-五-多-agent-设计同一个内容内核n-种表现形态">🤖 五、 多 Agent 设计：同一个内容内核，N 种表现形态</h2><p>在内容层，绝对不能“一文多发”。优秀的多 Agent 分发系统在处理“多平台发布”时，会针对不同平台分配不同 Agent，使每个 Agent 携带不同的 System Prompt 运行。</p>
+<p>以推广一个“1000 美元中国旅行行程”的内容内核为例，不同的 Agent 将产生截然不同的输出形态：</p>
+<ul>
+<li><strong>Reddit Agent</strong>（扮演老实分享者）：产出纯 markdown 文本帖，完全不带 URL 和营销字眼，语气真实接地气，结尾仅自然暗示“想要路线表格的可以私信我”。</li>
+<li><strong>YouTube Agent</strong>（扮演视频创作者）：产出一段 60 秒的竖屏 Shorts 混剪视频。将链接放入描述区与置顶评论区。</li>
+<li><strong>Telegram Agent</strong>（扮演频道广播员）：产出高饱和度的图文卡片，附带直达按钮与链接。</li>
+<li><strong>Facebook Agent</strong>（扮演主页运营者）：产出多图文帖或 Reels，并将链接放在首条评论里，绕过 FB 的外链限流算法。</li>
+</ul>
+<p>以下是 <strong>Reddit Agent</strong> 所读取的 Role 规则配置 JSON 示例（存放在 <code>strategy_rules</code> 数据库中）：</p>
+<div class="code-wrapper"><pre><code class="language-yaml">agent: reddit-publisher
+role: 社区真实经验分享者
+constraints:
+  - 严禁堆砌营销词汇 (如&quot;优惠、低至、快抢&quot;)
+  - 只有在账号 Karma &gt; 500 时才允许附加外链，否则一律禁止带链
+  - 发帖频率限制：同一个 Subreddit 在 14 天内最多发布 1 次
+  - 兜底策略：如果账号权重过低（Karma &lt; 50），自动切换到“养号模式”（只在相关帖下评论，不发主帖）
+</code></pre>
+</div><hr>
+<h2 id="-六-落地实践三层解耦的伪代码实现">💻 六、 落地实践：三层解耦的伪代码实现</h2><p>在理清架构之后，我们可以将开发思路拆解为具体的伪代码。通过将发布过程分离为 <strong>Skill（平台逻辑）</strong>、<strong>Agent（调度引擎）</strong> 和 <strong>Role（规则数据）</strong>，可以确保业务逻辑的高内聚低耦合。</p>
+<h3 id="1-agent-层根据账号元数据路由-role-evaluate">1. Agent 层：根据账号元数据路由 Role (`evaluate`)</h3><p>在程序中，我们需要在发布前先检查账号的状态（如 Karma），动态决定赋予 Agent 什么样的 Role（养号还是成熟）：</p>
+<div class="code-wrapper"><pre><code class="language-python">def resolve_policy(platform, account):
+    # 从数据库加载该平台配置的所有策略规则行 (strategy_rules 表)
+    rules = db.load_rules(platform)
+    
+    # 优先匹配手动给账号分配的特别标签 (例如：强制“运营”或“养号”角色)
+    if account.tags:
+        for r in rules:
+            if r.tag in account.tags:
+                return r.policy # 返回 {allow_link: false, max_per_day: 2, cta: null}
+                
+    # 兜底匹配：使用条件表达式判定
+    for r in rules:
+        if eval_condition(r.condition, account.meta): # 例如限制：karma &lt; 50
+            return r.policy
+            
+    return DEFAULT_POLICY
+</code></pre>
+</div><h3 id="2-skill-逻辑层以-reddit-发布为例调用-composio-mcp">2. Skill 逻辑层：以 Reddit 发布为例，调用 Composio MCP</h3><p>在具体的发布逻辑中，我们应当强制通过 <code>COMPOSIO_MULTI_EXECUTE_TOOL</code> 集中执行发布，防止常规接口获取失败导致的“无痕发布”（即后台显示发布成功，但社交平台上根本没有帖子）：</p>
+<div class="code-wrapper"><pre><code class="language-python">def reddit_publish(post, outlet, policy):
+    # 选择符合该 Subreddit 要求的发帖分类标签 (flair_id)
+    flair = select_flair(outlet.target_id)
+    
+    # ⚠️ 强制使用 MULTI_EXECUTE_TOOL 进行多步安全调用
+    result = composio_client.multi_execute([
+        {
+            &quot;tool_slug&quot;: &quot;REDDIT_CREATE_REDDIT_POST&quot;,
+            &quot;arguments&quot;: {
+                &quot;subreddit&quot;: outlet.target_id,
+                &quot;title&quot;: post.title[:150], # 严格遵守 Reddit 的标题长度规范
+                &quot;text&quot;: post.text,
+                &quot;kind&quot;: &quot;self&quot;,
+                &quot;flair_id&quot;: flair
+            }
+        }
+    ])
+    
+    # 必须对返回结果进行安全解析 (unwrap)，拦截潜在的权限拒绝异常
+    return parse_mcp_response(result[0].response)
+</code></pre>
+</div><hr>
+<h2 id="-七-传统群发工具-vs-三层架构多平台发布对比">📈 七、 传统群发工具 vs 三层架构多平台发布对比</h2><table>
+<thead>
+<tr>
+<th align="left">评估维度</th>
+<th align="left">传统的“一键群发工具”</th>
+<th align="left">现代 AI 三层解耦发布架构</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>内容匹配度</strong></td>
+<td align="left">无论什么渠道，发送完全相同的长文本。</td>
+<td align="left">根据不同平台的受众和算法（Reels, Markdown）<strong>自动塑形</strong>。</td>
+</tr>
+<tr>
+<td align="left"><strong>带链安全性</strong></td>
+<td align="left">一律带上官网推广外链，极易触发新号的风控封网。</td>
+<td align="left">动态计算账号 Karma 权重，<strong>养号期自动无链化</strong>，高权重号允许带链。</td>
+</tr>
+<tr>
+<td align="left"><strong>授权稳定性</strong></td>
+<td align="left">针对不同平台手动编写独立的 OAuth 代码，维护成本极高。</td>
+<td align="left">通过 <strong>Composio Connect</strong> 实现统一、安全的云端集成。</td>
+</tr>
+<tr>
+<td align="left"><strong>可扩展性</strong></td>
+<td align="left">每次新增分发平台都需要重构整个发布系统。</td>
+<td align="left">仅需在后台配置一个对应平台的 Agent Skill，即可无缝支持。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="-八-团队落地建议">🏁 八、 团队落地建议</h2><ol>
+<li><strong>分步推进</strong>：建议在项目早期先接入 <strong>Composio Connect</strong> 解决授权管理，随后将发布流程标准化为 <strong>Composio MCP</strong> 工具。</li>
+<li><strong>人机协同（Human-in-the-Loop）</strong>：不要让 AI 全自动裸发。构建一个简单的管理审核页面，Agent 生成多平台草稿 ➜ 人工点击确认审核 ➜ 调起 Composio MCP 发布，这才是当前工业级内容分发最稳妥的实践方案。</li>
+<li><strong>遵循平台自我推广规范</strong>：强烈建议开发者遵循各平台官方的自推指导建议（例如 <a href="https://www.reddit.com/wiki/selfpromotion">Reddit 自我推广指南</a>），将广告类内容占比严格控制在全部贴文的 10% 以下，通过高质量内容带动品牌自然增长。</li>
+</ol>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="-一-核心痛点多平台-复制粘贴" data-astro-cid-w5q62dq7> <a href="#-一-核心痛点多平台-复制粘贴" data-astro-cid-w5q62dq7>🏗️ 一、 核心痛点：多平台 ≠ 复制粘贴</a> </li><li class="toc-item h3-nav" data-slug="关键洞察账号状态是一等公民" data-astro-cid-w5q62dq7> <a href="#关键洞察账号状态是一等公民" data-astro-cid-w5q62dq7>关键洞察：账号状态是一等公民</a> </li><li class="toc-item " data-slug="-二-架构解法三层解耦设计" data-astro-cid-w5q62dq7> <a href="#-二-架构解法三层解耦设计" data-astro-cid-w5q62dq7>🛠️ 二、 架构解法：三层解耦设计</a> </li><li class="toc-item " data-slug="-三-系统架构流程图" data-astro-cid-w5q62dq7> <a href="#-三-系统架构流程图" data-astro-cid-w5q62dq7>📊 三、 系统架构流程图</a> </li><li class="toc-item " data-slug="-四-composio-connect-与-mcp-的关键区别" data-astro-cid-w5q62dq7> <a href="#-四-composio-connect-与-mcp-的关键区别" data-astro-cid-w5q62dq7>🔍 四、 Composio Connect 与 MCP 的关键区别</a> </li><li class="toc-item " data-slug="-五-多-agent-设计同一个内容内核n-种表现形态" data-astro-cid-w5q62dq7> <a href="#-五-多-agent-设计同一个内容内核n-种表现形态" data-astro-cid-w5q62dq7>🤖 五、 多 Agent 设计：同一个内容内核，N 种表现形态</a> </li><li class="toc-item " data-slug="-六-落地实践三层解耦的伪代码实现" data-astro-cid-w5q62dq7> <a href="#-六-落地实践三层解耦的伪代码实现" data-astro-cid-w5q62dq7>💻 六、 落地实践：三层解耦的伪代码实现</a> </li><li class="toc-item h3-nav" data-slug="1-agent-层根据账号元数据路由-role-evaluate" data-astro-cid-w5q62dq7> <a href="#1-agent-层根据账号元数据路由-role-evaluate" data-astro-cid-w5q62dq7>1. Agent 层：根据账号元数据路由 Role (evaluate)</a> </li><li class="toc-item h3-nav" data-slug="2-skill-逻辑层以-reddit-发布为例调用-composio-mcp" data-astro-cid-w5q62dq7> <a href="#2-skill-逻辑层以-reddit-发布为例调用-composio-mcp" data-astro-cid-w5q62dq7>2. Skill 逻辑层：以 Reddit 发布为例，调用 Composio MCP</a> </li><li class="toc-item " data-slug="-七-传统群发工具-vs-三层架构多平台发布对比" data-astro-cid-w5q62dq7> <a href="#-七-传统群发工具-vs-三层架构多平台发布对比" data-astro-cid-w5q62dq7>📈 七、 传统群发工具 vs 三层架构多平台发布对比</a> </li><li class="toc-item " data-slug="-八-团队落地建议" data-astro-cid-w5q62dq7> <a href="#-八-团队落地建议" data-astro-cid-w5q62dq7>🏁 八、 团队落地建议</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-auto-memory-vs-claude-mem" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/claude_memory_comparison.jpg" alt="Claude Code 原生 Auto Memory 与 MCP claude-mem 记忆机制对比与配置指南" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-auto-memory-vs-claude-mem" data-astro-cid-w5q62dq7>Claude Code 原生 Auto Memory 与 MCP claude-mem 记忆机制对比与配置指南</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文深入对比了 Claude Code 官方原生的 Auto Memory 与基于 MCP 协议的第三方开源记忆体 claude-mem (cmem) 的原理和特性，解构了它们在数据存储、检索读取、跨设备同步等方面的异同，并详细解释了为什么在实际开发中绝对不能同时开启这两套系统以防 AI 认知失调与 Token 费用暴涨。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年7月7日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/composio-mcp-local-marketing-ops" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/composio_marketing_ops.jpg" alt="基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/composio-mcp-local-marketing-ops" data-astro-cid-w5q62dq7>基于 Composio + MCP 打造纯本地营销运营系统：解决内容生成、发布策略与多渠道管理的硬核实践</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文详细介绍了一款纯本地运行、基于 Composio 和 MCP 的开源社交媒体营销运营系统。通过将 Composio 的多网站 OAuth 连接、MCP 本地接口映射以及本地 SQLite 策略引擎相结合，该系统实现了在零 API 费用、零机密泄露风险的前提下，进行高风控安全的跨平台自动化营销和养号防封管理。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年7月3日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>
