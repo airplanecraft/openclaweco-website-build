@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补 — AgentUpdate.ai</title><meta name="description" content="本文系统地探讨了在 AI Agent 时代连接外部 SaaS API 的集成方案。文章深度剖析了“集成即代码”平台 Nango 的四大原语（托管认证、认证代理、集成函数和 MCP Server），对比了它与 Composio 目录网关形态的异同，并给出了一个两者强强联手的多层混合路由架构，帮助开发者在..."><meta name="keywords" content="Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补, Nango: The Code-First Integration Platform for the AI Agent Era — And How It Compares to Composio, Nango, Composio, AI Agent集成, MCP server, 架构设计"><link rel="canonical" href="https://agentupdate.ai/zh/blog/nango-vs-composio-ai-agent-integration"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/blog/nango-vs-composio-ai-agent-integration"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/blog/nango-vs-composio-ai-agent-integration"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/blog/nango-vs-composio-ai-agent-integration"><!-- Open Graph --><meta property="og:locale" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><meta property="og:title" content="Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补 — AgentUpdate.ai"><meta property="og:description" content="本文系统地探讨了在 AI Agent 时代连接外部 SaaS API 的集成方案。文章深度剖析了“集成即代码”平台 Nango 的四大原语（托管认证、认证代理、集成函数和 MCP Server），对比了它与 Composio 目录网关形态的异同，并给出了一个两者强强联手的多层混合路由架构，帮助开发者在..."><meta property="og:image" content="https://agentupdate.ai/images/blog/nango_vs_composio_integration.jpg"><meta property="og:url" content="https://agentupdate.ai/zh/blog/nango-vs-composio-ai-agent-integration"><meta property="og:type" content="article"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补 — AgentUpdate.ai"><meta name="twitter:description" content="本文系统地探讨了在 AI Agent 时代连接外部 SaaS API 的集成方案。文章深度剖析了“集成即代码”平台 Nango 的四大原语（托管认证、认证代理、集成函数和 MCP Server），对比了它与 Composio 目录网关形态的异同，并给出了一个两者强强联手的多层混合路由架构，帮助开发者在..."><meta name="twitter:image" content="https://agentupdate.ai/images/blog/nango_vs_composio_integration.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News & Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补","description":"本文系统地探讨了在 AI Agent 时代连接外部 SaaS API 的集成方案。文章深度剖析了“集成即代码”平台 Nango 的四大原语（托管认证、认证代理、集成函数和 MCP Server），对比了它与 Composio 目录网关形态的异同，并给出了一个两者强强联手的多层混合路由架构，帮助开发者在 Agent 开发中兼顾集成广度与精细控制。","image":"/images/blog/nango_vs_composio_integration.jpg","datePublished":"2026-07-19T10:25:08.673Z","inLanguage":"zh-CN","author":{"@type":"Person","name":"AgentUpdate"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai"},"url":"https://agentupdate.ai/zh/blog/nango-vs-composio-ai-agent-integration"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DuaHCwBz.css">
+<style>.breadcrumbs[data-astro-cid-ilhxcym7]{font-size:.85rem;margin-bottom:1.5rem;color:var(--text-secondary, #64748b)}.breadcrumbs[data-astro-cid-ilhxcym7] ol[data-astro-cid-ilhxcym7]{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] li[data-astro-cid-ilhxcym7]{display:flex;align-items:center;gap:.5rem}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]{color:var(--accent, #4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-ilhxcym7] a[data-astro-cid-ilhxcym7]:hover{text-decoration:underline;color:var(--accent-dark, #3730a3)}.breadcrumbs[data-astro-cid-ilhxcym7] span[data-astro-cid-ilhxcym7][aria-current=page]{color:var(--text, #0f172a);font-weight:500}.separator[data-astro-cid-ilhxcym7]{color:#cbd5e1;user-select:none;font-size:.8rem}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.CtxpKx9f.css"></head> <body class="min-h-screen font-sans antialiased"> <!-- Navbar --> <header class="site-header"> <div class="container"> <a href="/" class="logo">
+AgentUpdate<span>.ai</span> </a> <!-- Mobile: always-visible right controls --> <div class="header-right"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/nango-vs-composio-ai-agent-integration" class="lang-btn">EN</a> <div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div> <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button> </div> <!-- Desktop navigation (inside header for sticky flow) --> <nav class="nav-links nav-desktop" id="nav-links-desktop"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> <span class="nav-desktop-only"> <a href="/zh/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"> <span class="rss-icon">RSS</span> </a> <a href="/blog/nango-vs-composio-ai-agent-integration" class="lang-btn">EN</a> <div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div> </span> </nav> </div> <div class="reading-progress-bar" id="reading-progress-bar"></div> </header> <!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --> <nav class="mobile-nav-overlay" id="mobile-nav-overlay"> <a href="/zh/">首页</a> <a href="/zh/news">新闻</a> <a href="/zh/product">产品</a> <a href="/zh/skills">技能市场</a> <a href="/zh/plugins">插件</a> <a href="/zh/releases">产品更新</a> <a href="/zh/tags">标签</a> <a href="/zh/tutorial">教程</a> <a href="/zh/blog">博客</a> <a href="/zh/simulators">模拟器</a> </nav> <!-- Pagefind modal --> <div id="search-modal" class="search-modal hidden"> <div class="search-modal-inner"> <button id="search-close" class="search-close" aria-label="Close search">✕</button> <div id="pagefind-ui"></div> </div> </div>    <main class="swiss-detail-page" data-astro-cid-w5q62dq7> <!-- Full-width premium article hero header --> <div class="article-hero" data-astro-cid-w5q62dq7> <div class="container hero-container" data-astro-cid-w5q62dq7> <nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/zh" data-astro-cid-ilhxcym7>首页</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <a href="/zh/blog" data-astro-cid-ilhxcym7>技术博客</a> <span class="separator" data-astro-cid-ilhxcym7>/</span> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补</span>  </li> </ol> </nav> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://agentupdate.ai/zh"},{"@type":"ListItem","position":2,"name":"技术博客","item":"https://agentupdate.ai/zh/blog"},{"@type":"ListItem","position":3,"name":"Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补"}]}</script> <div class="article-hero-content" data-astro-cid-w5q62dq7> <span class="source-badge" data-astro-cid-w5q62dq7>AGENTUPDATE 技术博客</span> <h1 class="article-title" data-testid="blog-title-zh" data-astro-cid-w5q62dq7>Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补</h1> <div class="article-meta" data-astro-cid-w5q62dq7> <span class="meta-item" data-astro-cid-w5q62dq7>2026年7月19日</span> <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>作者: AgentUpdate</span>  <span class="meta-item-separator" data-astro-cid-w5q62dq7>|</span> <span class="meta-item" data-astro-cid-w5q62dq7>12 分钟阅读</span>  </div> <div class="article-tags" data-astro-cid-w5q62dq7> <span class="tag" data-astro-cid-w5q62dq7>#Nango</span><a href="/zh/tags/composio" class="tag" data-astro-cid-w5q62dq7>#Composio</a><span class="tag" data-astro-cid-w5q62dq7>#AI Agent集成</span><span class="tag" data-astro-cid-w5q62dq7>#MCP server</span><span class="tag" data-astro-cid-w5q62dq7>#架构设计</span> </div> </div> </div> </div> <!-- Reading layout centered and optimized --> <article class="container reading-container" data-astro-cid-w5q62dq7> <div class="reading-layout-grid" data-astro-cid-w5q62dq7> <!-- Main Column --> <div class="reading-main-column" data-astro-cid-w5q62dq7> <img class="article-cover" src="/images/blog/nango_vs_composio_integration.jpg" alt="Nango: AI Agent 时代的代码优先集成平台 —— 兼与 Composio 的异同与互补" data-astro-cid-w5q62dq7>  <details class="mobile-toc" data-astro-cid-w5q62dq7> <summary class="mobile-toc-summary" data-astro-cid-w5q62dq7>目录</summary> <ul class="mobile-toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-astro-cid-w5q62dq7> <a href="#一nango-是什么以代码为中心的集成运行时" data-astro-cid-w5q62dq7>一、Nango 是什么：以代码为中心的集成运行时</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#1-托管认证-auth" data-astro-cid-w5q62dq7>1. 托管认证 (Auth)</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#2-认证代理-proxy" data-astro-cid-w5q62dq7>2. 认证代理 (Proxy)</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#3-集成函数-functions-actions-syncs-webhooks" data-astro-cid-w5q62dq7>3. 集成函数 (Functions: Actions, Syncs, Webhooks)</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#4-mcp-server-规范集成" data-astro-cid-w5q62dq7>4. MCP Server 规范集成</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#二composio-是什么开箱即用的工具网关" data-astro-cid-w5q62dq7>二、Composio 是什么：开箱即用的工具网关</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#三nango-与-composio-的相同点同一个赛道的两套解法" data-astro-cid-w5q62dq7>三、Nango 与 Composio 的相同点：同一个赛道的两套解法</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#四nango-与-composio-的核心差异对比" data-astro-cid-w5q62dq7>四、Nango 与 Composio 的核心差异对比</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#五强强联手nango-与-composio-互补架构设计" data-astro-cid-w5q62dq7>五、强强联手：Nango 与 Composio 互补架构设计</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#混合集成路由拓扑图" data-astro-cid-w5q62dq7>混合集成路由拓扑图</a> </li><li class="toc-item h3-nav" data-astro-cid-w5q62dq7> <a href="#工程落地三项准则" data-astro-cid-w5q62dq7>工程落地三项准则</a> </li><li class="toc-item " data-astro-cid-w5q62dq7> <a href="#六结语买现成的还是造可控的" data-astro-cid-w5q62dq7>六、结语：买现成的，还是造可控的？</a> </li> </ul> </details> <div class="article-content" data-astro-cid-w5q62dq7><p>随着生成式 AI 的爆发，如何让 AI Agent 真正&quot;动手&quot;操作外部世界，已经成为大模型应用落地的核心瓶颈。当你需要让 Agent 发一条 Pin、建一个 Jira 工单、或者同步一批 Salesforce CRM 数据时，你很快会撞上同一堵墙：OAuth 2.0 授权、Token 自动刷新、API 限流、指数退避重试、复杂分页……每对接一个平台，都需要把这些脏活累活重写一遍。</p>
+<p>在这样的背景下，<strong>AI Agent集成</strong>中间层成为了当今基础设施里最拥挤、也最关键的赛道之一。在这条赛道上，<strong>Nango</strong> 和 <strong>Composio</strong> 是两个最常被开发者放在一起比较的明星项目。</p>
+<p>本文将为您完整介绍 Nango 的核心架构与使用方法，系统对比它与 Composio 的相同点与差异性，并给出一个将两者结合互补的实战分层架构，帮助您的 AI Agent 既拥有“广度”又拥有“深度”。</p>
+<hr>
+<h2 id="一nango-是什么以代码为中心的集成运行时">一、Nango 是什么：以代码为中心的集成运行时</h2><p>Nango 是一个开源的 API 集成平台，其核心理念是**“集成即代码”（Integrations as Code）**：开发者（或你的 Coding Agent，如 <a href="/zh/tutorial/claude-code-command-tutorial" class="seo-autolink-keyword">Claude Code</a>）用 TypeScript 编写集成逻辑，而 Nango 生产级运行时负责托管认证、逻辑执行、自动重试、动态扩缩容和端到端的可观测性。它目前已覆盖 800 多个主流 API，提供 5000 多个可复用的集成模板。</p>
+<p>要理解 Nango 的工作原理，需要抓住它的四个核心原语。</p>
+<h3 id="1-托管认证-auth">1. 托管认证 (Auth)</h3><p>这是 Nango 最广为人知的能力。它完全托管了 OAuth 2.0、OAuth 1.0a、API Key 和 Basic Auth 的生命周期——包括授权重定向、凭证加密存储、Token 自动刷新以及失效校验。你只需在产品前端嵌入其白标（White-labeled）的 Connect UI 按钮，用户点击授权后，Nango 就会在后台处理剩下的一切。</p>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Nango 的商业承诺</strong>：其托管认证功能（Auth）是永久免费的，无论你使用的是云版本（Cloud）还是本地自托管（Self-hosted）。许多团队甚至仅把 Nango 当作安全的“凭证管理器”来使用。</p>
+</blockquote>
+<h3 id="2-认证代理-proxy">2. 认证代理 (Proxy)</h3><p>用户授权成功后，最直接的发起 API 请求方式就是通过 Nango 认证代理。Proxy 会自动解析目标平台、自动在 Header 中注入有效凭证、并自动处理重试与限流：</p>
+<div class="code-wrapper"><pre><code class="language-typescript">import { Nango } from &#39;@nangohq/node&#39;;
+const nango = new Nango({ secretKey: process.env.NANGO_SECRET_KEY });
+
+const res = await nango.post({
+  endpoint: &#39;/v5/pins&#39;,
+  providerConfigKey: &#39;pinterest&#39;,
+  connectionId: &#39;main-account&#39;,
+  data: { 
+    board_id: &#39;12345&#39;, 
+    media_source: { source_type: &#39;image_url&#39;, url: &#39;https://example.com/cover.jpg&#39; } 
+  }
+});
+</code></pre>
+</div><ul>
+<li><code>providerConfigKey</code>：标识“哪套应用配置”（如你在 Pinterest Developer 注册的 Client ID 和 Secret）。</li>
+<li><code>connectionId</code>：标识“哪位用户的授权账号”。这个两级模型天然支持多租户系统，隔离性极强。</li>
+</ul>
+<h3 id="3-集成函数-functions-actions-syncs-webhooks">3. 集成函数 (Functions: Actions, Syncs, Webhooks)</h3><p>对于比单次 API 代理更复杂的业务逻辑，Nango 在其运行时中提供了三类可部署的 TypeScript 函数：</p>
+<ul>
+<li><strong>Action</strong>：按需执行的写操作（如“发帖并获取 ID”）。</li>
+<li><strong>Sync</strong>：持续的、增量的数据同步（如“每隔1小时拉取最新 CRM 数据同步到向量数据库”）。</li>
+<li><strong>Webhook</strong>：处理目标平台发出的回调事件。</li>
+</ul>
+<p>Nango 所有的 5000+ 预置模板全部开源。你可以随时 Fork 任何一个模板并根据业务微调，代码提交到你自己的 Git 仓库中，可读、可审查、可本地测试。Nango 还提供了面向 <strong>Claude Code</strong>, <strong>Cursor</strong> 等 18+ 种 Coding Agent 的 Builder Skill，允许 AI 自动查阅文档、编写集成函数并根据真实报错自主修复。</p>
+<h3 id="4-mcp-server-规范集成">4. MCP Server 规范集成</h3><p>Nango 内置了 MCP Server（Model Context Protocol）端点。你可以将自己编写并部署的 TypeScript Actions 自动转化为带 Schema 定义的 MCP Tools，直接暴露给 Claude Desktop、Claude Code 或 OpenAI Agents SDK。AI 可以通过以下三个 Header 进行鉴权并调用：</p>
+<div class="code-wrapper"><pre><code class="language-http">X-Nango-Secret-Key: &lt;your-secret-key&gt;
+X-Nango-Provider-Config-Key: pinterest
+X-Nango-Connection-Id: user-123
+</code></pre>
+</div><hr>
+<h2 id="二composio-是什么开箱即用的工具网关">二、Composio 是什么：开箱即用的工具网关</h2><p>与 Nango 强调“编写代码”不同，Composio 的定位是**“AI Agent 的工具网关”（Tool Gateway for Agents）**。</p>
+<p>Composio 拥有一个非常庞大的托管工具目录，内置了约 1000 个平台的开箱即用工具。它同样托管了 OAuth 生命周期，但对开发者屏蔽了具体的 API 拼装细节。如果你需要 Agent 连接 GitHub、Slack，你不需要写任何一行 TypeScript 代码，只需在 Composio 后台点击授权，Agent 即可通过统一的 MCP 协议或 OpenAPI Schema 自动获取该平台的一整套 Tool 调用列表。</p>
+<p>然而，Composio 的边界也十分明显：其工具实现细节是闭源且封装好的，你无法精细修改其逻辑；此外，它的能力仅局限于 Tool Calls（问答交互中的单次函数调用），不提供持续的数据双向同步、复杂的 Webhook 监听事件处理。</p>
+<hr>
+<h2 id="三nango-与-composio-的相同点同一个赛道的两套解法">三、Nango 与 Composio 的相同点：同一个赛道的两套解法</h2><p>两者的底层逻辑和解决的痛点在表层非常相似：</p>
+<ul>
+<li><strong>痛点一致</strong>：都致力于解决 AI Agent 调用外部 API 时繁琐的身份验证、Token 刷新和接口格式化问题。</li>
+<li><strong>协议标准</strong>：都完美适配了 Model Context Protocol (MCP)，将底层 API 转换为大模型易于理解的 Tools。</li>
+<li><strong>租户隔离</strong>：都支持多租户（Multi-tenancy），允许你产品的最终用户授权各自的 SaaS 凭证。</li>
+<li><strong>API 天花板</strong>：两者的调用上限都依赖于目标平台的官方 API。如果目标平台没有提供公开 API，两家都无能为力。</li>
+</ul>
+<hr>
+<h2 id="四nango-与-composio-的核心差异对比">四、Nango 与 Composio 的核心差异对比</h2><p>两者的本质分野在于设计哲学：<strong>Composio 给你的是一个拿来即用的工具目录，而 Nango 给你的是一个高自由度的代码运行时。</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">Composio</th>
+<th align="left">Nango</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心定位</strong></td>
+<td align="left">托管工具网关（开箱即用，1000+ 平台）</td>
+<td align="left">代码优先集成运行时（“集成即代码”）</td>
+</tr>
+<tr>
+<td align="left"><strong>代码控制力</strong></td>
+<td align="left">闭源封装，无法查看/修改工具的内部实现</td>
+<td align="left">1000% 开源，可随时 Fork、定制或自建</td>
+</tr>
+<tr>
+<td align="left"><strong>功能范畴</strong></td>
+<td align="left">局限于单次 Tool Calls (写操作为主)</td>
+<td align="left">Tool Calls + 数据同步 (Sync) + Webhook</td>
+</tr>
+<tr>
+<td align="left"><strong>定制上限</strong></td>
+<td align="left">低。遇不支持的参数只能等待官方排期更新</td>
+<td align="left">极高。自行编写 TypeScript 函数即可上线</td>
+</tr>
+<tr>
+<td align="left"><strong>商业授权</strong></td>
+<td align="left">闭源 SaaS 服务</td>
+<td align="left">核心认证部分永久免费，运行时采用 Elastic 协议</td>
+</tr>
+<tr>
+<td align="left"><strong>典型画像</strong></td>
+<td align="left">快速验证想法、需要主流平台标准工具的团队</td>
+<td align="left">将 Agent 集成作为核心资产，要求严密审计与可控性</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五强强联手nango-与-composio-互补架构设计">五、强强联手：Nango 与 Composio 互补架构设计</h2><p>在构建复杂的企业级 <strong>AI Agent集成</strong> 系统时，我们完全不需要在两者之间做出非此即备的妥协，而是可以将它们进行<strong>分层架构设计（Layered Architecture）</strong>：</p>
+<ol>
+<li><strong>Composio 作为“广度层”</strong>：负责主流平台的标准操作。如 GitHub 提 PR、Slack 发送标准通知。开箱即用，省去编写代码的成本。</li>
+<li><strong>Nango 作为“深度层”</strong>：负责处理客制化强、逻辑复杂的特殊平台，或者需要持续进行 RAG 知识库增量同步（Sync）的底层管道。</li>
+</ol>
+<h3 id="混合集成路由拓扑图">混合集成路由拓扑图</h3><div class="mermaid-block"><pre class="mermaid" id="mermaid-0">graph TD
+    Orchestrator[AI Agent 编排层 Orchestrator] --> Router{多通道集成路由器}
+    
+    Router -- 主流标准工具 --> Composio[Composio 广度层]
+    Router -- 深度定制/Sync/Webhook --> Nango[Nango 深度层]
+    
+    Composio --> Slack[Slack API]
+    Composio --> GitHub[GitHub API]
+    
+    Nango --> CustomCRM[企业定制 CRM]
+    Nango --> SyncDB[(知识库增量同步)]
+    
+    classDef default fill:#1e1b4b,stroke:#818cf8,color:#fff;
+    classDef highlight fill:#312e81,stroke:#a78bfa,color:#fff;
+    class Orchestrator,Router highlight;</pre></div><h3 id="工程落地三项准则">工程落地三项准则</h3><ul>
+<li><strong>准则一：显式配置路由表</strong>。不要让 Agent 靠语义来盲猜该去哪里调用，应当在编排层显式声明渠道：<div class="code-wrapper"><pre><code class="language-json">{
+  &quot;connectors&quot;: {
+    &quot;slack&quot;: { &quot;via&quot;: &quot;composio&quot; },
+    &quot;pinterest&quot;: { &quot;via&quot;: &quot;nango&quot;, &quot;providerConfigKey&quot;: &quot;pin-prod&quot;, &quot;connectionId&quot;: &quot;user-99&quot; }
+  }
+}
+</code></pre>
+</div></li>
+<li><strong>准则二：单一职责划分</strong>。一个第三方平台仅选择一条调用通道，严禁混合暴露，否则会引起凭证冲突与 Token 刷新的覆盖问题。</li>
+<li><strong>准则三：监控日志收拢</strong>。由于存在双通道，应在你的应用后端（Orchestrator）做统一的调用日志拦截与审计，避免在 Composio 和 Nango 的控制台之间来回切换排查问题。</li>
+</ul>
+<hr>
+<h2 id="六结语买现成的还是造可控的">六、结语：买现成的，还是造可控的？</h2><p>Composio 与 Nango 的抉择，实际上是软件工程中经典“Buy vs Build”（买现成还是自建）命题在 AI Agent 时代的重演。Composio 将“开箱即用”做到了极致，让个人与中小团队能以最快速度组装出具备千种工具的 Agent；而 Nango 则坚守软件工程的控制底线——当集成代码本身就是产品护城河时，它必须能被审查、修改、并稳健地自托管运行。</p>
+<p>将 Composio 的“广度优势”与 Nango 的“深度控制”有机结合，才是构建下一代高可用、高扩展性 <strong>AI Agent集成</strong> 栈的最优解。</p>
+</div> </div> <!-- Sticky TOC Sidebar for Desktop Viewports --> <aside class="toc-sidebar" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>目录</span> <ul class="toc-list" data-astro-cid-w5q62dq7> <li class="toc-item " data-slug="一nango-是什么以代码为中心的集成运行时" data-astro-cid-w5q62dq7> <a href="#一nango-是什么以代码为中心的集成运行时" data-astro-cid-w5q62dq7>一、Nango 是什么：以代码为中心的集成运行时</a> </li><li class="toc-item h3-nav" data-slug="1-托管认证-auth" data-astro-cid-w5q62dq7> <a href="#1-托管认证-auth" data-astro-cid-w5q62dq7>1. 托管认证 (Auth)</a> </li><li class="toc-item h3-nav" data-slug="2-认证代理-proxy" data-astro-cid-w5q62dq7> <a href="#2-认证代理-proxy" data-astro-cid-w5q62dq7>2. 认证代理 (Proxy)</a> </li><li class="toc-item h3-nav" data-slug="3-集成函数-functions-actions-syncs-webhooks" data-astro-cid-w5q62dq7> <a href="#3-集成函数-functions-actions-syncs-webhooks" data-astro-cid-w5q62dq7>3. 集成函数 (Functions: Actions, Syncs, Webhooks)</a> </li><li class="toc-item h3-nav" data-slug="4-mcp-server-规范集成" data-astro-cid-w5q62dq7> <a href="#4-mcp-server-规范集成" data-astro-cid-w5q62dq7>4. MCP Server 规范集成</a> </li><li class="toc-item " data-slug="二composio-是什么开箱即用的工具网关" data-astro-cid-w5q62dq7> <a href="#二composio-是什么开箱即用的工具网关" data-astro-cid-w5q62dq7>二、Composio 是什么：开箱即用的工具网关</a> </li><li class="toc-item " data-slug="三nango-与-composio-的相同点同一个赛道的两套解法" data-astro-cid-w5q62dq7> <a href="#三nango-与-composio-的相同点同一个赛道的两套解法" data-astro-cid-w5q62dq7>三、Nango 与 Composio 的相同点：同一个赛道的两套解法</a> </li><li class="toc-item " data-slug="四nango-与-composio-的核心差异对比" data-astro-cid-w5q62dq7> <a href="#四nango-与-composio-的核心差异对比" data-astro-cid-w5q62dq7>四、Nango 与 Composio 的核心差异对比</a> </li><li class="toc-item " data-slug="五强强联手nango-与-composio-互补架构设计" data-astro-cid-w5q62dq7> <a href="#五强强联手nango-与-composio-互补架构设计" data-astro-cid-w5q62dq7>五、强强联手：Nango 与 Composio 互补架构设计</a> </li><li class="toc-item h3-nav" data-slug="混合集成路由拓扑图" data-astro-cid-w5q62dq7> <a href="#混合集成路由拓扑图" data-astro-cid-w5q62dq7>混合集成路由拓扑图</a> </li><li class="toc-item h3-nav" data-slug="工程落地三项准则" data-astro-cid-w5q62dq7> <a href="#工程落地三项准则" data-astro-cid-w5q62dq7>工程落地三项准则</a> </li><li class="toc-item " data-slug="六结语买现成的还是造可控的" data-astro-cid-w5q62dq7> <a href="#六结语买现成的还是造可控的" data-astro-cid-w5q62dq7>六、结语：买现成的，还是造可控的？</a> </li> </ul> </aside> </div> <!-- Premium "Keep Reading" Visual Cards --> <section class="keep-reading-section" data-astro-cid-w5q62dq7> <span class="section-tag" data-astro-cid-w5q62dq7>深入阅读推荐</span> <div class="keep-reading-grid" data-astro-cid-w5q62dq7> <article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/ai-multi-platform-publishing-composio-connect-mcp" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/composio_multi_publishing.jpg" alt="AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/ai-multi-platform-publishing-composio-connect-mcp" data-astro-cid-w5q62dq7>AI 时代的多平台发布：基于 Composio Connect 与 MCP 的三层解耦架构设计</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文深入探讨了在 AI 时代进行多平台内容发布（如 Reddit、YouTube、Telegram 等）的核心痛点，详细介绍如何通过 Composio Connect（管理认证身份）、Composio MCP（管理调用动作）与多 Agent 角色策略（内容层与规则层）进行三层解耦。文章提供了详细的系统流图与伪代码落地实践，帮助开发者构建合规、高效、防封禁的内容自动分发系统。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年7月11日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article><article class="keep-reading-card" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-auto-memory-vs-claude-mem" class="keep-reading-img-link" data-astro-cid-w5q62dq7> <img class="keep-reading-img" src="/images/blog/claude_memory_comparison.jpg" alt="Claude Code 原生 Auto Memory 与 MCP claude-mem 记忆机制对比与配置指南" loading="lazy" data-astro-cid-w5q62dq7> </a> <div class="keep-reading-body" data-astro-cid-w5q62dq7> <div class="agent-sig-badge" data-astro-cid-w5q62dq7>
+AGENT-SYS // SYNTH
+</div> <h3 class="keep-reading-card-title" data-astro-cid-w5q62dq7> <a href="/zh/blog/claude-auto-memory-vs-claude-mem" data-astro-cid-w5q62dq7>Claude Code 原生 Auto Memory 与 MCP claude-mem 记忆机制对比与配置指南</a> </h3> <p class="keep-reading-card-summary" data-astro-cid-w5q62dq7>本文深入对比了 Claude Code 官方原生的 Auto Memory 与基于 MCP 协议的第三方开源记忆体 claude-mem (cmem) 的原理和特性，解构了它们在数据存储、检索读取、跨设备同步等方面的异同，并详细解释了为什么在实际开发中绝对不能同时开启这两套系统以防 AI 认知失调与 Token 费用暴涨。</p> <div class="keep-reading-meta" data-astro-cid-w5q62dq7> <span data-astro-cid-w5q62dq7>2026年7月7日</span> <span data-astro-cid-w5q62dq7>作者: AgentUpdate</span> </div> </div> </article> </div> </section> </article> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-links">  <a href="/zh/about">关于我们</a> <span class="separator">•</span> <a href="/zh/contact">联系我们</a> <span class="separator">•</span> <a href="/zh/privacy">隐私政策</a> <span class="separator">•</span> <a href="/zh/terms">服务条款</a>  </div> <p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p> </div> </footer> <script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script> </body> </html> <!-- Client scripts for syntax highlighting, copy button, reading progress, and TOC synchronization --> <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script> <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Initialize Highlight.js code highlighting
+    if (typeof hljs !== 'undefined') {
+      document.querySelectorAll('.code-wrapper pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    }
+
+    // 2. Generate Copy Code buttons inside .code-wrapper containers
+    document.querySelectorAll('.code-wrapper').forEach((wrapper) => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-code-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制到剪贴板');
+      
+      const codeEl = wrapper.querySelector('pre code');
+      if (!codeEl) return;
+      
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+          btn.textContent = '✅ 已复制!';
+          btn.style.borderColor = 'var(--success)';
+          btn.style.color = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '复制';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+      });
+      
+      wrapper.appendChild(btn);
+    });
+
+    // 3. Sync scroll reading progress bar
+    const progressBar = document.getElementById('reading-progress-bar');
+    if (progressBar) {
+      const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = scrollPercent + '%';
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress(); // Initial execution
+    }
+
+    // 4. Table of Contents active-link tracking using IntersectionObserver
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (!id) return;
+          
+          document.querySelectorAll('.toc-sidebar .toc-item').forEach((item) => {
+            item.classList.remove('active');
+          });
+          
+          const activeItem = document.querySelector(`.toc-sidebar .toc-item[data-slug="${id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.article-content h2, .article-content h3').forEach((header) => {
+      observer.observe(header);
+    });
+
+    // 5. Robust client-side Mermaid preprocessing & initialization
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        // Force standard mermaid keywords to be case-correct
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        // Self-heal: Convert "A -- Label --> B" to standard "A -->|Label| B"
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        // Helper to check if match is inside double quotes
+        const isInsideQuotes = (offset, fullText) => {
+          const before = fullText.slice(0, offset);
+          const lastLine = before.split('\n').pop();
+          const quoteCount = (lastLine.match(/"/g) || []).length;
+          return quoteCount % 2 !== 0;
+        };
+
+        // Sanitize labels to wrap them in double quotes
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('(') && trimmed.endsWith(')')) return m;
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\(|（)([^)）\n]+)(\)|）)/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close, offset, fullText) => {
+          if (isInsideQuotes(offset, fullText)) return m;
+          const trimmed = text.trim();
+          if (trimmed.startsWith('"') && trimmed.endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script>
