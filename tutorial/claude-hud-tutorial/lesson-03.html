@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Episode 3: Default Display — What You See — 📊 Claude HUD Complete Tutorial: From Beginner to Master in 18 Chapters — AgentUpdate.ai</title><meta name="description" content="Breaking down every element of the HUD's default two-line layout: model name, Git branch, context bar, usage bar, and color change rules."><meta name="keywords" content="AI agents, AI tools, autonomous agents, artificial intelligence, LLM plugins, AgentUpdate"><link rel="canonical" href="https://agentupdate.ai/tutorial/claude-hud-tutorial/lesson-03"><!-- hreflang --><link rel="alternate" hreflang="en" href="https://agentupdate.ai/tutorial/claude-hud-tutorial/lesson-03"><link rel="alternate" hreflang="zh-CN" href="https://agentupdate.ai/zh/tutorial/claude-hud-tutorial/lesson-03"><link rel="alternate" hreflang="x-default" href="https://agentupdate.ai/tutorial/claude-hud-tutorial/lesson-03"><!-- Open Graph --><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:title" content="Episode 3: Default Display — What You See — 📊 Claude HUD Complete Tutorial: From Beginner to Master in 18 Chapters — AgentUpdate.ai"><meta property="og:description" content="Breaking down every element of the HUD's default two-line layout: model name, Git branch, context bar, usage bar, and color change rules."><meta property="og:image" content="https://agentupdate.ai/og-default.jpg"><meta property="og:url" content="https://agentupdate.ai/tutorial/claude-hud-tutorial/lesson-03"><meta property="og:type" content="website"><meta property="og:site_name" content="AgentUpdate.ai"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Episode 3: Default Display — What You See — 📊 Claude HUD Complete Tutorial: From Beginner to Master in 18 Chapters — AgentUpdate.ai"><meta name="twitter:description" content="Breaking down every element of the HUD's default two-line layout: model name, Git branch, context bar, usage bar, and color change rules."><meta name="twitter:image" content="https://agentupdate.ai/og-default.jpg"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Sitemap --><link rel="sitemap" href="/sitemap.xml"><!-- RSS Feeds --><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - News &amp; Tutorials" href="/rss.xml"><link rel="alternate" type="application/rss+xml" title="AgentUpdate.ai - 新闻与教程" href="/zh/rss.xml"><!-- Pagefind UI (injected after build) --><link rel="stylesheet" href="/pagefind/pagefind-ui.css"><script src="/pagefind/pagefind-ui.js"></script><!-- Schema.org structured data: global Organization + WebSite --><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"AgentUpdate.ai","url":"https://agentupdate.ai","logo":"https://agentupdate.ai/favicon.svg","description":"Your trusted source for AI agent news, tools, skills, plugins, and tutorials.","sameAs":["https://github.com/airplanecraft/agentupdate","https://x.com/agentupdate_ai","https://www.linkedin.com/company/agentupdate"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","availableLanguage":["English","Chinese"]}},{"@context":"https://schema.org","@type":"WebSite","name":"AgentUpdate.ai","url":"https://agentupdate.ai","inLanguage":["en","zh-CN"],"potentialAction":{"@type":"SearchAction","target":"https://agentupdate.ai/?q={search_term_string}","query-input":"required name=search_term_string"}}]</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Episode 3: Default Display — What You See — 📊 Claude HUD Complete Tutorial: From Beginner to Master in 18 Chapters — AgentUpdate.ai","description":"Breaking down every element of the HUD's default two-line layout: model name, Git branch, context bar, usage bar, and color change rules.","inLanguage":"en","url":"https://agentupdate.ai/tutorial/claude-hud-tutorial/lesson-03","mainEntityOfPage":{"@type":"WebPage","@id":"https://agentupdate.ai/tutorial/claude-hud-tutorial/lesson-03"},"publisher":{"@type":"Organization","name":"AgentUpdate.ai","logo":{"@type":"ImageObject","url":"https://agentupdate.ai/favicon.svg"}},"dependencies":"Astro, Claude Code, Antigravity, OpenClaw","proficienciesRequired":"AI Agent Development, JavaScript, Python"}</script><!-- AI-friendly meta tags --><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"><meta name="generator" content="Astro"><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-BZG252PSQD"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BZG252PSQD');
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DDOCGseZ.css"><style>.breadcrumbs[data-astro-cid-vx4iavld]{color:var(--text-secondary,#64748b);margin-bottom:1.5rem;font-size:.85rem}.breadcrumbs[data-astro-cid-vx4iavld] ol[data-astro-cid-vx4iavld]{flex-wrap:wrap;align-items:center;gap:.5rem;margin:0;padding:0;list-style:none;display:flex}.breadcrumbs[data-astro-cid-vx4iavld] li[data-astro-cid-vx4iavld]{align-items:center;gap:.5rem;display:flex}.breadcrumbs[data-astro-cid-vx4iavld] a[data-astro-cid-vx4iavld]{color:var(--accent,#4f46e5);text-decoration:none;transition:color .2s}.breadcrumbs[data-astro-cid-vx4iavld] a[data-astro-cid-vx4iavld]:hover{color:var(--accent-dark,#3730a3);text-decoration:underline}.breadcrumbs[data-astro-cid-vx4iavld] span[data-astro-cid-vx4iavld][aria-current=page]{color:var(--text,#0f172a);font-weight:500}.separator[data-astro-cid-vx4iavld]{color:#cbd5e1;user-select:none;font-size:.8rem}
+.related-mesh[data-astro-cid-eml4xda5]{border-top:1px solid var(--border);margin-top:60px;padding-top:40px}.mesh-header[data-astro-cid-eml4xda5]{align-items:center;gap:20px;margin-bottom:32px;display:flex}.mesh-header[data-astro-cid-eml4xda5] h2[data-astro-cid-eml4xda5]{color:var(--text);white-space:nowrap;font-size:20px;font-weight:700}.mesh-line[data-astro-cid-eml4xda5]{background:var(--border);flex:1;height:1px}.mesh-grid[data-astro-cid-eml4xda5]{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;display:grid}.mesh-column[data-astro-cid-eml4xda5] h3[data-astro-cid-eml4xda5]{color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px;font-size:14px;font-weight:600}.mesh-item[data-astro-cid-eml4xda5]{border-radius:12px;gap:12px;margin-bottom:8px;padding:12px;text-decoration:none;transition:all .2s;display:flex}.mesh-item[data-astro-cid-eml4xda5]:hover{background:var(--surface2);transform:translate(4px)}.item-icon[data-astro-cid-eml4xda5],.item-img[data-astro-cid-eml4xda5]{background:var(--surface2);border-radius:8px;flex-shrink:0;justify-content:center;align-items:center;width:40px;height:40px;font-size:20px;display:flex}.item-img[data-astro-cid-eml4xda5]{object-fit:cover;border:1px solid var(--border)}.item-info[data-astro-cid-eml4xda5] h4[data-astro-cid-eml4xda5]{color:var(--text);margin:0 0 4px;font-size:15px;font-weight:600}.item-info[data-astro-cid-eml4xda5] p[data-astro-cid-eml4xda5]{color:var(--muted);-webkit-line-clamp:2;-webkit-box-orient:vertical;margin:0;font-size:13px;display:-webkit-box;overflow:hidden}
+</style><link rel="stylesheet" href="/_astro/_lesson_.DpsgOhWE.css"></head><body class="min-h-screen font-sans antialiased"><!-- Navbar --><header class="site-header"><div class="container"><a href="/" class="logo">AgentUpdate<span>.ai</span></a><!-- Mobile: always-visible right controls --><div class="header-right"><a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"><span class="rss-icon">RSS</span></a><a href="/zh/tutorial/claude-hud-tutorial/lesson-03" class="lang-btn">中文</a><div id="search-trigger" class="search-icon" title="Search" aria-label="Open search">⌕</div><button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">☰</button></div><!-- Desktop navigation (inside header for sticky flow) --><nav class="nav-links nav-desktop" id="nav-links-desktop"><a href="/">Home</a><a href="/news">News</a><a href="/product">Products</a><a href="/skills">Skills</a><a href="/plugins">Plugin</a><a href="/releases">Releases</a><a href="/tags">Tags</a><a href="/tutorial">Tutorials</a><a href="/blog">Blog</a><a href="/simulators">Simulators</a><span class="nav-desktop-only"><a href="/rss.xml" target="_blank" class="rss-link-header" title="RSS Feed"><span class="rss-icon">RSS</span></a><a href="/zh/tutorial/claude-hud-tutorial/lesson-03" class="lang-btn">中文</a><div id="search-trigger-desktop" class="search-icon" title="Search" aria-label="Open search">⌕</div></span></nav></div></header><!-- Mobile nav overlay (OUTSIDE header to avoid sticky stacking context) --><nav class="mobile-nav-overlay" id="mobile-nav-overlay"><a href="/">Home</a><a href="/news">News</a><a href="/product">Products</a><a href="/skills">Skills</a><a href="/plugins">Plugin</a><a href="/releases">Releases</a><a href="/tags">Tags</a><a href="/tutorial">Tutorials</a><a href="/blog">Blog</a><a href="/simulators">Simulators</a></nav><!-- Pagefind modal --><div id="search-modal" class="search-modal hidden"><div class="search-modal-inner"><button id="search-close" class="search-close" aria-label="Close search">✕</button><div id="pagefind-ui"></div></div></div><main class="lesson-page-wrapper" data-astro-cid-5prk4jbn><div class="container dual-layout-container" data-astro-cid-5prk4jbn><!-- Sidebar Navigation Curriculum --><aside class="sidebar-nav-catalog" data-astro-cid-5prk4jbn><div class="sidebar-box" data-astro-cid-5prk4jbn><span class="catalog-header-tag" data-astro-cid-5prk4jbn>SERIES CURRICULUM</span><a href="/tutorial/claude-hud-tutorial" class="series-title-link" data-astro-cid-5prk4jbn>📊 CLAUDE HUD COMPLETE TUTORIAL: FROM BEGINNER TO MASTER IN 18 CHAPTERS</a><ul class="nav-lesson-list" data-astro-cid-5prk4jbn><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-01" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>01 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 1: What is Claude HUD</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-02" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>02 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 2: Installation &amp; Version Guide</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-03" class="lesson-nav-link active" data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>03 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 3: Default Display — What You See</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-04" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>04 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 4: Configuration &amp; Presets</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-05" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>05 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 5: Context Window Deep Dive</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-06" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>06 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 6: Tokens Deep Dive</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-07" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>07 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 7: Usage Limits</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-08" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>08 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 8: Git Status &amp; Tool Activity</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-09" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>09 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 9: Advanced Features</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-10" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>10 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 10: Best Practices &amp; FAQ</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-11" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>11 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 11: HUD Data Sources Deep Dive</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-12" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>12 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 12: Debugging — Token Details Not Showing</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-13" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>13 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 13: Session &amp; Session History</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-14" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>14 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 14: Memory System</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-15" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>15 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 15: /compact vs /clear Commands</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-16" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>16 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 16: Q&amp;A — Session, Context &amp; Token Basics</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-17" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>17 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 17: Q&amp;A — Cache Mechanisms &amp; Token Optimization</span></a></li><li data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-18" class="lesson-nav-link " data-astro-cid-5prk4jbn><span class="lesson-index-num" data-astro-cid-5prk4jbn>18 //</span><span class="lesson-title-text" data-astro-cid-5prk4jbn>Episode 18: Q&amp;A — HUD Debugging, Memory &amp; Advanced Topics</span></a></li></ul></div></aside><!-- Main Lesson Content --><article class="main-lesson-article" data-astro-cid-5prk4jbn><nav class="breadcrumbs" aria-label="Breadcrumb" data-astro-cid-vx4iavld><ol data-astro-cid-vx4iavld><li data-astro-cid-vx4iavld><a href="/" data-astro-cid-vx4iavld>Home</a><span class="separator" data-astro-cid-vx4iavld>/</span></li><li data-astro-cid-vx4iavld><a href="/tutorial" data-astro-cid-vx4iavld>Tutorials</a><span class="separator" data-astro-cid-vx4iavld>/</span></li><li data-astro-cid-vx4iavld><a href="/tutorial/claude-hud-tutorial" data-astro-cid-vx4iavld>📊 Claude HUD Complete Tutorial: From Beginner to Master in 18 Chapters</a><span class="separator" data-astro-cid-vx4iavld>/</span></li><li data-astro-cid-vx4iavld><span aria-current="page" data-astro-cid-vx4iavld>Episode 3: Default Display — What You See</span></li></ol></nav><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://agentupdate.ai/"},{"@type":"ListItem","position":2,"name":"Tutorials","item":"https://agentupdate.ai/tutorial"},{"@type":"ListItem","position":3,"name":"📊 Claude HUD Complete Tutorial: From Beginner to Master in 18 Chapters","item":"https://agentupdate.ai/tutorial/claude-hud-tutorial"},{"@type":"ListItem","position":4,"name":"Episode 3: Default Display — What You See"}]}</script><header class="lesson-details-header" data-astro-cid-5prk4jbn><h1 class="lesson-display-title" data-astro-cid-5prk4jbn>Episode 3: Default Display — What You See</h1><div class="lesson-meta-row" data-astro-cid-5prk4jbn><span class="meta-item" data-astro-cid-5prk4jbn>3 MIN READ</span><span class="meta-separator" data-astro-cid-5prk4jbn>|</span><span class="meta-item" data-astro-cid-5prk4jbn>UPDATED: 2026-06-16</span></div></header><!-- Direct Summary Box (GEO Citation Optimizer) --><div class="direct-summary-box" data-astro-cid-5prk4jbn><div class="summary-box-title" data-astro-cid-5prk4jbn>DIRECT SUMMARY // KEY TAKEAWAY</div><p class="summary-box-text" data-astro-cid-5prk4jbn>Breaking down every element of the HUD&#39;s default two-line layout: model name, Git branch, context bar, usage bar, and color change rules.</p></div><!-- Markdown Body --><div class="markdown-article-body" data-astro-cid-5prk4jbn><blockquote>
+<p><strong>Key Takeaway</strong>: Your first impression after installing HUD — two lines of information represent your entire session's health.</p>
+</blockquote>
+<hr>
+<h2>3.1 Default Two-Line Layout</h2>
+<pre><code>[Opus | Max] │ my-project git:(main*)
+Context █████░░░░░ 45% │ Usage ██░░░░░░░░ 25% (1h 30m / 5h)
+</code></pre>
+<p><strong>Line 1</strong>: Model name + plan | Project path | Git branch</p>
+<table>
+<thead>
+<tr>
+<th>Info</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[Opus]</code></td>
+<td>Current model</td>
+</tr>
+<tr>
+<td><code>Max</code></td>
+<td>Subscription type (Pro/Max/Team)</td>
+</tr>
+<tr>
+<td><code>my-project</code></td>
+<td>Project directory name</td>
+</tr>
+<tr>
+<td><code>git:(main*)</code></td>
+<td>Current branch, <code>*</code> indicates uncommitted changes</td>
+</tr>
+</tbody></table>
+<p><strong>Line 2</strong>: Context bar + usage limit</p>
+<table>
+<thead>
+<tr>
+<th>Info</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Context █████░░░░░ 45%</code></td>
+<td>Context window 45% used</td>
+</tr>
+<tr>
+<td><code>Usage ██░░░░░░░░ 25%</code></td>
+<td>5-hour usage window 25% used</td>
+</tr>
+<tr>
+<td><code>(1h 30m / 5h)</code></td>
+<td>1.5 hours used, 5-hour window total</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3.2 Context Bar Color Changes</h2>
+<p>Colors change automatically with usage:</p>
+<table>
+<thead>
+<tr>
+<th>Color</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🟢 Green</td>
+<td>Healthy (&lt; 60%)</td>
+</tr>
+<tr>
+<td>🟡 Yellow</td>
+<td>Warning (60-85%)</td>
+</tr>
+<tr>
+<td>🔴 Red</td>
+<td>Critical (&gt; 85%)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3.3 Optional Lines (Must Be Manually Enabled)</h2>
+<p>Enable via <code>/claude-hud:configure</code>:</p>
+<pre><code>◐ Edit: auth.ts | ✓ Read ×3 | ✓ Grep ×2        ← Tool activity
+◐ explore [haiku]: Finding auth code (2m 15s)    ← Agent status
+▸ Fix authentication bug (2/5)                   ← Todo progress
+</code></pre>
+<p>These let you see in real-time what Claude is doing and how things are progressing.</p>
+<hr>
+<blockquote>
+<p><strong>Next Episode</strong>: Episode 4 covers configuration and presets — how to customize your dashboard with <code>/claude-hud:configure</code>.</p>
+</blockquote>
+</div><!-- Bottom Lesson Navigation --><div class="bottom-pagination-row" data-astro-cid-5prk4jbn><div class="pag-item prev" data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-02" class="pag-btn" data-astro-cid-5prk4jbn><span class="pag-label" data-astro-cid-5prk4jbn>← PREVIOUS LESSON</span><span class="pag-title" data-astro-cid-5prk4jbn>Episode 2: Installation &amp; Version Guide</span></a></div><div class="pag-item next" data-astro-cid-5prk4jbn><a href="/tutorial/claude-hud-tutorial/lesson-04" class="pag-btn" data-astro-cid-5prk4jbn><span class="pag-label" data-astro-cid-5prk4jbn>NEXT LESSON →</span><span class="pag-title" data-astro-cid-5prk4jbn>Episode 4: Configuration &amp; Presets</span></a></div></div><div class="related-block-divider" data-astro-cid-5prk4jbn></div></article></div></main><footer class="site-footer"><div class="container"><div class="footer-links"><a href="/about">About Us</a><span class="separator">•</span><a href="/contact">Contact</a><span class="separator">•</span><a href="/privacy">Privacy Policy</a><span class="separator">•</span><a href="/terms">Terms of Service</a></div><p>© 2026 AgentUpdate.ai. Powered by AI Agents.</p></div></footer><script>
+      // Hamburger toggle (targets mobile overlay which is outside sticky header)
+      document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        overlay?.classList.toggle('open');
+        const btn = document.getElementById('menu-toggle');
+        if (btn) btn.textContent = overlay?.classList.contains('open') ? '✕' : '☰';
+      });
+
+      // Close menu when a link is clicked (mobile UX)
+      document.querySelectorAll('#mobile-nav-overlay a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.getElementById('mobile-nav-overlay')?.classList.remove('open');
+          const btn = document.getElementById('menu-toggle');
+          if (btn) btn.textContent = '☰';
+        });
+      });
+
+      // Pagefind search modal (both triggers)
+      function openSearch() {
+        document.getElementById('search-modal')?.classList.remove('hidden');
+        if (typeof PagefindUI !== 'undefined' && !window._pfInitialized) {
+          new PagefindUI({ element: '#pagefind-ui', showImages: true });
+          window._pfInitialized = true;
+        }
+      }
+      document.getElementById('search-trigger')?.addEventListener('click', openSearch);
+      document.getElementById('search-trigger-desktop')?.addEventListener('click', openSearch);
+      document.getElementById('search-close')?.addEventListener('click', () => {
+        document.getElementById('search-modal')?.classList.add('hidden');
+      });
+    </script></body></html><!-- Mermaid.js for diagram rendering --><script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script><script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined' && document.querySelector('.mermaid')) {
+      document.querySelectorAll('.mermaid').forEach(el => {
+        let code = el.textContent.trim();
+        
+        const keywords = [
+          { key: 'graph', standard: 'graph' },
+          { key: 'flowchart', standard: 'flowchart' },
+          { key: 'sequencediagram', standard: 'sequenceDiagram' },
+          { key: 'gantt', standard: 'gantt' },
+          { key: 'classdiagram', standard: 'classDiagram' },
+          { key: 'statediagram', standard: 'stateDiagram' },
+          { key: 'pie', standard: 'pie' },
+          { key: 'erdiagram', standard: 'erDiagram' },
+          { key: 'journey', standard: 'journey' },
+          { key: 'gitgraph', standard: 'gitGraph' },
+          { key: 'c4context', standard: 'C4Context' }
+        ];
+        for (const item of keywords) {
+          const regex = new RegExp(`^${item.key}\\b`, 'i');
+          if (regex.test(code)) {
+            code = code.replace(regex, item.standard);
+            break;
+          }
+        }
+
+        code = code.replace(/(\w+)\s+--\s+([^-\n]+)\s+-->\s+(\w+)/g, '$1 -->|$2| $3');
+
+        code = code.replace(/(\w+)(\[)([^\]\n]+)(\])/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\()([^\)\n]+)(\))/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+        code = code.replace(/(\w+)(\{)([^\}\n]+)(\})/g, (m, id, open, text, close) => {
+          if (text.trim().startsWith('"') && text.trim().endsWith('"')) return m;
+          return `${id}${open}"${text.replace(/"/g, "'")}"${close}`;
+        });
+
+        el.textContent = code;
+      });
+
+      mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+      mermaid.run({ querySelector: '.mermaid' });
+    }
+  });
+</script><script>
+  // Mobile curriculum toggle trigger
+  document.addEventListener('DOMContentLoaded', function() {
+    const catalog = document.querySelector('.sidebar-nav-catalog');
+    if (!catalog || window.innerWidth >= 1024) return;
+    
+    const titleLink = catalog.querySelector('.series-title-link');
+    if (!titleLink) return;
+    
+    titleLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      catalog.classList.toggle('expanded');
+    });
+  });
+</script>
