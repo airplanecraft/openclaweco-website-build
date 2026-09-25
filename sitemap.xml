@@ -40321,18 +40321,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/releases/windsurf</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/releases/windsurf</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/releases/devin</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -40388,6 +40376,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/releases/google-jules</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/releases/windsurf</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/releases/windsurf</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -40525,18 +40525,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/releases/anthropic-claude</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/releases/anthropic-claude</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/releases/crewai</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -40609,18 +40597,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/releases/claude-code</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/releases/claude-code</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/releases/google-adk</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -40681,6 +40657,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/releases/anthropic-claude</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/releases/anthropic-claude</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/releases/smolagents</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -40724,6 +40712,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/releases/replit</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/releases/claude-code</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/releases/claude-code</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
