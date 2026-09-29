@@ -337,18 +337,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/trump-goes-all-in-on-ai-maga-base-recoils</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/trump-goes-all-in-on-ai-maga-base-recoils</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/cheap-ai-model-deepseek-openai-anthropic</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -356,6 +344,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/cheap-ai-model-deepseek-openai-anthropic</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/trump-goes-all-in-on-ai-maga-base-recoils</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/trump-goes-all-in-on-ai-maga-base-recoils</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -709,13 +709,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/vector-index-output-embeddings-llm-inference</loc>
+    <loc>https://agentupdate.ai/news/ai-writers-vs-ai-editors-stylometric-footprint</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/vector-index-output-embeddings-llm-inference</loc>
+    <loc>https://agentupdate.ai/zh/news/ai-writers-vs-ai-editors-stylometric-footprint</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -733,13 +733,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/ai-writers-vs-ai-editors-stylometric-footprint</loc>
+    <loc>https://agentupdate.ai/news/vector-index-output-embeddings-llm-inference</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/ai-writers-vs-ai-editors-stylometric-footprint</loc>
+    <loc>https://agentupdate.ai/zh/news/vector-index-output-embeddings-llm-inference</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -6829,18 +6829,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/dynamic-infilling-anchors-diffusion-llms</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/dynamic-infilling-anchors-diffusion-llms</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/segtreemem-temporal-order-agentic-memory</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -6853,18 +6841,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/dllg-dynamic-logit-level-gating-llm-experts</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/dllg-dynamic-logit-level-gating-llm-experts</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/geneb-genomic-models-benchmark</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -6872,6 +6848,30 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/geneb-genomic-models-benchmark</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/dynamic-infilling-anchors-diffusion-llms</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/dynamic-infilling-anchors-diffusion-llms</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/dllg-dynamic-logit-level-gating-llm-experts</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/dllg-dynamic-logit-level-gating-llm-experts</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
