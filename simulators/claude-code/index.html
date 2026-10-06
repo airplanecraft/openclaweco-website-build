@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       Index Page — Chapter Selection
+       Dark theme matching the simulator
+       ============================================ */
+
+    :root {
+      --accent: #D97706;
+      --accent-bright: #F59E0B;
+      --accent-dim: #92400E;
+      --accent-glow: rgba(217, 119, 6, 0.15);
+      --bg-primary: #0F0F0F;
+      --bg-secondary: #1A1A1A;
+      --bg-tertiary: #242424;
+      --bg-hover: #2A2A2A;
+      --border: #2E2E2E;
+      --border-light: #3A3A3A;
+      --text-primary: #E5E5E5;
+      --text-secondary: #A3A3A3;
+      --text-muted: #6B6B6B;
+      --term-green: #4CAF50;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header */
+    .page-header {
+      text-align: center;
+      padding: 60px 24px 20px;
+      max-width: 700px;
+    }
+
+    .header-logo {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      border-radius: var(--radius-lg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 20px;
+      box-shadow: 0 0 30px rgba(217, 119, 6, 0.3);
+    }
+
+    .header-title {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-bright));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .header-subtitle.en { display: block; }
+    .header-subtitle.zh { display: none; }
+    body.lang-zh .header-subtitle.en { display: none; }
+    body.lang-zh .header-subtitle.zh { display: block; }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin: 24px 0 36px;
+    }
+
+    .toolbar button {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .toolbar button:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border-color: var(--border-light);
+    }
+
+    .toolbar button:active {
+      transform: scale(0.97);
+    }
+
+    /* Progress summary */
+    .progress-summary {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .progress-summary-bar {
+      width: 200px;
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-summary-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+      border-radius: 3px;
+      transition: width 400ms ease;
+    }
+
+    .progress-summary-text {
+      color: var(--text-secondary);
+    }
+
+    /* Chapter Grid */
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      max-width: 800px;
+      width: 100%;
+      padding: 0 24px 60px;
+    }
+
+    /* Chapter Card */
+    .chapter-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: all 200ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter-card:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .chapter-card.completed {
+      border-color: var(--term-green);
+      background: rgba(76, 175, 80, 0.04);
+    }
+
+    .chapter-card.completed:hover {
+      background: rgba(76, 175, 80, 0.08);
+    }
+
+    .card-number {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 600;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      transition: all 200ms ease;
+    }
+
+    .chapter-card:hover .card-number {
+      background: var(--accent-glow);
+      color: var(--accent-bright);
+    }
+
+    .chapter-card.completed .card-number {
+      background: var(--term-green);
+      color: #000;
+    }
+
+    .card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: var(--text-primary);
+    }
+
+    .card-title-zh {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: none;
+    }
+
+    body.lang-zh .card-title-zh {
+      display: block;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .card-desc.en { display: block; }
+    .card-desc.zh { display: none; }
+    body.lang-zh .card-desc.en { display: none; }
+    body.lang-zh .card-desc.zh { display: block; }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card-duration {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-badge {
+      display: none;
+      color: var(--term-green);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .chapter-card.completed .card-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Footer */
+    .page-footer {
+      text-align: center;
+      padding: 20px 24px 40px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .chapter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-title {
+        font-size: 28px;
+      }
+
+      .page-header {
+        padding: 40px 20px 16px;
+      }
+    }
+
+    /* Reset confirmation */
+    .confirm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-overlay.show {
+      display: flex;
+    }
+
+    .confirm-dialog {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .confirm-dialog h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .confirm-dialog p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .confirm-actions button {
+      padding: 8px 20px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: all 150ms ease;
+    }
+
+    .btn-cancel {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+
+    .btn-cancel:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .btn-confirm-reset {
+      background: #F44336;
+      color: #fff;
+      border-color: #F44336;
+    }
+
+    .btn-confirm-reset:hover {
+      background: #D32F2F;
+      border-color: #D32F2F;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-logo">C</div>
+    <h1 class="header-title">Claude Code Simulator</h1>
+    <p class="header-subtitle en">An interactive, browser-based tutorial that teaches you how to use Claude Code — the AI-powered coding agent — through guided, step-by-step simulated terminal exercises.</p>
+    <p class="header-subtitle zh">一个基于浏览器的交互式教程，通过引导式、循序渐进的模拟终端练习，教你如何使用 Claude Code —— 这个由 AI 驱动的编程代理。</p>
+  </header>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button id="lang-toggle">🌐 中文</button>
+    <button id="reset-btn">Reset Progress</button>
+  </div>
+
+  <!-- Progress Summary -->
+  <div class="progress-summary">
+    <div class="progress-summary-bar"><div class="progress-summary-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-summary-text" id="progress-text">0 / 10 completed</span>
+  </div>
+
+  <!-- Chapter Grid -->
+  <div class="chapter-grid" id="chapter-grid"></div>
+
+  <!-- Footer -->
+  <div class="page-footer">Built for the Claude Code community</div>
+
+  <!-- Reset Confirmation Dialog -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-dialog">
+      <h3 id="confirm-title">Reset all progress?</h3>
+      <p id="confirm-desc">This will clear all completed chapters and cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" id="confirm-cancel">Cancel</button>
+        <button class="btn-confirm-reset" id="confirm-reset">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/state-manager.js"></script>
+  <script src="js/chapter-nav.js"></script>
+  <script>
+    (function() {
+      // Load saved state
+      AppState.load();
+
+      // Chapter data for the index page
+      const chapters = [
+        {
+          id: 'ch01',
+          file: 'ch01-install.html',
+          number: 1,
+          title: { en: 'Installation & Auth', zh: '安装认证' },
+          desc: {
+            en: 'Install Claude Code, authenticate with your Anthropic account, and run your first command.',
+            zh: '安装 Claude Code，使用 Anthropic 账户进行认证，并运行你的第一个命令。'
+          },
+          time: '3 min'
+        },
+        {
+          id: 'ch02',
+          file: 'ch02-conversation.html',
+          number: 2,
+          title: { en: 'Basic Conversation', zh: '基础对话' },
+          desc: {
+            en: 'Learn how to chat with Claude Code, ask questions, and get code suggestions in the terminal.',
+            zh: '学习如何与 Claude Code 对话、提问，并在终端中获取代码建议。'
+          },
+          time: '3 min'
+        },
+        {
+          id: 'ch03',
+          file: 'ch03-brainstorming.html',
+          number: 3,
+          title: { en: 'Brainstorming', zh: '头脑风暴' },
+          desc: {
+            en: 'Install the brainstorming skill, explore ideas, and discover what to build for your project.',
+            zh: '安装头脑风暴技能，探索创意，发现项目要构建的内容。'
+          },
+          time: '4 min'
+        },
+        {
+          id: 'ch04',
+          file: 'ch04-planning.html',
+          number: 4,
+          title: { en: 'Planning & CLAUDE.md', zh: '规划与规则' },
+          desc: {
+            en: 'Plan with files, generate CLAUDE.md rules, and set up project conventions.',
+            zh: '使用文件规划项目，生成 CLAUDE.md 规则，设定项目约定。'
+          },
+          time: '4 min'
+        },
+        {
+          id: 'ch05',
+          file: 'ch05-development.html',
+          number: 5,
+          title: { en: 'Dev & Testing Rules', zh: '开发与测试规则' },
+          desc: {
+            en: 'Configure TDD, verification, and subagent parallel development rules before coding.',
+            zh: '在编码前配置 TDD、验证机制和 subagent 并行开发规则。'
+          },
+          time: '5 min'
+        },
+        {
+          id: 'ch06',
+          file: 'ch06-review.html',
+          number: 6,
+          title: { en: 'Code Review & Debug', zh: '代码审查与调试' },
+          desc: {
+            en: 'Git init, conventional commits, code review, and systematic debugging.',
+            zh: 'Git 初始化、规范提交、代码审查和系统化调试。'
+          },
+          time: '4 min'
+        },
+        {
+          id: 'ch07',
+          file: 'ch07-ship.html',
+          number: 7,
+          title: { en: 'E2E Testing Rules', zh: '端到端测试规则' },
+          desc: {
+            en: 'Set up Playwright and define end-to-end testing, QA, and release rules.',
+            zh: '配置 Playwright，并定义端到端测试、QA 和发布规则。'
+          },
+          time: '4 min'
+        },
+        {
+          id: 'ch08',
+          file: 'ch08-mcp.html',
+          number: 8,
+          title: { en: 'Implement from task_plan.md', zh: '按 task_plan 开发' },
+          desc: {
+            en: 'Use one prompt to execute task_plan.md and build the Todo CLI project.',
+            zh: '用一句提示让 Claude 按 task_plan.md 完成 Todo CLI 开发。'
+          },
+          time: '4 min'
+        },
+        {
+          id: 'ch09',
+          file: 'ch09-graduation.html',
+          number: 9,
+          title: { en: 'Package as MCP', zh: '打包为 MCP 服务' },
+          desc: {
+            en: 'Wrap the finished Todo CLI as an MCP server Claude can call directly.',
+            zh: '把完成的 Todo CLI 打包成 Claude 可直接调用的 MCP 服务。'
+          },
+          time: '5 min'
+        },
+        {
+          id: 'ch10',
+          file: 'ch10-graduation.html',
+          number: 10,
+          title: { en: 'Graduation', zh: '毕业总结' },
+          desc: {
+            en: 'Final verification, project summary, and graduation celebration.',
+            zh: '最终验证、项目总结和毕业庆祝。'
+          },
+          time: '4 min'
+        }
+      ];
+
+      const lang = AppState.lang || 'en';
+
+      function l(text) {
+        if (!text) return '';
+        if (typeof text === 'string') return text;
+        return text[lang] || text.en || '';
+      }
+
+      function updateProgress() {
+        let completed = 0;
+        chapters.forEach(function(ch) {
+          if (AppState.isChapterCompleted(ch.id)) completed++;
+        });
+        var pct = Math.round((completed / chapters.length) * 100);
+        document.getElementById('progress-fill').style.width = pct + '%';
+        var progressText = document.getElementById('progress-text');
+        if (lang === 'zh') {
+          progressText.textContent = completed + ' / ' + chapters.length + ' 已完成';
+        } else {
+          progressText.textContent = completed + ' / ' + chapters.length + ' completed';
+        }
+      }
+
+      function renderGrid() {
+        var grid = document.getElementById('chapter-grid');
+        grid.innerHTML = '';
+
+        chapters.forEach(function(ch) {
+          var isCompleted = AppState.isChapterCompleted(ch.id);
+
+          var a = document.createElement('a');
+          a.href = ch.file;
+          a.className = 'chapter-card' + (isCompleted ? ' completed' : '');
+
+          var titleZh = ch.title.zh ? '<div class="card-title-zh">' + ch.title.zh + '</div>' : '';
+
+          a.innerHTML =
+            '<div class="card-number">' + (isCompleted ? '✓' : ch.number) + '</div>' +
+            '<div class="card-content">' +
+              '<div class="card-title">' + l(ch.title) + '</div>' +
+              titleZh +
+              '<div class="card-desc en">' + ch.desc.en + '</div>' +
+              '<div class="card-desc zh">' + ch.desc.zh + '</div>' +
+              '<div class="card-meta">' +
+                '<span class="card-duration">' + ch.time + '</span>' +
+                '<span class="card-badge">✓ Completed</span>' +
+              '</div>' +
+            '</div>';
+
+          grid.appendChild(a);
+        });
+      }
+
+      function applyLang() {
+        var body = document.body;
+        if (lang === 'zh') {
+          body.classList.add('lang-zh');
+        } else {
+          body.classList.remove('lang-zh');
+        }
+        updateProgress();
+      }
+
+      // Language toggle
+      document.getElementById('lang-toggle').addEventListener('click', function() {
+        AppState.setLang(lang === 'en' ? 'zh' : 'en');
+        location.reload();
+      });
+
+      // Set toggle button text
+      var toggleBtn = document.getElementById('lang-toggle');
+      toggleBtn.textContent = lang === 'en' ? '🌐 中文' : '🌐 EN';
+
+      // Reset
+      var confirmOverlay = document.getElementById('confirm-overlay');
+      document.getElementById('reset-btn').addEventListener('click', function() {
+        confirmOverlay.classList.add('show');
+      });
+      document.getElementById('confirm-cancel').addEventListener('click', function() {
+        confirmOverlay.classList.remove('show');
+      });
+      document.getElementById('confirm-reset').addEventListener('click', function() {
+        AppState.resetProgress();
+        confirmOverlay.classList.remove('show');
+        renderGrid();
+        updateProgress();
+      });
+
+      // Close overlay on backdrop click
+      confirmOverlay.addEventListener('click', function(e) {
+        if (e.target === confirmOverlay) {
+          confirmOverlay.classList.remove('show');
+        }
+      });
+
+      // Initial render
+      applyLang();
+      renderGrid();
+    })();
+  </script>
+  <script src="js/brand-bar.js"></script>
+</body>
+</html>
