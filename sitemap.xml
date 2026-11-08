@@ -109,6 +109,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/news/efficiency-trap-optimisation-backfire-ai-agents</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/efficiency-trap-optimisation-backfire-ai-agents</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/wall-street-rising-stars-networking-ai-fitness</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/wall-street-rising-stars-networking-ai-fitness</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/news/moe-routing-strategies-explained-2026</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -5329,18 +5353,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/xiaomi-mimo-code-claude-code-endurance-gap</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/xiaomi-mimo-code-claude-code-endurance-gap</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/four-lines-to-fix-claude-analysis-hallucinations</loc>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -5348,6 +5360,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/four-lines-to-fix-claude-analysis-hallucinations</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/xiaomi-mimo-code-claude-code-endurance-gap</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/xiaomi-mimo-code-claude-code-endurance-gap</loc>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -7189,6 +7213,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/news/dynamic-infilling-anchors-diffusion-llms</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/dynamic-infilling-anchors-diffusion-llms</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/news/segtreemem-temporal-order-agentic-memory</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -7208,18 +7244,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/dllg-dynamic-logit-level-gating-llm-experts</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/dynamic-infilling-anchors-diffusion-llms</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/dynamic-infilling-anchors-diffusion-llms</loc>
     <lastmod>2026-06-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -10333,18 +10357,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
-    <lastmod>2026-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/llm-mathematical-reasoning-survey-benchmarks-architectures</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -10352,6 +10364,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/llm-mathematical-reasoning-survey-benchmarks-architectures</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/llm-arabic-financial-sentiment-analysis-saudi-market</loc>
     <lastmod>2026-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -13165,18 +13189,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/google-android-create-my-widget-gemini-ai</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/google-android-create-my-widget-gemini-ai</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/google-gboard-rambler-gemini-dictation-ai</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -13184,6 +13196,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/google-gboard-rambler-gemini-dictation-ai</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/google-android-create-my-widget-gemini-ai</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/google-android-create-my-widget-gemini-ai</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -13357,13 +13381,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/llm-agents-tool-necessity-hidden-states</loc>
+    <loc>https://agentupdate.ai/news/meow-omni-1-quad-modal-llm-feline-ethology</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/llm-agents-tool-necessity-hidden-states</loc>
+    <loc>https://agentupdate.ai/zh/news/meow-omni-1-quad-modal-llm-feline-ethology</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -13381,18 +13405,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/meow-omni-1-quad-modal-llm-feline-ethology</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/meow-omni-1-quad-modal-llm-feline-ethology</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/quantifying-user-simulator-utility-llm-assistants</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -13400,6 +13412,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/quantifying-user-simulator-utility-llm-assistants</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/llm-agents-tool-necessity-hidden-states</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/llm-agents-tool-necessity-hidden-states</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14233,25 +14257,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/xai-evaluation-cards-standardizing-metrics</loc>
+    <loc>https://agentupdate.ai/news/deepfake-detection-hamiltonian-dynamics-stability-analysis</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/xai-evaluation-cards-standardizing-metrics</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/intermediate-representations-ai-image-detection</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/intermediate-representations-ai-image-detection</loc>
+    <loc>https://agentupdate.ai/zh/news/deepfake-detection-hamiltonian-dynamics-stability-analysis</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14281,37 +14293,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/supernodes-halos-llm-ffn-pruning</loc>
+    <loc>https://agentupdate.ai/news/intermediate-representations-ai-image-detection</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/supernodes-halos-llm-ffn-pruning</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/river-llm-kv-share-early-exit-inference-speedup</loc>
-    <lastmod>2026-05-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/river-llm-kv-share-early-exit-inference-speedup</loc>
+    <loc>https://agentupdate.ai/zh/news/intermediate-representations-ai-image-detection</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14329,13 +14317,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/deepfake-detection-hamiltonian-dynamics-stability-analysis</loc>
+    <loc>https://agentupdate.ai/news/river-llm-kv-share-early-exit-inference-speedup</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/deepfake-detection-hamiltonian-dynamics-stability-analysis</loc>
+    <loc>https://agentupdate.ai/zh/news/river-llm-kv-share-early-exit-inference-speedup</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/evaluating-llm-parliamentary-summaries-computational-argumentation</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -14348,6 +14348,30 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/path-lock-expert-ai-reasoning-separation</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/xai-evaluation-cards-standardizing-metrics</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/xai-evaluation-cards-standardizing-metrics</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/supernodes-halos-llm-ffn-pruning</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/supernodes-halos-llm-ffn-pruning</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -17857,18 +17881,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/anthropic-claude-design-visual-creation</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/anthropic-claude-design-visual-creation</loc>
-    <lastmod>2026-04-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/news/anthropic-claude-design-ai-visual-assistant</loc>
     <lastmod>2026-04-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -17876,6 +17888,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/anthropic-claude-design-ai-visual-assistant</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/anthropic-claude-design-visual-creation</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/anthropic-claude-design-visual-creation</loc>
     <lastmod>2026-04-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -18313,13 +18337,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/pacellm-brain-inspired-llm-long-context</loc>
+    <loc>https://agentupdate.ai/news/ai-agents-web-search-tools-data-exfiltration-vulnerability</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/pacellm-brain-inspired-llm-long-context</loc>
+    <loc>https://agentupdate.ai/zh/news/ai-agents-web-search-tools-data-exfiltration-vulnerability</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -18332,18 +18356,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/news/r2g-multi-view-circuit-graph-benchmark-gnn</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/cross-modal-knowledge-distillation-spatial-transcriptomics-histology</loc>
-    <lastmod>2026-04-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/cross-modal-knowledge-distillation-spatial-transcriptomics-histology</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -18373,6 +18385,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/news/cross-modal-knowledge-distillation-spatial-transcriptomics-histology</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/cross-modal-knowledge-distillation-spatial-transcriptomics-histology</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/news/geoskill-vlm-skill-conditioned-geolocation-framework</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -18397,13 +18421,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/ai-agents-web-search-tools-data-exfiltration-vulnerability</loc>
+    <loc>https://agentupdate.ai/news/pacellm-brain-inspired-llm-long-context</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/ai-agents-web-search-tools-data-exfiltration-vulnerability</loc>
+    <loc>https://agentupdate.ai/zh/news/pacellm-brain-inspired-llm-long-context</loc>
     <lastmod>2026-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -19573,37 +19597,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/autoverifier-llm-agentic-claim-verification</loc>
+    <loc>https://agentupdate.ai/news/lumivideo-ai-agent-video-color-grading</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/autoverifier-llm-agentic-claim-verification</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/news/efficient-causal-graph-discovery-llms-bfs</loc>
-    <lastmod>2026-04-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/news/efficient-causal-graph-discovery-llms-bfs</loc>
+    <loc>https://agentupdate.ai/zh/news/lumivideo-ai-agent-video-color-grading</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -19633,13 +19633,37 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/news/lumivideo-ai-agent-video-color-grading</loc>
+    <loc>https://agentupdate.ai/news/efficient-causal-graph-discovery-llms-bfs</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/news/lumivideo-ai-agent-video-color-grading</loc>
+    <loc>https://agentupdate.ai/zh/news/efficient-causal-graph-discovery-llms-bfs</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/autoverifier-llm-agentic-claim-verification</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/autoverifier-llm-agentic-claim-verification</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
+    <lastmod>2026-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/news/imagent-multi-image-vision-agents-reinforcement-learning</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -35941,18 +35965,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/meta-quest-agent</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/meta-quest-agent</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/vision-pro-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -35960,6 +35972,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/vision-pro-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/meta-quest-agent</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/meta-quest-agent</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36001,18 +36025,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/descript-scribe</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/descript-scribe</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/premiere-pro-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36020,6 +36032,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/premiere-pro-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/descript-scribe</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/descript-scribe</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36037,18 +36061,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/etsy-store-manager</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/etsy-store-manager</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/amazon-seller-bot</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36061,13 +36073,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/shopclaw</loc>
+    <loc>https://agentupdate.ai/product/etsy-store-manager</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/shopclaw</loc>
+    <loc>https://agentupdate.ai/zh/product/etsy-store-manager</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36085,6 +36097,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/product/shopclaw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/shopclaw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/product/webflow-assistant</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36092,6 +36116,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/webflow-assistant</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/dall-e-3-visualizer</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/dall-e-3-visualizer</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36121,13 +36157,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/dall-e-3-visualizer</loc>
+    <loc>https://agentupdate.ai/product/canva-design-bot</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/dall-e-3-visualizer</loc>
+    <loc>https://agentupdate.ai/zh/product/canva-design-bot</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36140,18 +36176,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/adobe-creative-cloud-claw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/product/canva-design-bot</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/canva-design-bot</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36181,18 +36205,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/zoom-scribe</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/zoom-scribe</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/quickbooks-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36205,13 +36217,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/confluence-writer</loc>
+    <loc>https://agentupdate.ai/product/zoom-scribe</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/confluence-writer</loc>
+    <loc>https://agentupdate.ai/zh/product/zoom-scribe</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36241,13 +36253,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/netsuite-claw</loc>
+    <loc>https://agentupdate.ai/product/confluence-writer</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/netsuite-claw</loc>
+    <loc>https://agentupdate.ai/zh/product/confluence-writer</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36265,13 +36277,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/asana-pilot</loc>
+    <loc>https://agentupdate.ai/product/netsuite-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/asana-pilot</loc>
+    <loc>https://agentupdate.ai/zh/product/netsuite-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36296,6 +36308,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/slack-moderator</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/asana-pilot</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/asana-pilot</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36337,6 +36361,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/product/hubspot-helper</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/hubspot-helper</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/product/servicenow-agent</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36361,13 +36397,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/hubspot-helper</loc>
+    <loc>https://agentupdate.ai/product/grafana-dashboard-gen</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/hubspot-helper</loc>
+    <loc>https://agentupdate.ai/zh/product/grafana-dashboard-gen</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36380,18 +36416,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/salesforce-sync</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/product/grafana-dashboard-gen</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/grafana-dashboard-gen</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36481,25 +36505,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/pinecone-vector-claw</loc>
+    <loc>https://agentupdate.ai/product/planetscale-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/pinecone-vector-claw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/product/postman-automator</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/postman-automator</loc>
+    <loc>https://agentupdate.ai/zh/product/planetscale-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36517,13 +36529,25 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/planetscale-claw</loc>
+    <loc>https://agentupdate.ai/product/postman-automator</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/planetscale-claw</loc>
+    <loc>https://agentupdate.ai/zh/product/postman-automator</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/pinecone-vector-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/pinecone-vector-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36565,18 +36589,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/bitbucket-assist</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/bitbucket-assist</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/terraform-coder</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36589,25 +36601,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/k8s-claw</loc>
+    <loc>https://agentupdate.ai/product/bitbucket-assist</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/k8s-claw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/product/gitlab-runner</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/gitlab-runner</loc>
+    <loc>https://agentupdate.ai/zh/product/bitbucket-assist</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36625,13 +36625,37 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/euroclaw</loc>
+    <loc>https://agentupdate.ai/product/gitlab-runner</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/euroclaw</loc>
+    <loc>https://agentupdate.ai/zh/product/gitlab-runner</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/k8s-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/k8s-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/docker-manager</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/docker-manager</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36649,13 +36673,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/docker-manager</loc>
+    <loc>https://agentupdate.ai/product/euroclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/docker-manager</loc>
+    <loc>https://agentupdate.ai/zh/product/euroclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36709,18 +36733,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/mistral-claw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/mistral-claw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/aleph-alpha-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36740,6 +36752,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/rakuten-assist</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/mistral-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/mistral-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36769,13 +36793,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/kimi-agent</loc>
+    <loc>https://agentupdate.ai/product/kimi-code</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/kimi-agent</loc>
+    <loc>https://agentupdate.ai/zh/product/kimi-code</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36793,25 +36817,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/kimi-code</loc>
+    <loc>https://agentupdate.ai/product/kimi-agent</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/kimi-code</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/product/renderclaw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/renderclaw</loc>
+    <loc>https://agentupdate.ai/zh/product/kimi-agent</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36829,13 +36841,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/linodeclaw</loc>
+    <loc>https://agentupdate.ai/product/renderclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/linodeclaw</loc>
+    <loc>https://agentupdate.ai/zh/product/renderclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36853,13 +36865,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/digitalocean-claw</loc>
+    <loc>https://agentupdate.ai/product/linodeclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/digitalocean-claw</loc>
+    <loc>https://agentupdate.ai/zh/product/linodeclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36889,6 +36901,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/product/digitalocean-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/digitalocean-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/product/tencent-clawbot</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36913,18 +36937,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/azureclaw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/azureclaw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/skyclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -36937,13 +36949,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/gcp-claw</loc>
+    <loc>https://agentupdate.ai/product/azureclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/zh/product/gcp-claw</loc>
+    <loc>https://agentupdate.ai/zh/product/azureclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -36956,6 +36968,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/megaclaw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/gcp-claw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/gcp-claw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -37057,18 +37081,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/product/coze-openclaw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/product/coze-openclaw</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/product/lobster-ai</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -37076,6 +37088,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/product/lobster-ai</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/product/coze-openclaw</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/product/coze-openclaw</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -37525,18 +37549,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/cybersecurity</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/cybersecurity</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/automation</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37544,6 +37556,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/automation</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/cybersecurity</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/cybersecurity</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -37573,6 +37597,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/ai-safety</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/ai-safety</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/generative-ai</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37592,18 +37628,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/multimodal</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/ai-safety</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/ai-safety</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -37669,6 +37693,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/multi-agent</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/multi-agent</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/javascript</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37693,30 +37729,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/meta</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/meta</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/multi-agent</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/multi-agent</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/aws</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37736,6 +37748,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/generative-ai</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/meta</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/meta</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -37777,18 +37801,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/deepmind</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/deepmind</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/infrastructure</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37796,6 +37808,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/infrastructure</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/deepmind</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/deepmind</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -37820,6 +37844,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/cursor</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/qwen</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/qwen</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -37873,18 +37909,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/qwen</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/qwen</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/agi</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37933,6 +37957,30 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/agentic-ai</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/agentic-ai</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/ai-infrastructure</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/ai-infrastructure</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/artificial-intelligence</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -37952,18 +38000,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/grok</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/agentic-ai</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/agentic-ai</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -38005,6 +38041,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/langchain</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/langchain</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/microsoft</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -38012,6 +38060,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/microsoft</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/moe</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/moe</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -38041,18 +38101,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/ai-infrastructure</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/ai-infrastructure</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/code-generation</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -38072,18 +38120,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/ipo</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/moe</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/moe</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -38168,18 +38204,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/hardware</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/langchain</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/langchain</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -38641,6 +38665,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/ai-policy</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/ai-policy</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/china</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -38780,18 +38816,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/ai-coding</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/ai-policy</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/ai-policy</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -39001,6 +39025,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/ai-security</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/ai-security</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/big-tech</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -39181,6 +39217,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/reinforcement-learning</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/reinforcement-learning</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/sagemaker</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -39253,18 +39301,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/ai-security</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/ai-security</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/amazon</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -39320,6 +39356,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/copyright</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/crewai</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/crewai</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -39433,6 +39481,18 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://agentupdate.ai/tags/multi-agent-systems</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/multi-agent-systems</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://agentupdate.ai/tags/notebooklm</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -39452,18 +39512,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/plugins</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/reinforcement-learning</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/reinforcement-learning</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -39812,18 +39860,6 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/model-evaluation</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/tags/multi-agent-systems</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/multi-agent-systems</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -40369,18 +40405,6 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://agentupdate.ai/tags/crewai</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://agentupdate.ai/zh/tags/crewai</loc>
-    <lastmod>2026-11-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
     <loc>https://agentupdate.ai/tags/data-center</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -40544,6 +40568,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/huawei</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/human-in-the-loop</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/human-in-the-loop</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -40808,6 +40844,18 @@
   </url>
   <url>
     <loc>https://agentupdate.ai/zh/tags/supabase</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/tags/supply-chain</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://agentupdate.ai/zh/tags/supply-chain</loc>
     <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
