@@ -2,13 +2,14 @@
 # AgentUpdate.ai Robots.txt (Open Mode)
 # ==========================================
 # Policy: Allow all crawlers. Cloudflare WAF handles abuse protection.
-# Last updated: 2026-05-15
+# Last updated: 2026-11-14
+# Note: do NOT disallow /_astro/ or /pagefind/ — they hold the CSS/JS that
+# search engines need to render pages. Blocking them made Googlebot see
+# unstyled pages (confirmed in Search Console live test, 2026-11-14).
 
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /_astro/
-Disallow: /pagefind/
 
 # Resources
 # LLM-friendly content: /llms.txt
